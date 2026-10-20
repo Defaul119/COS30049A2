@@ -179,6 +179,12 @@ Plan Appendix D lists every command in run order.
 ## How to work here
 
 - Commit after each working step, with clear messages. Tag `results-v1` at M2 and `v1.0` at M4.
+- **Commit identity:** author `Defaul119 <231157022+Defaul119@users.noreply.github.com>` (already
+  set in this repository's git config). **Never add a `Co-Authored-By: Claude` line** or any other
+  AI attribution to commit messages or PR descriptions; the user asked for this. AI use is declared
+  in the separate AI declaration instead.
+- The remote is https://github.com/Defaul119/COS30049A2 (public, by the user's choice). Never
+  commit `_context/`, `config/salt.txt`, `kaggle.json` or large data.
 - `python -m pytest -q` must pass before every commit (it also runs the unittest-style tests).
 - Write code like `explorer/esplora.py` and `lm/train.py`: module docstrings that say what the
   module does and which requirement it serves (e.g. "DR-02"), docstrings with units, and comments
