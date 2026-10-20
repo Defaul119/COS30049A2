@@ -1,0 +1,151 @@
+\section{What is submitted and how it is marked}
+\label{sec:deliverables}
+
+\subsection{The files that go to Canvas}
+
+One member submits everything on behalf of the group. The brief wants files named after the group,
+so this plan keeps the Assignment 1 pattern.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{6.4cm}Y@{}}
+\toprule
+\textbf{File} & \textbf{Contents} \\
+\midrule
+\fp{HCMC_COS30049.1_4_Assignment2_Report.pdf} & The report: at most 3,000 words, not counting the cover, contents, bibliography or appendices. \\
+\fp{HCMC_COS30049.1_4_Assignment2_Code.zip} & The processed datasets used by the final models, the README (as \code{.md} and \code{.pdf}), all source code, and the final trained models (Section~\ref{sec:packaging}). \\
+\fp{HCMC_COS30049.1_4_Assignment2_Meeting_Minutes.pdf} & Minutes for every week since the team formed (Weeks 1--8). The team prepares these separately. \\
+\fp{HCMC_COS30049.1_4_Assignment2_Contribution_Form.pdf} & Signed by all four members. The team prepares this separately. \\
+\fp{HCMC_COS30049.1_4_Assignment2_AI_Declaration.pdf} & The brief bans generative AI, but the tutor allowed it on condition that a declaration is included. This file is that declaration. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Where each point is earned}
+\label{sec:rubricmap}
+
+The table pairs each rubric line's top-band wording, quoted from the brief, with what this plan
+does to reach it. Section numbers point to where the work is described.
+
+\begin{longtable}{@{}L{3.0cm}L{3.3cm}L{6.0cm}L{2.6cm}@{}}
+\toprule
+\textbf{Criterion (pts)} & \textbf{Top band says} & \textbf{How this plan earns it} & \textbf{Evidence} \\
+\midrule
+\endhead
+Report 1: data collection and processing (5) & ``Comprehensive and clear'' &
+Covers all five sources: where each came from, its licence, how it was collected, and the
+challenges with their fixes. Processing covers cleaning, derived amounts, time-safe features,
+joins, scaling, tokenisation and checks. One pipeline figure ties it together. About 850 words,
+the largest share of the budget, because this line carries 5 of the 12 points. &
+Report §3--4; \S\ref{sec:data}, \S\ref{sec:processing} \\
+Report 2: data analysis (2) & ``Detailed and clear'' &
+Five findings, each written as question → plot → statistic → the decision it led to. This
+answers the brief's ``inform the selection of the machine learning model''. &
+Report §5; \S\ref{sec:analysis} \\
+Report 3: model selection (2) & ``Thorough justification'' &
+Written selection criteria, a table of the algorithms considered with reasons for keeping or
+rejecting each, and a rationale per model type. &
+Report §6; \S\ref{sec:models} \\
+Report 4: writing and structure (1) & ``Exceptionally well-written, clear structure, no errors'' &
+The brief's section order is followed exactly. Short sentences, consistent terms, and a
+proofread by a teammate. &
+\S\ref{sec:report} \\
+Report 5: referencing (1) & ``All sources correctly cited in Harvard style'' &
+A numbered Harvard list in the Assignment 1 style. Every dataset, library and method is cited,
+and a script checks that every citation is listed and every listed source is cited. &
+Appendix~\ref{app:refs} \\
+Report 6: completeness (1) & ``All required sections included'' &
+A checklist of the brief's sections: title, group identities including the tutor's name,
+introduction, problem framing, data collection, data processing, model selection, technical
+implementation, implementation evaluation, conclusion, bibliography and appendix. &
+\S\ref{sec:report} \\
+\midrule
+Code 1: core functionality (10) & ``Data thoroughly processed; models well-selected and evaluated'' &
+One command rebuilds features, trains every model and writes every evaluation table. Unit tests
+prove the time-safety rules. Evaluation results are stored as files, not only printed. &
+\S\ref{sec:processing}--\S\ref{sec:evaluation} \\
+Code 2: datasets (4) & ``Complete, highly relevant, clear format'' &
+Only the data the final models use. A data dictionary covers every file and column, columns
+carry units in their names, a manifest records SHA-256 checksums, and licences are recorded. &
+\S\ref{sec:packaging} \\
+Code 3: README (2) & ``Comprehensive instructions for env setup, training, and prediction'' &
+Conda commands, a quick check, a one-command rebuild with expected outputs and timings,
+prediction examples for every model, and troubleshooting. &
+\S\ref{sec:readme} \\
+Code 4: comments (2) & ``Thoroughly commented'' &
+Every module, class and function has a docstring. Comments explain \emph{why} (time-safety,
+leakage, thresholds), not just what. &
+\S\ref{sec:codequality} \\
+Code 5: structure (2) & ``Clean, well-organized, modular'' &
+One Python package with a module per pipeline step, a CLI, one configuration file and a test
+folder. Notebooks only call the package. &
+\S\ref{sec:codequality} \\
+\midrule
+HD: additional datasets (4) & ``Utilize large number of additional datasets'' &
+Five sources beyond the core snapshot: DS2, our own large crawl; DS3 Elliptic; DS4 BitcoinHeist;
+DS5 FineWeb-Edu and DS6 smol-smoltalk for the text model. DS7 is an instruction set derived from
+our own pipeline. Each one is used by a final model. &
+\S\ref{sec:data} \\
+HD: additional ML implementations (4) & ``Appropriate methods, well-tuned, excellent performance'' &
+Beyond the required types: Isolation Forest, LOF, the baseline, gradient boosting, TxGPT trained
+from scratch, and the 152M text model trained from scratch. Each is tuned with a recorded search
+and compared with a simple baseline. &
+\S\ref{sec:models}, \S\ref{sec:lm} \\
+\bottomrule
+\end{longtable}
+
+\subsection{Hard constraints from the brief}
+
+\begin{itemize}
+  \item \textbf{Word limit.} 3,000 words, excluding the cover page, table of contents,
+    bibliography and appendix. The plan aims for 2,850 so the count never becomes an argument.
+  \item \textbf{Group identities.} The group name and ID, every student's name and ID, \emph{and
+    the tutor's name}. The Assignment 1 cover had no tutor name. Action: confirm the name with the
+    team by 22 October.
+  \item \textbf{Python.} pandas, scikit-learn and matplotlib, as the brief names. PyTorch is added
+    only for the two language models.
+  \item \textbf{README.} It must explain the set-up \emph{using conda commands}, then data
+    processing, training and prediction.
+  \item \textbf{Datasets in the zip.} ``Must only include the data used in your final version
+    machine model.'' Raw downloads that no final model uses stay out, with a script and checksum
+    that recreate them.
+  \item \textbf{Late penalty.} 10\% of the available mark per calendar day, and zero after seven
+    days. The plan submits on 7 November.
+  \item \textbf{Harvard style}, with every external statement acknowledged.
+  \item \textbf{Generative AI.} The brief bans it; the tutor's condition is a separate
+    declaration. The declaration lists what AI helped with (for example code drafting and
+    proofreading) and states that the team checked and owns everything submitted.
+\end{itemize}
+
+\subsection{Promises Assignment 1 made about Assignment 2}
+\label{sec:a1promises}
+
+Markers can compare the two reports. Each promise below either gets delivered or gets an explicit,
+recorded change.
+
+\begin{longtable}{@{}L{4.6cm}L{6.4cm}L{3.6cm}@{}}
+\toprule
+\textbf{A1 promise (where)} & \textbf{How A2 delivers it} & \textbf{Plan section} \\
+\midrule
+\endhead
+Objective 1: a snapshot of 20--30 addresses (each ≥50 transactions over ≥90 days) plus 2--3 short-history addresses; a manifest; a re-runnable script (§1.1) &
+25 + 3 addresses using the selection rule in \code{config/settings.json} (seed 30049). The manifest records every DR-01 field and is reviewed by a second member. & \S\ref{sec:ds1} \\
+Objective 2: baseline, Isolation Forest and LOF score every transaction by 26 Oct 2026 (§1.1) & Milestone M1, Sunday 25 October. & \S\ref{sec:schedule} \\
+Objective 4: label-free trust checks in a results table, with a limitations section (§1.1, §2.3.2) &
+All four checks are kept: synthetic injection, stability, method agreement and the reviewer check. & \S\ref{sec:evaluation} \\
+DR-01: source, date, selection, fields, missing values, provenance, terms, retrieval steps (§2.3) & \fp{data/processed/esplora/manifest.json} and the data card. & \S\ref{sec:ds1}, \S\ref{sec:packaging} \\
+DR-02 pass condition 1: a unit test recomputes F1--F4 for 20 random transactions from earlier records only & \fp{tests/test_features_time_safe.py}. & \S\ref{sec:tests} \\
+DR-02 pass condition 2: no transaction ID in both the fit and the evaluation period & \code{tests/test_split.py}. & \S\ref{sec:tests} \\
+DR-02 pass condition 3: the report states how addresses were chosen and the resulting bias & Report §3 plus a limitations paragraph. & \S\ref{sec:report} \\
+DR-02 review: a code review by a member other than the author & Le Quang Anh Hoang reviews \code{features.py} and \code{split.py}. & \S\ref{sec:tests} \\
+NFR-02: another member reproduces the pipeline from documented steps & Milestone M4: a clean install by a teammate on Windows. & \S\ref{sec:readme} \\
+The 3.5 threshold ``is tuned in Assignment 2'' (§2.3.1) & Threshold sweep against injection recall and the sanity rule, logged as CR-03 if it changes. & \S\ref{sec:baseline} \\
+Refinements CR-02, CR-04 and CR-05 ``adopted only if approved'' (§2.3.1) & An ablation compares the method as written with the refined one. The evidence goes to the team for a decision. & \S\ref{sec:features} \\
+LOF in novelty mode, fitted on the earlier period; flag the top 2\% (§2.3.1) & Kept exactly as written. & \S\ref{sec:outliers} \\
+Sanity rule: no address with more than 20\% of its transactions flagged (§2.3.2) & Checked automatically for every method. & \S\ref{sec:evaluation} \\
+Selection rule: highest injection recall among methods meeting the stability target (§2.3.2) & Applied, and extended to the new candidate methods. & \S\ref{sec:selection} \\
+Walkthrough results and revisions ``reported with Assignment 2'' (§10.4, team action T7) & A short appendix, if the UX lead ran the sessions; otherwise the report says plainly that they have not run. & \S\ref{sec:report} \\
+High-severity usability issues fixed before the A2 submission (§1.1) & Table 10.2 had none above severity 2, so this is reported as met. & \S\ref{sec:report} \\
+Risk 13: no fraud precision or recall without valid labels & Kept. Metrics on the labelled datasets are worded as ``against the dataset's labels''. & \S\ref{sec:metricsrule} \\
+\bottomrule
+\end{longtable}

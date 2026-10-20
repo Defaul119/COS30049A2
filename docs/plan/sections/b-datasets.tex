@@ -1,0 +1,53 @@
+\section{Datasets considered}
+\label{app:datasets}
+
+The HD criterion rewards a ``large number of additional datasets'', but only datasets that a
+final model uses go in the zip, and each one costs collection, processing and report words. So
+the candidates were checked against four tests: is it Bitcoin, does it carry labels we can use
+honestly, is its licence clear, and does it fit a 16 GB machine and a 19-day schedule. The
+datasets in use are DS1--DS9 (Section~\ref{sec:datasets}). The table below lists the eighteen
+others, checked on 20 October 2026, with the decision for each. It also repeats DS9, the
+optional Ransomwhere set, so its reasoning sits beside the rest.
+
+\textbf{Decisions:} \emph{Fallback} means it replaces a chosen dataset if that one fails;
+\emph{Could} means it is on the priority list's Could tier; \emph{Not used} means it fails one of
+the four tests; \emph{Won't} means it is ruled out for A2 (Section~\ref{sec:moscow}).
+
+{\small
+\begin{longtable}{@{}L{3.1cm}L{4.4cm}L{2.4cm}L{4.4cm}@{}}
+\toprule
+\textbf{Dataset (source)} & \textbf{What it holds} & \textbf{Licence and access} & \textbf{Decision and reason} \\
+\midrule
+\endhead
+\multicolumn{4}{@{}l}{\textbf{Bitcoin, labelled}} \\
+Elliptic++ transactions (Elmougy and Liu 2023) & Elliptic's transactions with 183 features and the same labels; also wallet-level (actor) files with 56 features & None stated; Google Drive link from the GitHub README & \emph{Fallback} for DS3 if Elliptic's Kaggle licence blocks it. The actor files are DS8. \\
+Elliptic2 (Bellei et al.\ 2024) & 122,000 labelled subgraphs inside a background graph of 49M node clusters and 196M edges & Code Apache 2.0; data licence not stated; download via Elliptic's website & \emph{Not used.} Subgraph labels need graph neural networks (W-1), and the background graph is too large for 16 GB of RAM. \\
+BABD-13 (Xiang et al.\ 2024) & 544,462 labelled addresses of 13 behaviour types, 148 features, July 2019 to May 2021 & Host and licence not confirmed & \emph{Not used} unless a confirmed copy appears. It would be a third classification set with little new to say, and its features need a subgraph tool we would have to rebuild. \\
+Ransomwhere (Cable 2024) & Crowdsourced ransomware payment addresses with transactions and family; 5.6 MB JSON & CC BY 4.0; Zenodo & \emph{Could}, as DS9. Its addresses run through our own pipeline, which gives a label check in our own feature space. \\
+Showing the Receipts (GitHub, \code{cablej}) & 1,013 likely ransomware payment addresses & CC BY 4.0 & \emph{Not used.} Same purpose as Ransomwhere but smaller; kept as a cross-check if DS9 runs. \\
+Ransomware seed addresses (Paquet-Clouston, Haslhofer and Dupont 2019) & Seed address CSV, with an expanded set on Zenodo & No licence file & \emph{Not used.} No licence, and it overlaps DS4's label sources. \\
+OFAC sanctioned addresses (GitHub, \code{0xB10C}) & Bitcoin addresses on the US sanctions list, regenerated nightly & Repository licence not stated & \emph{Won't.} A ``sanctioned'' label on real addresses is an identity claim, which A1 risk 16 rules out. \\
+Bitcoin Ponzi addresses (Bartoletti, Pes and Serusi 2018) & Addresses of Ponzi schemes with features & Host and size not found & \emph{Not used.} No confirmed download. \\
+WalletExplorer entity labels & Exchanges, pools and services found by co-spend clustering & No bulk download or licence & \emph{Not used.} No licence; research reports stale names. \\
+\multicolumn{4}{@{}l}{\textbf{Bitcoin, whole chain or graph}} \\
+ORBITAAL (Coquidé and Cazabet 2024) & Entity-level temporal graph, January 2009 to January 2021 & CC BY 4.0; Zenodo; 156.9 GB & \emph{Won't} (W-5): size. \\
+Bitcoin temporal graph (Schnoering and Vazirgiannis 2024) & 252M entity nodes, 786M edges, 34,098 labelled entities & CC BY 4.0; Figshare; PostgreSQL, about 120 GB & \emph{Won't} (W-5): size. Good future work for address profiles. \\
+BigQuery \code{crypto_bitcoin} (Google public dataset) & The whole chain as SQL tables & First 1 TB of queries a month free; needs a Google Cloud project & \emph{Fallback} for the DS2 crawl if Esplora blocks it. \\
+Blockchair database dumps & Blocks, transactions and outputs as TSV & Licence not confirmed & \emph{Not used.} Licence unclear; Esplora covers the need. \\
+SNAP Bitcoin Alpha (Kumar et al.\ 2016) & 3,783 traders, 24,186 trust ratings from $-10$ to $+10$ & Public download from SNAP & \emph{Not used.} Trust ratings between traders, not transactions. \\
+\multicolumn{4}{@{}l}{\textbf{Not Bitcoin}} \\
+IBM AML (Altman et al.\ 2023) & Synthetic bank transfers with an ``Is Laundering'' label, in six sizes & Kaggle; licence not confirmed & \emph{Not used.} Bank transfers, not Bitcoin. \\
+SAML-D (Oztas et al.\ 2023) & About 9.5M synthetic monitored transactions, 12 features, 28 typologies & Kaggle; licence not confirmed & \emph{Not used.} Same reason. \\
+SynthAML (Jensen et al.\ 2023) & 20,000 bank alerts (17\% reported) and over 16M transactions & Figshare; data licence not explicit & \emph{Not used.} Same reason. \\
+Ethereum fraud sets (Kaggle, XBlock, Forta) & Labelled Ethereum accounts, for example 9,841 accounts with 22\% flagged & Varies & \emph{Won't} (W-4): outside A1's Bitcoin scope. \\
+Card-fraud sets (ULB credit card, PaySim, Sparkov) & Card or mobile payments with fraud labels & Varies & \emph{Not used.} Not Bitcoin. \\
+\bottomrule
+\end{longtable}
+}
+
+\textbf{How the report uses this.} One sentence in the data-collection section, ``Eighteen other
+public datasets were assessed against four criteria (Appendix~X)'', plus this table condensed in
+the report's appendix. That shows selection, which the HD band and data criterion reward, at no
+cost to the word limit. Entries that the report names must be cited (the second list in
+Appendix~\ref{app:refs}). Details marked ``not confirmed'' are checked again before they appear
+in the report.

@@ -1,0 +1,22 @@
+# Large downloads, token files and training runs (rebuilt by the scripts)
+data/text/
+data/chat/
+data/ds7/
+data/raw/fineweb-edu/
+data/raw/smol-smoltalk/
+data/external/
+runs/
+
+# Secret salt for hashing DS2 addresses (A1 risk 16); never committed or zipped
+config/salt.txt
+
+# Kaggle API token
+kaggle.json
+
+# Course material and notes for Claude Code; not part of the repository or the submission
+_context/
+
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store

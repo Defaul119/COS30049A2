@@ -1,0 +1,198 @@
+% COS30049 Assignment 2 -- delivery plan (not the report).
+% Group HCMC_COS30049.1_4. Compile with pdfLaTeX twice: pdflatex main && pdflatex main
+\documentclass[a4paper,11pt]{article}
+
+% ---------------------------------------------------------------- page and fonts
+\usepackage[margin=2.3cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{parskip}
+\setlength{\emergencystretch}{2em} % lets lines with long monospace commands break cleanly
+\DeclareUnicodeCharacter{2192}{\ensuremath{\rightarrow}}
+\DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}
+\DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}
+\DeclareUnicodeCharacter{00D7}{\ensuremath{\times}}
+\DeclareUnicodeCharacter{2212}{\ensuremath{-}}
+\DeclareUnicodeCharacter{2248}{\ensuremath{\approx}}
+
+% ---------------------------------------------------------------- tables
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{colortbl}
+\renewcommand{\arraystretch}{1.22}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash\hspace{0pt}}X}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ---------------------------------------------------------------- figures and drawing
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\captionsetup{font=small, labelfont=bf}
+\captionsetup[table]{position=top}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds, shapes.geometric}
+
+% ---------------------------------------------------------------- text
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\setlist{itemsep=2pt, topsep=3pt, parsep=0pt}
+\usepackage{xcolor}
+\usepackage{pifont}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage{listings}
+\usepackage[skins,breakable]{tcolorbox}
+
+\definecolor{ink}{HTML}{1F2933}
+\definecolor{accent}{HTML}{1D4ED8}
+\definecolor{accentsoft}{HTML}{E8EEFC}
+\definecolor{okgreen}{HTML}{15803D}
+\definecolor{oksoft}{HTML}{E7F5EC}
+\definecolor{warn}{HTML}{B45309}
+\definecolor{warnsoft}{HTML}{FDF1E3}
+\definecolor{grey}{HTML}{6B7280}
+\definecolor{greysoft}{HTML}{F3F4F6}
+\definecolor{violet}{HTML}{6D28D9}
+\definecolor{violetsoft}{HTML}{F1EBFD}
+\definecolor{teal}{HTML}{0F766E}
+\definecolor{tealsoft}{HTML}{E6F4F2}
+
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{ink}}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.6em}
+\titlespacing*{\subsection}{0pt}{1.1em}{0.4em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{grey}COS30049 A2 delivery plan}
+\fancyhead[R]{\small\color{grey}HCMC\_COS30049.1\_4}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+% Boxes. Each one has a single job, so a reader can skim by colour.
+\newtcolorbox{decision}[1]{enhanced, breakable, colback=accentsoft, colframe=accent,
+  boxrule=0.6pt, arc=2pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  title={\textbf{Decision:} #1}, fonttitle=\small, coltitle=white}
+\newtcolorbox{done}{enhanced, breakable, colback=oksoft, colframe=okgreen,
+  boxrule=0.6pt, arc=2pt, left=6pt, right=6pt, top=3pt, bottom=3pt,
+  title={\textbf{Done when}}, fonttitle=\small, coltitle=white}
+\newtcolorbox{feeds}{enhanced, breakable, colback=violetsoft, colframe=violet,
+  boxrule=0.6pt, arc=2pt, left=6pt, right=6pt, top=3pt, bottom=3pt,
+  title={\textbf{Feeds the report and rubric}}, fonttitle=\small, coltitle=white}
+\newtcolorbox{caution}{enhanced, breakable, colback=warnsoft, colframe=warn,
+  boxrule=0.6pt, arc=2pt, left=6pt, right=6pt, top=3pt, bottom=3pt,
+  title={\textbf{Watch out}}, fonttitle=\small, coltitle=white}
+\newtcolorbox{team}{enhanced, breakable, colback=tealsoft, colframe=teal,
+  boxrule=0.6pt, arc=2pt, left=6pt, right=6pt, top=3pt, bottom=3pt,
+  title={\textbf{Needs a teammate}}, fonttitle=\small, coltitle=white}
+\newtcolorbox{summarybox}{enhanced, breakable, colback=greysoft, colframe=ink,
+  boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before upper={\setlength{\parskip}{0.5em}}}
+
+% Command blocks. Plain monospace; no shell-escape needed.
+\lstdefinestyle{cmd}{basicstyle=\ttfamily\small, backgroundcolor=\color{greysoft},
+  frame=single, framerule=0pt, xleftmargin=4pt, xrightmargin=4pt, aboveskip=6pt,
+  belowskip=6pt, columns=fullflexible, keepspaces=true, breaklines=true,
+  showstringspaces=false, upquote=true}
+\lstdefinestyle{py}{style=cmd, language=Python, keywordstyle=\color{accent}\bfseries,
+  commentstyle=\color{grey}\itshape, stringstyle=\color{okgreen}}
+\lstset{style=cmd}
+
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\fp}[1]{\path{#1}} % file paths, breakable at / and .
+\newcommand{\yes}{\textcolor{okgreen}{\ding{51}}}
+\newcommand{\no}{\textcolor{warn}{\ding{55}}}
+\newcommand{\est}{\textsuperscript{\textcolor{grey}{est.}}}
+
+% Numbered reference list [1]-[N], alphabetical, hanging indent (A1's style).
+\newcounter{refnum}
+\newenvironment{references}{%
+  \sloppy\small\raggedright\begin{list}{[\arabic{refnum}]}{\usecounter{refnum}\setlength{\labelwidth}{2.2em}%
+    \setlength{\leftmargin}{2.8em}\setlength{\labelsep}{0.6em}%
+    \setlength{\itemsep}{0.45\baselineskip}\setlength{\parsep}{0pt}}}%
+  {\end{list}}
+
+\usepackage[hidelinks]{hyperref}
+\hypersetup{colorlinks=true, linkcolor=accent, urlcolor=accent, citecolor=accent}
+
+\begin{document}
+
+% ---------------------------------------------------------------- title page
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{1.5cm}
+{\color{grey}\large COS30049 Computing Technology Innovation Project}\par
+\vspace{0.4cm}
+{\color{ink}\Huge\bfseries Assignment 2 delivery plan}\par
+\vspace{0.3cm}
+{\color{ink}\Large Everything that will be built, measured, written and packaged\\ between 20 October and 8 November 2026}\par
+\vspace{1.2cm}
+\begin{tabularx}{\textwidth}{@{}L{4.2cm}Y@{}}
+\toprule
+Project & Bitcoin Address Activity Explorer (unusual-activity indicator, never a fraud verdict) \\
+Group & HCMC\_COS30049.1\_4 \\
+Members & Cam Dan Bui (105967074); Cao Tri Tran (106214726); Le Quang Anh Hoang (106218605); Minh Khang Nguyen (106216803) \\
+Plan prepared & Tuesday 20 October 2026 (teaching Week 6, day 36 of the 84-day unit) \\
+Assignment 2 due & Sunday 8 November 2026, 23:59 GMT+7 (day 55); 19 days from this plan \\
+Planned submission & Saturday 7 November 2026, one day early \\
+Training machine & Intel Core i5-12600K, NVIDIA RTX 3060 12 GB, 16 GB DDR4-3600, Windows \\
+\bottomrule
+\end{tabularx}
+
+\vspace{1cm}
+\begin{summarybox}
+\textbf{What this document is.} A working plan for finishing every marked part of Assignment 2: the
+datasets, the code, the trained models (including two language models trained from scratch on the
+machine above), the README and the 3,000-word report. It says what will be done, in what order, with
+which commands, how long each step should take, how each step is checked, and which rubric line it
+earns.
+
+\textbf{What it is not.} It is not the report and is not submitted. Numbers marked \est{} are
+planning estimates that a measured run replaces. Nothing in here is a result.
+
+\textbf{Out of scope here.} The weekly meeting minutes and the contribution form are also submitted
+with Assignment 2. The team will handle them separately; Section~\ref{sec:checklist} only lists
+them so they are not forgotten.
+\end{summarybox}
+\vfill
+{\small\color{grey}Source documents read for this plan: Week 1--8 lecture slides, seminars and
+workshop notebooks; the submitted Assignment 1 report, minutes and contribution form; the
+Assignment 1 working files (handover audit, risk register, fix log); the Assignment 2 brief and
+rubric; the prototype repository (commit 8375cf0); and the existing \texttt{asm2/} language-model code.}
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+
+\input{sections/s00-summary}
+\input{sections/s01-deliverables}
+\input{sections/s02-start}
+\input{sections/s03-decisions}
+\input{sections/s04-compute}
+\input{sections/s05-data}
+\input{sections/s06-processing}
+\input{sections/s07-analysis}
+\input{sections/s08-models}
+\input{sections/s09-lm}
+\input{sections/s10-evaluation}
+\input{sections/s11-code}
+\input{sections/s12-report}
+\input{sections/s13-schedule}
+\input{sections/s14-risks}
+
+\appendix
+\input{sections/a-cr06}
+\input{sections/b-datasets}
+\input{sections/c-references}
+\input{sections/d-commands}
+
+\end{document}

@@ -1,0 +1,186 @@
+\section{Workstreams 6--9: prediction, code quality, README, packaging}
+\label{sec:code}
+
+\subsection{Prediction interface}
+\label{sec:predict}
+
+The brief's README requirement ends with ``use your model for prediction''. The A3 brief says the
+back end ``runs predictions'' on user input. One module serves both: \code{explorer/predict.py}.
+It loads saved artefacts once and returns plain dictionaries in the JSON shapes of the A1
+prototype (\code{frontend/src/api/types.ts}).
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{5.2cm}Y@{}}
+\toprule
+\textbf{Function} & \textbf{Returns} \\
+\midrule
+\code{score_address(address)} & The daily timeline, each transaction with its scores from every method, the selected method's flag, the contributing features, the comparison basis and the limitation line. Typed addresses outside the snapshot raise \code{Unsupported}; addresses with too little history raise \code{InsufficientHistory}. These match A1's planned 404 and 422 responses. \\
+\code{score_what_if(address, amount_btc, direction, time_utc)} & The user enters a hypothetical next transaction for a snapshot address. Features are computed against the real history and every model scores it. This is the ``user input → prediction'' that A3's POST endpoint needs. \\
+\code{classify_elliptic(rows)} & The probability and label (at the tuned threshold) from the best Elliptic model, for one or more feature rows. \\
+\code{classify_heist(length, weight, count, looped, neighbors, income)} & The probability that an address-day resembles the labelled ransomware rows, worded exactly like that. \\
+\code{txgpt_surprisal(address)} & Surprisal per transaction and per field. \\
+\code{explain(tx_result, use_assistant=False)} & The template explanation, or the guarded Assistant text when \code{use_assistant=True}. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Command line} (all shown in the README with their expected output):
+\begin{lstlisting}
+python -m explorer.cli predict address bc1q...            # timeline + flags for a snapshot address
+python -m explorer.cli predict what-if --address bc1q... --amount 0.05 --direction out --time 2026-10-01T12:00Z
+python -m explorer.cli predict elliptic --rows data/processed/elliptic/example_rows.csv
+python -m explorer.cli predict heist --length 18 --weight 0.008 --count 1 --looped 0 --neighbors 2 --income 1.2e8
+python -m lm.chat --model models/assistant                  # chat with the Explorer Assistant
+\end{lstlisting}
+
+\subsection{Code structure and comments}
+\label{sec:codequality}
+
+\begin{lstlisting}
+asm2/
+  README.md, README.pdf          setup, rebuild, prediction, troubleshooting
+  environment.yml                CPU environment (markers)
+  environment-gpu.yml            CUDA environment (retraining language models)
+  requirements.txt               pip fallback
+  config/settings.json           every threshold, window, grid and path
+  explorer/                      the pipeline package
+    __init__.py  settings.py  cli.py
+    esplora.py  amounts.py       API client and address amounts (from A1)
+    snapshot.py  corpus.py       DS1 selection + fetch; DS2 crawl
+    external.py                  DS3 / DS4 download, checksum, load
+    transactions.py  features.py split.py  inject.py
+    baseline.py  clustering.py  regression.py  outliers.py  classify.py
+    evaluate.py  reviewer.py  predict.py  explain.py  assistant.py
+    plots.py  tables.py  manifest.py
+  lm/                            language models (existing + prepare_tx, tx_score, txgpt baselines)
+  configs/                       text_150m_*.json, txgpt_{s,m,l}.json
+  notebooks/01_eda.ipynb  02_models.ipynb  03_evaluation.ipynb
+  data/  models/  reports/{figures,tables}/  tests/
+  DATA_CARD.md  MODEL_CARD.md  LICENSES.md  SHA256SUMS.txt  CHANGELOG.md
+\end{lstlisting}
+
+\textbf{Rules} (code rubric lines 4 and 5):
+\begin{enumerate}
+  \item One module per pipeline step, each runnable from \code{cli.py}. Notebooks only call
+    package functions, so there is one implementation of everything.
+  \item Every module opens with a docstring saying what it does, its inputs and outputs, and which
+    requirement or report section it serves (for example ``DR-02'').
+  \item Every public function has a docstring with arguments, units, return value and errors.
+  \item Comments explain \emph{why}: why the window excludes same-block transactions, why the
+    scaler sits inside the pipeline, why year is not a feature. Comments that merely restate the
+    code are left out.
+  \item No magic numbers in code. Every threshold is read from \code{settings.json}, the A1 rule.
+  \item Type hints throughout; \code{pathlib} for paths, so they work on Windows; seeds passed
+    explicitly; no global state except the loaded settings.
+  \item No dead code or commented-out experiments in the submission. Experiments live in tagged
+    git history.
+\end{enumerate}
+
+\begin{lstlisting}[style=py]
+def robust_z(value: float, window: np.ndarray, min_scale: float, mad_scale: float = 1.4826) -> float:
+    """Modified z-score of `value` against `window` (Iglewicz and Hoaglin 1993).
+
+    The spread has a floor (`min_scale`) so a history of identical values cannot divide by zero
+    and turn every new value into an extreme flag (CR-05). `window` must hold only transactions
+    confirmed strictly before the one being scored (DR-02); callers build it with
+    `features.comparison_window`, never by slicing the full history.
+    """
+\end{lstlisting}
+
+\subsection{README}
+\label{sec:readme}
+
+The README is worth 2 points: ``comprehensive instructions for env setup, training, and
+prediction''. It follows this outline exactly:
+
+\begin{enumerate}
+  \item \textbf{What this is}, in three sentences, plus the folder map.
+  \item \textbf{Requirements}: Windows, macOS or Linux; Miniconda; 10 GB of disk; no GPU needed
+    unless retraining the language models.
+  \item \textbf{Set up with conda}:
+\begin{lstlisting}
+conda env create -f environment.yml
+conda activate cos30049-a2
+python -m pytest -q                 # expect: all tests pass in under 2 minutes
+\end{lstlisting}
+  \item \textbf{Rebuild every result from the shipped data, offline}:
+    \code{python -m explorer.cli all --offline}. This runs the steps in order, with the expected
+    time and output files listed for each: transactions → features → split → baseline →
+    clustering → regression → outliers → classify (DS3, DS4) → TxGPT scoring → evaluate →
+    figures.
+  \item \textbf{Each step on its own}, with the command, what it reads, what it writes, and how
+    long it takes on a laptop.
+  \item \textbf{Fetching the data again} (optional, needs internet): \code{snapshot --refetch},
+    \code{corpus}, \code{external}. Explains the rate limits and that new data gives different
+    numbers.
+  \item \textbf{Training}: scikit-learn models are trained by step 4. The language models are
+    retrained with \code{environment-gpu.yml}, with the exact commands, configs and times measured
+    on our RTX 3060.
+  \item \textbf{Prediction}: the commands from Section~\ref{sec:predict}, each with its real
+    output pasted in.
+  \item \textbf{Data}: a table of sources and licences, and a pointer to \code{DATA_CARD.md}.
+  \item \textbf{Troubleshooting}: \code{conda} not found; solver too slow (use \code{mamba} or the
+    pip fallback); out of memory (\code{--n-jobs 2}); Kaggle token missing; Windows long paths;
+    CUDA not detected.
+  \item \textbf{Reproducibility notes}: seeds, pinned versions, and the expected numeric tolerance
+    across machines.
+\end{enumerate}
+
+\begin{team}
+\textbf{Milestone M4 (4 November):} Le Quang Anh Hoang, who owns A1 risk 9, follows the README
+on a Windows machine that has never had the project, starting from a fresh download of the zip.
+They note every place they had to guess, and compare their \code{reports/tables/} with ours.
+Every guess becomes a README fix. A1's NFR-02 is met only when they finish without help.
+\end{team}
+
+\subsection{Datasets and packaging}
+\label{sec:packaging}
+
+\textbf{The inclusion rule} is the brief's: data used by a final model, and nothing else.
+
+\begin{longtable}{@{}L{5.0cm}L{6.0cm}L{2.7cm}@{}}
+\toprule
+\textbf{Path in the zip} & \textbf{Contents} & \textbf{Size\est{}} \\
+\midrule
+\endhead
+\fp{data/processed/esplora/transactions.csv} & DS1 clean table & ~1 MB \\
+\fp{data/processed/esplora/features.csv} & F1--F8, z-scores, scorable flag, period & ~2 MB \\
+\fp{data/processed/esplora/scores.csv} & Every method's score and flag per transaction & ~2 MB \\
+\fp{data/processed/esplora/injections/} & Plant specifications for every seed & ~1 MB \\
+\fp{data/processed/esplora/manifest.json} & DR-01 manifest & <1 MB \\
+\fp{data/raw/esplora/*.json.gz} & DS1 raw pages, as evidence for re-derivation & ~30 MB \\
+\fp{data/processed/corpus/ds2.parquet} & DS2 compact rows, hashed IDs & ~20 MB \\
+\fp{data/processed/corpus/tokens/} & TxGPT train, val, test token files and \code{meta.json} & ~6 MB \\
+\fp{data/processed/elliptic/} & Joined, split feature table (if the licence allows); otherwise \code{download.md} and checksums & 0--80 MB \\
+\fp{data/processed/bitcoinheist/} & Processed rows used by the final models (training sample, test sets) & ~40 MB \\
+\fp{data/processed/ds7/} & Explanation pairs (train, val, test) & ~5 MB \\
+\fp{models/*.joblib} + cards & Every final scikit-learn model & ~30 MB \\
+\fp{models/txgpt.pt} + meta & TxGPT weights & ~30 MB \\
+\fp{models/assistant/} & 152M weights (fp16, ~305 MB): in the zip if Canvas allows; otherwise a link plus SHA-256, downloaded with one command given in the README & 0 or 305 MB \\
+\fp{reports/} & Figures and tables & ~10 MB \\
+\bottomrule
+\end{longtable}
+
+\textbf{Not in the zip, but recreatable}: FineWeb-Edu (DS5) and smol-smoltalk (DS6), with scripts,
+dataset revisions and token-file checksums in \code{DATA_CARD.md}; the full BitcoinHeist CSV; the
+salt for DS2's address hashes.
+
+\textbf{Data card} (\code{DATA_CARD.md}): for each dataset, the source and citation, licence,
+access date, collection method, size, every file and column with type and unit, missing values,
+known biases, and which model uses it. This is what earns ``clear format'' on the datasets line.
+
+\textbf{Model card} (\code{MODEL_CARD.md}): one section per final model, covering its purpose,
+training data, parameters, metrics, limitations and intended use, plus the sentence ``Unusual
+activity requires investigation; it does not indicate wrongdoing.''
+
+\textbf{Size check, 22 October.} Find Canvas's upload limit for this assignment, by asking the
+tutor or testing on a draft. The plan targets a zip under 200 MB, or under 500 MB if the 152M
+model ships in it. If the limit is lower, large items move to a link with a checksum, and the
+README says where.
+
+\begin{done}
+The zip unpacks into the tree above. \code{SHA256SUMS.txt} verifies every file. A teammate rebuilds
+all of \fp{reports/tables/} from it (M4). Every included file is used by a final model, and every
+final model's data is included or linked with a checksum.
+\end{done}

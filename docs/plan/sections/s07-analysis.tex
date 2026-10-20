@@ -1,0 +1,77 @@
+\section{Workstream 3: data analysis}
+\label{sec:analysis}
+
+Report criterion 2 is worth 2 points, for analysis that is ``detailed and clear''. The brief
+asks for analysis that will ``uncover patterns and insights'' and ``inform the selection of the
+machine learning model''. So every analysis below is written as a question, then a plot, then a
+statistic, then the decision it informs. The Week 5 visualisation notebook uses the same ``why
+this plot / so what'' pattern.
+
+\textbf{Where it lives.} \code{notebooks/01_eda.ipynb} calls \code{explorer.plots}, so every
+figure is also produced by \code{python -m explorer.cli figures} as a vector PDF in
+\code{reports/figures/}. The report includes the PDFs directly, never screenshots.
+
+\textbf{Plot rules} (A1 NFR-01): a title; axis labels with units (BTC, satoshis, hours, count,
+date UTC); the snapshot date in a footnote for DS1 plots; one colour per method across the whole
+report; a colour-blind-safe palette; log axes wherever a variable spans orders of magnitude, with
+that stated on the axis.
+
+\subsection{DS1 and DS2 analyses}
+
+\begin{longtable}{@{}L{3.6cm}L{3.4cm}L{3.0cm}L{4.4cm}@{}}
+\toprule
+\textbf{Question} & \textbf{Plot} & \textbf{Statistic} & \textbf{Decision it informs} \\
+\midrule
+\endhead
+How big and how long is each history? & Bar chart of transactions per address; strip of history spans & median, IQR & Whether the 70/30 split leaves enough evaluation rows per address \\
+What does ``normal'' look like for one address? & Daily timeline for 3 contrasting addresses (the Explorer's own chart) & -- & Motivates per-address baselines over global thresholds \\
+How are F1--F4 distributed? & Histograms on log axes; box plots by direction & skewness, kurtosis & Heavy tails justify the log transforms, the robust z (median/MAD rather than mean/SD) and the spread floor \\
+Do incoming and outgoing amounts differ? & Paired box plots of $|\text{net}|$ by direction per address & Mann--Whitney U per address & Evidence for CR-04 (same-direction size windows) \\
+Are the features redundant? & Spearman correlation heatmap F1--F8 & $\rho$ & F1 and F4 are expected to correlate; justifies keeping both (absolute vs habitual size) or dropping one in models \\
+Is activity periodic? & Hour-of-day and weekday histograms (UTC) & $\chi^2$ against uniform & Whether F8 (hour) is worth testing \\
+How are gaps distributed? & Empirical CDF of gaps, log-x & quantiles & Sets the TxGPT gap-bucket edges; shows dormancy is rare \\
+Does the feature space have dense groups and sparse points? & 2-D PCA of $(z_1..z_4)$, coloured by direction & explained variance & Non-spherical density supports DBSCAN alongside K-Means \\
+How many transactions break $|z| \geq 3.5$ on the raw data? & Flag-rate bar per address & share per address & An early warning for the 20\% sanity rule; starts the threshold tuning \\
+What kinds of addresses are in DS2? & Address-level feature pairs plot (transactions per day, in-share, median size, gap CV) & -- & Inputs to address-profile clustering; shows DS2 covers DS1's range, so TxGPT's training data matches its scoring data \\
+How long are the DS2 sequences, and which tokens dominate? & Sequence-length histogram; token-frequency bars per field & -- & The context length (128 transactions) and the bucket design \\
+\bottomrule
+\end{longtable}
+
+\subsection{DS3 and DS4 analyses}
+
+\begin{longtable}{@{}L{3.6cm}L{3.4cm}L{3.0cm}L{4.4cm}@{}}
+\toprule
+\textbf{Question} & \textbf{Plot} & \textbf{Statistic} & \textbf{Decision it informs} \\
+\midrule
+\endhead
+How imbalanced is Elliptic, and how does that change over time? & Stacked bars of illicit / licit / unknown per time step & illicit share per step & Temporal split; PR-AUC and F1 rather than accuracy; class weights \\
+Which Elliptic features separate the classes? & Top-10 features by mutual information; violin plots & mutual information; Mann--Whitney U & LF versus AF comparison; RF importance cross-check \\
+How imbalanced is BitcoinHeist, and in which years? & Positives per year and per family & counts & Fixes the temporal split year $Y$ and which families get a leave-out test \\
+Are the BitcoinHeist features heavy-tailed? & Histograms on log axes by label & skewness & The $\log(1+x)$ transforms; robust scaling \\
+Do ransomware and white rows differ? & Box plots of log income, length, weight and count by label & Mann--Whitney U with effect size (rank-biserial) & Which features carry signal; expectations for linear versus tree models \\
+\bottomrule
+\end{longtable}
+
+\subsection{What the report's analysis section will contain}
+
+Five findings, about 80 words each, each with one figure or a two-panel figure. The others stay
+in the notebook and the appendix:
+\begin{enumerate}
+  \item Feature distributions are heavy-tailed, which motivates the log scales and robust z.
+  \item Each address has its own scale, and in and out amounts differ, which motivates per-address
+    and same-direction baselines.
+  \item The z-feature space has dense cores and sparse points, which motivates DBSCAN alongside
+    K-Means.
+  \item The labelled data is severely imbalanced and drifts over time, which motivates temporal
+    splits, class weights and PR-based metrics.
+  \item DS2 covers the behaviour seen in DS1, which justifies training TxGPT on DS2 and scoring
+    DS1.
+\end{enumerate}
+The wording above is a hypothesis. If the data says otherwise, the finding changes, and the
+change itself is reported. That is still analysis that informed a decision.
+
+\begin{done}
+The notebook runs top to bottom from a clean kernel. Every figure has a ``so what'' sentence
+under it. The five report figures exist as PDFs in \code{reports/figures/}. Statistical test
+results are saved in \code{reports/tables/eda_tests.csv}.
+\end{done}

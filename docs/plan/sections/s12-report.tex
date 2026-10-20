@@ -1,0 +1,177 @@
+\section{Workstream 10: the report}
+\label{sec:report}
+
+The report is worth 12 points. It follows the brief's section list in the brief's order, so the
+completeness point can't be lost. The word budget is weighted by marks: data collection and
+processing carry 5 points, so they get the most words.
+
+\subsection{Cover and front matter (not counted)}
+
+\begin{itemize}
+  \item \textbf{Title}: ``Bitcoin Address Activity Explorer: Detecting Unusual Transactions with
+    Machine Learning''. ``Unusual'', never ``fraud''.
+  \item \textbf{Group identities}: group name HCMC\_COS30049.1\_4; group ID (``Group 4'' on the
+    contribution form); the four names and student IDs; \textbf{the tutor's name}; the unit;
+    the submission date.
+  \item The word count and how it was counted (Section~\ref{sec:wordcount}).
+  \item Table of contents, list of figures, list of tables.
+\end{itemize}
+
+\subsection{Section-by-section plan}
+
+\begin{longtable}{@{}L{2.6cm}C{1.25cm}L{7.15cm}L{3.2cm}@{}}
+\toprule
+\textbf{Section} & \textbf{Words} & \textbf{Content} & \textbf{Figures and tables} \\
+\midrule
+\endhead
+1 Introduction & 170 &
+Motivation: anyone who handles cryptocurrency must decide which of many transactions deserve a
+closer look, and an address's history is a long, unexplained list. Intended user: a student
+researcher examining one supported address (as in A1); analysts doing triage benefit too. What A2
+delivers: data, models and evaluation that rank each transaction by how unusual it is for
+\emph{its own address}, with a reason, plus labelled-data experiments showing what such scores
+can and cannot say. The limitation line, stated once. &
+-- \\
+2 Problem framing & 210 &
+The challenge: deciding which transactions deserve attention without trustworthy labels.
+Limits of existing solutions: block explorers show raw lists; fixed global rules ignore each
+address's scale; supervised models trained on Elliptic and BitcoinHeist rely on sparse, noisy
+labels and on anonymised or aggregated features that can't be computed for an arbitrary address
+(Weber et al.\ 2019; Elmougy and Liu 2023). Why ML fits: interactions between features,
+expected behaviour learned per address, structure found without labels, sequence context, and
+supervised learning where labels exist. Four research questions: RQ1, the best stable detector
+of planted patterns; RQ2, supervised performance on labelled data over time and on unseen
+families; RQ3, how far unusualness and labelled illicit activity overlap; RQ4, whether a
+from-scratch sequence model learns more than habit statistics. &
+-- \\
+3 Data collection & 410 &
+The sources table, then three short subsections. Our own collection (DS1, DS2): API, paging,
+pacing, the selection rule fixed before fetching, the verification sums, and the manifest.
+Public labelled data (DS3, DS4): citation, access, licence, what the labels mean. Text corpora
+(DS5--DS7). Challenges and responses, then the selection-bias statement (DR-02 condition 3). &
+T1 datasets; T2 challenges \\
+4 Data processing & 400 &
+Cleaning steps with row counts; amount and direction; F1--F4 and the windows; the robust z;
+scorability; the time split; the leakage controls in 3--4 sentences; the Elliptic join and
+temporal split; BitcoinHeist binarisation, transforms, excluded leakage columns and sampling;
+TxGPT tokenisation; the injection design. &
+F1 pipeline; T3 cleaning log; T4 features \\
+5 Data analysis & 370 &
+The five findings of Section~\ref{sec:analysis}, each written as observation, then statistic,
+then decision. &
+F2 distributions; F3 in vs out; F4 PCA density; F5 Elliptic balance over time \\
+6 Model selection & 400 &
+The criteria C1--C6; the condensed candidates table; one paragraph each for clustering,
+regression, classification, the A1 extras and the two language models, saying why each was
+kept. The selection rule for the Explorer's method. &
+T5 candidates \\
+7.1 Technical implementation & 170 &
+Libraries and why (pandas, scikit-learn, matplotlib, PyTorch for the language models); package
+structure and CLI; configuration in one file; seeds and pinned environments; hardware and
+measured run times; the prediction interface ready for A3. &
+(architecture is F1) \\
+7.2 Implementation evaluation & 560 &
+The objectives table first. Then the DS1 comparison (recall by pattern, stability, sanity,
+agreement) and the selected method; the labelled results and the label check; the language-model
+results; unexpected outcomes; limitations; ethics in two sentences. &
+T6 objectives; T7 DS1 comparison; T8 labelled results; T9 LM summary; F6 recall; F7 agreement; F8 PR curves and F1 per step; F9 TxGPT \\
+8 Conclusion & 160 &
+One answer per RQ; the method A3 will use and why; three limitations; future work (graph neural
+networks on Elliptic, OPTICS, more addresses, the A3 user study). &
+F10 example flagged transaction \\
+\midrule
+\textbf{Total} & \textbf{2,850} & 150 words of margin under the 3,000 limit. & \\
+\bottomrule
+\end{longtable}
+
+\subsection{Appendices (not counted)}
+
+\begin{enumerate}[label=\Alph*.]
+  \item Data dictionary summary (the full one is in \code{DATA_CARD.md}).
+  \item Hyperparameter searches: every grid and the chosen values.
+  \item Full results: every model, split and seed.
+  \item Language models: configs, training curves, the TxGPT scaling plot, sample outputs.
+  \item Promises from A1 and how A2 met them (Section~\ref{sec:a1promises}), plus a summary of
+    CR-06.
+  \item Usability walkthrough results (A1 team action T7), only if the sessions happened.
+  \item Reproducibility: hardware, library versions, measured run times.
+\end{enumerate}
+
+\subsection{Writing rules}
+
+\begin{itemize}
+  \item Short sentences in plain English. The present tense describes the system; the past tense
+    describes what was done. Each acronym is defined once.
+  \item One term per concept, used everywhere: \emph{unusual}, \emph{flag}, \emph{planted
+    transaction}, \emph{fit period}, \emph{evaluation period}, \emph{address history}.
+  \item No banned word describes the tool or DS1. ``Illicit'' and ``ransomware'' appear only as
+    the labelled datasets' own classes.
+  \item Every number comes from \fp{reports/tables/}, and a script checks the report's numbers
+    against the CSVs before submission.
+  \item Every figure and table is referenced in the text. Every caption says what to notice, not
+    only what is shown.
+  \item Claims about other work are cited. Claims about our own work point to a table or figure.
+\end{itemize}
+
+\subsection{Referencing}
+
+Numbered Harvard, as in A1: an alphabetical, numbered list with author--date citations in the
+text. The draft list is Appendix~\ref{app:refs}. Every entry is checked against its source before
+use: authors, year, title, venue, DOI or URL, and the access date for web sources. A small script
+lists citations without entries and entries never cited. Both lists must be empty.
+
+\subsection{Word count}
+\label{sec:wordcount}
+
+\code{texcount} isn't installed, so \code{tools/wordcount.py} strips LaTeX from the body sections
+(Introduction to Conclusion) and counts the words. The brief excludes the cover, contents,
+bibliography and appendix, but says nothing about tables and captions.
+
+\begin{team}
+Ask the tutor, in the CR-06 message, whether tables and captions count towards the 3,000 words.
+Until they answer, the plan keeps body text at or below 2,850 words and tables lean. The cover
+states the counting rule used, for example ``2,840 words: body text excluding tables, captions,
+references and appendices''.
+\end{team}
+
+\subsection{How the report gets produced}
+
+\begin{enumerate}
+  \item LaTeX, reusing the A1 preamble. A1's preamble loads \code{xltabular}, \code{pdflscape},
+    \code{csquotes} and \code{seqsplit}, which the local TinyTeX doesn't have, so they are
+    replaced with \code{longtable}, plain tables and \code{\textbackslash path} to make the build
+    local and repeatable.
+  \item Figures are \code{\textbackslash includegraphics} of the PDFs in
+    \fp{reports/figures/}. Tables are \code{\textbackslash input} from LaTeX files generated next
+    to the CSVs, so re-running the evaluation updates the report.
+  \item \textbf{Writing order.} Data sections on 1 November, once the data facts are frozen;
+    models and evaluation on 2 November; introduction, problem framing and conclusion last, on
+    3 November, so they match the actual results.
+  \item \textbf{Review on 5 November.} Cam Dan Bui (report integrator in A1) reads it against
+    the rubric and the completeness checklist and proofreads. Comments are resolved the same day.
+\end{enumerate}
+
+\subsection{Completeness checklist}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Y C{1.4cm}@{}}
+\toprule
+\textbf{Required by the brief} & \textbf{Check} \\
+\midrule
+Project title & $\square$ \\
+Group name and ID; student names and IDs; tutor's name & $\square$ \\
+Introduction: motivation and intended user & $\square$ \\
+Problem framing: challenge, limits of existing solutions, why ML & $\square$ \\
+Data collection: sources, methods, challenges and how they were addressed & $\square$ \\
+Data processing: missing values, normalisation, feature engineering, joining datasets & $\square$ \\
+Model selection: criteria, algorithms considered, rationale & $\square$ \\
+Technical implementation: libraries, high-level design, reasons for final decisions & $\square$ \\
+Implementation evaluation: results against objectives, performance, unexpected outcomes & $\square$ \\
+Conclusion: findings, insights, future work & $\square$ \\
+Bibliography in Harvard style & $\square$ \\
+Appendix & $\square$ \\
+At most 3,000 words; file named after the group; PDF & $\square$ \\
+\bottomrule
+\end{tabularx}
+\end{center}

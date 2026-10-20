@@ -1,0 +1,236 @@
+\section{Workstream 4: the scikit-learn models}
+\label{sec:models}
+
+\subsection{Selection criteria (the report's model-selection section)}
+
+Report criterion 3, ``thorough justification'', is worth 2 points. The report states its criteria
+first, then scores each candidate against them:
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.8cm}Y@{}}
+\toprule
+\textbf{ID} & \textbf{Criterion} \\
+\midrule
+C1 & Fits the data that exists: supervised learning only where labels exist; unsupervised or self-supervised elsewhere. \\
+C2 & Explainable in the Explorer's detail panel (FR-04, AC-03): the reason for a flag can be stated in plain words. \\
+C3 & Scores a new transaction without refitting (novelty scoring), so it respects the time split and works in A3. \\
+C4 & Robust to heavy tails and class imbalance (Section~\ref{sec:analysis}). \\
+C5 & Trains and tunes on our hardware within the schedule. \\
+C6 & Taught in Weeks 6--7, or a justified step beyond what was taught. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Candidates considered}
+
+\begin{longtable}{@{}L{3.3cm}L{2.1cm}L{1.3cm}L{7.6cm}@{}}
+\toprule
+\textbf{Candidate} & \textbf{Type} & \textbf{Kept} & \textbf{Reason} \\
+\midrule
+\endhead
+K-Means & Clustering & \yes & C2, C5, C6. Centroids describe groups in feature terms; fast; the unit's reference clustering method. \\
+DBSCAN & Clustering & \yes & C1, C4. Finds arbitrary shapes; noise points are the unusual ones; no need to choose $k$ (Week 7). \\
+Gaussian mixture & Clustering & \no & Assumes Gaussian components, which the heavy tails break. Adds little beyond K-Means plus IF. \\
+OPTICS & Clustering & \no & Handles varying density, but DBSCAN on z-features already copes; time. Named as future work. \\
+Ridge regression & Regression & \yes & C2, C6. A linear, readable baseline that copes with correlated inputs (L2 penalty, Week 6). \\
+Polynomial regression & Regression & \no & Trees capture non-linearity with less manual feature design. \\
+Random forest regressor & Regression & \yes & Non-linear, robust to outliers in the inputs, gives feature importance. \\
+Histogram gradient boosting (regression, quantile) & Regression & \yes & Strong on tabular data; quantile loss gives a 90\% expected range, which is easy to explain (``outside the usual range''). \\
+Logistic regression & Classification & \yes & C2, C6. Interpretable coefficients and probabilities; the reference model. \\
+KNN & Classification & \yes & C6. Classifies by similarity to known cases; must be standardised (Week 7). Subsampled for DS4. \\
+Decision tree & Classification & \no (final) & Overfits and is unstable (Week 7). Reported only as a reference row. \\
+Random forest & Classification & \yes & Strong tabular baseline. The published reference model on Elliptic (Weber et al.\ 2019). \\
+Histogram gradient boosting & Classification & \yes & Usually the strongest tabular learner; built into scikit-learn, so no extra dependency. \\
+XGBoost, LightGBM & Classification & \no & Same family as histogram gradient boosting, but adds dependencies the marker must install. \\
+SVM (RBF) & Classification & \no & Training cost grows with the square of the rows (2.9M in DS4); sensitive tuning (C5). \\
+Graph neural network (GCN) & Classification & \no & Outside the unit and the schedule. The obvious future work for Elliptic. \\
+Isolation Forest & Outlier & \yes (extra) & The A1 plan. Fast; novelty scoring; handles mixed scales. \\
+Local Outlier Factor & Outlier & \yes (extra) & The A1 plan. Density relative to neighbours; novelty mode (\code{novelty=True}). \\
+One-class SVM & Outlier & \no & Sensitive to its kernel and $\nu$; IF and LOF already cover the outlier family. \\
+Autoencoder & Outlier & \no & DS1 is too small; TxGPT is the deep-learning experiment. \\
+Classifier on planted labels & Classification & \no & Circular: it would learn the injection generator (Section~\ref{sec:methodmap}). \\
+LSTM sequence model & Sequence & \no & The transformer code already exists and trains in parallel; same role as TxGPT. \\
+Fine-tuning a public LLM (e.g.\ GPT-2) & Language & \no & The tutor requires training from scratch. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Baseline: robust z (A1 §2.3)}
+\label{sec:baseline}
+
+\begin{itemize}
+  \item A transaction is flagged when it is scorable and $\max_k |z_k| \geq 3.5$. Its score is
+    $\max_k |z_k|$, which lets the baseline join the ranking checks.
+  \item \textbf{Threshold sweep}, which A1 promised. Try 2.5, 3.0, 3.5, 4.0, 4.5 and 5.0, and
+    record injection recall per pattern (on the \emph{tuning} plant set, seeds 40000--40004), the
+    flag rate, and the number of addresses breaking the 20\% rule. Choose the smallest threshold
+    that meets the sanity rule and the recall target. A move away from 3.5 is logged as CR-03,
+    which A1 already reserved for exactly this.
+  \item The detail panel lists every feature with $|z| \geq 2$, as A1 specified.
+\end{itemize}
+
+\subsection{Clustering: K-Means and DBSCAN}
+\label{sec:clustering}
+
+\textbf{Input.} $(z_1,\dots,z_4)$ clipped to ±20, plus the direction one-hot, so $D = 6$. Fitted on
+the fit period, pooled across addresses.
+
+\textbf{K-Means.}
+\begin{enumerate}
+  \item Try $k = 2,\dots,10$ with \code{n_init=20} and seed 30049. Record inertia, silhouette
+    (on a 10,000-row sample if needed), Davies--Bouldin and Calinski--Harabasz.
+  \item Choose $k$ by the best silhouette, checked against the elbow and Davies--Bouldin. If they
+    disagree, the report says so and explains the choice.
+  \item Describe each centroid in words from its mean $z$ values, for example ``typical'',
+    ``large for this address, outgoing'' or ``quick follow-up''. These descriptions are what make
+    the clusters useful to an analyst (Week 6 workshop, §3.4).
+  \item \textbf{Unusualness} is the distance to the nearest centroid. The threshold is the 98th
+    percentile of fit-period distances, matching A1's top 2\%.
+\end{enumerate}
+
+\textbf{DBSCAN.}
+\begin{enumerate}
+  \item $\text{MinPts} = 2D = 12$ (Week 7 rule). Plot the sorted 12-nearest-neighbour distances
+    and find the knee by the maximum distance from the chord, which takes a few lines of NumPy
+    and no extra package. That gives $\varepsilon_0$.
+  \item Grid: $\varepsilon \in \{0.7, 0.85, 1, 1.15, 1.3\}\times\varepsilon_0$ and MinPts $\in
+    \{8, 12, 16\}$. Keep settings whose fit-period noise share is 1--5\%, and among those pick the
+    best silhouette on non-noise points.
+  \item \textbf{Scoring new points.} scikit-learn's DBSCAN has no \code{predict}. So a new point is
+    noise when no core sample lies within $\varepsilon$ (a \code{NearestNeighbors} index on the
+    core samples); otherwise it joins the cluster of its nearest core sample. Its ranking score is
+    the distance to that nearest core sample. The report states this rule.
+\end{enumerate}
+
+\textbf{Address profiles (DS1 + DS2).} One row per address with 8 features: transactions per day,
+in-share, median log size, gap coefficient of variation, a burstiness index, mean output count,
+history length and median fee rate. Standardise, run K-Means with $k = 3,\dots,8$ by silhouette,
+and describe the profiles. This is a second, address-level clustering use. It feeds the analysis
+section and gives A3 an optional ``activity profile'' label.
+
+\subsection{Regression: expected behaviour and surprise}
+\label{sec:regression}
+
+\textbf{Targets.} $y_{\text{size}} = \log_{10}(1+|\text{net}|)$ and $y_{\text{gap}} =
+\log_{10}(1+\text{hours since previous})$.
+
+\textbf{Inputs, all time-safe.} Direction; the rolling median and MAD of $y_{\text{size}}$ over
+the same-direction size window; the rolling median and MAD of $y_{\text{gap}}$ over the timing
+window; F2; the count in the previous 30 days; the previous transaction's size and direction; the
+address's age ($\log$ hours since its first transaction); its in-share so far; and the hour and
+weekday as sin/cos. When predicting size, the current amount is excluded; when predicting the gap,
+the current gap is excluded. A1's DR-02 allows a transaction's own time and direction.
+
+\textbf{Models.}
+\begin{itemize}
+  \item \textbf{Naive}: predict the rolling median. This is exactly the robust-z centre, so beating
+    it shows what learning adds.
+  \item \textbf{Ridge}: $\alpha \in 10^{\{-3,\dots,3\}}$, 13 values.
+  \item \textbf{Random forest}: 300 trees; max depth $\{\text{None},10,20\}$; minimum leaf
+    $\{1,5,20\}$; max features $\{1.0, \sqrt{\cdot}\}$.
+  \item \textbf{Histogram gradient boosting}: learning rate $\{0.03, 0.1\}$; max leaf nodes $\{15,
+    31, 63\}$; L2 $\{0, 1\}$. Plus quantile models at 0.05 and 0.95 for a 90\% expected range.
+\end{itemize}
+Tuning uses the last 20\% of the fit period as validation (time order kept). Final models are
+refitted on the whole fit period.
+
+\textbf{Metrics} on the evaluation period: MAE, RMSE and $R^2$ on the log scale; skill against the
+naive model, $1 - \text{MAE}/\text{MAE}_{\text{naive}}$; and the 90\% interval's coverage (target
+about 90\%) and mean width.
+
+\textbf{Unusualness.} The standardised residual $r = (y-\hat y)/s$, where $s$ is $1.4826 \times$
+the MAD of that address's fit-period residuals (with a floor). The score is $\max(|r_{\text{size}}|,
+|r_{\text{gap}}|)$, flagged at 3.5 for consistency with the baseline. A second variant flags
+anything outside the 98\% quantile range.
+
+\subsection{Classification on DS3 and DS4}
+\label{sec:classification}
+
+\begin{longtable}{@{}L{3.0cm}L{8.2cm}L{3.2cm}@{}}
+\toprule
+\textbf{Model} & \textbf{Search space} & \textbf{Search} \\
+\midrule
+\endhead
+Logistic regression & $C \in 10^{\{-3,\dots,2\}}$; L2; class weight $\{\text{none}, \text{balanced}\}$; \code{max_iter=2000} & full grid (12) \\
+KNN & $k \in \{3,5,9,15,25,41\}$; weights $\{\text{uniform}, \text{distance}\}$; $p \in \{1,2\}$ & full grid (24) \\
+Random forest & trees $\{300,600\}$; max depth $\{\text{None},20,40\}$; max features $\{\sqrt{\cdot}, 0.3\}$; min leaf $\{1,3\}$; class weight $\{\text{none}, \text{balanced\_subsample}\}$ & random, 30 draws \\
+Hist.\ gradient boosting & learning rate $\{0.05, 0.1\}$; max leaf nodes $\{31,63,127\}$; L2 $\{0,1\}$; class weight $\{\text{none}, \text{balanced}\}$; early stopping on & random, 30 draws \\
+\bottomrule
+\end{longtable}
+
+\textbf{Elliptic protocol.}
+\begin{enumerate}
+  \item A \code{PredefinedSplit} fits on time steps 1--26 and validates on 27--34. The selection
+    score is F1 for the illicit class.
+  \item Refit the best configuration on steps 1--34. Choose the decision threshold that maximised
+    validation F1, never the test F1.
+  \item Evaluate once on steps 35--49. Report accuracy, precision, recall and F1 (illicit),
+    macro-F1, PR-AUC, ROC-AUC, the confusion matrix, and F1 per test time step. The last of these
+    shows the drift around the dark-market shutdown.
+  \item Run both feature sets (LF, AF), giving 8 rows. Compare with the random-forest result
+    reported by Weber et al.\ (2019); the numbers are copied from the paper and cited, not
+    remembered.
+  \item Permutation importance (top 15) for the best model, computed on test data.
+\end{enumerate}
+
+\textbf{BitcoinHeist protocol.} The same four models, the same metrics and three split schemes:
+temporal (validation on the last training year), stratified random (validation on 10\% of
+training), and leave one family out (recall on the held-out family, the honest test of whether
+the model generalises to ransomware it has never seen). KNN trains on a 200,000-row stratified
+subsample, using a KD-tree in 6 dimensions.
+
+\textbf{Optional:} multi-class family classification, if time allows. It is a \emph{Could} in
+Section~\ref{sec:moscow}.
+
+\subsection{Isolation Forest and LOF (the A1 extras)}
+\label{sec:outliers}
+
+\begin{itemize}
+  \item Inputs and fit period as for clustering.
+  \item \textbf{Isolation Forest}: trees $\{200, 500\}$; max samples $\{256, 1024,
+    \text{auto}\}$; max features $\{1.0, 0.75\}$. Score $= -$\code{score_samples}.
+  \item \textbf{LOF}: \code{novelty=True}; neighbours $\{10, 20, 35, 50\}$. Score $=
+    -$\code{score_samples}.
+  \item Flag threshold: the top 2\% of fit-period scores (A1).
+  \item \textbf{Tuning without labels.} Choose hyperparameters by recall on the \emph{tuning}
+    plant set (seeds 40000--40004) and by stability. The plant sets reported in the evaluation
+    use different seeds (30049--30053), so tuning never sees the planted transactions it is
+    scored on. The report states this.
+\end{itemize}
+
+\textbf{The label check (DS3, and DS4 temporal).} Fit Isolation Forest, LOF, K-Means distance and
+DBSCAN distance on the training period (Elliptic: all nodes including unknown, AF, scaled), then
+score the labelled test nodes. Report PR-AUC, precision and recall at the top 2\%, and the
+prevalence as the chance level, with the supervised random forest as the upper reference. This
+measures how far ``unusual'' and ``labelled illicit'' coincide, which is evidence for the
+Explorer's wording either way.
+
+\subsection{Search budget and saved artefacts}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{3.6cm}L{2.0cm}L{4.3cm}Y@{}}
+\toprule
+\textbf{Model group} & \textbf{Configs} & \textbf{Selection signal} & \textbf{Where it is logged} \\
+\midrule
+Baseline threshold & 6 & tuning-plant recall + sanity rule & \fp{reports/tables/tuning_baseline.csv} \\
+K-Means & 9 & silhouette, elbow, DB & \fp{tuning_kmeans.csv} \\
+DBSCAN & 15 & noise share 1--5\% + silhouette & \fp{tuning_dbscan.csv} \\
+Regression (3 models × 2 targets) & 13 / 18 / 12 each & validation MAE & \fp{tuning_regression.csv} \\
+IF / LOF & 12 / 4 & tuning-plant recall + stability & \fp{tuning_outliers.csv} \\
+Elliptic (4 models × 2 feature sets) & 12--30 each & validation F1 (illicit) & \fp{tuning_elliptic.csv} \\
+BitcoinHeist (4 models × 3 splits) & 12--30 each & validation F1 & \fp{tuning_heist.csv} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Every final model is saved with \code{joblib} in \fp{models/}. Next to it sits a \textbf{model
+card} (\code{<name>.card.json}) recording the training-data checksum, parameters, metrics, seed,
+date, and scikit-learn and Python versions. The Week 4 self-review asked for model cards.
+
+\begin{feeds}
+Report §6 (Model selection): the criteria table, a condensed candidates table (about 12 rows) and
+one paragraph per model type. Report §7.2: the tuning results go to the appendix, with only the
+selected settings in the body. HD ``additional ML'': gradient boosting, IF and LOF, the label
+check, and the recorded searches (``well-tuned'').
+\end{feeds}

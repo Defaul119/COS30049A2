@@ -1,0 +1,63 @@
+\section{Starting point}
+\label{sec:start}
+
+\subsection{What already exists}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{5.0cm}Y@{}}
+\toprule
+\textbf{Asset (location)} & \textbf{State and how A2 uses it} \\
+\midrule
+\fp{asm1_demo/explorer/esplora.py} & A polite Esplora client using the standard library only. It pages with the last-seen-txid cursor, waits between requests, backs off on HTTP 429 and 5xx, and keeps request statistics. Reused unchanged for DS1 and DS2. \\
+\fp{asm1_demo/explorer/amounts.py} and \fp{tests/test_amounts.py} & Received, sent and net per address, with 9 passing tests. The D1 check showed that summing them reproduces the API's own \code{funded_txo_sum} and \code{spent_txo_sum} (risk 18). Reused unchanged. \\
+\fp{asm1_demo/config/settings.json} & Every threshold in one file: selection rule, windows, minimum history, MAD scale, flag at 3.5, fit fraction 0.7, top 2\%, sanity 20\%, banned words. It becomes the A2 configuration and gains new sections for the models. \\
+\fp{asm1_demo/frontend/src/api/mock/scoring.ts} & A complete reference implementation of F1--F4 and the baseline, including CR-02, CR-04 and CR-05 and the same-block rule. The Python \code{features.py} is a line-by-line port, so the prototype and the pipeline agree. \\
+\fp{asm1_demo/scripts/d1_check.py}, \fp{reports/d1-check.md} & One address (59 transactions) checked end to end. Its seeded block-sampling logic is the starting point for the DS1 selection script. \\
+\fp{asm1_demo/frontend/src/api/types.ts} & The JSON shapes the A3 front end expects. \code{predict.py} returns the same shapes. \\
+\fp{asm2/lm/} (model, tokenizer, data, train, chat, generate, smoke) & A GPT with RoPE, RMSNorm and SwiGLU, its own BPE tokenizer, memory-mapped data, masked chat fine-tuning, a speed benchmark, and Ctrl+C save and resume. It passes 15 tests and an 8-stage smoke test on CPU. It has not yet run on the GPU. The same model class serves TxGPT. \\
+\fp{asm2/configs/text_150m_pretrain.json}, \fp{text_150m_chat.json} & 152.6M parameters (18 layers, $d=768$, 12 heads, sequence 1,024). 2B pretraining tokens, then a 100M-token chat fine-tune. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{What is missing}
+
+\begin{enumerate}
+  \item \textbf{The real snapshot.} No folder contains the 25 + 3 address snapshot. The A1 Gantt
+    chart planned WBS 1.2.1 for 11--13 October, so the critical path is about one week behind.
+    The work itself is short (Section~\ref{sec:ds1}: under two hours of fetching), so this is
+    recoverable if it starts on 21 October.
+  \item \textbf{The whole scikit-learn pipeline.} There are no features, models, evaluation,
+    notebooks or figures yet.
+  \item \textbf{Model types that match the brief.} Isolation Forest and LOF are outlier
+    detectors, so a literal reading of ``at least two types (classification, clustering,
+    regression)'' may not credit them. Decision D-A2-1 fixes this.
+  \item \textbf{Labelled data.} With no labels, the brief's accuracy, precision, recall and F1
+    cannot be reported honestly. Decision D-A2-3 fixes this.
+  \item \textbf{More datasets.} A1 used one source. The brief says one simple dataset earns ``a
+    basic score''.
+  \item \textbf{Any GPU run of the language models}, and any transaction-sequence code at all.
+\end{enumerate}
+
+\subsection{What the unit's own material says to do}
+
+The weekly material points in the same direction as this plan, and the report can say so:
+\begin{itemize}
+  \item \textbf{Week 4 workshop.} Clean, anonymise sensitive fields, engineer security features,
+    handle imbalance with class weights, and prefer recall-oriented metrics. Its closing
+    self-review asks for a \emph{data card} and a \emph{model card}; both are in
+    Section~\ref{sec:packaging}.
+  \item \textbf{Week 5.} Extract, transform, load; normalise and standardise; join and
+    concatenate; visualise class balance, distributions, correlations and time series. Its
+    licence slide says HD students should use additional datasets and respect their licences.
+  \item \textbf{Week 6.} Regression is evaluated with MSE, RMSE, MAE and $R^2$; K-Means with
+    inertia, silhouette and Davies--Bouldin. The workshop calls outliers ``not always attacks but
+    worth investigation''. It gives the workflow ``cluster → sample validation → derive patterns
+    → propose simple rules''. This is the project's framing in the lecturer's own words.
+  \item \textbf{Week 7.} DBSCAN with $\text{MinPts}=2\times D$ and a k-distance graph for
+    $\varepsilon$, with noise points read as anomalies. Logistic regression and KNN on
+    standardised data, scaled with the training set's parameters only. Accuracy, precision,
+    recall, F1 and the confusion matrix. Decision trees and random forests appear as
+    ``additional'' models.
+\end{itemize}

@@ -1,0 +1,109 @@
+\section{Command reference, in run order}
+\label{app:commands}
+
+Every command in this plan, in the order it runs, from the repository root in an Anaconda Prompt
+on the training PC. Commands under \code{lm.} that exist today are marked \emph{existing}; the
+rest are what this plan builds, with the names used throughout the plan. Each \code{explorer.cli}
+command prints what it read, what it wrote and how long it took, and appends that to
+\fp{reports/logs/<step>.log}, so the report's processing numbers come from logs rather than
+memory.
+
+\subsection{Day 1 (21 October): set-up and checks}
+
+\begin{lstlisting}
+git init                                       # in asm2/, then copy explorer/ and config/ from asm1_demo
+conda env create -f environment-gpu.yml        # today's environment.yml, renamed; env: cos30049-a2-gpu
+conda env create -f environment.yml            # new CPU-only file for markers; env: cos30049-a2
+conda activate cos30049-a2-gpu
+nvidia-smi                                     # driver and CUDA version
+python -c "import torch; print(torch.cuda.is_available(), torch.cuda.get_device_name(0))"
+python -m pytest -q                            # existing 15 LM tests + 9 amount tests
+python -m lm.smoke                             # existing: expect 8/8 stages passed
+\end{lstlisting}
+
+\subsection{Data collection (Section~\ref{sec:data})}
+
+\begin{lstlisting}
+python -m explorer.cli snapshot                # DS1: select (seed 30049), fetch, verify, manifest
+python -m explorer.cli external --elliptic     # DS3, with SHA-256; needs a Kaggle token or prints steps
+python -m explorer.cli external --bitcoinheist # DS4, with SHA-256
+python -m lm.prepare_text --delete-raw         # existing: DS5, tokenizer + 2B train + 10M val tokens
+python -m explorer.cli corpus --target 5000    # DS2 overnight; rerun the same command to resume
+python -m lm.prepare_chat                      # existing: DS6 tokens and loss masks
+\end{lstlisting}
+
+\subsection{GPU lane (Sections~\ref{sec:gate} and \ref{sec:lm})}
+
+\begin{lstlisting}
+python -m lm.train --config configs/text_150m_pretrain.json --bench   # existing: tokens/s, memory
+#   apply the gate: edit total_tokens in the config if 2B tokens would take over 72 h
+python -m lm.train --config configs/text_150m_pretrain.json           # existing: Ctrl+C pauses,
+#   the same command resumes from runs/text-150m/ckpt_last.pt
+python -m lm.prepare_tx                        # DS2 -> train/val/test.bin + meta.json (bucket edges)
+python -m lm.train --config configs/txgpt_m.json --seed 1             # one of 9 runs (S, M, L x seeds 1-3);
+#   --seed is a small new option for lm.train
+python -m lm.tx_baselines                      # global, address-habit and Markov NLL on the test split
+python -m lm.tx_score --model runs/txgpt-m-s1/model_best.pt           # surprisal for every DS1 transaction
+python -m lm.train --config configs/text_150m_chat.json               # existing: chat fine-tune
+python -m explorer.cli build-ds7               # DS7 pairs, split by source address
+python -m lm.prepare_chat --source jsonl --jsonl data/processed/ds7/train.jsonl --out data/ds7
+python -m lm.train --config configs/text_150m_explain.json            # explanation fine-tune
+python -m explorer.cli assistant-eval          # faithfulness, limitation line, banned words, ROUGE-L
+\end{lstlisting}
+
+\subsection{Processing (Section~\ref{sec:processing})}
+
+\begin{lstlisting}
+python -m explorer.cli transactions            # clean table + cleaning log
+python -m explorer.cli features                # F1-F8, z-scores, scorable flag (refined method)
+python -m explorer.cli features --as-written   # A1 method as written, for the ablation
+python -m explorer.cli split                   # fit/evaluation periods per address
+python -m explorer.cli inject                  # tuning plants (seeds 40000-40004), reporting plants (30049-30053)
+python -m explorer.cli process-external        # DS3 join, degrees, temporal split; DS4 transforms and sampling
+\end{lstlisting}
+
+\subsection{Analysis and models (Sections~\ref{sec:analysis} and \ref{sec:models})}
+
+\begin{lstlisting}
+jupyter lab notebooks/01_eda.ipynb             # analysis; calls explorer.plots only
+python -m explorer.cli baseline --sweep        # thresholds 2.5-5.0 -> tuning_baseline.csv
+python -m explorer.cli outliers                # Isolation Forest and LOF searches -> tuning_outliers.csv
+python -m explorer.cli clustering              # K-Means k=2..10, DBSCAN grid, address profiles
+python -m explorer.cli regression              # naive, Ridge, random forest, gradient boosting, quantiles
+python -m explorer.cli classify --dataset elliptic --n-jobs 12        # overnight
+python -m explorer.cli classify --dataset heist --splits temporal,random,lofo
+python -m explorer.cli label-check             # unsupervised scores against DS3/DS4 labels
+\end{lstlisting}
+
+\subsection{Evaluation and outputs (Section~\ref{sec:evaluation})}
+
+\begin{lstlisting}
+python -m explorer.cli evaluate                # every table in reports/tables/ (CSV + .tex)
+python -m explorer.cli reviewer-sheet          # 40 shuffled rows, no flag column
+python -m explorer.cli reviewer-score --ratings ratings_mkn.csv ratings_cdb.csv   # agreement, kappa
+python -m explorer.cli figures                 # vector PDFs in reports/figures/
+python -m explorer.cli all --offline           # everything above from the shipped data (README step 4)
+\end{lstlisting}
+
+\subsection{Prediction (Section~\ref{sec:predict})}
+
+\begin{lstlisting}
+python -m explorer.cli predict address bc1q...
+python -m explorer.cli predict what-if --address bc1q... --amount 0.05 --direction out --time 2026-10-01T12:00Z
+python -m explorer.cli predict elliptic --rows data/processed/elliptic/example_rows.csv
+python -m explorer.cli predict heist --length 18 --weight 0.008 --count 1 --looped 0 --neighbors 2 --income 1.2e8
+python -m lm.chat --model models/assistant     # existing chat loop, on the final weights
+\end{lstlisting}
+
+\subsection{Report checks and packaging (Sections~\ref{sec:report} and \ref{sec:checklist})}
+
+\begin{lstlisting}
+python tools/wordcount.py report/              # body words, Introduction to Conclusion
+python tools/refcheck.py report/               # cited-but-unlisted and listed-but-uncited: both empty
+python tools/numbercheck.py report/ reports/tables/
+python tools/bannedwords.py report/ explorer/ README.md
+pdflatex main && pdflatex main                 # in report/, twice for references
+git tag v1.0
+python tools/package.py --tag v1.0             # zip + SHA256SUMS.txt, from the tag only
+certutil -hashfile HCMC_COS30049.1_4_Assignment2_Code.zip SHA256   # Windows check of the zip itself
+\end{lstlisting}

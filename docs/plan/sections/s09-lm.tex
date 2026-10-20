@@ -1,0 +1,149 @@
+\section{Workstream 4b: the two language models}
+\label{sec:lm}
+
+Both models use the existing \code{lm/model.py} (RoPE, RMSNorm, SwiGLU, PyTorch's fused attention)
+and \code{lm/train.py} (bf16 autocast, AdamW, cosine schedule, checkpoint every 30 minutes, Ctrl+C
+saves, resume on restart). Neither starts from anyone else's weights or tokenizer.
+
+\subsection{TxGPT: a transaction-sequence model}
+\label{sec:txgpt}
+
+\textbf{Idea.} A language model learns which next ``word'' is likely. Here the words are the 6
+tokens of each transaction (Section~\ref{sec:txtokens}), so the model learns how Bitcoin
+addresses usually behave over time. A transaction the model finds unlikely, \emph{given that
+address's own history}, is unusual. Because the model is causal, a transaction is scored only
+from what came before it, which is time-safe by construction.
+
+\textbf{Three sizes, to find the right one for the data.} DS2 gives about 6M training
+tokens\est{}. That is small for a language model, so size is tuned rather than assumed:
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{1.5cm}C{1.3cm}C{1.3cm}C{1.3cm}C{1.8cm}C{1.9cm}Y@{}}
+\toprule
+\textbf{Size} & \textbf{Layers} & \textbf{$d$} & \textbf{Heads} & \textbf{SwiGLU hidden} & \textbf{Params\est{}} & \textbf{Peak learning rate} \\
+\midrule
+S & 4 & 128 & 4 & 352 & 0.8M & $1\times10^{-3}$ \\
+M & 6 & 256 & 8 & 688 & 4.7M & $1\times10^{-3}$ \\
+L & 8 & 384 & 6 & 1,024 & 14M & $6\times10^{-4}$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Training configuration} (\code{configs/txgpt_{s,m,l}.json}): sequence 768 tokens; batch
+32 sequences (about 24,600 tokens); up to 20 passes over the data; validation every 100 steps;
+early stopping after 5 validations without improvement; warm-up 100 steps; cosine decay to 10\%;
+weight decay 0.1; dropout 0.1, because the data is small; bf16. Each size is trained with 3 seeds,
+9 runs in total, at minutes each\est{}. The size with the lowest mean validation loss wins. A
+plot of validation loss against parameter count goes in the appendix as evidence of tuning.
+
+\textbf{Is it learning anything? Perplexity against simple baselines.} On the held-out test
+addresses, compare the average negative log-likelihood per token and per transaction, field by
+field, with three baselines that need no neural network:
+\begin{enumerate}
+  \item \textbf{Global frequencies}: each field's overall token frequency.
+  \item \textbf{Address habit}: each field's token frequency in \emph{this address's} history so
+    far (Laplace-smoothed). This is close to what the robust-z baseline assumes.
+  \item \textbf{First-order Markov}: each field's token given the same field in the previous
+    transaction.
+\end{enumerate}
+If TxGPT beats the address-habit and Markov baselines, it has learned structure beyond counting.
+If it doesn't, that is reported plainly as a finding, and TxGPT is not chosen.
+
+\textbf{Scoring DS1} (\code{python -m lm.tx_score}):
+\begin{enumerate}
+  \item Tokenise each DS1 address's full history with DS2's bucket edges (from \code{meta.json}).
+  \item Slide 768-token windows so that every transaction is scored with as much earlier context
+    as fits (up to 127 earlier transactions).
+  \item A transaction's surprisal is $s_i = -\sum_{f\in\text{fields}} \log p(\text{token}_f \mid
+    \text{everything before it})$, kept per field.
+  \item Two candidate scores: raw $s_i$, and $s_i$ relative to the address (a robust z against
+    the address's own earlier surprisals). The tuning plant set chooses between them.
+  \item Apply the same minimum-history rule as the baseline (at least 10 earlier transactions
+    over at least 14 days), so the methods are compared on the same rows. The flag threshold is
+    the top 2\% of fit-period scores.
+  \item \textbf{Explanation.} The field with the largest surprisal names the reason: gap →
+    ``the timing was unusual for this address'', amount → ``the amount was unusual'', inputs and
+    outputs → ``the transaction's shape was unusual'', fee → ``the fee rate was unusual''.
+\end{enumerate}
+
+\textbf{Export.} \code{models/txgpt.pt} (fp16 weights, about 30 MB for size L\est{}) plus its
+\code{meta.json}. Scoring runs on CPU in the marker's environment, within minutes for DS1.
+
+\subsection{The Explorer Assistant: a 152M text model}
+\label{sec:assistant}
+
+\textbf{Stage 1, pretraining.} The existing \code{configs/text_150m_pretrain.json}: 18 layers,
+$d=768$, 12 heads, SwiGLU hidden 2,048, sequence 1,024, our 32,768-token BPE tokenizer. 2B tokens
+of DS5, subject to the gate in Section~\ref{sec:gate}. Batch about 262,000 tokens; peak learning
+rate $6\times10^{-4}$ falling to $6\times10^{-5}$; warm-up 500 steps; weight decay 0.1. It starts
+on the evening of 21 October.
+
+\textbf{Stage 2, chat fine-tune.} The existing \code{configs/text_150m_chat.json}: 100M tokens of
+DS6. Loss only on assistant replies (the mask file); learning rate $2\times10^{-4}$ falling to
+$2\times10^{-5}$; about 3--4 hours\est{}.
+
+\textbf{Stage 3, explanation fine-tune (new).} \code{configs/text_150m_explain.json}: start from
+the chat model; DS7 for 3 passes (about 8M tokens\est{}); learning rate $1\times10^{-4}$; warm-up
+20 steps; loss on replies only; validation on DS7's validation split. Under an hour\est{}.
+
+\textbf{Evaluation.}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{4.0cm}Y@{}}
+\toprule
+\textbf{Measure} & \textbf{How} \\
+\midrule
+Language-modelling quality & Validation loss and perplexity on DS5's 10M held-out tokens after stage 1, on DS6 validation after stage 2, and on DS7 validation after stage 3. Training and validation curves from each run's \code{log.jsonl}. \\
+Number faithfulness & On about 500 DS7 test inputs with greedy decoding: the share of outputs in which \emph{every} number appears in the input, after formatting. \\
+Limitation line & The share of outputs containing the fixed line exactly. \\
+Banned words & The share of outputs containing any of: fraud, criminal, illicit, guilty, suspicious. The target is 0 after the validator. \\
+Feature coverage & The share of contributing features the explanation mentions. \\
+Similarity to the template & ROUGE-L against the template answer, written as a short LCS function rather than another dependency. \\
+Human check & A teammate rates 30 random outputs for clarity and correctness (1--5), blind to which model wrote them; 10 template outputs are mixed in as controls. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Guardrail for A3.} \code{explorer/assistant.py} runs the model, then validates the output:
+the numbers must match the input, the limitation line must be present, and no banned word may
+appear. If any check fails, it returns the template explanation instead. The pass rate is
+reported. This keeps the Explorer trustworthy even if the small model hallucinates, and the
+report says so: ``the template is authoritative; the assistant only rephrases''.
+
+\textbf{Honest framing for the report.} These are \emph{small} language models trained from
+scratch on one consumer GPU. They are not comparable to commercial LLMs. Their value is that
+they show the whole pipeline: tokenizer, pretraining, alignment, evaluation and a safety wrapper.
+
+\subsection{GPU timetable}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}Y@{}}
+\toprule
+\textbf{When} & \textbf{GPU job} \\
+\midrule
+Wed 21 Oct, evening & Benchmark → apply the gate → start pretraining. \\
+Thu 22 -- Sun 25 Oct & Pretraining. Check loss and temperature twice a day. \\
+Mon 26 Oct & Pretraining ends (or is paused if it overruns). TxGPT sweep, 9 runs. \\
+Tue 27 Oct & TxGPT scoring of DS1; perplexity baselines. Resume pretraining if it was paused. \\
+Wed 28 Oct & Chat fine-tune, 3--4 h. \\
+Thu 29 -- Fri 30 Oct & Build DS7 → explanation fine-tune → faithfulness evaluation. TxGPT plant evaluation (CPU or GPU). \\
+After 30 Oct & GPU free. Re-runs only if a bug is found. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{caution}
+If pretraining hasn't finished by Monday 26 October even after the gate, stop it there. Run
+stages 2 and 3 from the latest checkpoint and report the token count actually reached. TxGPT is
+the HD-critical model and must not wait for the text model.
+\end{caution}
+
+\begin{feeds}
+Report §6: two short paragraphs justifying TxGPT (sequence context, time-safe, explainable) and
+the Assistant (the tutor's requirement; an explanation layer behind a guardrail). Report §7.2:
+the perplexity table against the baselines, TxGPT's plant recall in the main comparison, and the
+Assistant's faithfulness table. Appendix: configs, training curves, the scaling plot and sample
+outputs. HD ``additional ML'': both models.
+\end{feeds}

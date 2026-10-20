@@ -1,0 +1,247 @@
+\section{Workstream 2: processing and feature engineering}
+\label{sec:processing}
+
+\subsection{DS1: from raw pages to a clean transaction table}
+
+\code{python -m explorer.cli transactions} turns the raw pages into
+\fp{data/processed/esplora/transactions.csv}, one row per (address, transaction). Each step logs
+how many rows it removed, and that log becomes the processing table in the report:
+
+\begin{enumerate}
+  \item Parse every page and keep confirmed transactions only. The chain endpoint returns only
+    confirmed ones, but the check is explicit anyway.
+  \item Remove duplicate (address, txid) pairs, which can occur at page boundaries if a new block
+    arrives mid-fetch.
+  \item Derive \code{received_sats}, \code{sent_sats}, \code{net_sats} and \code{direction} with
+    \code{amounts.address_flow}. Also derive \code{n_inputs}, \code{n_outputs}, \code{fee_sats},
+    \code{vsize_vb} and \code{block_time_utc}.
+  \item Drop transactions where the address neither receives nor sends (expected count: 0).
+    A non-zero count is logged as a data problem.
+  \item Sort by (address, block time, txid). Transactions in the same block share a time and are
+    never part of each other's history.
+  \item Units are always in the column names (\code{_sats}, \code{_utc}, \code{_hours}). Amounts
+    stay integers in satoshis; BTC appears only in plots and in the interface.
+\end{enumerate}
+
+\textbf{Missing values}, recorded per column. The gap (F3) doesn't exist for an address's first
+transaction, so it stays empty rather than being filled with an invented number, and the
+transaction isn't scored. Fees are always present for confirmed transactions. Any other missing
+value stops the pipeline with a clear message, because it would mean the API changed.
+
+\subsection{Features F1--F4: a port of the prototype}
+\label{sec:features}
+
+\fp{explorer/features.py} is a line-by-line Python port of \code{scoring.ts} and reads the same
+\code{settings.json}. That keeps A1 §2.3, the prototype and the pipeline consistent.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{1.0cm}L{2.1cm}Y L{3.3cm}@{}}
+\toprule
+\textbf{ID} & \textbf{Feature} & \textbf{Definition (history = strictly earlier transactions of the same address)} & \textbf{Scale for the z-score} \\
+\midrule
+F1 & Size & $\log_{10}(1 + |\text{net}|)$, in satoshis & as is \\
+F2 & Burst & number of earlier transactions in the previous 7 days & as is (count) \\
+F3 & Gap & hours since the previous earlier transaction & $\log_{10}(1+h)$ \\
+F4 & Relative size & $|\text{net}|$ ÷ median $|\text{net}|$ of the size window & $\log_{10}(\max(r, 0.001))$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Comparison windows} (CR-02): the previous 30 days, extended back until at least 20 earlier
+transactions are included. The \emph{timing window} holds all earlier transactions and is used for
+F2 and F3. The \emph{size window} holds only earlier transactions in the same direction (CR-04)
+and is used for F1 and F4.
+
+\textbf{Robust z} for each feature, against the same feature over its window, with a floor on the
+spread (CR-05):
+\[
+z = \frac{x - \operatorname{median}(W)}{\max\bigl(1.4826 \cdot \operatorname{MAD}(W),\ s_{\min}\bigr)},
+\qquad s_{\min} = (0.1,\ 1,\ 0.1,\ 0.1)\ \text{for F1--F4}.
+\]
+
+\textbf{Scorable} means at least 10 earlier transactions spanning at least 14 days, and at least
+5 values in the window. Unscorable transactions are kept and displayed, but never flagged.
+
+\textbf{Extended features} (used only in an ablation and as TxGPT tokens, never in the
+Explorer's explanation): F5 $\log_2 n_{\text{inputs}}$, F6 $\log_2 n_{\text{outputs}}$, F7
+$\log_{10}$ fee rate (sat/vB), and F8 the hour of day as (sin, cos).
+
+\textbf{Inputs to pooled models.} One model is fitted across all 25 addresses, which hold very
+different amounts: a tip jar next to a merchant. So the clustering, IF and LOF inputs are each
+transaction's \emph{own-history z-scores} $(z_1,\dots,z_4)$, clipped to ±20 so that a single
+extreme value can't dominate, plus a one-hot direction. This makes ``unusual for this address''
+comparable across addresses. The ablation repeats the models on transformed raw features scaled
+with a \code{StandardScaler} fitted on the fit period.
+
+\textbf{Refinement ablation (CR-02, CR-04, CR-05).} The baseline and every downstream model run
+twice: once with the method as A1 §2.3 wrote it (a 30-day window, all directions, no transform,
+no floor), and once with the refinements. For each run the evidence recorded is the injection
+recall per pattern, the share of addresses that break the 20\% sanity rule, and the flag rate.
+The team adopts the refinements in the Change Log only if the evidence supports them. Either way,
+the report states which version is final and why.
+
+\subsection{The time split}
+\label{sec:split}
+
+For each address, take the scorable transactions in time order. The cut-off time $t^\ast$ is the
+time of the transaction at the 70th percentile (\code{fitFraction} = 0.7). Transactions with time
+$< t^\ast$ form the \textbf{fit period}; those with time $\geq t^\ast$ form the \textbf{evaluation
+period}. Same-block transactions therefore never straddle the cut. Unscorable early transactions
+serve only as history. Every model is fitted on fit-period rows pooled across addresses. Every
+threshold, such as the top-2\% cut, is set from fit-period scores and then applied unchanged to
+the evaluation period.
+
+\subsection{Synthetic injection: known positives in real histories}
+\label{sec:injection}
+
+\code{explorer/inject.py} plants patterns in a \emph{copy} of one address's history, inside its
+evaluation period. Features are then recomputed time-safely, because a planted transaction
+changes the features of everything after it. Finally the copy is scored with \emph{frozen}
+models. A single plant goes into each copy, so plants never mask one another.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}Y@{}}
+\toprule
+\textbf{Pattern (A1 §2.3.2)} & \textbf{How it is planted} \\
+\midrule
+Value spike & One transaction at a random time between two real ones. Its direction is the address's majority direction over the previous 30 days. Its amount is 10 × that direction's median $|\text{net}|$ up to that point. Input and output counts are the address's median. \\
+Burst & Ten transactions within a random 24-hour period, with amounts drawn from the address's own earlier amounts, so only the timing is unusual. Scored two ways: per transaction (A1's measure, the share of the 10 flagged) and per event (at least one flagged). \\
+Dormant wake-up & One transaction appended 60--120 days (uniform) after the address's last real one, with a typical amount, so only the gap is unusual. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+There are 50 plants per pattern, spread across addresses in proportion to their evaluation-period
+size, and the whole set is repeated with 5 seeds (30049 to 30053). Results are reported as mean ±
+standard deviation. Each planted row carries \code{is_synthetic = 1} and can never leak into a
+fit set.
+
+\subsection{DS3 Elliptic processing}
+
+\begin{enumerate}
+  \item Join features to classes on \code{txId} (a left join; every feature row has a class row).
+    Map \code{1} to illicit (1), \code{2} to licit (0), and \code{unknown} to missing.
+  \item Name the columns \code{time_step}, \code{local_01}--\code{local_93} and
+    \code{agg_01}--\code{agg_72}.
+  \item \textbf{Join the edge list} to add two engineered graph features, in-degree and
+    out-degree per transaction. This is a genuine dataset join, one of the processing steps the
+    brief lists.
+  \item Feature sets: \textbf{LF}, the 93 local features (+2 degrees), and \textbf{AF}, all 165
+    (+2). \code{time_step} is never a feature; it only defines the split.
+  \item \textbf{Temporal split} as in Weber et al.\ (2019): time steps 1--34 for training and
+    35--49 for testing. Tuning uses only training time steps: fit on 1--26, validate on 27--34.
+  \item Scaling inside a scikit-learn \code{Pipeline}, so the scaler only ever sees training
+    rows. Check for missing and constant columns and drop constants.
+\end{enumerate}
+
+\subsection{DS4 BitcoinHeist processing}
+
+\begin{enumerate}
+  \item Binary label: \code{white} → 0, any family name → 1. The family is kept for the
+    leave-family-out test.
+  \item $\log_{10}$ \code{income} (satoshis). Apply $\log(1+x)$ to \code{weight}, \code{count},
+    \code{looped} and \code{neighbors} if the analysis confirms heavy tails.
+  \item \code{address}, \code{year} and \code{day} are \emph{not} features. The address is an
+    identifier. Year and day would let a model learn when each family was active instead of what
+    the activity looked like, which is a leakage shortcut. They only define splits.
+  \item Remove exact duplicate rows and record how many were removed.
+  \item \textbf{Splits}, fixed after the analysis by a written rule. (a) Temporal: train on years
+    up to $Y$ and test on later years, with $Y$ the latest year that leaves at least 1,000
+    positives in the test set. (b) A stratified random 80/20 split as an optimistic reference.
+    (c) Leave one family out, for each of the five largest families.
+  \item \textbf{Training-set sampling.} All positives plus negatives downsampled to a 10:1 ratio
+    (seeded), \emph{in the training set only}. Test sets keep the real class ratio, because
+    precision depends on the base rate.
+\end{enumerate}
+
+\subsection{DS2: TxGPT tokenisation}
+\label{sec:txtokens}
+
+Each transaction becomes 6 tokens, always in this order. Gap comes first so the model predicts
+the transaction's content knowing when it happened:
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{1.5cm}C{1.2cm}Y@{}}
+\toprule
+\textbf{Field} & \textbf{Tokens} & \textbf{Buckets} \\
+\midrule
+GAP & 18 & FIRST (no earlier transaction); SAME\_BLOCK; then hours since the previous transaction, with upper bounds 1/6, 1, 3, 6, 12, 24, 48, 96, 168, 336, 720, 1,440, 2,160, 4,320, 8,760, and above \\
+DIR & 3 & IN, OUT, ZERO (net 0) \\
+AMT & 47 & $\lfloor \log_2 |\text{net}| \rfloor$ clipped to 0--46: one bucket per doubling, from 1 sat to about 700,000 BTC \\
+NIN & 7 & input count: 1, 2, 3--4, 5--9, 10--19, 20--49, 50 or more \\
+NOUT & 7 & output count, same buckets \\
+FEE & 9 & fee rate in sat/vB: below 1, then doubling bounds 2, 4, 8, 16, 32, 64, 128, and above \\
+Special & 3 & PAD, BOS (start of a history), UNK \\
+\midrule
+Total & 94 & padded to 128 for GPU-friendly shapes (\code{pad_vocab} in \code{lm/model.py}) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{itemize}
+  \item A history becomes BOS followed by $6n$ tokens, oldest first.
+  \item Training windows are 768 tokens (128 transactions). Longer histories are cut into windows
+    with a stride of 384 tokens, aligned to transaction boundaries. BOS appears only at a true
+    history start, so the model learns both ``beginning'' and ``middle'' contexts.
+  \item Split \emph{by address}: 90\% train, 5\% validation, 5\% test. DS1 is never in DS2.
+  \item Written by \code{python -m lm.prepare_tx} as \code{train.bin}, \code{val.bin} and
+    \code{test.bin} (uint8 is enough for 128 tokens), plus \code{meta.json} with the bucket edges,
+    so scoring uses identical buckets.
+\end{itemize}
+
+\subsection{Leakage controls in one place}
+\label{sec:leakage}
+
+\begin{enumerate}
+  \item Features use strictly earlier transactions only, and same-block transactions are
+    excluded (DR-02).
+  \item The fit/evaluation split is by time within each address. Models and thresholds are fitted
+    on the fit period only.
+  \item Every scaler lives inside a \code{Pipeline} fitted on training rows.
+  \item Elliptic uses a temporal split, with tuning confined to training time steps. The test
+    period is used once.
+  \item BitcoinHeist uses neither year nor day as a feature; downsampling happens in the training
+    set only.
+  \item TxGPT and DS7 are split by address, and DS1 is excluded from DS2.
+  \item Plants go only into evaluation-period copies, scored by frozen models.
+  \item No test number is ever used to choose a hyperparameter. If one is, the report says so.
+\end{enumerate}
+
+\subsection{Tests}
+\label{sec:tests}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{4.6cm}Y@{}}
+\toprule
+\textbf{Test file} & \textbf{What it proves} \\
+\midrule
+\code{test_amounts.py} (existing, 9) & Received, sent, net and direction on hand-made transactions. \\
+\fp{test_features_time_safe.py} & \textbf{DR-02 condition 1}: for 20 random transactions, features recomputed from a history truncated to strictly earlier transactions equal the pipeline's values exactly. \\
+\code{test_features_parity.py} & The Python port matches \code{scoring.ts} on the prototype's illustrative histories, to within $10^{-9}$. A small script dumps the TypeScript results to JSON for this. \\
+\code{test_split.py} & \textbf{DR-02 condition 2}: no txid is in both periods, and the latest fit time is before the earliest evaluation time for every address. \\
+\code{test_injection.py} & Plants land in the evaluation period only. A spike is 10 × the median, a burst is 10 transactions within 24 hours, and a wake-up gap is at least 60 days. Every plant is marked synthetic. \\
+\code{test_tx_tokens.py} & Bucket edges, token round trips, a sequence length of $1+6n$, and an identical vocabulary at training and scoring time. \\
+\code{test_predict.py} & Prediction outputs match the A1 API shapes, the limitation line is present on every flagged item, and no banned word appears in any user-facing string. \\
+\code{tests/test_lm.py} (existing, 15) and \code{lm.smoke} & The language-model code end to end on CPU. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+All of these run with \code{python -m pytest -q} in under two minutes on CPU, which is also the
+README's quick check.
+
+\begin{team}
+A1 requires DR-02 code review ``by a member other than the author''. Le Quang Anh Hoang reviews
+\code{features.py}, \code{split.py} and \code{inject.py} on 24--25 October, against the tests
+above, and their review comments go in the minutes.
+\end{team}
+
+\begin{feeds}
+Report §4 (Data processing): the cleaning log table, the feature table, the time split, the
+leakage list (condensed to 3--4 sentences), the DS3 join, the DS4 sampling and the TxGPT
+tokenisation. Code rubric lines 1, 4 and 5, through testable, documented modules.
+\end{feeds}

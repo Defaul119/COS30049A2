@@ -1,0 +1,67 @@
+{
+  "_about": "Every threshold in one place. Read by the Python pipeline (explorer/settings.py) and the front-end prototype (frontend/src/lib/settings.ts). Change a value here only, and log the change in the Change Log.",
+
+  "limitationLine": "Unusual activity requires investigation; it does not indicate wrongdoing.",
+
+  "source": {
+    "name": "Blockstream Esplora",
+    "apiBase": "https://blockstream.info/api",
+    "fallbackName": "mempool.space (Esplora-compatible)",
+    "fallbackApiBase": "https://mempool.space/api",
+    "apiDocs": "https://github.com/Blockstream/esplora/blob/master/API.md",
+    "explorerTxUrl": "https://blockstream.info/tx/{txid}",
+    "explorerAddressUrl": "https://blockstream.info/address/{address}",
+    "dayTimeZone": "UTC"
+  },
+
+  "collection": {
+    "pageSize": 25,
+    "requestPauseSeconds": 0.5,
+    "maxRetries": 5,
+    "timeoutSeconds": 30,
+    "maxTxPerAddress": 1000,
+    "mainMinTx": 50,
+    "mainMaxTx": 1000,
+    "mainMinSpanDays": 90,
+    "shortMinTx": 3,
+    "shortMaxTx": 9,
+    "targetMainAddresses": 25,
+    "targetShortAddresses": 3,
+    "selectionSeed": 30049
+  },
+
+  "features": {
+    "burstWindowDays": 7,
+    "comparisonWindowDays": 30,
+    "comparisonMinTx": 20,
+    "minComparisonValues": 5,
+    "minHistoryTx": 10,
+    "minHistorySpanDays": 14,
+    "sizeComparison": "same-direction",
+    "_sizeComparisonOptions": "same-direction (proposed CR-04: size features compared only with earlier transactions in the same direction) or all (report §2.3 as written)"
+  },
+
+  "baseline": {
+    "madScale": 1.4826,
+    "flagAbsZ": 3.5,
+    "contributingAbsZ": 2.0,
+    "zTransform": {
+      "F1": "none (already log10 satoshis)",
+      "F2": "none (count)",
+      "F3": "log10(1 + hours)",
+      "F4": "log10(max(ratio, 0.001))"
+    },
+    "minScale": { "F1": 0.1, "F2": 1.0, "F3": 0.1, "F4": 0.1 }
+  },
+
+  "model": {
+    "fitFraction": 0.7,
+    "flagTopFraction": 0.02
+  },
+
+  "sanity": {
+    "maxFlaggedShare": 0.2
+  },
+
+  "bannedWords": ["fraud", "criminal", "illicit", "guilty", "suspicious"]
+}

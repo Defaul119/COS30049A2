@@ -1,0 +1,52 @@
+{
+  "note": "Real mainnet addresses seen in a recent block, grouped by script type. Used only as validator test vectors.",
+  "collected": "2026-10-07T01:24:10+00:00",
+  "byType": {
+    "p2sh": [
+      "37jKPSmbEGwgfacCr2nayn1wTaqMAbA94Z",
+      "39C7fxSzEACPjM78Z7xdPxhf7mKxJwvfMJ",
+      "35C2L1pCgwzBHNcDcVL1a5RuoefeWqyjAR",
+      "3AJRGnKkePLbTD3isfvZnrTEKuoYvMwpgp",
+      "3JQ1kCG22EFjPke3t6DgjJh2Mc2TvqEj19",
+      "36sJ5VKRS7NNrJeUP3DfpkEnqTjbpcdMLY",
+      "3LmjVeYnY1bknBUfonHde1hcC75ye8pzSh",
+      "3EsX3dZG8eTBqwtR7x5d2GvFJ3MWy3VpfU"
+    ],
+    "v0_p2wpkh": [
+      "bc1qhr6sttdslckregcprdy3djdk7y9nyhsxgfzp3j",
+      "bc1qtc09usy2jdwum5gy2wtk9xjt38f33x0eukh3ak",
+      "bc1q6s68sgrcuxcgqfuplqxuw83qpww5cx70xjqeg7",
+      "bc1qn8y3mfpxjeua6h2uagfcqgnlqzug6k5f8cpvzl",
+      "bc1qh9gv2ex6mv85ugvmru3u244j5h23dc9kvrm0kj",
+      "bc1q3x42n9f48s2eae78u8tj49d5t4hk60a2w39kx6",
+      "bc1qmvhgrq8s24ql54cfdagtfjjr6rex63lll29hcf",
+      "bc1qrx3x99xhgd7nj6ldpd7njh4zdpnx49ux2rtesj"
+    ],
+    "p2pkh": [
+      "167DPNf4hMTjCPma1QF1bv86ge8eTacHAj",
+      "1G8Vt4ennF5GA9ARBtt7Sfu6hotkSaNVV2",
+      "1BBjQYgNBKJTA43BCvgsY1njkHkhbpaKFe",
+      "1ELHzd2PmCguJ5ErVyoC7nteVGTpqaCu8K",
+      "16DmDpMhZJjJhZN1hccA4MWmfaRCB9mcVE",
+      "1AuUN1pqb87j5tjNVh7ZjAzdHxupdPL3Ra",
+      "1AQ7t2kmUCWpHWQdrrG1ZURCBeYRt3uTWG",
+      "17ruYVaxmeb49cT6FQpkUzbJGGdPzHSasN"
+    ],
+    "v1_p2tr": [
+      "bc1plg2700puhgtss3kvyd5emkelev0qt30zgadp59lhmz6hdw24pu9ssu5xlk",
+      "bc1pva89exlrvlh2c5r5a6ut3h7t68u9h8n7qtdtn46zedqwf8cumf8qvguqhu",
+      "bc1p52p3npfv0d908eng8yvjlyzfl5qtgpqd3nmzqkxtfumlvdnk4w0qltnzk3",
+      "bc1p4ke6053alh4wk3twuqkalss4g3mqvmh2zkdyukezaxf54n3dkcgsrrqcz7",
+      "bc1p7dttevvpwf9eeqtel6xcjggfc25580ue6z54d72ejrv7vrkq0cysygrx95",
+      "bc1p6xyhnvhx7fmstycqfklz8ydyx3ql922swz870sz5mp58wpj5m46qjcd25j",
+      "bc1ptuwzmnyynxdeqd8x0ulrmzuzlum87t8xr3jmj89tcmu4haf40vuspyjk40",
+      "bc1pkxssxnv3nmu8xhj05z4qpdc62g2ljr63z38cxwljssu2p0u5umusr66dfn"
+    ],
+    "v0_p2wsh": [
+      "bc1qqxz74vgw85pnn947djezg3xzel4f4l0mtx3nt0ayfh588c7rz6nqwa54p8",
+      "bc1qhe5sehjucn3zvddhgskexsdj8v2fg7nrkvwdzu97w98hlnzsf75st272ew",
+      "bc1q2uged8rzgt4jcyrjvrym54d478mnj0k0hgqjp0l72tzwg8hk09qsg988kn",
+      "bc1qk7j24xzhun6fhdk0tudm4qnvtmxy774dz5ec2w8dugkhmu8yk39swc7mkn"
+    ]
+  }
+}

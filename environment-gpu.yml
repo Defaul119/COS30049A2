@@ -1,0 +1,25 @@
+# GPU conda environment for COS30049 Assignment 2: only needed to (re)train the language models.
+# Targets Windows or Linux with an NVIDIA GPU (PyTorch built for CUDA 12.6; needs a 2023-or-newer driver).
+# Markers use environment.yml (CPU only) instead.
+#
+#   conda env create -f environment-gpu.yml
+#   conda activate cos30049-a2-gpu
+name: cos30049-a2-gpu
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu126
+      - torch==2.7.1+cu126
+      - numpy==2.2.6
+      - tokenizers==0.21.1
+      - huggingface_hub==0.30.2
+      - pyarrow==20.0.0
+      - pandas==2.2.3
+      - scikit-learn==1.6.1
+      - matplotlib==3.10.1
+      - seaborn==0.13.2
+      - joblib==1.4.2
+      - pytest==8.3.5

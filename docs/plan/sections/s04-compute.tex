@@ -1,0 +1,107 @@
+\section{The machine and the compute budget}
+\label{sec:compute}
+
+\subsection{What the hardware can do}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{3.2cm}L{4.4cm}Y@{}}
+\toprule
+\textbf{Part} & \textbf{Spec} & \textbf{What it means for this plan} \\
+\midrule
+CPU & Intel Core i5-12600K: 6 performance + 4 efficiency cores, 16 threads & scikit-learn work runs here with \code{n_jobs=12}, leaving threads free to feed the GPU. Elliptic tuning takes hours, not days. \\
+GPU & NVIDIA RTX 3060, 12 GB GDDR6, Ampere, bf16 supported & Enough memory to pretrain the 152M model with micro-batches of about 8 × 1,024 tokens, no gradient checkpointing needed\est{}. TxGPT is small enough to train in minutes. \\
+RAM & 16 GB DDR4-3600 & Token files are memory-mapped, never loaded whole. Heavy CPU jobs (tokenising, random-forest tuning) are scheduled so they don't overlap. \\
+Disk & Unknown; \textbf{needs at least 40 GB free} & FineWeb shards (2.15 GB each, deleted after use), 4 GB of tokens, about 2 GB per resumable checkpoint, plus the datasets. \\
+OS & Windows & \code{torch.compile} stays off (\code{"compile": false}) because Triton isn't supported natively on Windows. That costs roughly 20--30\% speed\est{} and avoids a fragile set-up. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{How long the text model's pretraining takes}
+\label{sec:flops}
+
+For a decoder-only transformer, each training token costs about $6N$ floating-point operations for
+the weights plus $12\,L\,d\,T$ for attention, where $N$ is the parameter count, $L$ the number of
+layers, $d$ the model width and $T$ the sequence length:
+\[
+6(152.6\times10^{6}) + 12\cdot18\cdot768\cdot1024 \approx 9.2\times10^{8} + 1.7\times10^{8}
+\approx 1.09\times10^{9}\ \text{FLOPs per token.}
+\]
+For 2B tokens that totals $2.2\times10^{18}$ FLOPs. Our estimate of the RTX 3060's dense bf16
+throughput with FP32 accumulation is about 25 TFLOPS peak. A small model in eager mode typically
+reaches 30--40\% of peak, which is 7.5--10 TFLOPS. The run therefore takes \textbf{about 60--80
+hours (2.5--3.3 days)}\est{}. This matches the README's estimate of 2.5--4 days.
+
+\subsection{Decision gate on pretraining length}
+\label{sec:gate}
+
+The benchmark (\code{python -m lm.train --config configs/text_150m_pretrain.json --bench}) replaces
+that estimate with a measured tokens-per-second figure on the first evening. Then:
+
+\begin{decision}{fit pretraining into 72 hours of GPU time}
+\begin{itemize}[leftmargin=*]
+  \item If the measured speed projects 2B tokens in 72 hours or less, keep 2B tokens.
+  \item If not, set \code{total_tokens} to (60 hours × measured tokens per second). For example,
+    7,000 tokens/s gives about 1.5B tokens. The learning-rate schedule follows the new total
+    automatically. The report states the token count actually used.
+  \item Floor: 1B tokens. Below that, the text model isn't worth its GPU time, and the plan falls
+    back to TxGPT as the only language model. That fallback is also recorded in CR-06.
+\end{itemize}
+\end{decision}
+
+\subsection{Compute budget per job}
+
+\begin{longtable}{@{}L{4.4cm}L{1.6cm}L{2.2cm}L{1.5cm}L{1.4cm}L{2.6cm}@{}}
+\toprule
+\textbf{Job} & \textbf{Device} & \textbf{Time\est{}} & \textbf{VRAM} & \textbf{RAM} & \textbf{Disk} \\
+\midrule
+\endhead
+DS1 fetch (28 addresses, at most 40 pages each) & Network & 0.5--1.5 h & -- & <1 GB & ~300 MB raw, ~30 MB gzipped \\
+DS2 crawl (about 5,000 histories) & Network & 8--12 h, overnight & -- & <1 GB & ~60 MB compact rows \\
+DS3 and DS4 downloads & Network & <30 min & -- & -- & ~1 GB \\
+FineWeb-Edu preparation (download, tokenizer, 2B tokens) & CPU + network & 1.5--3 h & -- & 4--6 GB & 4 GB tokens \\
+Text pretraining & GPU & 60--80 h (gated at 72 h) & 7--10 GB & 3--5 GB & ~4 GB checkpoints \\
+Chat data preparation & CPU & 10--20 min & -- & 2--3 GB & ~2 GB \\
+Chat fine-tune (100M tokens) & GPU & 3--4 h & 7--10 GB & 3 GB & ~2 GB \\
+DS7 fine-tune and evaluation & GPU & <1 h & 7 GB & 2 GB & -- \\
+TxGPT sweep (3 sizes × 3 seeds) & GPU & 1--3 h & 1--3 GB & 2 GB & <200 MB \\
+TxGPT scoring of DS1 & GPU or CPU & minutes & <1 GB & <1 GB & -- \\
+DS1 features, baseline, clustering, regression, IF, LOF & CPU & <30 min per full run & -- & <2 GB & -- \\
+Synthetic injection (5 seeds × 150 plants × all methods) & CPU & 30--90 min & -- & <2 GB & -- \\
+Elliptic tuning (4 models, time-aware search) & CPU, 12 threads & 2--6 h, overnight & -- & 4--6 GB & -- \\
+BitcoinHeist models (3 split schemes) & CPU & 1--3 h & -- & 3--6 GB & -- \\
+\bottomrule
+\end{longtable}
+
+\subsection{Running four lanes at once}
+
+The machine's parts work in parallel, and the schedule (Section~\ref{sec:schedule}) is built
+around that:
+
+\begin{itemize}
+  \item \textbf{GPU lane.} Text pretraining runs from the evening of 21 October to about 25
+    October. It is paused with Ctrl+C, which saves a checkpoint, whenever TxGPT needs the GPU, and
+    resumed afterwards. Resuming is already tested. Then come the chat fine-tune and the DS7
+    fine-tune.
+  \item \textbf{Network lane.} The DS1 fetch, then the DS2 overnight crawl and the DS3 and DS4
+    downloads. These are I/O-bound and barely touch the CPU.
+  \item \textbf{CPU lane.} Features, every scikit-learn model, injections and evaluation. Feeding
+    the GPU needs only one or two threads, so these run alongside pretraining.
+  \item \textbf{Writing lane.} Notebooks, figures, the README and the report.
+\end{itemize}
+
+\subsection{Windows housekeeping before a multi-day run}
+
+\begin{enumerate}
+  \item Power plan set to High performance. Sleep and hibernate off. Windows Update paused for
+    two weeks, so a forced restart can't kill the run. Checkpoints every 30 minutes limit any loss.
+  \item \code{nvidia-smi} confirms the driver and CUDA. Watch the GPU temperature once an hour
+    on day 1; below about 83 °C is fine for this card.
+  \item \code{set PYTHONUTF8=1} in the Anaconda Prompt, so file encodings behave.
+  \item \code{train.py} already logs to \code{runs/<name>/log.jsonl}: one line per step (train
+    loss, learning rate, gradient norm) and one per evaluation (validation loss). The loss-curve
+    figures read this file, so it is kept with each run.
+  \item Nothing else uses the GPU during pretraining. Games and video editing would halve the
+    speed or cause out-of-memory errors.
+\end{enumerate}

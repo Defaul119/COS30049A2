@@ -1,0 +1,137 @@
+\section{Key decisions}
+\label{sec:decisions}
+
+Six decisions shape the rest of the plan. Each one changes what Assignment 1 approved, so all six
+go into change request CR-06 (Appendix~\ref{app:cr06}). The A1 change-control rule (§8.5) applies:
+all four members approve it, and because it touches the brief's marking requirements, the tutor
+sees it first. CR-03 is already reserved for threshold changes after the sanity check, so the next
+free number is CR-06.
+
+\subsection{D-A2-1: one model family for each type the brief names}
+\label{sec:methodmap}
+
+\begin{decision}{cover all three types; keep the A1 methods as extras}
+\small
+\begin{tabularx}{\linewidth}{@{}L{2.2cm}L{4.1cm}L{2.4cm}Y@{}}
+\toprule
+\textbf{Brief type} & \textbf{Models} & \textbf{Data} & \textbf{Main metrics} \\
+\midrule
+Clustering & K-Means (k chosen by elbow, silhouette and Davies--Bouldin); DBSCAN ($\varepsilon$ from the k-distance graph). Distance from the nearest centre, or DBSCAN noise, marks a transaction as unusual. & DS1 (and DS2 for address profiles) & Silhouette, Davies--Bouldin, Calinski--Harabasz; recall on planted transactions \\
+Regression & Ridge, random forest regressor, histogram gradient boosting (including quantile loss). Each predicts a transaction's amount and gap from its past; a large residual is a surprise. & DS1 & MAE, RMSE, $R^2$ against a rolling-median baseline; coverage of the 90\% interval \\
+Classification & Logistic regression, KNN, random forest, histogram gradient boosting & DS3 Elliptic, DS4 BitcoinHeist & Accuracy, precision, recall, F1, PR-AUC, confusion matrix, all against the dataset's labels \\
+\midrule
+Extra (HD) & Robust-z baseline, Isolation Forest, LOF (novelty) & DS1, plus DS3 for the label check & A1's label-free checks; PR-AUC against DS3 labels \\
+Extra (HD) & TxGPT, a transaction-sequence GPT trained from scratch & DS2 to train, DS1 to score & Held-out perplexity against n-gram baselines; injection recall; stability \\
+Extra (HD) & Explorer Assistant, a 152M text model trained from scratch & DS5, DS6, DS7 & Validation loss; faithfulness of its explanations \\
+\bottomrule
+\end{tabularx}
+\end{decision}
+
+\textbf{Why this mapping.} Clustering and regression fit the real problem: unlabelled histories in
+which ``unusual'' means unlike this address's own past. Classification needs labels, and only
+DS3 and DS4 have them, so that is where it runs. Doing all three types is cheap with scikit-learn.
+It also removes the risk of a marker deciding that two outlier detectors are ``two of the same
+type'' without the strong justification the brief demands.
+
+\textbf{Rejected alternative.} Training a classifier on DS1 to recognise our own planted
+transactions. Precision and recall would be easy to compute, but the classifier would only
+relearn the injection generator. That is circular, and a careful marker would notice. It stays in
+the report's ``considered and rejected'' table.
+
+\subsection{D-A2-2: datasets}
+\label{sec:datasets}
+
+\begin{longtable}{@{}L{1.0cm}L{3.2cm}L{4.2cm}L{2.3cm}L{3.3cm}@{}}
+\toprule
+\textbf{ID} & \textbf{Dataset} & \textbf{Size and labels} & \textbf{Licence} & \textbf{Used by; in the zip?} \\
+\midrule
+\endhead
+DS1 & Esplora core snapshot (our collection) & 25 main + 3 short-history addresses; about 5,000 transactions\est{}; no labels & Public API; terms not published, so the retrieval date and rate are recorded & Baseline, clustering, regression, IF, LOF, TxGPT scoring, evaluation. Yes: processed CSV plus gzipped raw pages \\
+DS2 & Esplora sequence corpus (our collection) & About 5,000 address histories with ≥20 transactions each; about 1M transactions\est{}; no labels & As DS1 & Trains TxGPT; address-profile clustering. Yes: compact Parquet with hashed address IDs \\
+DS3 & Elliptic Bitcoin dataset (Weber et al.\ 2019) & 203,769 transactions, 234,355 edges, 166 anonymised features, 49 time steps; 4,545 illicit, 42,019 licit, the rest unknown & Read from the Kaggle page at download and recorded & Classification; the unsupervised label check. In the zip only if the licence allows; otherwise a download script \\
+DS4 & BitcoinHeist (UCI dataset 526; Akcora, Li, Gel and Kantarcioglu 2020) & 2,916,697 address-day rows, 2009--2018; six graph features; label is a ransomware family or ``white'' & CC BY 4.0 (UCI page, checked 20 Oct) & Classification; leave-one-family-out test. Yes: the processed sample the final model uses \\
+DS5 & FineWeb-Edu (Penedo et al.\ 2024) & 2B tokens taken from the published shards & ODC-By 1.0 (dataset card, checked 20 Oct) & Text pretraining. No: script, manifest and checksums only \\
+DS6 & smol-smoltalk (Ben Allal et al.\ 2025) & 484,570 multi-turn conversations; 100M tokens used & Apache 2.0 (dataset card, checked 20 Oct) & Chat fine-tune. No: script and manifest \\
+DS7 & Explorer explanation set (derived) & About 10,000 instruction--answer pairs built from DS1 and DS2 pipeline outputs, plus about 300 glossary questions written by the team & Ours & Explorer Assistant fine-tune and evaluation. Yes \\
+\midrule
+DS8 & Elliptic++ actors (Elmougy and Liu 2023), \emph{optional} & Address-level features (56) and labels & None stated on the repository; ask before redistributing & Optional address-level classification, only if time allows \\
+DS9 & Ransomwhere (Cable 2024), \emph{optional} & Crowdsourced ransomware payment addresses with their transactions and family; one 5.6 MB JSON file & CC BY 4.0 & Optional label check in our own feature space: fetch these addresses' histories with the DS1 pipeline and score them (Appendix~\ref{app:datasets}) \\
+\bottomrule
+\end{longtable}
+
+\textbf{Other datasets checked.} Eighteen more candidates were checked for this plan, including
+Elliptic2, BABD-13, ORBITAAL and three synthetic anti-money-laundering sets.
+Appendix~\ref{app:datasets} lists each one with the reason it was left out. The report's data
+section can use that table to show that the sources were chosen, not just found.
+
+\textbf{Wording for labelled sets.} BitcoinHeist's ``white'' means ``not known to be ransomware'',
+not ``verified clean''. Elliptic's ``unknown'' class is the majority. The report says ``labelled
+illicit by the dataset's authors''. It never claims that an address in our snapshot is illicit.
+
+\subsection{D-A2-3: where accuracy, precision, recall and F1 are allowed}
+\label{sec:metricsrule}
+
+\begin{decision}{label-based metrics only where labels exist}
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{DS3 and DS4.} Full classification metrics against the authors' labels.
+  \item \textbf{Planted transactions in DS1.} Recall, plus precision as a \emph{lower bound}. The
+    planted transactions are known positives. Real transactions that a method flags count as
+    false positives even if they really are unusual, which is why the precision is only a bound.
+  \item \textbf{Real DS1 transactions.} No precision, recall or accuracy, ever. Only the
+    label-free checks and the reviewer judgement, reported as judgement.
+\end{enumerate}
+Risk 13's trigger is reworded to ``any draft claims precision, recall, F1 or accuracy for real
+snapshot transactions''.
+\end{decision}
+
+\subsection{D-A2-4: two language models trained from scratch}
+\label{sec:lmdecision}
+
+The tutor said a locally trained language model is needed for HD, and that it must not be a
+fine-tune of someone else's model. Two models meet that:
+
+\begin{itemize}
+  \item \textbf{TxGPT} is the one that belongs to this project. It treats an address's history as
+    a ``sentence'' whose ``words'' are transaction tokens (direction, amount bucket, gap bucket,
+    input and output counts, fee bucket). Its per-transaction surprisal, the negative
+    log-probability of the transaction given everything before it, is a learned unusualness
+    score. It is time-safe by construction because the model is causal. It is also explainable:
+    the surprisal splits by field, so the panel can say ``the amount was the surprising part''.
+  \item \textbf{The Explorer Assistant} is the one that matches the everyday meaning of ``LLM'':
+    a 152M-parameter text model. It is pretrained on DS5, taught to chat on DS6, and then taught
+    on DS7 to turn a flagged transaction's features into a plain-language explanation that
+    includes the limitation line. A3 can show it, but only behind a validator that checks every
+    number against the input and falls back to the template text if any number is wrong.
+\end{itemize}
+
+\begin{team}
+Ask the tutor, in the CR-06 message, whether TxGPT on its own satisfies ``train an LLM'', or
+whether a text model is expected. The plan builds both, but if the answer is ``TxGPT is enough'',
+the text model drops from \emph{Must for HD} to \emph{Should}, and its GPU time protects the
+schedule instead.
+\end{team}
+
+\subsection{D-A2-5: one repository and two environments}
+\label{sec:repo}
+
+\begin{itemize}
+  \item \fp{asm2/} becomes the single A2 repository. The \code{explorer} package and
+    \code{settings.json} are copied in from the prototype repository, keeping their history in
+    the commit message. It is initialised as a git repository on 21 October and pushed to the
+    team's GitHub so that teammates can review it. The zip is built from a tagged commit.
+  \item \fp{environment.yml} is \textbf{CPU-only}, the one markers use. It holds Python 3.11,
+    pandas, NumPy, scikit-learn, matplotlib, seaborn, PyArrow, joblib, Jupyter, pytest,
+    \code{tokenizers}, and CPU PyTorch for scoring with the shipped TxGPT weights. Every result
+    can be rebuilt with it, without a GPU.
+  \item \fp{environment-gpu.yml} is today's file, renamed. It adds CUDA 12.6 PyTorch and is only
+    needed to \emph{retrain} the language models.
+  \item \fp{requirements.txt} is the pip fallback that A1 risk 9 promised.
+\end{itemize}
+
+\subsection{D-A2-6: change control}
+
+CR-06 (Appendix~\ref{app:cr06}) records D-A2-1 to D-A2-5 together with their effect on the WBS,
+the schedule and the risks. Approval is the four members' agreement in Discord, recorded in the
+next minutes, with a message to the tutor before work depends on it. CR-02, CR-04 and CR-05 (the
+baseline refinements) are decided separately, after the ablation in
+Section~\ref{sec:features}, on evidence rather than in advance.

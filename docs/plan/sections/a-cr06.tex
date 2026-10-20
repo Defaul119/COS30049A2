@@ -1,0 +1,136 @@
+\section{Change request CR-06 and the messages to send}
+\label{app:cr06}
+
+A1 §8.5 requires a change request to change a must-have item, add or remove a work package,
+change acceptance criteria, or use more than half of an assignment buffer. CR-06 does all four,
+so it needs every member's approval. It also touches the brief's marking requirements, so the
+tutor sees it before work depends on it.
+
+\subsection{Change log entry}
+
+The fields follow A1's Change Log (ID, date, requestor, proposal, impact, decision, approvers,
+changed artifacts). The Confluence trial ended on 15 October (A1 risk 21), so from CR-06 onwards
+the log lives in the repository as \code{docs/change-log.md}, with CR-01 to CR-05 copied in from
+the exported CSV.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{3.0cm}Y@{}}
+\toprule
+\textbf{Field} & \textbf{Entry} \\
+\midrule
+ID & CR-06 \\
+Date raised & Tuesday 20 October 2026 \\
+Requestor & Cao Tri Tran (Data/ML Lead) \\
+Proposal & Adopt decisions D-A2-1 to D-A2-5 (Section~\ref{sec:decisions}): (1) cover clustering, regression and classification, keeping the baseline, Isolation Forest and LOF as extras; (2) add datasets DS2--DS7, with DS8 and DS9 optional; (3) report label-based metrics only where labels exist; (4) train two language models from scratch; (5) one repository with a CPU environment for markers and a GPU environment for retraining. \\
+Reason & The A2 brief requires at least two of three named model types and reports accuracy, precision, recall and F1. A1's two outlier detectors may not count as two types, and A1's single unlabelled dataset can't support those metrics honestly. The HD band rewards additional datasets and additional ML implementations, and the tutor asked for a locally trained language model. \\
+Impact on scope & Must items are added (clustering, regression, classification, prediction interface). Nothing A1 promised is removed: every A1 method and check is still delivered (Section~\ref{sec:a1promises}). \\
+Impact on schedule & A1's baseline put WBS 1.2.1 on 11--13 October; it now starts on 21 October. The new schedule (Section~\ref{sec:schedule}) runs four lanes in parallel and still submits a day early, but it uses more than half of the A2 buffer. \\
+Impact on risk & Risk 13's trigger is reworded (Section~\ref{sec:metricsrule}). New risks 23--31 are added (Section~\ref{sec:riskregister}). \\
+Impact on quality & More evidence: three labelled-data experiments, a reviewer check, a clean-install test and two model cards. \\
+Cost & No money. About 70--90 hours of GPU time on the Data/ML Lead's own PC (Section~\ref{sec:compute}), and its electricity. \\
+Decision & \textit{Pending}: approved, approved with changes, or rejected. \\
+Approvers & Cam Dan Bui; Cao Tri Tran; Le Quang Anh Hoang; Minh Khang Nguyen. The tutor is informed. \\
+Changed artifacts & WBS and WBS dictionary (1.2.1--1.2.8), schedule baseline (v2), risk register, requirements DR-01 and DR-02 (wording only), \code{settings.json}. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Effect on the A1 work breakdown}
+
+Durations are A1's planned working days. The owners stay as A1 named them (Cam Dan Bui and Cao
+Tri Tran for every 1.2 package), except the new 1.2.8.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{3.6cm}C{1.2cm}Y@{}}
+\toprule
+\textbf{Package (A1 code)} & \textbf{A1 days} & \textbf{Change under CR-06} \\
+\midrule
+1.2.1 Build data snapshot & 3 & Also: the DS2 crawl, the DS3 and DS4 downloads, and DS5--DS6 preparation. DS1 itself is unchanged. \\
+1.2.2 Clean data and build features & 4 & Also: the DS3 join and temporal split, DS4 transforms and sampling, TxGPT tokenisation, the refinement ablation. \\
+1.2.3 Explore and visualise & 3 & Also: the labelled-data analyses and the DS2 checks (Section~\ref{sec:analysis}). \\
+1.2.4 Build baseline and models & 5 & Now all three model types plus the A1 extras (Section~\ref{sec:models}). \\
+1.2.5 Evaluate and select & 3 & Also: labelled-data metrics, the label check and the language-model evaluation. A1's selection rule is unchanged. \\
+1.2.6 Code, README and zip & 2 & Also: \code{predict.py}, the data and model cards, and the M4 clean install. \\
+1.2.7 Write report & 4 & Same 3,000-word limit; the content follows Section~\ref{sec:report}. \\
+\textbf{1.2.8 Language models (new)} & -- & TxGPT and the Explorer Assistant on the GPU lane, in parallel with 1.2.2--1.2.5, about 3 days of float. Owner: Cao Tri Tran. Done when both models are trained, evaluated and exported (Section~\ref{sec:lm}). \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Approval steps}
+
+\begin{enumerate}
+  \item \textbf{20 October.} Post the team message below in Discord, with this plan's PDF attached.
+  \item \textbf{By 21 October, 12:00.} Each member replies ``approve'' or states an objection.
+    An objection is discussed in a call that evening; nothing waits longer than that.
+  \item \textbf{21 October.} Send the tutor message below. Work that doesn't depend on the answers
+    (DS1, features, the baseline) carries on meanwhile.
+  \item Record the decision, approvers and date in \code{docs/change-log.md}, and save the
+    schedule as baseline v2.
+  \item The Week 6 minutes record the approval with names and dates, and the tutor's answers
+    when they arrive.
+\end{enumerate}
+
+\subsection{Message to the tutor}
+
+\begin{summarybox}
+\small
+\textbf{Subject:} COS30049 HCMC\_COS30049.1\_4: Assignment 2 approach and four quick questions
+
+Dear \textit{<tutor's name>},
+
+Our Assignment 1 plan used outlier detectors (Isolation Forest and LOF) on an unlabelled Bitcoin
+snapshot. To meet the Assignment 2 brief, we plan to:
+\begin{itemize}[leftmargin=*]
+  \item add clustering (K-Means, DBSCAN) and regression on our own snapshot, and classification on
+    two labelled public datasets (Elliptic and BitcoinHeist), keeping Isolation Forest and LOF as
+    additional experiments;
+  \item report accuracy, precision, recall and F1 only against those datasets' own labels, never
+    for our unlabelled snapshot;
+  \item train two language models from scratch on our own GPU: TxGPT, a small transformer over
+    sequences of Bitcoin transactions, and a 152M-parameter text model that explains flags in
+    plain language. Neither starts from anyone else's weights.
+\end{itemize}
+
+Could you confirm four things?
+\begin{enumerate}[leftmargin=*]
+  \item Does this mapping meet ``at least two types of machine learning models''?
+  \item Does TxGPT on its own satisfy the language-model requirement for HD, or do you expect a
+    text model as well?
+  \item Do tables and captions count towards the 3,000 words?
+  \item What is the Canvas upload limit for the zip? If the text model's weights (about 305 MB)
+    are too large, may we link them with a checksum instead? The same question applies to the
+    Elliptic data if its licence doesn't allow redistribution.
+\end{enumerate}
+
+We will include a generative-AI declaration as you asked. If there is a template, we will use it.
+
+Kind regards,\\
+Cao Tri Tran, for HCMC\_COS30049.1\_4
+\end{summarybox}
+
+\subsection{Message to the team}
+
+\begin{summarybox}
+\small
+\textbf{CR-06 (A2 plan): please approve by Wednesday 12:00.} Full plan attached. In short: we add
+clustering, regression and classification so A2 meets the brief's model-type rule; we add
+labelled datasets (Elliptic, BitcoinHeist) for honest precision and recall; and I train two
+language models from scratch on my GPU for HD. Every A1 promise is still delivered.
+
+What I need from each of you, with dates:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Cam Dan Bui:} DS1 manifest review and one manual transaction check (22 Oct);
+    reviewer ratings (29 Oct to 2 Nov); rubric review and proofread (5 Nov); the AI declaration
+    draft (5 Nov). Also: what is our tutor's full name for the cover?
+  \item \textbf{Le Quang Anh Hoang:} code review of \code{features.py}, \code{split.py} and
+    \code{inject.py} (24--25 Oct); clean install from the README on a fresh Windows machine
+    (4 Nov); Canvas upload (7 Nov).
+  \item \textbf{Minh Khang Nguyen:} reviewer ratings (29 Oct to 2 Nov); check that
+    \code{predict.py}'s output still fits the prototype's screens (30 Oct).
+  \item \textbf{Everyone:} minutes for Weeks 1--8 and the contribution form, by 6 Nov.
+\end{itemize}
+Reply ``approve'' or tell me what to change.
+\end{summarybox}

@@ -1,0 +1,266 @@
+\section{Risks, priorities and the submission checklist}
+\label{sec:risks}
+
+\subsection{Risk register for Assignment 2}
+\label{sec:riskregister}
+
+The register continues A1's numbering, owners and scoring, so markers can follow a risk from one
+report to the next. A1 risks that still matter keep their number, with the trigger rewritten for
+A2. New risks start at 23. The score is likelihood × impact with A1's mapping: Unlikely 1, Low 2,
+Moderate 3, Likely and High 4; impact Low 2, Medium 3, High 4, Critical 5. Rows are sorted by
+score. The register is reviewed at every weekly meeting and after each milestone, and the minutes
+record any change.
+
+{\small
+\begin{longtable}{@{}L{0.7cm}L{3.2cm}L{2.0cm}L{3.4cm}L{4.6cm}@{}}
+\toprule
+\textbf{No.} & \textbf{Risk} & \textbf{L × I} & \textbf{Trigger / owner} & \textbf{Prevention; fallback} \\
+\midrule
+\endhead
+4 & Methods fail the label-free checks (plant recall or stability) & High × High\newline 4×4 = 16 &
+Recall below 70\% for 2 of 3 patterns, or Jaccard below 0.7, at M2 (29 Oct) / Cao Tri Tran &
+\textit{Prevention:} threshold sweep and separate tuning plants; the CR-02/04/05 ablation; seven
+candidate methods instead of three. \textit{Fallback:} the selection rule picks the best stable
+method, even if that is the baseline; the report explains the miss (Section~\ref{sec:evaluation}). \\
+9 & Code doesn't run on the marker's machine & Likely × High\newline 4×4 = 16 &
+The M4 clean install fails or needs help / Le Quang Anh Hoang &
+\textit{Prevention:} CPU-only \code{environment.yml} with pinned versions; \code{requirements.txt};
+offline rebuild; \code{pathlib} paths; tests as the quick check. \textit{Fallback:} README
+troubleshooting with expected output pasted in; contact the tutor at once. \\
+7 & Critical-path tasks slip & Moderate × Critical\newline 3×5 = 15 &
+A critical-path row ends a day late, or DS1 isn't fetched by the end of 21 Oct / Le Quang Anh Hoang &
+\textit{Prevention:} DS1 starts on day 37; a daily check against Section~\ref{sec:schedule}; the
+GPU lane is off the critical path. \textit{Fallback:} use slack, then cut from the bottom of the
+priority list (Section~\ref{sec:moscow}). The 7 November submission never moves. \\
+6 & Scope creep: HD extras eat time that Must items need & Likely × Medium\newline 4×3 = 12 &
+Work on a Should or Could item while a Must item is behind / Le Quang Anh Hoang &
+\textit{Prevention:} the priority list; the pretraining gate; GPU jobs run unattended.
+\textit{Fallback:} stop the item and record the cut in the minutes. \\
+13 & Unsupported claims about real transactions & Moderate × High\newline 3×4 = 12 &
+Reworded by D-A2-3: any draft claims precision, recall, F1 or accuracy for real snapshot
+transactions / Cao Tri Tran &
+\textit{Prevention:} the metrics rule (Section~\ref{sec:metricsrule}); ``against the dataset's
+labels'' wording; banned-word scan; number-check script. \textit{Fallback:} delete the claim and
+restate it as a ranking with limitations. \\
+23 & Pretraining is slower than estimated, or is interrupted & Likely × Medium\newline 4×3 = 12 &
+The benchmark projects more than 72 h for 2B tokens, or a run stops overnight / Cao Tri Tran &
+\textit{Prevention:} the gate (Section~\ref{sec:gate}); checkpoints every 30 minutes; Windows
+Update paused; resume already tested. \textit{Fallback:} cut tokens to the measured budget (floor
+1B); below the floor, TxGPT is the only language model, as CR-06 records. \\
+26 & The small text model writes wrong numbers or banned words & High × Medium\newline 4×3 = 12 &
+Raw number faithfulness below 95\% on the DS7 test set / Cao Tri Tran &
+\textit{Prevention:} the guardrail; the template is authoritative; five phrasings per template in
+DS7. \textit{Fallback:} \code{use_assistant=False} stays the default; the report gives raw and
+guarded rates. \\
+30 & A bug found after the results freeze changes numbers & Moderate × High\newline 3×4 = 12 &
+A test failure or review finding after M2 / Cao Tri Tran &
+\textit{Prevention:} tests green before M2; tables generated, never typed; report numbers checked
+by script. \textit{Fallback:} fix, re-run \code{all --offline} (under an hour on CPU), regenerate
+tables, log it in \code{CHANGELOG.md}. \\
+31 & Generative-AI use undeclared or under-declared & Low × Critical\newline 2×5 = 10 &
+No declaration drafted by 5 Nov / Cam Dan Bui &
+\textit{Prevention:} the declaration is a listed submission file; a running log of what AI helped
+with, kept from today. \textit{Fallback:} ask the tutor how to add it if it was missed. \\
+2 & A dataset is unavailable or its licence is unclear & Moderate × Medium\newline 3×3 = 9 &
+Elliptic's Kaggle licence not confirmed by 24 Oct, or a download fails / Cao Tri Tran &
+\textit{Prevention:} download on 21 Oct; record each licence; ship a script and checksums when
+redistribution is unclear. \textit{Fallback:} BitcoinHeist (CC BY 4.0) carries the classification
+alone; the Elliptic++ transaction set is the substitute. \\
+5 & A teammate can't do their review task in time & Moderate × Medium\newline 3×3 = 9 &
+Manifest review (22 Oct), code review (24--25 Oct), ratings (2 Nov), clean install (4 Nov) or
+proofread (5 Nov) late / Le Quang Anh Hoang &
+\textit{Prevention:} every task has a name and a date in the CR-06 message, plus a named backup.
+\textit{Fallback:} the backup does it; otherwise the report says who did the check, or that it
+was not done. \\
+15 & Esplora rate limits block DS1 or DS2 & Moderate × Medium\newline 3×3 = 9 &
+More than 5\% of requests return 429 in an hour, or DS2 has under 3,000 addresses by 23 Oct / Le
+Quang Anh Hoang &
+\textit{Prevention:} pacing, back-off, caching, a resumable state file, the mempool.space fallback,
+overnight crawling. \textit{Fallback:} accept the 3,000 floor and say so; a second crawl night
+uses DS2's slack. \\
+19 & Sample selection bias & Moderate × Medium\newline 3×3 = 9 &
+No written rule in the manifest before fetching / Cao Tri Tran &
+\textit{Prevention:} the rule is fixed and seeded first, and every skip is logged.
+\textit{Fallback:} a limitations paragraph states the bias. \\
+22 & The prototype promises what A2 can't deliver & Moderate × Medium\newline 3×3 = 9 &
+\code{predict.py} output differs from the shapes in \code{types.ts} / Minh Khang Nguyen &
+\textit{Prevention:} \code{test_predict.py} checks every shape. \textit{Fallback:} update the
+prototype through change control. \\
+24 & Out of memory or disk & Moderate × Medium\newline 3×3 = 9 &
+Under 40 GB free on 21 Oct, swapping during random-forest tuning, or CUDA out of memory / Cao Tri Tran &
+\textit{Prevention:} memory-mapped tokens; \code{--delete-raw}; capped \code{n_jobs}; heavy CPU jobs
+never overlap. \textit{Fallback:} micro-batch 4 with more accumulation (same effective batch);
+\code{n_jobs=4}; raw shards on an external disk. \\
+27 & TxGPT doesn't beat the habit or Markov baselines & Moderate × Medium\newline 3×3 = 9 &
+Test NLL no lower than the address-habit baseline at M2 / Cao Tri Tran &
+\textit{Prevention:} the size sweep with 3 seeds; DS2 stretch target of 10,000 addresses.
+\textit{Fallback:} report it as a finding. It is still a valid experiment, but TxGPT is then not
+the Explorer's method. \\
+28 & The zip exceeds Canvas's upload limit & Moderate × Medium\newline 3×3 = 9 &
+The 1 Nov dry-run zip is over the confirmed limit / Le Quang Anh Hoang &
+\textit{Prevention:} the limit checked on 22 Oct; DS2 in Parquet; fp16 weights. \textit{Fallback:}
+the Assistant weights and Elliptic move to a link with SHA-256, and the README says where. \\
+29 & The report goes over 3,000 words, or tables count & Moderate × Medium\newline 3×3 = 9 &
+Body above 2,850 words on 3 Nov, or the tutor says tables count / Cam Dan Bui &
+\textit{Prevention:} the word budget per section (Section~\ref{sec:report}); lean tables; detail in
+appendices. \textit{Fallback:} move tables to appendices; trim §7.1 and §2 first. \\
+14 & Data leakage inflates results & Low × High\newline 2×4 = 8 &
+Results unexpectedly strong (Elliptic far above Weber et al.\ 2019; random split far above the
+temporal split), or a DR-02 test fails / Cao Tri Tran &
+\textit{Prevention:} the leakage controls (Section~\ref{sec:leakage}) and tests; the test period is
+used once. \textit{Fallback:} rebuild, re-run, replace the numbers, log it. \\
+16 & Real addresses read as accusations, or terms forbid a use & Low × High\newline 2×4 = 8 &
+Any text implies wrongdoing by a DS1 or DS2 address, or a licence forbids the planned use / Le
+Quang Anh Hoang &
+\textit{Prevention:} hashed DS2 IDs with the salt kept out of the zip; the limitation line; no
+labels attached to real addresses; licences recorded. \textit{Fallback:} shorten or replace IDs;
+drop the dataset. \\
+25 & CR-06 is rejected or the answer is delayed & Low × High\newline 2×4 = 8 &
+No tutor reply by 23 Oct, or a ``no'' / Cam Dan Bui &
+\textit{Prevention:} sent on 20--21 Oct; the plan builds every reading (all three types, IF and LOF,
+both language models), so almost any answer is already covered. \textit{Fallback:} continue on
+the plan's reading, which meets the brief's literal text; record the open question in the
+minutes; adjust only the report's framing. \\
+10 & Upload or naming error causes a late penalty & Unlikely × Medium\newline 1×3 = 3 &
+Not submitted 24 hours before the deadline / Le Quang Anh Hoang &
+\textit{Prevention:} the checklist in Section~\ref{sec:checklist}; submit on 7 Nov.
+\textit{Fallback:} resubmit at once; if past the deadline, tell the tutor and submit anyway. \\
+\bottomrule
+\end{longtable}
+}
+
+\textbf{A1 risks not carried forward:} 1 (now covered by 4 and the threshold sweep), 3 (an A3
+usability question), 8 (A1's demo video), 11 (the team handles minutes separately), 12 (covered by
+13 and 16), 17 (D1 passed), 18 (the amount derivation is tested; still checked in DS1's sums), 20
+(resolved) and 21 (the Confluence trial ended on 15 October, so the change log now lives in the
+repository as \code{docs/change-log.md}).
+
+\subsection{Early-warning signals}
+
+Most of these risks show up early if someone looks. Each signal below takes under a minute to
+check, and the morning check runs every day from 21 October to 7 November.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{3.9cm}L{3.6cm}Y@{}}
+\toprule
+\textbf{Signal} & \textbf{Threshold} & \textbf{Action} \\
+\midrule
+GPU tokens per second against the benchmark & 15\% lower & Check temperature and other GPU use; restart from the checkpoint if speed doesn't recover (risk 23). \\
+Pretraining validation loss after warm-up & No fall over 3 evaluations & Inspect \code{log.jsonl}; check the learning rate and the data order before spending more GPU hours. \\
+GPU temperature & Above 83 °C & Improve airflow; lower the power limit in the NVIDIA settings if needed. \\
+Crawl 429 rate & Above 5\% over an hour & Slow the pace to 1 s; switch to mempool.space for an hour (risk 15). \\
+Free disk space & Below 15 GB & Delete used FineWeb shards and old checkpoints, keeping \code{ckpt_last.pt} and \code{model_best.pt} (risk 24). \\
+Critical-path row & Not done by the end of its day & Re-plan the next morning; cut from the priority list (risk 7). \\
+Test suite & Any failure & Stop new features until it is green again (risk 30). \\
+Section word count while drafting & Over its budget & Trim the same day (risk 29). \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Priority list}
+\label{sec:moscow}
+
+The list decides what gets cut if time runs short. \textbf{Must} items give a complete
+submission and keep A1's promises; they are never cut, only shrunk (fewer grid points, a smaller
+DS2). \textbf{Should} items earn the HD points. \textbf{Could} items are done only with spare
+time. \textbf{Won't} items are named so nobody starts them.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{1.2cm}Y L{3.4cm}@{}}
+\toprule
+\textbf{ID} & \textbf{Item} & \textbf{Earns} \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{Must}} \\
+M-1 & DS1 snapshot, checks and manifest & Report 1; Code 2; A1 Obj.\ 1 \\
+M-2 & Cleaning, F1--F4, the time split and the DR-02 tests & Report 1; Code 1 \\
+M-3 & Baseline, Isolation Forest and LOF scoring every transaction & A1 Obj.\ 2; Code 1 \\
+M-4 & K-Means and DBSCAN; regression models & Brief's model types; Code 1 \\
+M-5 & Classification on DS3 (on DS4 if DS3's licence blocks it) & Brief's metrics; Code 1 \\
+M-6 & Evaluation suite, method selection, objectives table & Code 1; Report 6 \\
+M-7 & \code{predict.py} and the prediction CLI & Code 3 \\
+M-8 & README, docstrings, package structure, data card & Code 2--5 \\
+M-9 & The report, the zip and the AI declaration & Report 1--6 \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{Should} (if cuts are needed, cut from the bottom of this list up)} \\
+S-1 & DS2 crawl and TxGPT (the tutor's language-model requirement) & HD ML; HD datasets \\
+S-2 & DS4 BitcoinHeist, with all three split schemes & HD datasets \\
+S-3 & The label check on DS3 and DS4 & HD ML; Report 2 \\
+S-4 & Reviewer check (A1 promise; depends on two teammates) & Report 7.2 \\
+S-5 & Text-model pretraining and chat fine-tune & HD ML; HD datasets \\
+S-6 & DS7, the explanation fine-tune and the guardrail & HD ML; A3 \\
+S-7 & Address-profile clustering on DS1 and DS2 & Report 2; A3 \\
+S-8 & A model card per final model & Code 2 \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{Could}} \\
+C-1 & DS9: score Ransomwhere addresses with our own pipeline & HD datasets \\
+C-2 & DS8: address-level classification on Elliptic++ actors & HD datasets \\
+C-3 & Multi-class family classification on DS4 & HD ML \\
+C-4 & ``Flag if either method flags'' as an option for A3 & A3 \\
+C-5 & A TxGPT ablation with finer amount buckets & HD ML \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{Won't} (in A2)} \\
+W-1 & Graph neural networks on Elliptic & future work \\
+W-2 & Live API calls from the Explorer & A1 scope rule \\
+W-3 & Fine-tuning a public pretrained model & tutor's rule \\
+W-4 & Ethereum or other chains; XGBoost or LightGBM & scope; dependencies \\
+W-5 & Whole-chain datasets (ORBITAAL, the Bitcoin temporal graph) & 16 GB RAM; schedule \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Cut order if a day is lost:} C-5, C-4, C-3, C-2, C-1, then S-8, S-7, S-6, S-5. Cutting
+S-5 leaves TxGPT as the only language model, which the tutor question in CR-06 prepares for. S-4
+is cut only if the teammates can't do it. S-1 is cut last because it is the HD-critical model.
+
+\subsection{Submission checklist}
+\label{sec:checklist}
+
+Run on 6 November (build) and 7 November (submit). Every line is ticked by the named person,
+and the finished list is pasted into that week's minutes.
+
+{\small
+\begin{longtable}{@{}L{8.6cm}L{2.8cm}L{2.6cm}@{}}
+\toprule
+\textbf{Check} & \textbf{Who} & \textbf{When} \\
+\midrule
+\endhead
+\multicolumn{3}{@{}l}{\textbf{Report PDF}} \\
+Named \fp{HCMC_COS30049.1_4_Assignment2_Report.pdf}; opens; fonts embedded & Cao Tri Tran & 6 Nov \\
+Cover has the group name and ID, four names and IDs, \textbf{the tutor's name}, the date and the word count & Cam Dan Bui & 5 Nov \\
+Body at most 3,000 words (\code{tools/wordcount.py}); the counting rule is stated & Cao Tri Tran & 3 and 6 Nov \\
+Every section the brief requires is present (Section~\ref{sec:report} checklist) & Cam Dan Bui & 5 Nov \\
+Every figure and table is referenced in the text; captions say what to notice & Cam Dan Bui & 5 Nov \\
+Citation check clean: nothing cited but unlisted, nothing listed but uncited & Cao Tri Tran & 6 Nov \\
+Number check clean: every number matches \fp{reports/tables/} & Cao Tri Tran & 6 Nov \\
+Banned-word scan clean for the tool and DS1 & Cao Tri Tran & 6 Nov \\
+\multicolumn{3}{@{}l}{\textbf{Code zip}} \\
+Built from tag \code{v1.0} by the packaging script & Cao Tri Tran & 6 Nov \\
+\code{SHA256SUMS.txt} verifies every file & Cao Tri Tran & 6 Nov \\
+Unzipped into an empty folder: \code{python -m pytest -q} passes and one prediction command runs & Le Quang Anh Hoang & 6 Nov \\
+Contains README (\code{.md} and \code{.pdf}), \code{DATA_CARD.md}, \code{MODEL_CARD.md}, \code{LICENSES.md} & Cao Tri Tran & 6 Nov \\
+Contains no salt, \code{.git}, caches, raw FineWeb or unused data & Cao Tri Tran & 6 Nov \\
+Size under Canvas's limit; anything linked has a SHA-256 in the README & Le Quang Anh Hoang & 6 Nov \\
+\multicolumn{3}{@{}l}{\textbf{Prepared by the team separately}} \\
+Meeting minutes for every week since the team formed (W1--W8), including CR-06's approval and the reviews & Cam Dan Bui & 6 Nov \\
+Contribution form signed by all four members & All & 6 Nov \\
+\multicolumn{3}{@{}l}{\textbf{Declaration and upload}} \\
+AI declaration: what AI helped with, and that the team checked and owns the work & Cam Dan Bui & 5 Nov \\
+All five files uploaded on Canvas by one member & Le Quang Anh Hoang & 7 Nov \\
+Canvas receipt saved; the submitted files downloaded back and opened & Le Quang Anh Hoang & 7 Nov \\
+\bottomrule
+\end{longtable}
+}
+
+\subsection{After submission: what Assignment 3 inherits}
+
+\begin{itemize}
+  \item The tag \code{v1.0} and the frozen \fp{reports/tables/}. A3 builds on them without changing
+    A2's numbers.
+  \item \code{explorer/predict.py} and its JSON shapes, which the FastAPI back end wraps directly.
+  \item The guarded Explorer Assistant, which is optional in A3 and off by default.
+  \item The usability walkthrough (A1 team action T7) and the A3 user study, which reuse A1's
+    observer sheet.
+  \item A short lessons-learned note in the Week 9 minutes: what took longer than planned, and why.
+\end{itemize}

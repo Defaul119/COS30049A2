@@ -1,0 +1,83 @@
+\section{The plan on one page}
+\label{sec:summary}
+
+\textbf{Goal.} A full-marks attempt at all 40 points: 12 for the report, 20 for the code and zip
+file, and 8 HD points. Every task in this plan is tied to one of those points. If a task earns no
+point and nothing else depends on it, it was left out.
+
+\textbf{The marks, checked against the brief.} The breakdown used to start this plan missed one
+report line. The report is worth 12 points over \emph{six} criteria, not five:
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Y C{1.1cm} Y C{1.1cm}@{}}
+\toprule
+\textbf{Report} (PDF, up to 3,000 words) & \textbf{Pts} & \textbf{Code and zip file} & \textbf{Pts} \\
+\midrule
+1. Data collection and processing & 5 & 1. Core functionality & 10 \\
+2. Data analysis & 2 & 2. Datasets & 4 \\
+3. Justification of model selection & 2 & 3. README (conda set-up, training, prediction) & 2 \\
+4. Writing quality and logical structure & 1 & 4. Comments & 2 \\
+5. Harvard referencing & 1 & 5. Code structure & 2 \\
+\textbf{6. Completeness (every required section)} & \textbf{1} & & \\
+\midrule
+\textit{Report total} & \textit{12} & \textit{Code total} & \textit{20} \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{HD}: additional datasets} & 4 & \\
+\multicolumn{2}{@{}l}{\textbf{HD}: additional ML implementations} & 4 & \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{What will be built.}
+\begin{enumerate}
+  \item \textbf{Our own Bitcoin data.} A frozen snapshot of 25 addresses plus 3 short-history ones
+    from the Esplora API, as Assignment 1 promised (DS1). A second, much larger crawl of about
+    5,000 address histories (DS2) feeds the transaction language model.
+  \item \textbf{Two public labelled datasets.} Elliptic (DS3) and BitcoinHeist (DS4) carry labels
+    from their authors, so the brief's accuracy, precision, recall and F1 can be reported honestly.
+  \item \textbf{All three model types the brief names.} Clustering (K-Means, DBSCAN) and regression
+    (Ridge, random forest, gradient boosting) run on our own data. Classification (logistic
+    regression, KNN, random forest, gradient boosting) runs on the labelled datasets. The brief
+    needs two types; doing all three removes any doubt.
+  \item \textbf{The Assignment 1 methods, kept as extra experiments.} The robust-z baseline,
+    Isolation Forest and Local Outlier Factor are still built and evaluated with the label-free
+    plan. They are also tested against the Elliptic labels, which shows how often ``unusual''
+    and ``labelled illicit'' coincide.
+  \item \textbf{Two language models trained from scratch on the RTX 3060.} The first, TxGPT, is a
+    small GPT that reads an address's history as a sequence of transaction tokens. It scores how
+    surprising each new transaction is, and it is the main HD model. The second is a 152M-parameter
+    text model, pretrained on 2B tokens of web text and then taught to chat and to explain flags.
+    It becomes the Explorer Assistant, which Assignment 3 can use.
+  \item \textbf{A prediction interface.} \code{predict.py} plus a command-line tool, so every model
+    can score new input. The README shows how, and the Assignment 3 FastAPI back end can call
+    the same functions.
+\end{enumerate}
+
+\textbf{How this keeps the Assignment 1 promise.} Assignment 1 ruled out claiming fraud accuracy on
+data with no labels (risk 13). That rule still holds. Precision and recall are reported only in two
+places. One is datasets whose authors supplied labels. The other is transactions we planted
+ourselves, where the true answer is known by construction. The Explorer's wording never changes:
+\emph{``Unusual activity requires investigation; it does not indicate wrongdoing.''}
+
+\textbf{The dates that matter.}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{3.1cm}Y@{}}
+\toprule
+\textbf{Date} & \textbf{Milestone} \\
+\midrule
+Wed 21 Oct & Change request CR-06 sent to the team and the tutor. Snapshot DS1 fetched. Text pretraining started on the GPU. \\
+Sun 25 Oct & M1: baseline, Isolation Forest and LOF score every snapshot transaction. This is Assignment 1 Objective 2, due 26 Oct. \\
+Thu 29 Oct & M2: every model trained and evaluated; results frozen (version 1). \\
+Sat 31 Oct & M3: code feature-complete; notebooks re-run from clean. \\
+Wed 4 Nov & M4: a teammate rebuilds everything from the README on a clean machine; code frozen. \\
+Sat 7 Nov & M5: everything submitted on Canvas. Sunday 8 Nov is spare. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{The critical path.} DS1 fetch → features → time split and baseline → models → evaluation
+→ method selection → report evaluation section → submission. Both language models run on a
+parallel GPU lane with about three days of slack. If the text model's pretraining runs long, a
+decision gate cuts its token budget (Section~\ref{sec:gate}). It never delays the critical path.

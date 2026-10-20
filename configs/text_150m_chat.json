@@ -1,0 +1,16 @@
+{
+  "name": "text-150m-chat",
+  "data_dir": "data/chat",
+  "out_dir": "runs/text-150m-chat",
+  "init_from": "runs/text-150m/model.pt",
+  "total_tokens": 100000000,
+  "batch_tokens": 65536,
+  "micro_batch": 8,
+  "lr": 0.0002,
+  "min_lr": 2e-05,
+  "warmup_steps": 50,
+  "weight_decay": 0.0,
+  "eval_every": 100,
+  "eval_batches": 40,
+  "ckpt_every_minutes": 30
+}

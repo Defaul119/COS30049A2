@@ -1,0 +1,129 @@
+\section{Workstream 5: evaluation}
+\label{sec:evaluation}
+
+\code{python -m explorer.cli evaluate} runs everything in this section and writes each table to
+\fp{reports/tables/} as CSV (plus a LaTeX version for the report). The report then quotes files,
+never numbers copied by hand.
+
+\subsection{On our own data (DS1): the A1 label-free plan, kept and extended}
+
+Every method enters the comparison: the baseline, K-Means, DBSCAN, regression (best model),
+Isolation Forest, LOF and TxGPT. Each check runs on the evaluation period only.
+
+\begin{longtable}{@{}L{2.6cm}L{6.2cm}L{2.6cm}L{2.8cm}@{}}
+\toprule
+\textbf{Check} & \textbf{Method} & \textbf{Measure} & \textbf{Target (A1)} \\
+\midrule
+\endhead
+Synthetic injection & 50 plants per pattern × 5 reporting seeds (Section~\ref{sec:injection}), scored by frozen models at each method's own threshold & Recall per pattern (mean ± SD); burst per transaction and per event; precision against planted labels as a lower bound; PR-AUC & ≥70\% for at least 2 of the 3 patterns \\
+Stability & 5 model seeds × 5 bootstrap resamples of the fit period; top 50 flagged on the evaluation period & Mean pairwise Jaccard & ≥0.7 \\
+Method agreement & Flag sets of all methods & Pairwise Jaccard heatmap; transactions only one method flags & Reported, no target \\
+Reviewer check & Two teammates rate 20 top-flagged and 20 random unflagged transactions (selected method), shuffled and blind & Share of flagged rated ``worth a look''; Cohen's $\kappa$ & Reported as judgement, never as ground truth \\
+Sanity rule & Flag share per address & Maximum share & No address above 20\% \\
+Flag rate & Share of evaluation transactions flagged & \% & About 2\% by design; reported \\
+\bottomrule
+\end{longtable}
+
+\textbf{Notes on fairness.}
+\begin{itemize}
+  \item The baseline is deterministic, so only the bootstrap affects its stability, and that
+    resamples addresses' fit periods, which the baseline doesn't use. Its stability is 1 by
+    construction, and the report says so rather than presenting it as an achievement.
+  \item Each method is compared at its own operating threshold (top 2\% or $|z|\geq3.5$), and also
+    threshold-free with PR-AUC against planted labels. The second comparison stops a method from
+    looking good simply because it flags more.
+  \item Each plant must be detectable in principle. A spike landing where the address already
+    sends 10× amounts is still counted. That kind of miss is part of the honest recall.
+\end{itemize}
+
+\begin{team}
+The reviewer check needs two people who did not build the scoring: Minh Khang Nguyen and Cam
+Dan Bui. On 29 October, \code{python -m explorer.cli reviewer-sheet} writes a shuffled CSV with
+40 rows: transaction facts and the address's usual values, but no flag column. Each reviewer
+returns their ratings by 2 November. If one cannot do it, the report says the check was done by
+one reviewer, or not at all. It is never invented.
+\end{team}
+
+\subsection{On the labelled data (DS3, DS4)}
+
+\begin{itemize}
+  \item \textbf{Main table}, one row per model × feature set (Elliptic) or model × split
+    (BitcoinHeist): accuracy, precision, recall and F1 (positive class), macro-F1, PR-AUC,
+    ROC-AUC.
+  \item \textbf{Figures}: precision--recall curves (better than ROC under heavy imbalance; Saito and
+    Rehmsmeier 2015), a confusion matrix for the best model, F1 per Elliptic test time step, and
+    recall per held-out BitcoinHeist family.
+  \item \textbf{The label check}: PR-AUC and precision/recall at the top 2\% for each unsupervised
+    method, against prevalence (chance) and the supervised random forest.
+\end{itemize}
+
+\subsection{Language models}
+
+\begin{itemize}
+  \item TxGPT: test NLL per field against the three baselines; validation loss by size and seed;
+    plant recall, stability and agreement as for every other method.
+  \item Explorer Assistant: validation losses for the three stages, plus the faithfulness table
+    and the guardrail pass rate (Section~\ref{sec:assistant}).
+\end{itemize}
+
+\subsection{Choosing the method the Explorer uses}
+\label{sec:selection}
+
+The A1 rule, applied as written: among methods with stability ≥0.7, choose the highest mean
+synthetic-injection recall. If two are within 5 percentage points, prefer the one whose flags are
+easier to explain. A1 left that order open; this plan fixes it as: baseline, regression interval,
+K-Means, Isolation Forest, DBSCAN, LOF, TxGPT. The chosen method becomes \code{explorer_method} in
+\code{settings.json}, and \code{predict.py} uses it. The report also states the runner-up, and
+whether combining two methods (flag if either flags) would raise recall without breaking the
+sanity rule. That combination is an option for A3, not a default.
+
+\subsection{Comparing results against the objectives}
+
+The report's evaluation section opens with this table, because the brief asks to ``evaluate
+effectiveness by comparing results against objectives'':
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{5.0cm}L{3.2cm}Y@{}}
+\toprule
+\textbf{Objective (source)} & \textbf{Target} & \textbf{Result (filled from \fp{reports/tables/})} \\
+\midrule
+Snapshot built (A1 Obj.\ 1) & 20--30 + 2--3 addresses & \textit{n addresses, n transactions} \\
+All methods score every transaction (A1 Obj.\ 2) & by 26 Oct & \textit{date achieved} \\
+Injection recall (A1 §2.3.2) & ≥70\% for 2 of 3 patterns & \textit{per method} \\
+Stability (A1 §2.3.2) & Jaccard ≥0.7 & \textit{per method} \\
+Sanity (A1 §2.3.2) & ≤20\% per address & \textit{max per method} \\
+Labelled classification (A2 brief) & Report accuracy, precision, recall, F1 & \textit{best model per dataset} \\
+TxGPT beats the habit baseline & lower test NLL & \textit{yes or no, with values} \\
+Assistant faithfulness & 100\% after guardrail & \textit{raw and guarded rates} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Unexpected outcomes: planned for, not hoped against}
+
+The brief asks the report to ``highlight unexpected outcomes''. These are the most likely ones,
+each with what the report would say:
+\begin{itemize}
+  \item \textbf{A method misses the 70\% target.} This is A1 risk 4. Explain which pattern it
+    misses and why (for example, a burst of typical amounts barely moves the size features), and
+    fall back as the selection rule says.
+  \item \textbf{Elliptic F1 drops after time step 43.} This is the drift Weber et al.\ (2019)
+    describe. Show the per-step chart and discuss it as a known limit of static models.
+  \item \textbf{BitcoinHeist leave-one-family-out recall is low.} Then the model recognises known
+    families rather than ransomware behaviour in general. That is an important caution against
+    deployment.
+  \item \textbf{Unsupervised scores barely beat chance on Elliptic.} That is direct evidence for
+    the Explorer's wording: unusual is not illicit.
+  \item \textbf{TxGPT doesn't beat the address-habit baseline.} Then the data is too small or the
+    tokens too coarse, and the report says so.
+  \item \textbf{The refinements CR-02/04/05 don't help.} Then the method as written in A1 stays,
+    and the evidence is reported.
+\end{itemize}
+
+\begin{done}
+Every table in this section exists as a CSV produced by one command. The selected method is
+recorded in \code{settings.json}. The objectives table is complete. Every figure the report uses
+is in \fp{reports/figures/}. Results are frozen as version 1 on 29 October (M2). Later changes
+only fix bugs, and each one is listed in the changelog.
+\end{done}

@@ -1,0 +1,27 @@
+# CPU conda environment for COS30049 Assignment 2: the one markers use.
+# Rebuilds every result from the shipped data and runs every model for prediction, with no GPU.
+# (The language models are only *retrained* with environment-gpu.yml.)
+#
+#   conda env create -f environment.yml
+#   conda activate cos30049-a2
+#
+# torch from PyPI is the CPU build on Windows and macOS. Linux pip may pick a CUDA build, which also runs on CPU.
+name: cos30049-a2
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - torch==2.7.1
+      - numpy==2.2.6
+      - tokenizers==0.21.1
+      - huggingface_hub==0.30.2
+      - pyarrow==20.0.0
+      - pandas==2.2.3
+      - scikit-learn==1.6.1
+      - matplotlib==3.10.1
+      - seaborn==0.13.2
+      - joblib==1.4.2
+      - pytest==8.3.5
+      - jupyterlab==4.4.0
