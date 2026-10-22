@@ -9,3 +9,25 @@
 2026-10-23 00:43:05 INFO K-Means k=8: silhouette 0.063, Davies-Bouldin 2.353, inertia 1288284
 2026-10-23 00:43:07 INFO K-Means k=9: silhouette 0.064, Davies-Bouldin 2.141, inertia 1266112
 2026-10-23 00:43:09 INFO K-Means k=10: silhouette 0.069, Davies-Bouldin 2.143, inertia 1239719
+2026-10-23 00:44:13 INFO DBSCAN: eps0 19.248 (knee, MinPts 334); chose eps 22.135, MinPts 8, noise 0.011 (best silhouette among settings with 1%-5% noise)
+2026-10-23 00:44:18 INFO elliptic_AF isolation_forest: PR-AUC 0.0367 (prevalence 0.0650), precision in top 2% 0.0000, recall 0.0000
+2026-10-23 00:44:19 INFO elliptic_AF lof: PR-AUC 0.0472 (prevalence 0.0650), precision in top 2% 0.0180, recall 0.0055
+2026-10-23 00:44:19 INFO elliptic_AF kmeans: PR-AUC 0.0377 (prevalence 0.0650), precision in top 2% 0.0030, recall 0.0009
+2026-10-23 00:44:19 INFO elliptic_AF dbscan: PR-AUC 0.0379 (prevalence 0.0650), precision in top 2% 0.0030, recall 0.0009
+2026-10-23 00:44:19 INFO heist_temporal: fitting on 10000 of 2218208 training rows, 6 features; 698489 test rows (3489 positive)
+2026-10-23 00:44:21 INFO K-Means k=2: silhouette 0.468, Davies-Bouldin 1.093, inertia 38202
+2026-10-23 00:44:23 INFO K-Means k=3: silhouette 0.436, Davies-Bouldin 0.940, inertia 32035
+2026-10-23 00:44:24 INFO K-Means k=4: silhouette 0.335, Davies-Bouldin 1.184, inertia 26061
+2026-10-23 00:44:25 INFO K-Means k=5: silhouette 0.347, Davies-Bouldin 1.066, inertia 21134
+2026-10-23 00:44:26 INFO K-Means k=6: silhouette 0.325, Davies-Bouldin 1.044, inertia 18298
+2026-10-23 00:44:27 INFO K-Means k=7: silhouette 0.328, Davies-Bouldin 1.087, inertia 16851
+2026-10-23 00:44:29 INFO K-Means k=8: silhouette 0.326, Davies-Bouldin 1.066, inertia 15619
+2026-10-23 00:44:30 INFO K-Means k=9: silhouette 0.331, Davies-Bouldin 1.132, inertia 14399
+2026-10-23 00:44:31 INFO K-Means k=10: silhouette 0.343, Davies-Bouldin 1.109, inertia 13588
+2026-10-23 00:44:48 INFO DBSCAN: eps0 1.277 (knee, MinPts 12); chose eps 0.894, MinPts 16, noise 0.047 (best silhouette among settings with 1%-5% noise)
+2026-10-23 00:45:04 INFO heist_temporal isolation_forest: PR-AUC 0.0038 (prevalence 0.0050), precision in top 2% 0.0006, recall 0.0023
+2026-10-23 00:45:18 INFO heist_temporal lof: PR-AUC 0.0040 (prevalence 0.0050), precision in top 2% 0.0031, recall 0.0123
+2026-10-23 00:45:19 INFO heist_temporal kmeans: PR-AUC 0.0038 (prevalence 0.0050), precision in top 2% 0.0008, recall 0.0032
+2026-10-23 00:45:22 INFO heist_temporal dbscan: PR-AUC 0.0040 (prevalence 0.0050), precision in top 2% 0.0007, recall 0.0029
+2026-10-23 00:45:22 INFO Wrote C:\Users\ADMIN\COS30049A2\reports\tables\label_check.csv and label_check_tuning.csv
+2026-10-23 00:45:22 INFO Step label-check finished in 153 s (exit 0)
