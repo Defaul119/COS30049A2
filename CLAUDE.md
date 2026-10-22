@@ -1,5 +1,8 @@
 # COS30049 Assignment 2: Bitcoin Address Activity Explorer
 
+**Current state: read `context.txt` first.** It records what is running, what is done and what comes next,
+and is updated as the work moves (the hand-off below describes 20 October).
+
 This file is loaded automatically by Claude Code. It carries the context built up on the Mac
 before the work moved to this Windows PC (20 October 2026). **For the first session on the PC,
 read `docs/HANDOFF.md` next.** The full plan is `docs/A2_delivery_plan.pdf`; its LaTeX sources in
