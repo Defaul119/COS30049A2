@@ -50,7 +50,7 @@
     "maxTx": 1000,
     "targetAddresses": 5000,
     "minimumAddresses": 3000,
-    "workersPerSource": 3,
+    "workersPerSource": 4,
     "idHexChars": 16,
     "progressEvery": 200
   },
