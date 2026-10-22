@@ -1,0 +1,305 @@
+AI-based Project for cybersecurity (AI4Cyber)
+Assignment Description
+
+Assignment Description
+This assignment aims to guide students through the development of a complete machine
+learning project, focusing on real-world cybersecurity applications that involve both regression
+and classification tasks. The assignment challenges students to apply their technical skills to
+practical cybersecurity scenarios. Students are expected to acquire the following skills from the
+assignment:
+
+   ●​ Data Collection and Processing: Gathering and preprocessing data from open-source
+      websites, ensuring that the data is clean, normalized, and ready for analysis.
+   ●​ Model Selection and Evaluation: Selecting appropriate machine learning models
+      based on the problem context, and evaluating their performance using relevant metrics
+      such as accuracy, precision, recall, and F1 score.
+   ●​ Technical Implementation: Gaining hands-on experience with Python and key libraries
+      like pandas, scikit-learn, and matplotlib for data handling, modeling, and visualization.
+   ●​ Report Writing and Presentation: Writing a structured report that clearly
+      communicates the project objectives, methodologies, findings, and conclusions,
+      supported by appropriate visualizations and references.
+
+Students have already chosen the following cybersecurity-related topic in assignment one:
+
+   1.​ Misinformation Detection on Social Media: Detect misinformation on social media
+       platforms. Students will collect real-world social media data, extract useful features (like
+       text content and user behaviour), and train models to identify false or misleading posts.
+   2.​ Spam or Malware Detection: Detect spam messages or potential malware threats.
+       Students will work with datasets containing emails, messages, or files, extract relevant
+       features, and build models to classify harmful content.
+   3.​ Detecting Software Vulnerabilities: Detect security vulnerabilities in software code.
+       Students will analyse source code to identify patterns that may lead to bugs or exploits,
+       and train models to automatically flag risky code.
+   4.​ Network Traffic Classification for Anomaly Detection: Classify network traffic and
+       detect unusual or potentially malicious activity. Students will analyse network data,
+       extract features such as packet size and timing, and train models to distinguish normal
+       behaviour from anomalies.
+   5.​ Cybersecurity threat detection in banking: This covers a range of cybersecurity
+       problems in the banking sector. Students are expected to do some research to choose a
+       suitable cybersecurity problem (e.g. fraud detection, identify theft, etc.) to solve using AI
+       engineering.
+
+
+Key Information
+   ●​ Weight: 40% of your total marks for the unit
+   ●​ Due Date: Due in Week 8
+   ●​ Submission Requirements:
+           ●​ A report: Size up to 3000 words; Format PDF
+           ●​ A zip file containing:
+                  ●​ Datasets that you have already processed (JSON/CSV and so on)
+                  ●​ Readme file (pdf/md): telling us how to run your code
+                  ●​ Your source code (including the final models you used)
+           ●​ Meeting Minutes: Format PDF
+           ●​ Contribution Form: Format PDF
+   ●​ Late Penalties: 10% deduction of the available mark per calendar day or part thereof for
+      up to one week. Submissions that are late more than 7 calendar days after the due date
+      will receive a mark of zero (0) and no assessment feedback will be provided.
+
+
+
+
+1. Project Description
+The project description provides an overview of the background and essential requirements for
+the cybersecurity-related projects. This project involves developing a comprehensive
+machine-learning solution that integrates project management, design elements, and technical
+implementation to address real-world cybersecurity challenges. Students will work in teams to
+complete the project in three phases: creating a detailed project management plan,
+implementing a machine learning model, and developing a dynamic website to showcase their
+results.
+
+The Machine Learning Web Application aims to deliver an interactive platform for users to
+engage with machine learning models and visualize data insights. The primary goal is to
+demonstrate practical machine learning applications in real-world cybersecurity-related
+scenarios, enhancing user interaction and understanding of the underlying models.
+
+Core Functional Requirements for the whole project:
+
+   ●​ Select a project topic and find relevant datasets suitable for the chosen topic.
+   ●​ Investigate and analyse the topic, using machine learning techniques for prediction,
+      attribution, or classification to gain a better understanding and response to the
+      cybersecurity-related topic.
+   ●​ Develop a website application that allows users to interact with trained models and
+      provides corresponding responses based on user inputs.
+   ●​ Include data visualization features to help users understand the dataset.
+
+
+
+
+2. Submission
+You must submit your assignment via the assignment submission link (i.e., “Assignment 2
+Submission”) on the Canvas site by the deadline.
+
+   ●​ No hard copy submission is required for this assignment.
+   ●​ You are required to submit your assignment named with your group name. For example,
+      if your group name is “Session01-Group 1”, you would submit the files named
+      “session-xx-group-1-AssignmentName.pdf”.
+   ●​ Do not include any unnecessary files in this folder.
+   ●​ Note that marks will be deducted if this requirement is not strictly complied.
+   ●​ No submission is accepted via email.
+
+**Only one student per group is required to submit all the assignment documents on
+behalf of the group. **
+
+
+
+
+3. Overview of the Tasks
+   ●​ Use the topic you selected for the project.
+   ●​ Clearly define the intended users of your project. The user might be the elderly, young
+      children, or whoever you like, although the choice should make sense for the data and
+      topic of choice.
+   ●​ Data Collection: Use open-source websites to collect relevant data. Ensure the data is
+      appropriate for the selected topic and intended users.
+          ●​ Note: Using only one simple dataset will earn you a basic score. To achieve a
+               high distinction (HD) grade, you need to find and use additional suitable datasets.
+   ●​ Data Processing: Clean and preprocess the collected data. This may include handling
+      missing values, normalizing data, and feature extraction to prepare the data for analysis.
+   ●​ Data Analysis: Analyze the preprocessed data to uncover patterns and insights. Utilize
+      statistical methods and visualizations to better understand the data and inform the
+      selection of the machine learning model.
+   ●​ Model Selection: Choose an appropriate machine learning model based on the data
+      and the problem you are addressing. Consider models such as regression, classification,
+      clustering, etc.
+         ●​ Note: Students are required to use at least two types of machine learning
+              methods (classification, clustering, regression) out of the three. Students may
+              use two of the same type, but they must provide strong justifications. To earn
+              additional HD points, conduct extra machine learning experiments beyond the
+              existing two algorithms.
+   ●​ Model Evaluation: Evaluate the chosen model's performance using relevant metrics
+      (accuracy, precision, recall, F1 score, etc.).
+   ●​ Implementation in Python: Execute all tasks using Python, leveraging libraries such as
+      pandas, scikit-learn, and matplotlib.
+   ●​ Report: Compare the evaluation metrics and present the findings in a comprehensive
+      report, including visualizations, process explanation, and results interpretation.
+
+
+
+
+4. Deliverables
+Your submission should contain the following files:
+
+
+1. Report
+Write a report of up to 3000 words (excluding cover page, table of contents, bibliography, and
+appendix) that consists of the following sections:
+
+   ●​ Project title: Title of your machine learning project.
+   ●​ Your group identities: Your group name and ID, student names and IDs, tutor's name.
+   ●​ Introduction: A precise and succinct description of what motivations you wanted your
+      machine learning project to solve, and who the intended user is.
+   ●​ Problem Framing: Outline the specific challenge you aim to address, limitations of
+      existing solutions, and why an ML approach is suitable.
+   ●​ Data Collection: Detail the sources and methods used to gather your dataset. Mention
+      any challenges encountered and how they were addressed.
+   ●​ Data Processing: Outline steps taken to clean and preprocess the collected data
+      (handling missing values, normalization, feature engineering, joining datasets).
+   ●​ Machine Learning Model Selection: Describe the criteria used to select models,
+      algorithms considered, and rationale behind your choices.
+   ●​ Implementation:
+          ●​ Technical Implementation: High-level description of implementation, libraries
+              used, and reasons for final decisions.
+          ●​ Implementation Evaluation: Evaluate effectiveness of implementation by
+              comparing results against objectives. Discuss model performance and highlight
+              unexpected outcomes.
+   ●​ Conclusion: Summarize key findings and outcomes, discuss significant insights, and
+      potential areas for future work.
+   ●​ Bibliography: Appropriate references in Harvard style.
+   ●​ Appendix: Additional files.
+
+
+2. A zip file
+   ●​ Datasets: The dataset must only include the data used in your final version machine
+      model.
+   ●​ Readme file (pdf/md): Explain how to configure your project environment using conda
+      commands, perform data processing, train your model, and use your model for
+      prediction.
+   ●​ Source code: Any code related to your assignment 2.
+
+
+3. Meeting Minutes
+Students are required to hold at least one meeting each week since the team's inception and
+submit all meeting minutes.
+
+
+4. Contribution Form
+A form including details of the contribution and personal information. All team members must
+discuss and sign together within the group before submitting.
+
+Important Notes:
+
+   ●​ Please be careful to ensure you do not publicly post anything which includes your
+      reasoning or logic to Canvas discussions to avoid plagiarism/collusion penalties.
+   ●​ You must NOT use generative artificial intelligence (AI) to generate any materials or
+      content related to the assessment task.
+
+
+
+
+5. Marking Criteria
+You must acknowledge all statements and information taken from other sources (Harvard style).
+
+
+Rubric (COS30049 Assignment 2)
+ Criteria                       Ratings                          Pts
+
+ Report: 1) Explanation of      5 Pts: Comprehensive and         5 pts
+ Data Collection and            clear.
+ Processing Operations          3 Pts: Adequate with minor
+                                gaps.
+Criteria                      Ratings                           Pts
+
+                              1 Pts: Limited with significant
+                              gaps.
+
+                              0 Pts: Missing or inadequate.
+
+Report: 2) Explanation of     2 to >1.0 Pts: Detailed and       2 pts
+Data Analysis                 clear.
+                              1 to >0.0 Pts: Basic
+                              explanation.
+
+                              0 Pts: Missing or insufficient.
+
+Report: 3) Justification of   2 Pts: Thorough justification.    2 pts
+Model Selection               1 Pts: Limited justification.
+
+                              0 Pts: Missing or poorly
+                              articulated.
+
+Report: 4) Quality of         1 to >0.0 Pts: Exceptionally      1 pts
+Writing and Logical           well-written, clear structure,
+Structure                     no errors.
+
+                              0 Pts: Poorly written, lacks
+                              coherence.
+
+Report: 5) Academic           1 Pts: All sources correctly      1 pts
+Referencing and Citations     cited in Harvard style.
+
+                              0 Pts: Significant errors or
+                              missing references.
+
+Report: 6) Completeness       1 Pts: All required sections      1 pts
+                              included.
+
+                              0 Pts: Several sections
+                              missing or incomplete.
+
+Source code: 1) Core          10 Pts: Data thoroughly           10 pts
+Functionalities               processed; models
+                              well-selected and evaluated.
+                              8 Pts: Minor gaps in
+                              documentation/evaluation.
+Criteria                      Ratings                            Pts
+
+
+                              4 Pts: Significant gaps in
+                              documentation/justifications.
+
+Source code: 2) Datasets      4 to >3.0 Pts: Complete,           4 pts
+                              highly relevant, clear format.
+                              3 to >1.0 Pts: Includes
+                              irrelevant data or formatting
+                              errors.
+
+                              1 to >0 Pts: Incomplete,
+                              irrelevant, or incorrect format.
+
+Source code: 3) readme file   2 to >1.0 Pts:                     2 pts
+                              Comprehensive instructions
+                              for env setup, training, and
+                              prediction.
+
+                              1 to >0 Pts: Incomplete,
+                              confusing, or poor
+                              presentation.
+
+Source code: 4) Comments      2 to >1.0 Pts: Thoroughly          2 pts
+                              commented.
+
+                              1 to >0 Pts: Minimal or
+                              vague comments.
+
+Source code: 5) Code          2 to >1.0 Pts: Clean,              2 pts
+Structure                     well-organized, modular.
+                              1 to >0.0 Pts: Generally
+                              organized but some issues.
+
+                              0 Pts: Poorly structured.
+
+Additional datasets           4 to >2.0 Pts: Utilize large       4 pts
+                              number of additional
+                              datasets.
+
+                              2 to >0 Pts: Moderate or
+                              small amount.
+Criteria          Ratings                          Pts
+
+Additional ML     4 to >2.0 Pts: Appropriate       4 pts
+implementations   methods, well-tuned,
+                  excellent performance.
+
+                  2 to >0 Pts: Methods not
+                  entirely appropriate, flaws in
+                  implementation.
+

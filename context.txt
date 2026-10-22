@@ -61,5 +61,5 @@ RESULTS SO FAR (quote reports/tables/*.csv, never these)
 - DS1: baseline mean plant recall ~0.66 (2 of 3 patterns >= 0.7), flag rate ~10% at |z|>=5.
 
 WAITING ON THE USER / TEAM
-- Copy _context/ from the Mac (not via the public repo). Pause Windows Update; GPU cooling (87-88 C).
+- Copy _context/ from the Mac (not via the public repo). Windows Update paused 1 month (23 Oct); sleep/hibernate off. GPU 86 C, fan 100%, 149 of 170 W.
 - Cam Dan Bui's DS1 manifest review + manual tx check. models/heist_best.joblib (263 MB) is git-ignored.
