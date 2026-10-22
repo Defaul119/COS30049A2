@@ -14,6 +14,7 @@ API reference: https://github.com/Blockstream/esplora/blob/master/API.md
 """
 from __future__ import annotations
 
+import gzip
 import json
 import logging
 import time
@@ -26,6 +27,13 @@ USER_AGENT = "BitcoinAddressActivityExplorer/0.1 (COS30049 student research proj
 PAGE_SIZE = 25  # Esplora returns 25 confirmed transactions per history page
 
 log = logging.getLogger(__name__)
+
+
+def decode_body(raw: bytes, encoding: str | None, errors: str = "strict") -> str:
+    """The reply as text, decompressed first if the host sent it gzipped."""
+    if encoding and encoding.lower() == "gzip":
+        raw = gzip.decompress(raw)
+    return raw.decode("utf-8", errors=errors)
 
 
 class EsploraError(RuntimeError):
@@ -144,18 +152,20 @@ class EsploraClient(EsploraEndpoints):
         url = f"{self.base_url}{path}"
         for attempt in range(self.max_retries + 1):
             self._wait_turn()
+            # gzip: mempool.space throttles large replies to ~235 KB/s, and history pages of
+            # consolidation-heavy addresses reach 7 MB of JSON, which compresses about 4x.
             request = urllib.request.Request(
-                url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"}
+                url, headers={"User-Agent": USER_AGENT, "Accept": "application/json", "Accept-Encoding": "gzip"}
             )
             started = time.monotonic()
             try:
                 with urllib.request.urlopen(request, timeout=self.timeout_seconds) as resp:
-                    body = resp.read().decode("utf-8")
+                    body = decode_body(resp.read(), resp.headers.get("Content-Encoding"))
                 self._record(started)
                 return body
             except urllib.error.HTTPError as err:
                 self._record(started)
-                detail = err.read().decode("utf-8", errors="replace")
+                detail = decode_body(err.read(), err.headers.get("Content-Encoding"), errors="replace")
                 retryable = err.code == 429 or err.code >= 500
                 if err.code == 429:
                     self.stats.rate_limited += 1
