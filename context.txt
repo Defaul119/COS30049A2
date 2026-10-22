@@ -19,8 +19,8 @@ ENVIRONMENT
   recreate if the scratchpad is gone). Every job resumes with the same command.
 - LaTeX: MiKTeX (user install) at %LOCALAPPDATA%\Programs\MiKTeX\miktex\bin\x64, packages auto-install.
   docs/a1/main.tex and docs/plan/main.tex build with pdflatex (3 passes).
-- _context/ (brief, slides, A1 submission) is NOT on this PC and not on GitHub (it is git-ignored). Only
-  docs/a1/ (A1 LaTeX) arrived from the Mac on 23 Oct.
+- The A2 brief is in docs/brief/ (PDF + .txt); docs/a1/ holds the A1 LaTeX. The rest of _context/ (slides,
+  A1 submission, notes) is still not on this PC (git-ignored; copy by USB/OneDrive, not the public repo).
 
 RUNNING NOW (check with tasklist / logs)
 - Pretraining 152M (window "PRETRAINING", PID 1552): python -m lm.train --config configs/text_150m_pretrain.json;

@@ -53,7 +53,7 @@ data, the machine-learning models, the code zip and a 3,000-word report.** Assig
 
 The brief requires **at least two of three model types (classification, clustering, regression)**
 and evaluation with accuracy, precision, recall, F1 and similar metrics. The brief is in
-`_context/brief/` and as text in `_context/text/assignment2brief__assignement2_Description.pdf.txt`.
+`docs/brief/assignment2_description.pdf`, with a searchable text copy (`.txt`) beside it.
 
 ## Decisions already made (plan §4, change request CR-06)
 
