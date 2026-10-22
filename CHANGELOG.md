@@ -5,6 +5,26 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 22 October 2026
 
+- **Blockstream rate cap.** Since July 2025 Blockstream allows 700 unauthenticated requests per hour
+  per IP (and 500,000 per month). DS1 now fails over to mempool.space for an hour after repeated
+  429s and records which host served each address; the cross-check always uses a host that did not
+  serve the history. DS2 crawls mempool.space only (`settings.json -> corpus.sources`).
+- **gzip.** mempool.space throttles large replies (~235 KB/s); requests now ask for gzip, several
+  times faster for consolidation-heavy pages. Replies are decompressed before caching (unchanged).
+- **DS2 excludes DS1's whole candidate pool** (a superset of DS1), so it could start before DS1
+  finished; the leakage guarantee is stronger than the plan's.
+- **DS3 Elliptic licence: CC BY-NC-ND 4.0.** Processed Elliptic rows and Elliptic-trained models are
+  git-ignored and never zipped; only the download record, code, metrics and figures ship (plan §6.3).
+- **DS4 decisions by the written rules:** temporal split trains to 2016 (the last year leaving
+  >= 1,000 test positives); leave-out families CryptoWall, CryptoLocker, Cerber, Locky, CryptXXX;
+  log transforms for weight, count, looped, neighbors (skewness > 1) and income; no exact duplicates.
+- **Random forest bootstrap capped** at 100,000 rows per tree (`classification.rfMaxSamples`) to
+  bound memory on DS4; the plan's grid otherwise unchanged.
+- **F7 is log10(1 + fee rate)** so zero-fee coinbase transactions get 0 instead of minus infinity.
+- **lm.train gained `--seed` and `early_stop_evals`** (the hand-off noted `--seed` was missing).
+- **Interrupted runs.** Two forced stops lost in-memory request statistics; their records in
+  `runs.jsonl` are reconstructed lower bounds from the cache and are labelled as such.
+
 - **Moved to the Windows PC.** Cloned from GitHub into `C:\Users\ADMIN\COS30049A2` (short path,
   outside OneDrive). The hand-off's step 1 (create a GitHub repository) was already done: the
   remote is the public `Defaul119/COS30049A2`. Installed Miniforge 26.7.2-1 (conda) for the user
