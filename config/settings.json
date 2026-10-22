@@ -27,7 +27,13 @@
     "shortMaxTx": 9,
     "targetMainAddresses": 25,
     "targetShortAddresses": 3,
-    "selectionSeed": 30049
+    "selectionSeed": 30049,
+    "snapshotBlockCount": 20,
+    "snapshotOldestBlockBack": 4000,
+    "snapshotNewestBlockBack": 100,
+    "snapshotTxPagesPerBlock": 4,
+    "historyFetchAttempts": 2,
+    "crossCheckAddresses": 2
   },
 
   "features": {

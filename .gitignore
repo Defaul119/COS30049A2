@@ -7,6 +7,9 @@ data/raw/smol-smoltalk/
 data/external/
 runs/
 
+# DS1 histories fetched but not kept by the selection rule (their reasons are in the manifest)
+data/raw/esplora/skipped/
+
 # Secret salt for hashing DS2 addresses (A1 risk 16); never committed or zipped
 config/salt.txt
 
