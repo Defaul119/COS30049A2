@@ -14,7 +14,7 @@ import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Callable
 
 USER_AGENT = "BitcoinAddressActivityExplorer/0.1 (COS30049 student research project)"
 PAGE_SIZE = 25  # Esplora returns 25 confirmed transactions per history page
@@ -57,17 +57,24 @@ class EsploraClient:
         pause_seconds: float = 0.5,
         timeout_seconds: float = 30,
         max_retries: int = 5,
+        pacer: Callable[[], None] | None = None,
     ):
+        """`pacer`, if given, replaces the per-client pause: several clients (one per worker thread) on
+        the same host share one pacer, so the host still sees requests spaced as settings.json says."""
         self.base_url = base_url.rstrip("/")
         self.pause_seconds = pause_seconds
         self.timeout_seconds = timeout_seconds
         self.max_retries = max_retries
+        self.pacer = pacer
         self.stats = RequestStats()
         self._last_request_at = 0.0
 
     # -- transport -----------------------------------------------------------
 
     def _wait_turn(self) -> None:
+        if self.pacer is not None:
+            self.pacer()
+            return
         elapsed = time.monotonic() - self._last_request_at
         if elapsed < self.pause_seconds:
             time.sleep(self.pause_seconds - elapsed)

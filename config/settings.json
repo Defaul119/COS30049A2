@@ -36,6 +36,21 @@
     "crossCheckAddresses": 2
   },
 
+  "corpus": {
+    "seed": 30049,
+    "blockCount": 200,
+    "oldestBlockBack": 52560,
+    "newestBlockBack": 100,
+    "txPagesPerBlock": 4,
+    "minTx": 20,
+    "maxTx": 1000,
+    "targetAddresses": 5000,
+    "minimumAddresses": 3000,
+    "workersPerSource": 3,
+    "idHexChars": 16,
+    "progressEvery": 200
+  },
+
   "external": {
     "downloadTimeoutSeconds": 60,
     "bitcoinheist": {

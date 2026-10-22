@@ -18,8 +18,13 @@ Writes:
     data/raw/esplora/<address>/          page-NNN.json.gz (history, newest first), address.json.gz
                                          (the chain_stats the pages match), mempool-page-001.json.gz
                                          (fallback cross-check, first addresses only)
-    data/raw/esplora/skipped/<address>/  histories fetched but not kept (git-ignored)
+    data/raw/esplora/skipped/<address>/  histories fetched but not kept
     data/processed/esplora/manifest.json the DR-01 manifest
+    data/processed/esplora/histories.json.gz  the DS1 dataset: each kept address's transactions,
+                                         trimmed to the fields the pipeline uses (trim_tx)
+
+The raw folder is git-ignored: busy addresses' pages make it about 0.4 GB. The manifest records
+the SHA-256 of every raw file, and the trimmed histories are what the repository and zip carry.
 """
 from __future__ import annotations
 
@@ -45,6 +50,7 @@ log = logging.getLogger(__name__)
 
 RAW_DIR = PROJECT_ROOT / "data" / "raw" / "esplora"
 MANIFEST_PATH = PROJECT_ROOT / "data" / "processed" / "esplora" / "manifest.json"
+HISTORIES_FILE = "histories.json.gz"  # beside the manifest: the DS1 dataset the pipeline reads
 
 SELECTION_DIR = "selection"
 SKIPPED_DIR = "skipped"
@@ -185,11 +191,9 @@ def selection_rule(params: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def block_heights(tip_height: int, params: dict[str, Any]) -> list[int]:
-    """Block heights spread evenly from tip - oldest-back to tip - newest-back, oldest first."""
-    oldest = tip_height - params["snapshotOldestBlockBack"]
-    newest = tip_height - params["snapshotNewestBlockBack"]
-    count = params["snapshotBlockCount"]
+def block_heights(tip_height: int, count: int, oldest_back: int, newest_back: int) -> list[int]:
+    """`count` block heights spread evenly from tip - oldest_back to tip - newest_back, oldest first."""
+    oldest, newest = tip_height - oldest_back, tip_height - newest_back
     step = (newest - oldest) / (count - 1)
     return [oldest + round(i * step) for i in range(count)]
 
@@ -219,50 +223,116 @@ def count_class(tx_count: int, params: dict[str, Any]) -> str:
     return "too_many"
 
 
+def read_block(
+    client: EsploraClient, height: int, pages_per_block: int, blocks_dir: Path
+) -> tuple[dict[str, Any], list[list[dict[str, Any]]]]:
+    """One sampled block's summary and its first transaction pages, cached under blocks_dir/<height>/."""
+    folder = blocks_dir / str(height)
+    block_hash = cached_get(client, f"/block-height/{height}", folder / "hash.txt.gz").strip()
+    header = json.loads(cached_get(client, f"/block/{block_hash}", folder / "block.json.gz"))
+    # A block with fewer transactions than the pages asked for would make the later start indexes
+    # invalid, so the page count comes from the block's own tx_count.
+    n_pages = min(pages_per_block, math.ceil(header["tx_count"] / PAGE_SIZE))
+    pages = [
+        json.loads(cached_get(client, f"/block/{block_hash}/txs/{start}", folder / f"txs-{start:04d}.json.gz"))
+        for start in range(0, n_pages * PAGE_SIZE, PAGE_SIZE)
+    ]
+    summary = {"height": height, "hash": block_hash, "time_utc": utc_iso(header["timestamp"]),
+               "tx_count": header["tx_count"], "pages_read": n_pages}
+    return summary, pages
+
+
+def pool_from_blocks(
+    blocks: list[tuple[dict[str, Any], list[list[dict[str, Any]]]]]
+) -> tuple[list[dict[str, Any]], dict[str, str]]:
+    """The candidate pool (address -> script type) from read blocks, in block order, with per-block counts."""
+    pool: dict[str, str] = {}
+    summaries = []
+    for summary, pages in blocks:
+        added = sum(add_output_addresses(page, pool) for page in pages)
+        summaries.append({**summary, "new_candidates": added})
+        log.info("Block %d: %d pages read, %d new candidates (pool %d)",
+                 summary["height"], summary["pages_read"], added, len(pool))
+    return summaries, pool
+
+
 def sample_blocks(
     client: EsploraClient, tip_height: int, params: dict[str, Any], selection_dir: Path
 ) -> tuple[list[dict[str, Any]], dict[str, str]]:
-    """Read the sampled blocks and build the candidate pool (address -> script type).
-
-    Returns one summary per block and the pool, in first-seen order.
-    """
-    pool: dict[str, str] = {}
-    blocks: list[dict[str, Any]] = []
-    for height in block_heights(tip_height, params):
-        folder = selection_dir / "blocks" / str(height)
-        block_hash = cached_get(client, f"/block-height/{height}", folder / "hash.txt.gz").strip()
-        header = json.loads(cached_get(client, f"/block/{block_hash}", folder / "block.json.gz"))
-        # A block with fewer transactions than the pages asked for would make the later start indexes
-        # invalid, so the page count comes from the block's own tx_count.
-        pages = min(params["snapshotTxPagesPerBlock"], math.ceil(header["tx_count"] / PAGE_SIZE))
-        added = 0
-        for page in range(pages):
-            start = page * PAGE_SIZE
-            text = cached_get(client, f"/block/{block_hash}/txs/{start}", folder / f"txs-{start:04d}.json.gz")
-            added += add_output_addresses(json.loads(text), pool)
-        blocks.append({
-            "height": height, "hash": block_hash, "time_utc": utc_iso(header["timestamp"]),
-            "tx_count": header["tx_count"], "pages_read": pages, "new_candidates": added,
-        })
-        log.info("Block %d: %d pages read, %d new candidates (pool %d)", height, pages, added, len(pool))
-    return blocks, pool
+    """Read the DS1 sampled blocks and build the candidate pool. Returns block summaries and the pool."""
+    heights = block_heights(tip_height, params["snapshotBlockCount"], params["snapshotOldestBlockBack"],
+                            params["snapshotNewestBlockBack"])
+    return pool_from_blocks(
+        [read_block(client, h, params["snapshotTxPagesPerBlock"], selection_dir / "blocks") for h in heights]
+    )
 
 
 # -- histories -------------------------------------------------------------------
 
 
+STATUS_FIELDS = ("confirmed", "block_height", "block_hash", "block_time")
+SCRIPT_FIELDS = ("scriptpubkey_address", "scriptpubkey_type", "value")
+
+
+def trim_tx(tx: dict[str, Any], address: str) -> dict[str, Any]:
+    """The parts of a transaction the pipeline uses, for one address.
+
+    Keeps the status, fee, weight, size, input and output counts, and only the inputs and outputs
+    that belong to `address` (with their positions). `amounts.address_flow` gives the same received
+    and sent on this as on the full transaction. Raw pages of consolidation-heavy addresses reach
+    about 3 MB each gzipped; the trimmed form keeps DS1 small enough to commit and ship.
+    """
+    status = tx.get("status", {})
+    return {
+        "txid": tx["txid"],
+        "status": {k: status.get(k) for k in STATUS_FIELDS},
+        "fee": tx.get("fee"), "weight": tx.get("weight"), "size": tx.get("size"),
+        "n_vin": len(tx.get("vin", [])), "n_vout": len(tx.get("vout", [])),
+        "vin": [{"n": i, "prevout": {k: v["prevout"].get(k) for k in SCRIPT_FIELDS}}
+                for i, v in enumerate(tx.get("vin", []))
+                if v.get("prevout") and v["prevout"].get("scriptpubkey_address") == address],
+        "vout": [{"n": i, **{k: o.get(k) for k in SCRIPT_FIELDS}}
+                 for i, o in enumerate(tx.get("vout", [])) if o.get("scriptpubkey_address") == address],
+    }
+
+
+MISSING_KEYS = (
+    "txid", "status.block_height", "status.block_time", "fee", "weight",
+    "vin[].prevout on a non-coinbase input", "vout[].value",
+    "vout[].scriptpubkey_address (OP_RETURN and bare scripts have none; expected, not an error)",
+)
+
+
+def tx_missing(tx: dict[str, Any]) -> list[int]:
+    """Missing-value counts for one raw transaction, in MISSING_KEYS order (DR-01)."""
+    status = tx.get("status", {})
+    vin, vout = tx.get("vin", []), tx.get("vout", [])
+    return [
+        int("txid" not in tx), int(status.get("block_height") is None), int(status.get("block_time") is None),
+        int(tx.get("fee") is None), int(tx.get("weight") is None),
+        sum(1 for v in vin if not v.get("is_coinbase") and not v.get("prevout")),
+        sum(1 for o in vout if o.get("value") is None),
+        sum(1 for o in vout if not o.get("scriptpubkey_address")),
+    ]
+
+
 @dataclass
 class History:
-    """One address's confirmed history as saved on disk, newest first."""
+    """One address's confirmed history, newest first, with each transaction trimmed (trim_tx)."""
 
     address: str
     folder: Path
     stats: dict[str, Any]  # the /address reply the pages were checked against
-    pages: list[list[dict[str, Any]]]
+    txs: list[dict[str, Any]]
+    page_sizes: list[int]
+    missing: list[int]  # tx_missing summed over the raw transactions
 
-    @cached_property
-    def txs(self) -> list[dict[str, Any]]:
-        return [tx for page in self.pages for tx in page]
+    @classmethod
+    def from_pages(cls, address: str, folder: Path, stats: dict[str, Any],
+                   pages: list[list[dict[str, Any]]]) -> History:
+        raw = [tx for page in pages for tx in page]
+        missing = [sum(col) for col in zip(*(tx_missing(tx) for tx in raw))] or [0] * len(MISSING_KEYS)
+        return cls(address, folder, stats, [trim_tx(tx, address) for tx in raw], [len(p) for p in pages], missing)
 
     @cached_property
     def flows(self) -> list[AddressFlow]:
@@ -277,9 +347,10 @@ class History:
     @property
     def script_type(self) -> str:
         for tx in self.txs:
-            for out in tx.get("vout", []):
-                if out.get("scriptpubkey_address") == self.address:
-                    return out.get("scriptpubkey_type", "unknown")
+            for out in tx["vout"]:
+                return out.get("scriptpubkey_type") or "unknown"
+            for vin in tx["vin"]:
+                return vin["prevout"].get("scriptpubkey_type") or "unknown"
         return "unknown"
 
 
@@ -321,7 +392,7 @@ def fetch_history(client: EsploraClient, address: str, folder: Path, params: dic
 
 def read_history(address: str, folder: Path) -> History:
     pages = [json.loads(read_gz(p)) for p in sorted(folder.glob("page-*.json.gz"))]
-    return History(address, folder, json.loads(read_gz(folder / STATS_FILE)), pages)
+    return History.from_pages(address, folder, json.loads(read_gz(folder / STATS_FILE)), pages)
 
 
 def load_history(client: EsploraClient, address: str, raw_dir: Path, params: dict[str, Any]) -> History:
@@ -353,7 +424,7 @@ def verify_history(history: History) -> list[dict[str, Any]]:
     txids = [f.txid for f in flows]
     received = sum(f.received for f in flows)
     sent = sum(f.sent for f in flows)
-    sizes = [len(p) for p in history.pages]
+    sizes = history.page_sizes
 
     def check(name: str, passed: bool, detail: str) -> dict[str, Any]:
         return {"name": name, "passed": bool(passed), "detail": detail}
@@ -399,28 +470,23 @@ def cross_check(fallback: EsploraClient, history: History) -> dict[str, Any]:
 
 
 def missing_values(histories: list[History]) -> dict[str, int]:
-    """Missing-value counts over every kept transaction, for the DR-01 manifest."""
-    counts = {
-        "txid": 0, "status.block_height": 0, "status.block_time": 0, "fee": 0, "weight": 0,
-        "vin[].prevout on a non-coinbase input": 0, "vout[].value": 0,
-        "vout[].scriptpubkey_address (OP_RETURN and bare scripts have none; expected, not an error)": 0,
-    }
-    for history in histories:
-        for tx in history.txs:
-            status = tx.get("status", {})
-            counts["txid"] += "txid" not in tx
-            counts["status.block_height"] += status.get("block_height") is None
-            counts["status.block_time"] += status.get("block_time") is None
-            counts["fee"] += tx.get("fee") is None
-            counts["weight"] += tx.get("weight") is None
-            counts["vin[].prevout on a non-coinbase input"] += sum(
-                1 for v in tx.get("vin", []) if not v.get("is_coinbase") and not v.get("prevout")
-            )
-            counts["vout[].value"] += sum(1 for o in tx.get("vout", []) if o.get("value") is None)
-            counts["vout[].scriptpubkey_address (OP_RETURN and bare scripts have none; expected, not an error)"] += sum(
-                1 for o in tx.get("vout", []) if not o.get("scriptpubkey_address")
-            )
-    return counts
+    """Missing-value counts over every kept raw transaction, for the DR-01 manifest."""
+    return {key: sum(h.missing[i] for h in histories) for i, key in enumerate(MISSING_KEYS)}
+
+
+def write_histories(path: Path, histories: list[History], roles: dict[str, str]) -> dict[str, Any]:
+    """Write the shipped DS1 file: every kept address's stats and trimmed transactions, newest first.
+
+    Returns its path, size and SHA-256 for the manifest. The raw pages stay in data/raw/esplora/
+    (git-ignored, recorded by SHA-256); the pipeline from `transactions` on reads only this file.
+    """
+    body = {h.address: {"role": roles[h.address], "chain_stats": h.stats["chain_stats"], "txs": h.txs}
+            for h in histories}
+    write_gz(path, json.dumps(body, sort_keys=True, separators=(",", ":")))
+    return {"path": path.name, "bytes": path.stat().st_size,
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "contents": "address -> {role, chain_stats, txs}; each tx trimmed to its status, fee, weight, size, "
+                        "input and output counts, and the inputs and outputs belonging to the address"}
 
 
 def provenance(raw_dir: Path) -> list[dict[str, Any]]:
@@ -449,7 +515,7 @@ def address_summary(history: History, role: str, visit_rank: int, raw_dir: Path)
         "first_tx_utc": utc_iso(min(times)), "last_tx_utc": utc_iso(max(times)),
         "span_days": round(history.span_days, 1),
         "received_sats": sum(f.received for f in history.flows), "sent_sats": sum(f.sent for f in history.flows),
-        "pages": len(history.pages), "folder": history.folder.relative_to(raw_dir).as_posix(),
+        "pages": len(history.page_sizes), "folder": history.folder.relative_to(raw_dir).as_posix(),
     }
 
 
@@ -633,7 +699,14 @@ def run_snapshot(
         "checks": {"all_passed": all_checks, "per_address": per_address, "fallback_cross_check": crosses},
         "fields_used": FIELDS_USED,
         "missing_values": missing_values(histories),
-        "provenance": {"root": "data/raw/esplora", "files": provenance(raw_dir)},
+        "dataset_file": write_histories(manifest_path.parent / HISTORIES_FILE, histories,
+                                        {h.address: g for g in ("main", "short") for h, _ in kept[g]}),
+        "provenance": {
+            "root": "data/raw/esplora",
+            "note": "Every API reply, unchanged and gzipped. Kept on the collecting machine as evidence (about "
+                    "0.4 GB, too large for the repository or the zip); the SHA-256 of each file is listed here.",
+            "files": provenance(raw_dir),
+        },
     })
     write_manifest(manifest_path, manifest)
 

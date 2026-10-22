@@ -7,8 +7,13 @@ data/raw/smol-smoltalk/
 data/external/
 runs/
 
-# DS1 histories fetched but not kept by the selection rule (their reasons are in the manifest)
-data/raw/esplora/skipped/
+# DS1 raw API replies (about 0.4 GB; SHA-256 of each is in data/processed/esplora/manifest.json,
+# and the trimmed data/processed/esplora/histories.json.gz is what ships)
+data/raw/esplora/
+
+# DS2 crawl state: sampled blocks and raw addresses (only the hashed table in data/processed/corpus/ ships)
+data/raw/corpus/
+data/interim/
 
 # Secret salt for hashing DS2 addresses (A1 risk 16); never committed or zipped
 config/salt.txt

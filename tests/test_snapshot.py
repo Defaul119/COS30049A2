@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from explorer import snapshot
+from explorer.amounts import address_flow
 from explorer.esplora import EsploraError, RequestStats
 from explorer.settings import SETTINGS
 
@@ -100,8 +101,9 @@ def fake_world() -> tuple[dict[str, Any], dict[str, Any]]:
 
 class PureFunctionTests(unittest.TestCase):
     def test_block_heights_spread_from_oldest_to_newest(self):
-        heights = snapshot.block_heights(900_000, SETTINGS["collection"])
         col = SETTINGS["collection"]
+        heights = snapshot.block_heights(900_000, col["snapshotBlockCount"], col["snapshotOldestBlockBack"],
+                                         col["snapshotNewestBlockBack"])
         self.assertEqual(len(heights), col["snapshotBlockCount"])
         self.assertEqual(heights[0], 900_000 - col["snapshotOldestBlockBack"])
         self.assertEqual(heights[-1], 900_000 - col["snapshotNewestBlockBack"])
@@ -138,9 +140,26 @@ class PureFunctionTests(unittest.TestCase):
         txs = history("addr", [0, 20, 40])
         stats = address_reply("addr", txs)
         stats["chain_stats"]["funded_txo_sum"] += 1
-        h = snapshot.History("addr", Path("."), stats, [txs])
+        h = snapshot.History.from_pages("addr", Path("."), stats, [txs])
         failed = [c["name"] for c in snapshot.verify_history(h) if not c["passed"]]
         self.assertEqual(failed, ["summed received equals funded_txo_sum"])
+
+    def test_trimming_keeps_amounts_counts_and_positions(self):
+        full = {"txid": "t", "fee": 300, "weight": 900, "size": 250,
+                "status": {"confirmed": True, "block_height": 9, "block_hash": "h", "block_time": T0},
+                "vin": [{"prevout": {"scriptpubkey_address": OTHER, "value": 7}},
+                        {"prevout": {"scriptpubkey_address": "me", "scriptpubkey_type": "p2tr", "value": 50,
+                                     "scriptpubkey": "5120ab"}}],
+                "vout": [{"scriptpubkey_type": "op_return", "value": 0},
+                         {"scriptpubkey_address": "me", "scriptpubkey_type": "p2tr", "value": 20},
+                         {"scriptpubkey_address": OTHER, "value": 30}]}
+        trimmed = snapshot.trim_tx(full, "me")
+        self.assertEqual(address_flow(trimmed, "me"), address_flow(full, "me"))
+        self.assertEqual((trimmed["n_vin"], trimmed["n_vout"]), (2, 3))
+        self.assertEqual([v["n"] for v in trimmed["vin"]], [1])
+        self.assertEqual([o["n"] for o in trimmed["vout"]], [1])
+        self.assertNotIn("scriptpubkey", trimmed["vin"][0]["prevout"])
+        self.assertEqual(snapshot.tx_missing(full)[-1], 1)  # the OP_RETURN output has no address
 
 
 class SnapshotRunTests(unittest.TestCase):
@@ -179,6 +198,10 @@ class SnapshotRunTests(unittest.TestCase):
         # Only DS1 addresses sit at the top level of the raw folder; a span-too-short history is moved aside.
         self.assertTrue((self.raw / "main_ok" / snapshot.STATS_FILE).exists())
         self.assertFalse((self.raw / "main_brief").exists())
+        # The shipped file holds exactly the kept addresses, with the counts the checks used.
+        shipped = json.loads(snapshot.read_gz(self.manifest_path.parent / snapshot.HISTORIES_FILE))
+        self.assertEqual({a: len(v["txs"]) for a, v in shipped.items()}, {"main_ok": 4, "short_ok": 1})
+        self.assertEqual(manifest["dataset_file"]["path"], snapshot.HISTORIES_FILE)
 
     def test_second_run_rebuilds_from_the_cache_without_requests(self):
         replies, fallback_replies = fake_world()
