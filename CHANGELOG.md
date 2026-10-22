@@ -5,6 +5,14 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 23 October 2026
 
+- **Figures and the EDA notebook.** `python -m explorer.cli figures` writes 17 figures to
+  `reports/figures/` and their statistics to `reports/tables/eda_tests.csv`; `notebooks/01_eda.ipynb`
+  calls the same functions. Findings that differ from the plan's hypotheses (plan §7 says to report
+  them): in and out amounts differ significantly for only 9 of 23 DS1 addresses, weaker support for
+  CR-04 than expected (the ablation measures its effect); BitcoinHeist's features barely differ by
+  label (all rank-biserial |r| <= 0.13), which explains its weak classification; on held-out families,
+  logistic regression's high recall comes with a ~49% false-positive rate, so it is not a
+  counter-example to "models learn families, not behaviour". scipy is now pinned (the figures use it).
 - **Assistant 3B: Qwen2.5-3B-Instruct, one mixed fine-tune** (user's decision, later on 23 Oct;
   replaces the base-model plan below). Revision `aa8e72537993ba99e69dfaafa59ed015b17504d1`, same
   Qwen Research License. Reason: the Assistant is also to serve as a chatbot next to the

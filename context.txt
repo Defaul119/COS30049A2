@@ -55,7 +55,7 @@ NEXT, IN ORDER
    memory on the first 20 steps), then python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json
    --adapter runs/qwen3b-explain/adapter_best. Roles: 152M explains DS1 transactions only; Qwen is the chatbot
    and the 2nd writer (explain cascade 152M -> Qwen -> template, each through the code guardrail).
-5. Still to write: plots.py + `figures` + notebooks/01_eda.ipynb (+ eda_tests.csv), address profiles,
+5. Still to write (figures + notebooks/01_eda.ipynb DONE 23 Oct; add the DS2-vs-DS1 figure once DS2 exists): address profiles,
    README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text and NOTICE), AI_USE_LOG,
    report (LaTeX, 3,000 words). Glossary pairs for DS7 (data/processed/ds7/glossary.jsonl) are team-written.
 6. Team: CR-03 (baseline threshold), the Qwen switch, explorerMethod in settings.json, reviewer ratings.

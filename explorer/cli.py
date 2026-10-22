@@ -25,6 +25,7 @@ Usage (from the repository root):
     python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
     python -m explorer.cli classify --dataset heist [--splits temporal,random,lofo]
+    python -m explorer.cli figures                # every report figure (PDF) and reports/tables/eda_tests.csv
     python -m explorer.cli build-ds7              # DS7 explanation pairs, split by source address
     python -m explorer.cli label-check            # unsupervised scores against DS3/DS4 labels
     python -m explorer.cli reviewer-sheet         # 40 shuffled rows for the blind reviewer check
@@ -206,6 +207,12 @@ def cmd_label_check(args: argparse.Namespace) -> int:
     return run_label_check()
 
 
+def cmd_figures(args: argparse.Namespace) -> int:
+    from .plots import run_figures
+
+    return run_figures()
+
+
 def cmd_build_ds7(args: argparse.Namespace) -> int:
     from .ds7 import run_build_ds7
 
@@ -355,6 +362,8 @@ def build_parser() -> argparse.ArgumentParser:
     classify.add_argument("--splits", default="temporal,random,lofo", help="BitcoinHeist schemes, comma-separated")
     classify.add_argument("--force", action="store_true", help="redo results that are already saved")
     classify.set_defaults(func=cmd_classify)
+    steps.add_parser("figures", help="every figure whose inputs exist, as PDFs, plus eda_tests.csv").set_defaults(
+        func=cmd_figures)
     steps.add_parser("build-ds7", help="DS7: explanation pairs for the Assistants (rebuild after DS2)").set_defaults(
         func=cmd_build_ds7)
     steps.add_parser("reviewer-sheet", help="DS1: the blind sheet for the reviewer check, and its key").set_defaults(

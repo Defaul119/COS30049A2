@@ -1,0 +1,70 @@
+figure,statistic,value,note
+history_sizes,median transactions per main address,274.0,
+history_sizes,IQR transactions per main address,225-377,
+history_sizes,"median history span (days, main)",492.1,
+feature_distributions,F1 skewness (raw),38.89,
+feature_distributions,"F1 kurtosis (raw, excess)",1710.45,
+feature_distributions,F1 skewness (log10),-0.44,the scale the baseline compares on
+feature_distributions,F2 skewness (raw),2.54,
+feature_distributions,"F2 kurtosis (raw, excess)",9.34,
+feature_distributions,F3 skewness (raw),18.51,
+feature_distributions,"F3 kurtosis (raw, excess)",515.68,
+feature_distributions,F3 skewness (log10),-0.51,the scale the baseline compares on
+feature_distributions,F4 skewness (raw),88.19,
+feature_distributions,"F4 kurtosis (raw, excess)",7813.09,
+feature_distributions,F4 skewness (log10),-0.59,the scale the baseline compares on
+direction_amounts,addresses tested (>=5 tx each way),23,
+direction_amounts,"addresses whose in and out amounts differ (Mann-Whitney U, p<0.05)",9,
+direction_amounts,ratio of largest to smallest address median amount,9949.0,why one global threshold cannot fit every address
+feature_correlation,rho F6-F7,-0.69,
+feature_correlation,rho F2-F3,-0.57,
+feature_correlation,rho F3-F6,0.57,
+feature_correlation,rho F1-F4,0.33,absolute vs habitual size
+periodicity,chi-square vs uniform hours: p-value,0.0,
+periodicity,chi-square vs uniform weekdays: p-value,0.7285965712311011,
+periodicity,busiest hour (UTC),3,
+gap_ecdf,gap quantile 50% (hours),21.2,
+gap_ecdf,gap quantile 90% (hours),89.4,
+gap_ecdf,gap quantile 99% (hours),618.7,
+gap_ecdf,share of gaps over 60 days,0.0038,
+pca,explained variance PC1+PC2,0.873,
+pca,share of transactions within |z| radius 2,0.605,the dense core
+flag_rate,overall share with |z| >= 3.5,0.139,
+flag_rate,addresses above the sanity limit,5,led to the threshold sweep (CR-03)
+elliptic_classes,"illicit share of labelled, training steps",0.1158,
+elliptic_classes,"illicit share of labelled, test steps",0.065,
+elliptic_classes,unknown share of all rows,0.771,
+heist_years,overall ransomware share,0.0142,
+heist_years,highest yearly share,4.11% (2016),
+heist_years,families,28,
+heist_features,length: rank-biserial effect (ransomware vs white),-0.033,Mann-Whitney p=4.6e-18; |r|<0.1 is a negligible difference
+heist_features,log1p_weight: rank-biserial effect (ransomware vs white),0.1,Mann-Whitney p=0.0e+00; |r|<0.1 is a negligible difference
+heist_features,log1p_count: rank-biserial effect (ransomware vs white),-0.011,Mann-Whitney p=1.3e-03; |r|<0.1 is a negligible difference
+heist_features,log1p_looped: rank-biserial effect (ransomware vs white),-0.037,Mann-Whitney p=0.0e+00; |r|<0.1 is a negligible difference
+heist_features,log1p_neighbors: rank-biserial effect (ransomware vs white),-0.032,Mann-Whitney p=2.2e-21; |r|<0.1 is a negligible difference
+heist_features,log10_income: rank-biserial effect (ransomware vs white),-0.127,Mann-Whitney p=0.0e+00; |r|<0.1 is a negligible difference
+injection_recall,baseline mean recall,0.655,
+injection_recall,regression_interval mean recall,0.473,
+injection_recall,regression mean recall,0.673,
+injection_recall,kmeans mean recall,0.446,
+injection_recall,isolation_forest mean recall,0.429,
+injection_recall,dbscan mean recall,0.406,
+injection_recall,lof mean recall,0.32,
+agreement,median pairwise Jaccard,0.259,
+agreement,most similar pair,isolation_forest-kmeans (0.81),
+label_check,elliptic_AF isolation_forest: PR-AUC / prevalence,0.565,"PR-AUC 0.0367, ROC-AUC 0.183"
+label_check,elliptic_AF lof: PR-AUC / prevalence,0.726,"PR-AUC 0.0472, ROC-AUC 0.369"
+label_check,elliptic_AF kmeans: PR-AUC / prevalence,0.58,"PR-AUC 0.0377, ROC-AUC 0.208"
+label_check,elliptic_AF dbscan: PR-AUC / prevalence,0.583,"PR-AUC 0.0379, ROC-AUC 0.212"
+label_check,elliptic_AF random_forest (supervised): PR-AUC / prevalence,12.186,"PR-AUC 0.7917, ROC-AUC 0.927"
+label_check,heist_temporal isolation_forest: PR-AUC / prevalence,0.765,"PR-AUC 0.0038, ROC-AUC 0.410"
+label_check,heist_temporal lof: PR-AUC / prevalence,0.796,"PR-AUC 0.0040, ROC-AUC 0.416"
+label_check,heist_temporal kmeans: PR-AUC / prevalence,0.751,"PR-AUC 0.0038, ROC-AUC 0.404"
+label_check,heist_temporal dbscan: PR-AUC / prevalence,0.801,"PR-AUC 0.0040, ROC-AUC 0.427"
+label_check,heist_temporal random_forest (supervised): PR-AUC / prevalence,10.475,"PR-AUC 0.0523, ROC-AUC 0.800"
+elliptic_f1_by_step,"best model (randomForest) mean F1, steps 35-42",0.9,
+elliptic_f1_by_step,"best model (randomForest) mean F1, steps 43-49",0.048,Weber et al. (2019) report the same collapse after a dark-market shutdown
+heist_lofo,histGradientBoosting: mean held-out-family recall,0.018,false-positive rate on the random split's test set 0.015
+heist_lofo,knn: mean held-out-family recall,0.027,false-positive rate on the random split's test set 0.033
+heist_lofo,logistic: mean held-out-family recall,0.479,false-positive rate on the random split's test set 0.492
+heist_lofo,randomForest: mean held-out-family recall,0.017,false-positive rate on the random split's test set 0.010
