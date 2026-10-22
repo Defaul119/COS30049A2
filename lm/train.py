@@ -159,8 +159,15 @@ def bench(model, optimizer, sampler, cfg, device, autocast, seq_len, total_token
             # Leave headroom: the desktop and other programs also use the GPU.
             if (vram is None or mem < 0.9 * vram) and (best is None or tok_s > best[1]):
                 best = (mb, tok_s)
+            out_of_memory = False
         except torch.cuda.OutOfMemoryError:
+            out_of_memory = True
+        # Free memory only after leaving the except block: until then the exception's traceback keeps
+        # the failed step's activations alive, and every smaller size would run out of memory too
+        # (on Windows, spilling into system RAM and running ~8x slower instead of failing).
+        if out_of_memory:
             print(f"[bench] {mb:>11} | out of memory")
+            x = y = loss = None
             optimizer.zero_grad(set_to_none=True)
             if device.type == "cuda":
                 torch.cuda.empty_cache()

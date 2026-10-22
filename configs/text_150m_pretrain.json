@@ -12,7 +12,7 @@
   },
   "total_tokens": 2000000000,
   "batch_tokens": 262144,
-  "micro_batch": 8,
+  "micro_batch": 4,
   "lr": 0.0006,
   "min_lr": 0.00006,
   "warmup_steps": 500,
