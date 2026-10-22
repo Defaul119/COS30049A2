@@ -13,6 +13,8 @@ Usage (from the repository root):
     python -m explorer.cli transactions           # DS1 clean table + cleaning log
     python -m explorer.cli features [--as-written]  # F1-F8, z-scores, baseline flags
     python -m explorer.cli split                  # fit / evaluation periods
+    python -m explorer.cli process-external       # DS4 labels, transforms, splits
+    python -m explorer.cli classify --dataset heist [--splits temporal,random,lofo]
 """
 from __future__ import annotations
 
@@ -84,6 +86,20 @@ def cmd_split(args: argparse.Namespace) -> int:
     return run_split()
 
 
+def cmd_process_external(args: argparse.Namespace) -> int:
+    from .labelled import run_process_heist
+
+    return run_process_heist()
+
+
+def cmd_classify(args: argparse.Namespace) -> int:
+    from .classify import run_classify_heist
+
+    if args.dataset == "heist":
+        return run_classify_heist(args.splits.split(","), force=args.force)
+    raise SystemExit("Elliptic needs its download first (python -m explorer.cli external --elliptic)")
+
+
 def cmd_external(args: argparse.Namespace) -> int:
     from .external import run_external
 
@@ -114,6 +130,14 @@ def build_parser() -> argparse.ArgumentParser:
                           help="the A1 method exactly as written, for the refinement ablation")
     features.set_defaults(func=cmd_features)
     steps.add_parser("split", help="DS1: fit and evaluation periods per address").set_defaults(func=cmd_split)
+
+    steps.add_parser("process-external", help="DS4: labels, transforms and split schemes").set_defaults(
+        func=cmd_process_external)
+    classify = steps.add_parser("classify", help="DS3/DS4: search, threshold, refit, test once")
+    classify.add_argument("--dataset", choices=["heist", "elliptic"], required=True)
+    classify.add_argument("--splits", default="temporal,random,lofo", help="BitcoinHeist schemes, comma-separated")
+    classify.add_argument("--force", action="store_true", help="redo results that are already saved")
+    classify.set_defaults(func=cmd_classify)
 
     external = steps.add_parser("external", help="DS3/DS4: download, unpack, record checksums and licences")
     external.add_argument("--elliptic", action="store_true", help="DS3, from Kaggle (needs an API token)")

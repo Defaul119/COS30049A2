@@ -28,3 +28,4 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .DS_Store
+data/processed/bitcoinheist/rows.parquet
