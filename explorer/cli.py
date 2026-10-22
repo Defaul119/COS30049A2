@@ -19,6 +19,7 @@ Usage (from the repository root):
     python -m explorer.cli clustering             # K-Means and DBSCAN
     python -m explorer.cli regression             # naive, Ridge, random forest, gradient boosting, quantiles
     python -m explorer.cli txgpt                  # after lm.tx_score: choose raw or relative surprisal
+    python -m explorer.cli evaluate               # every DS1 check and the recommended method
     python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
     python -m explorer.cli classify --dataset heist [--splits temporal,random,lofo]
@@ -131,6 +132,12 @@ def cmd_txgpt(args: argparse.Namespace) -> int:
     return run_txgpt()
 
 
+def cmd_evaluate(args: argparse.Namespace) -> int:
+    from .evaluate import run_evaluate
+
+    return run_evaluate()
+
+
 def cmd_scores(args: argparse.Namespace) -> int:
     from .scores import run_scores
 
@@ -193,6 +200,8 @@ def build_parser() -> argparse.ArgumentParser:
     steps.add_parser("regression", help="DS1: expected size and gap, residual and range flags").set_defaults(
         func=cmd_regression)
     steps.add_parser("txgpt", help="DS1: TxGPT raw vs relative surprisal, threshold").set_defaults(func=cmd_txgpt)
+    steps.add_parser("evaluate", help="DS1: injection, stability, agreement, sanity, ablation, selection").set_defaults(
+        func=cmd_evaluate)
     steps.add_parser("scores", help="DS1: every saved method's score and flag per transaction").set_defaults(
         func=cmd_scores)
 

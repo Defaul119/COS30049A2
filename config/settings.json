@@ -153,6 +153,15 @@
     "flagAbsR": 3.5
   },
 
+  "evaluation": {
+    "explainabilityOrder": ["baseline", "regression_interval", "regression", "kmeans", "isolation_forest", "dbscan", "lof", "txgpt_method"],
+    "_explainabilityOrder": "plan §11.4: the tie-break when two methods' mean injection recall is within tieMarginPoints",
+    "tieMarginPoints": 5
+  },
+
+  "explorerMethod": null,
+  "_explorerMethod": "the DS1 method the Explorer and predict.py use; set from models/selection.json when the team records the choice (plan §11.4)",
+
   "txgpt": {
     "variants": ["raw", "relative"],
     "relativeMinScale": 0.5,
