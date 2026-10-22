@@ -1,0 +1,11 @@
+[train] text-150m on cuda (NVIDIA GeForce RTX 3060), bfloat16
+[train] model 152.6M parameters: 18 layers, d_model 768, 12 heads, context 1024, vocabulary 32768
+[train] data 2,000,417,414 training tokens; run 2,000,000,000 tokens = 7,630 steps of 262,144 (8 x 1024 x 32 accumulation)
+
+[bench] micro_batch | tokens/s | peak GPU memory | time for the full run
+[bench]          16 | out of memory
+[bench]           8 |   12,152 |   11.7 GB of 12.9 | 1d 21h 43m
+[bench]           4 |   11,967 |    7.0 GB of 12.9 | 1d 22h 25m
+[bench]           2 |   11,310 |    4.6 GB of 12.9 | 2d 1h 7m
+
+[bench] fastest that fits: "micro_batch": 4 (about 1d 22h 25m for 2,000,000,000 tokens)

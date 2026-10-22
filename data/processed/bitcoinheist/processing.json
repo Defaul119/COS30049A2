@@ -1,0 +1,37 @@
+{
+  "skewness": {
+    "length": 0.92,
+    "weight": 243.02,
+    "count": 2.93,
+    "looped": 5.52,
+    "neighbors": 293.58,
+    "income": 228.37
+  },
+  "transform": {
+    "length": "none",
+    "weight": "log1p",
+    "count": "log1p",
+    "looped": "log1p",
+    "neighbors": "log1p",
+    "income": "log10"
+  },
+  "rows_read": 2916697,
+  "exact_duplicates_removed": 0,
+  "rows": 2916697,
+  "positives": 41413,
+  "positive_share": 0.014198595191752863,
+  "temporal_last_training_year": 2016,
+  "temporal_rule": "latest year leaving at least 1000 positives in later years",
+  "leave_out_families": [
+    "paduaCryptoWall",
+    "montrealCryptoLocker",
+    "princetonCerber",
+    "princetonLocky",
+    "montrealCryptXXX"
+  ],
+  "features_excluded": [
+    "address (identifier)",
+    "year (defines splits only)",
+    "day (defines splits only)"
+  ]
+}

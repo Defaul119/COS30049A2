@@ -1,0 +1,72 @@
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\COS30049A2\explorer\esplora.py", line 91, in get_text
+    with urllib.request.urlopen(request, timeout=self.timeout_seconds) as resp:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 525, in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 634, in http_response
+    response = self.parent.error(
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 563, in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 496, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 429: Too Many Requests
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 112, in <module>
+    features = steps.add_parser("features", help="DS1: F1-F8, z-scores, scorable flag, baseline flag")
+                     ^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 102, in main
+    snapshot.add_argument("--rule-only", action="store_true",
+               ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 63, in cmd_corpus
+    params["targetAddresses"] = args.target
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 287, in run_corpus
+    tip, blocks, pool = discover(clients, params, raw_dir)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 266, in discover
+    blocks = list(ex.map(read, heights))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\concurrent\futures\_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\concurrent\futures\_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 263, in read
+    return read_block(client, height, params["txPagesPerBlock"], raw_dir / "blocks")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\snapshot.py", line 236, in read_block
+    pages = [
+            ^
+  File "C:\Users\ADMIN\COS30049A2\explorer\snapshot.py", line 237, in <listcomp>
+    json.loads(cached_get(client, f"/block/{block_hash}/txs/{start}", folder / f"txs-{start:04d}.json.gz"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\snapshot.py", line 131, in cached_get
+    text = client.get_text(api_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\esplora.py", line 106, in get_text
+    raise EsploraError(err.code, url, detail) from err
+explorer.esplora.EsploraError: 429 for https://blockstream.info/api/block/000000000000000000016841a5eba76ec535c2330a8a85016c972c91e82f4a60/txs/25: {"error":"Too Many Requests","message":"Blockstream Explorer API NOTICE: Your request rate exceeds the current limit. Starting July 15 2025, monthly unauthenticated usage will be capped at 500,000 req

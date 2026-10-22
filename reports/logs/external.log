@@ -1,0 +1,22 @@
+2026-10-22 19:46:36 INFO Step external started: C:\Users\ADMIN\COS30049A2\explorer\cli.py external --bitcoinheist
+2026-10-22 19:46:37 INFO Downloading BitcoinHeist Ransomware Address Dataset (UCI Machine Learning Repository, dataset 526) from https://archive.ics.uci.edu/static/public/526/bitcoinheistransomwareaddressdataset.zip
+2026-10-22 19:46:45 INFO   bitcoinheist.zip: 50 MB so far
+2026-10-22 19:47:05 INFO   bitcoinheist.zip: 100 MB so far
+2026-10-22 19:47:20 INFO Downloaded bitcoinheist.zip (110 MB)
+2026-10-22 19:47:21 INFO Extracted BitcoinHeistData.csv
+2026-10-22 19:47:22 INFO BitcoinHeistData.csv: 235882597 bytes, 2916698 lines, sha256 8ecc3744e444f35534a1bcabedc7a3b405fb5bbf41a752e51ee9a57987b8c438
+2026-10-22 19:47:22 INFO Wrote C:\Users\ADMIN\COS30049A2\data\processed\bitcoinheist\download.json
+2026-10-22 19:47:22 INFO Step external finished in 46 s (exit 0)
+2026-10-22 20:56:35 INFO Step external started: C:\Users\ADMIN\COS30049A2\explorer\cli.py external --elliptic
+2026-10-22 20:56:37 INFO elliptic_txs_features.csv: 689683771 bytes, 203769 lines, sha256 fd7f83573443c9e302e371d3f110e3b6224160f5d1ed8a287757936127800ff0
+2026-10-22 20:56:37 INFO elliptic_txs_classes.csv: 3305144 bytes, 203770 lines, sha256 93e2e7b2405c735ba752bf6ba06b947561deddd1f5a8fc91e46f6a4c0e439493
+2026-10-22 20:56:37 INFO elliptic_txs_edgelist.csv: 4470584 bytes, 234356 lines, sha256 a35053ba68a98e4382cae2ba65b9d9e36b23b6439e02dff084971b1b72a5156e
+2026-10-22 20:56:37 WARNING No licence recorded for elliptic: read it on https://www.kaggle.com/datasets/ellipticco/elliptic-data-set and set it in settings.json -> external
+2026-10-22 20:56:37 INFO Wrote C:\Users\ADMIN\COS30049A2\data\processed\elliptic\download.json
+2026-10-22 20:56:37 INFO Step external finished in 2 s (exit 0)
+2026-10-22 20:57:54 INFO Step external started: C:\Users\ADMIN\COS30049A2\explorer\cli.py external --elliptic
+2026-10-22 20:57:55 INFO elliptic_txs_features.csv: 689683771 bytes, 203769 lines, sha256 fd7f83573443c9e302e371d3f110e3b6224160f5d1ed8a287757936127800ff0
+2026-10-22 20:57:55 INFO elliptic_txs_classes.csv: 3305144 bytes, 203770 lines, sha256 93e2e7b2405c735ba752bf6ba06b947561deddd1f5a8fc91e46f6a4c0e439493
+2026-10-22 20:57:55 INFO elliptic_txs_edgelist.csv: 4470584 bytes, 234356 lines, sha256 a35053ba68a98e4382cae2ba65b9d9e36b23b6439e02dff084971b1b72a5156e
+2026-10-22 20:57:55 INFO Wrote C:\Users\ADMIN\COS30049A2\data\processed\elliptic\download.json
+2026-10-22 20:57:55 INFO Step external finished in 1 s (exit 0)

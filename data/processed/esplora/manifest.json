@@ -1,0 +1,58 @@
+{
+  "dataset": "DS1: Esplora snapshot of 25 main and 3 short-history Bitcoin addresses",
+  "status": "selection rule recorded; nothing fetched yet",
+  "limitation": "Unusual activity requires investigation; it does not indicate wrongdoing.",
+  "source": {
+    "name": "Blockstream Esplora",
+    "apiBase": "https://blockstream.info/api",
+    "fallbackName": "mempool.space (Esplora-compatible)",
+    "fallbackApiBase": "https://mempool.space/api",
+    "apiDocs": "https://github.com/Blockstream/esplora/blob/master/API.md"
+  },
+  "selection_rule": {
+    "steps": [
+      "Read the tip height once. Take 20 block heights spread evenly from tip - 4000 to tip - 100: about four weeks of blocks, far enough from the tip to avoid reorganisations.",
+      "From each block, take the output addresses of up to 4 pages of 25 transactions. Remove duplicates and record each address's script type.",
+      "Sort the pool, shuffle it with seed 30049, and visit candidates in that order with one /address request each, reading chain_stats.tx_count.",
+      "Main addresses: keep a candidate with 50-1000 confirmed transactions whose full history spans at least 90 days (checked after fetching). Stop at 25.",
+      "Short-history addresses: keep the first 3 candidates with 3-9 confirmed transactions.",
+      "A fetched candidate is kept only if every automated check passes. Every visited candidate is logged with the reason it was kept or skipped. Visiting stops when both targets are met."
+    ],
+    "parameters": {
+      "selectionSeed": 30049,
+      "snapshotBlockCount": 20,
+      "snapshotOldestBlockBack": 4000,
+      "snapshotNewestBlockBack": 100,
+      "snapshotTxPagesPerBlock": 4,
+      "mainMinTx": 50,
+      "mainMaxTx": 1000,
+      "mainMinSpanDays": 90,
+      "targetMainAddresses": 25,
+      "shortMinTx": 3,
+      "shortMaxTx": 9,
+      "targetShortAddresses": 3,
+      "maxTxPerAddress": 1000
+    },
+    "seed": 30049,
+    "recorded_utc": "2026-10-22T12:41:14+00:00"
+  },
+  "manual_check": {
+    "instructions": "A second team member opens one kept transaction on the block explorer, finds the address in its inputs and outputs, and confirms the received and sent values derived by explorer/amounts.py.",
+    "checked_by": null,
+    "date": null,
+    "txid": null,
+    "result": null
+  },
+  "review": {
+    "instructions": "A second team member reproduces the retrieval from the rebuild steps and reviews this manifest.",
+    "reviewed_by": null,
+    "date": null,
+    "notes": null
+  },
+  "terms": "The Esplora API documentation (https://github.com/Blockstream/esplora/blob/master/API.md) states no rate limits or terms of use. Blockstream's general Terms of Use (v1.0, 16 Jan 2018, https://blockstream.com/terms/) cover its website and services but do not mention the Explorer or its API. Since July 2025 Blockstream caps unauthenticated use at 700 requests per hour and 500,000 per month per IP (stated in its HTTP 429 reply, seen on 22 Oct 2026); when it rate-limits, requests fail over to the Esplora-compatible mempool.space for an hour, and each address records which host served it. This project sends at most two requests per second per host, only GET requests, and calls the API offline to build the snapshot. Addresses are public blockchain data; nothing here says who controls an address or why it transacts.",
+  "rebuild": [
+    "conda activate cos30049-a2",
+    "python -m explorer.cli snapshot            # re-verifies from data/raw/esplora; no network",
+    "python -m explorer.cli snapshot --refetch  # new tip: different addresses and numbers"
+  ]
+}

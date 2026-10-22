@@ -1,0 +1,7 @@
+feature,skewness,transform
+length,0.92,none
+weight,243.02,log1p
+count,2.93,log1p
+looped,5.52,log1p
+neighbors,293.58,log1p
+income,228.37,log10

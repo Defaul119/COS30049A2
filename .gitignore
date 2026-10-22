@@ -35,3 +35,7 @@ __pycache__/
 # DS3 Elliptic is CC BY-NC-ND 4.0: no processed rows may be redistributed
 data/processed/elliptic/*
 !data/processed/elliptic/download.json
+
+# Large fitted models (rebuilt by their steps). heist_best.joblib is a 276 MB random forest, over
+# GitHub's 100 MB limit; the zip will carry a smaller final model or a link with SHA-256.
+models/heist_best.joblib

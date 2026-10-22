@@ -1,0 +1,29 @@
+[data] resuming at 1,476,847,614 training tokens (1,433,600 documents done)
+[data] downloading sample/10BT/001_00000.parquet (2/14) ...
+[data] 1,498,957,260/2,000,000,000 training tokens (74.9%) | 1,454,694 tok/s | ~6 min left
+[data] downloading sample/10BT/002_00000.parquet (3/14) ...
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+[data] 1,520,429,813/2,000,000,000 training tokens (76.0%) | 462,226 tok/s | ~17 min left
+[data] 1,542,213,132/2,000,000,000 training tokens (77.1%) | 637,590 tok/s | ~12 min left
+[data] 1,563,331,873/2,000,000,000 training tokens (78.2%) | 784,886 tok/s | ~9 min left
+[data] 1,584,757,130/2,000,000,000 training tokens (79.2%) | 916,035 tok/s | ~8 min left
+[data] 1,605,612,269/2,000,000,000 training tokens (80.3%) | 1,028,784 tok/s | ~6 min left
+[data] 1,626,780,461/2,000,000,000 training tokens (81.3%) | 1,128,464 tok/s | ~6 min left
+[data] 1,648,261,282/2,000,000,000 training tokens (82.4%) | 1,219,007 tok/s | ~5 min left
+[data] 1,669,689,639/2,000,000,000 training tokens (83.5%) | 1,298,777 tok/s | ~4 min left
+[data] 1,690,636,252/2,000,000,000 training tokens (84.5%) | 1,369,369 tok/s | ~4 min left
+[data] 1,711,174,752/2,000,000,000 training tokens (85.6%) | 1,433,027 tok/s | ~3 min left
+[data] 1,731,981,849/2,000,000,000 training tokens (86.6%) | 1,480,597 tok/s | ~3 min left
+[data] 1,753,591,268/2,000,000,000 training tokens (87.7%) | 1,530,672 tok/s | ~3 min left
+[data] 1,774,652,704/2,000,000,000 training tokens (88.7%) | 1,581,644 tok/s | ~2 min left
+[data] 1,796,038,079/2,000,000,000 training tokens (89.8%) | 1,625,217 tok/s | ~2 min left
+[data] 1,817,338,014/2,000,000,000 training tokens (90.9%) | 1,664,048 tok/s | ~2 min left
+[data] 1,837,950,609/2,000,000,000 training tokens (91.9%) | 1,693,833 tok/s | ~2 min left
+[data] 1,858,552,458/2,000,000,000 training tokens (92.9%) | 1,726,340 tok/s | ~1 min left
+[data] 1,879,850,743/2,000,000,000 training tokens (94.0%) | 1,758,202 tok/s | ~1 min left
+[data] 1,901,581,574/2,000,000,000 training tokens (95.1%) | 1,787,650 tok/s | ~1 min left
+[data] 1,922,562,253/2,000,000,000 training tokens (96.1%) | 1,817,268 tok/s | ~1 min left
+[data] 1,944,193,708/2,000,000,000 training tokens (97.2%) | 1,847,363 tok/s | ~1 min left
+[data] 1,965,756,749/2,000,000,000 training tokens (98.3%) | 1,874,632 tok/s | ~0 min left
+[data] 1,986,809,349/2,000,000,000 training tokens (99.3%) | 1,899,933 tok/s | ~0 min left
+[data] done: 2,000,417,414 training + 10,001,319 validation tokens in data\text

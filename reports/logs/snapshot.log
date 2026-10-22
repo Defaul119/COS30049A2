@@ -1,0 +1,121 @@
+2026-10-22 19:41:14 INFO Step snapshot started: C:\Users\ADMIN\COS30049A2\explorer\cli.py snapshot
+2026-10-22 19:41:14 INFO Selection rule written to C:\Users\ADMIN\COS30049A2\data\processed\esplora\manifest.json (recorded 2026-10-22T12:41:14+00:00)
+2026-10-22 19:41:15 INFO Tip height 972615
+2026-10-22 19:41:25 INFO Block 968615: 4 pages read, 84 new candidates (pool 84)
+2026-10-22 19:41:36 INFO Block 968820: 4 pages read, 224 new candidates (pool 308)
+2026-10-22 19:41:46 INFO Block 969026: 4 pages read, 207 new candidates (pool 515)
+2026-10-22 19:41:58 INFO Block 969231: 4 pages read, 251 new candidates (pool 766)
+2026-10-22 19:42:10 INFO Block 969436: 4 pages read, 201 new candidates (pool 967)
+2026-10-22 19:42:20 INFO Block 969641: 4 pages read, 188 new candidates (pool 1155)
+2026-10-22 19:42:32 INFO Block 969847: 4 pages read, 117 new candidates (pool 1272)
+2026-10-22 19:42:43 INFO Block 970052: 4 pages read, 203 new candidates (pool 1475)
+2026-10-22 19:42:53 INFO Block 970257: 4 pages read, 220 new candidates (pool 1695)
+2026-10-22 19:43:06 INFO Block 970462: 4 pages read, 246 new candidates (pool 1941)
+2026-10-22 19:43:20 INFO Block 970668: 4 pages read, 204 new candidates (pool 2145)
+2026-10-22 19:43:35 INFO Block 970873: 4 pages read, 195 new candidates (pool 2340)
+2026-10-22 19:43:44 INFO Block 971078: 4 pages read, 280 new candidates (pool 2620)
+2026-10-22 19:43:55 INFO Block 971283: 4 pages read, 265 new candidates (pool 2885)
+2026-10-22 19:44:10 INFO Block 971489: 4 pages read, 200 new candidates (pool 3085)
+2026-10-22 19:44:23 INFO Block 971694: 4 pages read, 187 new candidates (pool 3272)
+2026-10-22 19:44:33 INFO Block 971899: 4 pages read, 244 new candidates (pool 3516)
+2026-10-22 19:44:54 INFO Block 972104: 4 pages read, 1984 new candidates (pool 5500)
+2026-10-22 19:45:04 INFO Block 972310: 4 pages read, 210 new candidates (pool 5710)
+2026-10-22 19:45:14 INFO Block 972515: 4 pages read, 285 new candidates (pool 5995)
+2026-10-22 19:45:21 INFO Candidate 1 bc1qx2stewzm2cel6ytwzraxt9z4d9vlh8e5gdnun6: 8 tx, short -> kept
+2026-10-22 19:45:36 INFO Candidate 2 bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd: 117 tx, main -> kept
+2026-10-22 19:46:43 INFO Candidate 6 1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT: 248 tx, main -> kept
+2026-10-22 19:46:57 INFO Candidate 7 bc1q4mj77xnsydlrtkrk092xylkv3cyddwddgp9dvj: 4 tx, short -> kept
+2026-10-22 19:47:06 INFO Candidate 9 1GqdEHU3qyDvq5BkuuLWQECHoUVRw4rU39: 3 tx, short -> kept
+2026-10-22 19:47:55 INFO Candidate 10 bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3: 507 tx, main -> kept
+2026-10-22 19:51:26 INFO Candidate 15 3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz: 349 tx, main -> kept
+2026-10-22 19:52:41 INFO Candidate 18 bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf: 273 tx, main -> kept
+2026-10-22 19:54:17 INFO Candidate 21 bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755: 225 tx, main -> kept
+2026-10-22 19:55:57 INFO Candidate 24 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz: 377 tx, main -> kept
+2026-10-22 19:56:28 INFO Candidate 26 bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6: 289 tx, main -> kept
+2026-10-22 19:56:47 INFO Candidate 28 bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5: 180 tx, main -> kept
+2026-10-22 19:58:43 INFO Candidate 30 1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW: 284 tx, main -> kept
+2026-10-22 20:05:58 INFO Candidate 31 bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5: 305 tx, main -> kept
+2026-10-22 20:11:06 INFO Candidate 32 bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w: 222 tx, main -> kept
+2026-10-22 20:30:04 INFO Step snapshot started: C:\Users\ADMIN\COS30049A2\explorer\cli.py snapshot
+2026-10-22 20:30:04 INFO Selection rule written to C:\Users\ADMIN\COS30049A2\data\processed\esplora\manifest.json (recorded 2026-10-22T12:41:14+00:00)
+2026-10-22 20:30:04 INFO Tip height 972615
+2026-10-22 20:30:04 INFO Block 968615: 4 pages read, 84 new candidates (pool 84)
+2026-10-22 20:30:04 INFO Block 968820: 4 pages read, 224 new candidates (pool 308)
+2026-10-22 20:30:04 INFO Block 969026: 4 pages read, 207 new candidates (pool 515)
+2026-10-22 20:30:04 INFO Block 969231: 4 pages read, 251 new candidates (pool 766)
+2026-10-22 20:30:04 INFO Block 969436: 4 pages read, 201 new candidates (pool 967)
+2026-10-22 20:30:04 INFO Block 969641: 4 pages read, 188 new candidates (pool 1155)
+2026-10-22 20:30:04 INFO Block 969847: 4 pages read, 117 new candidates (pool 1272)
+2026-10-22 20:30:04 INFO Block 970052: 4 pages read, 203 new candidates (pool 1475)
+2026-10-22 20:30:04 INFO Block 970257: 4 pages read, 220 new candidates (pool 1695)
+2026-10-22 20:30:04 INFO Block 970462: 4 pages read, 246 new candidates (pool 1941)
+2026-10-22 20:30:04 INFO Block 970668: 4 pages read, 204 new candidates (pool 2145)
+2026-10-22 20:30:04 INFO Block 970873: 4 pages read, 195 new candidates (pool 2340)
+2026-10-22 20:30:04 INFO Block 971078: 4 pages read, 280 new candidates (pool 2620)
+2026-10-22 20:30:04 INFO Block 971283: 4 pages read, 265 new candidates (pool 2885)
+2026-10-22 20:30:04 INFO Block 971489: 4 pages read, 200 new candidates (pool 3085)
+2026-10-22 20:30:04 INFO Block 971694: 4 pages read, 187 new candidates (pool 3272)
+2026-10-22 20:30:04 INFO Block 971899: 4 pages read, 244 new candidates (pool 3516)
+2026-10-22 20:30:04 INFO Block 972104: 4 pages read, 1984 new candidates (pool 5500)
+2026-10-22 20:30:04 INFO Block 972310: 4 pages read, 210 new candidates (pool 5710)
+2026-10-22 20:30:04 INFO Block 972515: 4 pages read, 285 new candidates (pool 5995)
+2026-10-22 20:30:04 INFO Candidate 1 bc1qx2stewzm2cel6ytwzraxt9z4d9vlh8e5gdnun6: 8 tx, short -> kept
+2026-10-22 20:30:04 INFO Candidate 2 bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd: 117 tx, main -> kept
+2026-10-22 20:30:04 INFO Candidate 6 1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT: 248 tx, main -> kept
+2026-10-22 20:30:04 INFO Candidate 7 bc1q4mj77xnsydlrtkrk092xylkv3cyddwddgp9dvj: 4 tx, short -> kept
+2026-10-22 20:30:04 INFO Candidate 9 1GqdEHU3qyDvq5BkuuLWQECHoUVRw4rU39: 3 tx, short -> kept
+2026-10-22 20:30:04 INFO Candidate 10 bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3: 507 tx, main -> kept
+2026-10-22 20:30:06 INFO Candidate 15 3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz: 349 tx, main -> kept
+2026-10-22 20:30:07 INFO Candidate 18 bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf: 273 tx, main -> kept
+2026-10-22 20:30:08 INFO Candidate 21 bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755: 225 tx, main -> kept
+2026-10-22 20:30:09 INFO Candidate 24 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz: 377 tx, main -> kept
+2026-10-22 20:30:09 INFO Candidate 26 bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6: 289 tx, main -> kept
+2026-10-22 20:30:09 INFO Candidate 28 bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5: 180 tx, main -> kept
+2026-10-22 20:30:10 INFO Candidate 30 1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW: 284 tx, main -> kept
+2026-10-22 20:30:12 INFO Candidate 31 bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5: 305 tx, main -> kept
+2026-10-22 20:30:13 INFO Candidate 32 bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w: 222 tx, main -> kept
+2026-10-22 20:30:49 WARNING https://blockstream.info/api is rate-limiting; using https://mempool.space/api for the next 60 min
+2026-10-22 20:38:51 INFO Step snapshot interrupted after 527 s; run the same command to resume
+2026-10-22 20:43:37 INFO Step snapshot started: C:\Users\ADMIN\COS30049A2\explorer\cli.py snapshot
+2026-10-22 20:43:37 INFO Selection rule written to C:\Users\ADMIN\COS30049A2\data\processed\esplora\manifest.json (recorded 2026-10-22T12:41:14+00:00)
+2026-10-22 20:43:37 INFO Tip height 972615
+2026-10-22 20:43:37 INFO Block 968615: 4 pages read, 84 new candidates (pool 84)
+2026-10-22 20:43:37 INFO Block 968820: 4 pages read, 224 new candidates (pool 308)
+2026-10-22 20:43:37 INFO Block 969026: 4 pages read, 207 new candidates (pool 515)
+2026-10-22 20:43:37 INFO Block 969231: 4 pages read, 251 new candidates (pool 766)
+2026-10-22 20:43:37 INFO Block 969436: 4 pages read, 201 new candidates (pool 967)
+2026-10-22 20:43:37 INFO Block 969641: 4 pages read, 188 new candidates (pool 1155)
+2026-10-22 20:43:37 INFO Block 969847: 4 pages read, 117 new candidates (pool 1272)
+2026-10-22 20:43:37 INFO Block 970052: 4 pages read, 203 new candidates (pool 1475)
+2026-10-22 20:43:37 INFO Block 970257: 4 pages read, 220 new candidates (pool 1695)
+2026-10-22 20:43:37 INFO Block 970462: 4 pages read, 246 new candidates (pool 1941)
+2026-10-22 20:43:37 INFO Block 970668: 4 pages read, 204 new candidates (pool 2145)
+2026-10-22 20:43:37 INFO Block 970873: 4 pages read, 195 new candidates (pool 2340)
+2026-10-22 20:43:37 INFO Block 971078: 4 pages read, 280 new candidates (pool 2620)
+2026-10-22 20:43:37 INFO Block 971283: 4 pages read, 265 new candidates (pool 2885)
+2026-10-22 20:43:37 INFO Block 971489: 4 pages read, 200 new candidates (pool 3085)
+2026-10-22 20:43:37 INFO Block 971694: 4 pages read, 187 new candidates (pool 3272)
+2026-10-22 20:43:37 INFO Block 971899: 4 pages read, 244 new candidates (pool 3516)
+2026-10-22 20:43:37 INFO Block 972104: 4 pages read, 1984 new candidates (pool 5500)
+2026-10-22 20:43:37 INFO Block 972310: 4 pages read, 210 new candidates (pool 5710)
+2026-10-22 20:43:37 INFO Block 972515: 4 pages read, 285 new candidates (pool 5995)
+2026-10-22 20:43:37 INFO Candidate 1 bc1qx2stewzm2cel6ytwzraxt9z4d9vlh8e5gdnun6: 8 tx, short -> kept
+2026-10-22 20:43:37 INFO Candidate 2 bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd: 117 tx, main -> kept
+2026-10-22 20:43:38 INFO Candidate 6 1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT: 248 tx, main -> kept
+2026-10-22 20:43:38 INFO Candidate 7 bc1q4mj77xnsydlrtkrk092xylkv3cyddwddgp9dvj: 4 tx, short -> kept
+2026-10-22 20:43:38 INFO Candidate 9 1GqdEHU3qyDvq5BkuuLWQECHoUVRw4rU39: 3 tx, short -> kept
+2026-10-22 20:43:38 INFO Candidate 10 bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3: 507 tx, main -> kept
+2026-10-22 20:43:39 INFO Candidate 15 3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz: 349 tx, main -> kept
+2026-10-22 20:43:40 INFO Candidate 18 bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf: 273 tx, main -> kept
+2026-10-22 20:43:42 INFO Candidate 21 bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755: 225 tx, main -> kept
+2026-10-22 20:43:44 INFO Candidate 24 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz: 377 tx, main -> kept
+2026-10-22 20:43:44 INFO Candidate 26 bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6: 289 tx, main -> kept
+2026-10-22 20:43:44 INFO Candidate 28 bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5: 180 tx, main -> kept
+2026-10-22 20:43:46 INFO Candidate 30 1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW: 284 tx, main -> kept
+2026-10-22 20:43:51 INFO Candidate 31 bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5: 305 tx, main -> kept
+2026-10-22 20:43:54 INFO Candidate 32 bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w: 222 tx, main -> kept
+2026-10-22 20:44:32 WARNING https://blockstream.info/api is rate-limiting; using https://mempool.space/api for the next 60 min
+2026-10-22 20:49:35 INFO Candidate 33 1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku: 426 tx, main -> kept
+2026-10-22 21:02:50 INFO Candidate 34 36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L: 700 tx, main -> kept
+2026-10-22 21:04:25 INFO Candidate 35 bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64: 128 tx, main -> kept
+2026-10-22 21:16:50 INFO Candidate 43 3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D: 677 tx, main -> kept

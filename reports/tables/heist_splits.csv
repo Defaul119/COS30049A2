@@ -1,0 +1,11 @@
+scheme,part,rows,positives,positive_share
+temporal,fit,1837577,22293,0.01213
+temporal,val,380631,15631,0.04107
+temporal,test,698489,3489,0.005
+temporal,"fit, downsampled",245223,22293,0.09091
+temporal,"fit + val, downsampled",417164,37924,0.09091
+random,fit,2100021,29817,0.0142
+random,val,233336,3313,0.0142
+random,test,583340,8283,0.0142
+random,"fit, downsampled",327987,29817,0.09091
+random,"fit + val, downsampled",364430,33130,0.09091

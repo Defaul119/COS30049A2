@@ -1,0 +1,6 @@
+2026-10-22 20:23:59 INFO Step process-external started: C:\Users\ADMIN\COS30049A2\explorer\cli.py process-external
+2026-10-22 20:24:02 INFO Read C:\Users\ADMIN\COS30049A2\data\external\bitcoinheist\BitcoinHeistData.csv: 2916697 rows
+2026-10-22 20:24:08 INFO Temporal split: train to 2016, test after; leave-out families ['paduaCryptoWall', 'montrealCryptoLocker', 'princetonCerber', 'princetonLocky', 'montrealCryptXXX']
+2026-10-22 20:24:08 INFO Transforms: {'length': 'none', 'weight': 'log1p', 'count': 'log1p', 'looped': 'log1p', 'neighbors': 'log1p', 'income': 'log10'}
+2026-10-22 20:24:08 INFO Wrote C:\Users\ADMIN\COS30049A2\data\processed\bitcoinheist\rows.parquet, processing.json and reports/tables/heist_*.csv
+2026-10-22 20:24:08 INFO Step process-external finished in 9 s (exit 0)
