@@ -1,10 +1,11 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-22 21:16 GMT+7)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-22 21:25 GMT+7)
 =====================================================================================
 
 USER PREFERENCES
 - Finish A2 as fast as possible at the highest quality; ignore the plan's calendar dates, keep its content and rules.
 - Commits: author Defaul119, NO Co-Authored-By / AI lines. Run `python -m pytest -q` (cos30049-a2 env) and check
-  its EXIT CODE before every commit (piping into tail hides failures). Do not push to GitHub unless the user says so.
+  its EXIT CODE before every commit (piping into tail hides failures). The user approved pushing on 22 Oct
+  (pushed up to c5c80ce); push again when they ask.
 - The user follows progress on the live tracker: https://claude.ai/artifact/NFVrJdEAcT2iLotZTx2J5e
   (db docs: meta/now {text, updated}, meta/log {entries[{time,text}]}, jobs/<id> {order,name,value,total,unit,
   status running|done|idle,note,updated}, steps/sNN {order,phase,title,detail,status done|running|next|waiting|
@@ -63,5 +64,7 @@ RESULTS SO FAR (numbers are in reports/tables/*.csv; quote those, never these)
 
 WAITING ON THE USER / TEAM
 - Pause Windows Update 2 weeks; GPU cooling; tutor's name; copy _context/ from the Mac; CR-06 + tutor messages;
-  Cam Dan Bui's DS1 manifest review + manual tx check; whether to push to GitHub; optional Blockstream API key.
+  Cam Dan Bui's DS1 manifest review + manual tx check; optional Blockstream API key.
+- models/heist_best.joblib (276 MB RF) is git-ignored: over GitHub's 100 MB limit; pick a smaller final DS4
+  model or ship a link + SHA-256 when packaging.
 - A second Claude session (admin-17) did the Elliptic download only; it has ended.
