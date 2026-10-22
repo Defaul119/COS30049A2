@@ -225,13 +225,19 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
     ]
     if TXGPT_SCORES.exists():
         steps.append(("txgpt", run_txgpt))
+    else:
+        log.info("Skipping txgpt: no %s yet (python -m lm.tx_score)", TXGPT_SCORES)
     steps += [("scores", run_scores), ("evaluate", run_evaluate)]
     if (EXTERNAL_DIR / "bitcoinheist" / "BitcoinHeistData.csv").exists():
         steps += [("process-external (DS4)", run_process_heist),
                   ("classify --dataset heist", lambda: run_classify_heist(["temporal", "random", "lofo"]))]
+    else:
+        log.info("Skipping DS4: not downloaded (python -m explorer.cli external --bitcoinheist)")
     if (EXTERNAL_DIR / "elliptic" / "elliptic_txs_features.csv").exists():
         steps += [("process-external (DS3)", run_process_elliptic),
                   ("classify --dataset elliptic", run_classify_elliptic)]
+    else:
+        log.info("Skipping DS3: not downloaded (python -m explorer.cli external --elliptic)")
     return steps
 
 
