@@ -131,9 +131,9 @@ def cmd_scores(args: argparse.Namespace) -> int:
 
 
 def cmd_process_external(args: argparse.Namespace) -> int:
-    from .labelled import run_process_heist
+    from .labelled import run_process_elliptic, run_process_heist
 
-    return run_process_heist()
+    return run_process_heist() or run_process_elliptic()
 
 
 def cmd_classify(args: argparse.Namespace) -> int:
@@ -141,7 +141,9 @@ def cmd_classify(args: argparse.Namespace) -> int:
 
     if args.dataset == "heist":
         return run_classify_heist(args.splits.split(","), force=args.force)
-    raise SystemExit("Elliptic needs its download first (python -m explorer.cli external --elliptic)")
+    from .classify import run_classify_elliptic
+
+    return run_classify_elliptic(force=args.force)
 
 
 def cmd_external(args: argparse.Namespace) -> int:
@@ -186,7 +188,7 @@ def build_parser() -> argparse.ArgumentParser:
     steps.add_parser("scores", help="DS1: every saved method's score and flag per transaction").set_defaults(
         func=cmd_scores)
 
-    steps.add_parser("process-external", help="DS4: labels, transforms and split schemes").set_defaults(
+    steps.add_parser("process-external", help="DS3/DS4: joins, labels, transforms and split schemes").set_defaults(
         func=cmd_process_external)
     classify = steps.add_parser("classify", help="DS3/DS4: search, threshold, refit, test once")
     classify.add_argument("--dataset", choices=["heist", "elliptic"], required=True)

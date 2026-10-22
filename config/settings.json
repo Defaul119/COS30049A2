@@ -172,6 +172,12 @@
     "patternsMeetingTarget": 2
   },
 
+  "elliptic": {
+    "_about": "DS3 processing (plan §6.3): Weber et al. (2019) temporal split; tuning stays inside the training steps.",
+    "fitLastStep": 26,
+    "trainLastStep": 34
+  },
+
   "bitcoinheist": {
     "_about": "DS4 processing (plan §6.4). Features exclude address, year and day; year only defines splits.",
     "seed": 30049,
@@ -193,6 +199,7 @@
     "nJobs": 10,
     "nIter": 30,
     "rfMaxSamples": 100000,
+    "knnKdTreeMinRows": 100000,
     "_rfMaxSamples": "rows drawn for each tree's bootstrap; bounds memory and time on DS4 (the plan's grid grows full-depth trees on ~400k rows, several GB for 600 trees)",
     "logistic": { "C": [0.001, 0.01, 0.1, 1, 10, 100], "class_weight": [null, "balanced"], "max_iter": 2000 },
     "knn": { "n_neighbors": [3, 5, 9, 15, 25, 41], "weights": ["uniform", "distance"], "p": [1, 2] },

@@ -31,6 +31,8 @@ import joblib
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
+from sklearn.feature_selection import VarianceThreshold
+from sklearn.inspection import permutation_importance
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
     accuracy_score, average_precision_score, confusion_matrix, f1_score, precision_recall_curve,
@@ -41,7 +43,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from .labelled import HEIST_DIR, TEST, VAL
+from .labelled import ELLIPTIC_DIR, FEATURE_SETS, FIT, HEIST_DIR, TEST, VAL
 from .settings import PROJECT_ROOT, SETTINGS
 
 log = logging.getLogger(__name__)
@@ -57,22 +59,25 @@ FULL_GRID = {"logistic", "knn"}  # small grids are searched exhaustively; the re
 
 
 def make_model(kind: str, params: dict[str, Any], cfg: dict[str, Any], n_rows: int) -> Pipeline:
-    """A Pipeline for one configuration. Distance- and gradient-based models get a scaler inside it."""
+    """A Pipeline for one configuration. Constant columns are dropped first, inside the Pipeline, so
+    only training rows decide what is constant; distance- and gradient-based models get a scaler."""
     seed, n_jobs = cfg["seed"], cfg["nJobs"]
+    drop = ("drop_constant", VarianceThreshold(0.0))
     if kind == "logistic":
         model = LogisticRegression(C=params["C"], class_weight=params["class_weight"], max_iter=cfg["logistic"]["max_iter"])
-        return Pipeline([("scale", StandardScaler()), ("model", model)])
+        return Pipeline([drop, ("scale", StandardScaler()), ("model", model)])
     if kind == "knn":
+        # KD-trees lose their edge in many dimensions, so the 167-feature Elliptic sets use the default search.
         model = KNeighborsClassifier(n_neighbors=params["n_neighbors"], weights=params["weights"], p=params["p"],
-                                     algorithm="kd_tree", n_jobs=n_jobs)
-        return Pipeline([("scale", StandardScaler()), ("model", model)])
+                                     algorithm="kd_tree" if n_rows > cfg["knnKdTreeMinRows"] else "auto", n_jobs=n_jobs)
+        return Pipeline([drop, ("scale", StandardScaler()), ("model", model)])
     if kind == "randomForest":
         model = RandomForestClassifier(**params, max_samples=min(cfg["rfMaxSamples"], n_rows), n_jobs=n_jobs,
                                        random_state=seed)
-        return Pipeline([("model", model)])
+        return Pipeline([drop, ("model", model)])
     if kind == "histGradientBoosting":
         model = HistGradientBoostingClassifier(**params, early_stopping=True, random_state=seed)
-        return Pipeline([("model", model)])
+        return Pipeline([drop, ("model", model)])
     raise ValueError(f"unknown model kind {kind}")
 
 
@@ -244,4 +249,71 @@ def write_heist_tables(out_dir: Path, features: list[str], tables_dir: Path = TA
         pd.DataFrame(lofo).to_csv(tables_dir / "heist_lofo.csv", index=False)
     log.info("Wrote reports/tables/heist_results.csv (%d rows), heist_tuning.csv, heist_lofo.csv (%d rows)",
              len(results), len(lofo))
+    return 0
+
+
+# -- Elliptic ---------------------------------------------------------------------------------
+
+
+def run_classify_elliptic(force: bool = False, rows_path: Path = ELLIPTIC_DIR / "rows.parquet") -> int:
+    """Both feature sets x four models on Elliptic's temporal split (plan §9.4), F1 per test time
+    step, and permutation importance for the best model. Models stay in data/interim (the licence
+    forbids sharing derivatives); only metrics go to reports/tables."""
+    cfg = SETTINGS["classification"]
+    rows = pd.read_parquet(rows_path)
+    rows = rows[rows["y"].notna()].assign(y=lambda f: f["y"].astype(int))
+    fit, val, test = (rows[rows["period"] == part] for part in (FIT, VAL, TEST))
+    train = rows[rows["period"].isin([FIT, VAL])]
+    out_dir = INTERIM_DIR / "elliptic"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    log.info("Elliptic: fit %d, val %d, train %d, test %d labelled rows", len(fit), len(val), len(train), len(test))
+    for fs, features in FEATURE_SETS.items():
+        for kind in MODEL_KINDS:
+            done = out_dir / f"{fs}_{kind}.json"
+            if done.exists() and not force:
+                log.info("%s/%s already done; skipping (use --force to redo)", fs, kind)
+                continue
+            result, tuning, model, p_test = search_and_evaluate(kind, features, fit, val, train, test, cfg, None)
+            np.save(out_dir / f"{fs}_{kind}_test_scores.npy", p_test.astype("float32"))
+            joblib.dump(model, out_dir / f"{fs}_{kind}.joblib", compress=3)
+            pd.DataFrame(tuning).assign(feature_set=fs).to_csv(out_dir / f"{fs}_{kind}_tuning.csv", index=False)
+            done.write_text(json.dumps({"feature_set": fs, **result}, indent=2), encoding="utf-8")
+            log.info("%s/%s: test F1 %.4f, precision %.4f, recall %.4f, PR-AUC %.4f", fs, kind, result["f1"],
+                     result["precision"], result["recall"], result["pr_auc"])
+    return write_elliptic_tables(out_dir, test)
+
+
+def write_elliptic_tables(out_dir: Path, test: pd.DataFrame, tables_dir: Path = TABLES_DIR) -> int:
+    results = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(out_dir.glob("*_*.json"))]
+    table = pd.DataFrame(results)
+    table["params"] = table["params"].map(json.dumps)
+    tables_dir.mkdir(parents=True, exist_ok=True)
+    table.to_csv(tables_dir / "elliptic_results.csv", index=False)
+    pd.concat([pd.read_csv(p) for p in sorted(out_dir.glob("*_tuning.csv"))], ignore_index=True).to_csv(
+        tables_dir / "elliptic_tuning.csv", index=False)
+
+    # F1 per test time step at each model's fixed threshold: shows the drift Weber et al. describe.
+    steps = []
+    for r in results:
+        p = np.load(out_dir / f"{r['feature_set']}_{r['model']}_test_scores.npy")
+        frame = test.assign(pred=(p >= r["threshold"]).astype(int))
+        for step, g in frame.groupby("time_step"):
+            steps.append({"feature_set": r["feature_set"], "model": r["model"], "time_step": int(step),
+                          "f1": f1_score(g["y"], g["pred"], zero_division=0), "illicit": int(g["y"].sum()),
+                          "rows": len(g)})
+    pd.DataFrame(steps).to_csv(tables_dir / "elliptic_f1_by_step.csv", index=False)
+
+    # Permutation importance (top 15, drop in PR-AUC on the test set) for the best model by validation F1.
+    best = max(results, key=lambda r: r["val_f1"])
+    model = joblib.load(out_dir / f"{best['feature_set']}_{best['model']}.joblib")
+    features = FEATURE_SETS[best["feature_set"]]
+    imp = permutation_importance(model, test[features], test["y"], scoring="average_precision", n_repeats=5,
+                                 random_state=SETTINGS["classification"]["seed"], n_jobs=SETTINGS["classification"]["nJobs"])
+    order = np.argsort(-imp.importances_mean)[:15]
+    pd.DataFrame({"feature": [features[i] for i in order], "pr_auc_drop_mean": imp.importances_mean[order],
+                  "pr_auc_drop_sd": imp.importances_std[order], "model": f"{best['feature_set']} {best['model']}"}).to_csv(
+        tables_dir / "elliptic_importance.csv", index=False)
+    log.info("Best Elliptic model: %s %s (validation F1 %.4f, test F1 %.4f); wrote elliptic_results.csv, "
+             "elliptic_tuning.csv, elliptic_f1_by_step.csv, elliptic_importance.csv",
+             best["feature_set"], best["model"], best["val_f1"], best["f1"])
     return 0

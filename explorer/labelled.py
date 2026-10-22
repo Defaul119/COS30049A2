@@ -1,4 +1,6 @@
-"""DS4 (BitcoinHeist) processing: labels, transforms and the three split schemes.
+"""Processing of the labelled datasets: DS4 (BitcoinHeist) and DS3 (Elliptic).
+
+DS4: labels, transforms and the three split schemes.
 
 Serves plan §6.4 (docs/plan/sections/s06-processing.tex) and report criterion 1. Every decision the
 plan leaves to "the analysis" is made here by a written rule and recorded with the numbers behind
@@ -25,6 +27,11 @@ it in data/processed/bitcoinheist/processing.json:
 Reads data/external/bitcoinheist/BitcoinHeistData.csv; writes data/processed/bitcoinheist/rows.parquet
 (git-ignored, rebuilt by this step), data/processed/bitcoinheist/processing.json and
 reports/tables/heist_{years,families,skew,splits}.csv.
+
+DS3 (process_elliptic): the features-classes join, in/out degree from the edge list, the temporal
+split, and the LF/AF feature sets. Elliptic is CC BY-NC-ND 4.0, so its processed rows stay on this
+machine (data/processed/elliptic/ is git-ignored apart from download.json); only counts are written
+to reports/tables/elliptic_{steps,summary}.csv.
 """
 from __future__ import annotations
 
@@ -179,4 +186,76 @@ def run_process_heist(csv_path: Path = HEIST_CSV, out_dir: Path = HEIST_DIR, tab
              decisions["temporal_last_training_year"], decisions["leave_out_families"])
     log.info("Transforms: %s", decisions["transform"])
     log.info("Wrote %s, processing.json and reports/tables/heist_*.csv", out_dir / "rows.parquet")
+    return 0
+
+
+# -- DS3 Elliptic -------------------------------------------------------------------------
+
+ELLIPTIC_RAW = EXTERNAL_DIR / "elliptic"
+ELLIPTIC_DIR = PROCESSED_DIR / "elliptic"
+LOCAL = [f"local_{i:02d}" for i in range(1, 94)]
+AGG = [f"agg_{i:02d}" for i in range(1, 73)]
+DEGREES = ["in_degree", "out_degree"]
+FEATURE_SETS = {"LF": LOCAL + DEGREES, "AF": LOCAL + AGG + DEGREES}
+
+
+def process_elliptic(features: pd.DataFrame, classes: pd.DataFrame, edges: pd.DataFrame,
+                     params: dict[str, Any]) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Join, label and split Elliptic (plan §6.3). Returns the rows and the decisions record.
+
+    * classes: 1 (illicit) -> 1, 2 (licit) -> 0, unknown -> missing; unlabelled rows are kept for
+      the label-free checks but never trained or tested on.
+    * the edge list adds in- and out-degree per transaction: a genuine dataset join.
+    * time_step is never a feature; it only defines the split: tuning fits on steps up to
+      fitLastStep and validates up to trainLastStep; the final model trains on steps up to
+      trainLastStep and is tested once on the later steps (Weber et al. 2019).
+    """
+    out = features.merge(classes, on="txId", how="left", validate="one_to_one")
+    out["y"] = out["class"].map({"1": 1.0, "2": 0.0, 1: 1.0, 2: 0.0})
+    in_deg = edges.groupby("txId2").size()
+    out_deg = edges.groupby("txId1").size()
+    out["in_degree"] = out["txId"].map(in_deg).fillna(0).astype("float32")
+    out["out_degree"] = out["txId"].map(out_deg).fillna(0).astype("float32")
+    fit_last, train_last = params["fitLastStep"], params["trainLastStep"]
+    out["period"] = np.where(out["time_step"] <= fit_last, FIT,
+                             np.where(out["time_step"] <= train_last, VAL, TEST))
+    labelled = out["y"].notna()
+    by_step = out.groupby("time_step")["class"].value_counts().unstack(fill_value=0)
+    decisions = {
+        "rows": len(out), "edges": len(edges), "labelled": int(labelled.sum()),
+        "illicit": int((out["y"] == 1).sum()), "licit": int((out["y"] == 0).sum()),
+        "unknown": int((~labelled).sum()), "classes_missing_after_join": int(out["class"].isna().sum()),
+        "missing_feature_values": int(out[LOCAL + AGG].isna().sum().sum()),
+        "time_steps": [int(out["time_step"].min()), int(out["time_step"].max())],
+        "split": {"fit_steps": [1, fit_last], "val_steps": [fit_last + 1, train_last],
+                  "test_steps": [train_last + 1, int(out["time_step"].max())]},
+        "feature_sets": {k: len(v) for k, v in FEATURE_SETS.items()},
+        "constant_columns_handling": "dropped inside each model Pipeline (VarianceThreshold), so only training rows decide",
+        "licence_note": SETTINGS["external"]["elliptic"]["_licence"],
+    }
+    for part in (FIT, VAL, TEST):
+        sel = out[(out["period"] == part) & labelled]
+        decisions[f"{part}_labelled"] = len(sel)
+        decisions[f"{part}_illicit_share"] = round(float(sel["y"].mean()), 4)
+    return out, decisions | {"by_step": by_step.reset_index().to_dict("list")}
+
+
+def run_process_elliptic(raw: Path = ELLIPTIC_RAW, out_dir: Path = ELLIPTIC_DIR, tables_dir: Path = TABLES_DIR) -> int:
+    names = ["txId", "time_step"] + LOCAL + AGG
+    features = pd.read_csv(raw / "elliptic_txs_features.csv", header=None, names=names,
+                           dtype={c: "float32" for c in LOCAL + AGG})
+    classes = pd.read_csv(raw / "elliptic_txs_classes.csv", dtype={"class": str})
+    edges = pd.read_csv(raw / "elliptic_txs_edgelist.csv")
+    log.info("Read Elliptic: %d transactions, %d classes, %d edges", len(features), len(classes), len(edges))
+    out, decisions = process_elliptic(features, classes, edges, SETTINGS["elliptic"])
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out.to_parquet(out_dir / "rows.parquet", index=False)  # local only: the licence forbids sharing derivatives
+    by_step = pd.DataFrame(decisions.pop("by_step")).rename(columns={"1": "illicit", "2": "licit"})
+    (out_dir / "processing.json").write_text(json.dumps(decisions, indent=2) + "\n", encoding="utf-8")
+    tables_dir.mkdir(parents=True, exist_ok=True)
+    by_step.to_csv(tables_dir / "elliptic_steps.csv", index=False)  # counts only, not data rows
+    pd.DataFrame([{k: v for k, v in decisions.items() if not isinstance(v, (dict, list, str))}]).to_csv(
+        tables_dir / "elliptic_summary.csv", index=False)
+    log.info("Elliptic: %d labelled (%d illicit); fit %d, val %d, test %d labelled rows", decisions["labelled"],
+             decisions["illicit"], decisions["fit_labelled"], decisions["val_labelled"], decisions["test_labelled"])
     return 0

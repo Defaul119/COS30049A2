@@ -85,3 +85,22 @@ class ProtocolTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EllipticTests(unittest.TestCase):
+    def test_join_degrees_labels_and_split(self):
+        names = ["txId", "time_step"] + labelled.LOCAL + labelled.AGG
+        rng = np.random.default_rng(0)
+        features = pd.DataFrame(rng.normal(size=(4, len(names))), columns=names)
+        features["txId"] = [10, 11, 12, 13]
+        features["time_step"] = [1, 27, 35, 49]
+        classes = pd.DataFrame({"txId": [10, 11, 12, 13], "class": ["1", "2", "unknown", "2"]})
+        edges = pd.DataFrame({"txId1": [10, 10, 11], "txId2": [11, 12, 12]})
+        out, decisions = labelled.process_elliptic(features, classes, edges, SETTINGS["elliptic"])
+        self.assertEqual(out["y"].tolist()[:2], [1.0, 0.0])
+        self.assertTrue(np.isnan(out["y"].iloc[2]))
+        self.assertEqual(out["out_degree"].tolist(), [2, 1, 0, 0])
+        self.assertEqual(out["in_degree"].tolist(), [0, 1, 2, 0])
+        self.assertEqual(out["period"].tolist(), [labelled.FIT, labelled.VAL, labelled.TEST, labelled.TEST])
+        self.assertNotIn("time_step", labelled.FEATURE_SETS["AF"])
+        self.assertEqual((decisions["labelled"], decisions["illicit"]), (3, 1))
