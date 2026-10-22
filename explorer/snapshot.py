@@ -36,14 +36,14 @@ import math
 import random
 import shutil
 import statistics
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from functools import cached_property
 from pathlib import Path
 from typing import Any
 
 from .amounts import AddressFlow, address_flow
-from .esplora import PAGE_SIZE, EsploraClient, EsploraError
+from .esplora import PAGE_SIZE, EsploraClient, EsploraEndpoints, EsploraError
 from .settings import PROJECT_ROOT, SETTINGS
 
 log = logging.getLogger(__name__)
@@ -58,6 +58,7 @@ TIP_FILE = "tip-height.txt.gz"
 CANDIDATES_FILE = "candidates.jsonl"
 RUNS_FILE = "runs.jsonl"
 STATS_FILE = "address.json.gz"  # written last, so its presence marks a complete history
+SOURCES_FILE = "sources.json"  # which host served each page (failover can switch mid-history)
 FALLBACK_PAGE_FILE = "mempool-page-001.json.gz"
 
 SECONDS_PER_DAY = 86_400
@@ -90,8 +91,11 @@ FIELDS_USED = [
 TERMS_NOTE = (
     "The Esplora API documentation (" + SETTINGS["source"]["apiDocs"] + ") states no rate limits or "
     "terms of use. Blockstream's general Terms of Use (v1.0, 16 Jan 2018, https://blockstream.com/terms/) "
-    "cover its website and services but do not mention the Explorer or its API. This project sends at "
-    "most two requests per second, only GET requests, and calls the API offline to build the snapshot. "
+    "cover its website and services but do not mention the Explorer or its API. Since July 2025 Blockstream "
+    "caps unauthenticated use at 700 requests per hour and 500,000 per month per IP (stated in its HTTP 429 "
+    "reply, seen on 22 Oct 2026); when it rate-limits, requests fail over to the Esplora-compatible "
+    "mempool.space for an hour, and each address records which host served it. This project sends at most "
+    "two requests per second per host, only GET requests, and calls the API offline to build the snapshot. "
     "Addresses are public blockchain data; nothing here says who controls an address or why it transacts."
 )
 
@@ -326,6 +330,7 @@ class History:
     txs: list[dict[str, Any]]
     page_sizes: list[int]
     missing: list[int]  # tx_missing summed over the raw transactions
+    sources: list[str] = field(default_factory=list)  # hosts that served the pages
 
     @classmethod
     def from_pages(cls, address: str, folder: Path, stats: dict[str, Any],
@@ -372,10 +377,11 @@ def fetch_history(client: EsploraClient, address: str, folder: Path, params: dic
     for attempt in range(1, params["historyFetchAttempts"] + 1):
         shutil.rmtree(folder, ignore_errors=True)
         before = client.get_text(f"/address/{address}")
-        count, cursor, page_no = 0, None, 1
+        count, cursor, page_no, hosts = 0, None, 1, []
         while count < params["maxTxPerAddress"]:
             suffix = f"/{cursor}" if cursor else ""
             text = client.get_text(f"/address/{address}/txs/chain{suffix}")
+            hosts.append(served_by(client))
             write_gz(folder / f"page-{page_no:03d}.json.gz", text)
             page = json.loads(text)
             count += len(page)
@@ -387,12 +393,23 @@ def fetch_history(client: EsploraClient, address: str, folder: Path, params: dic
         if json.loads(before)["chain_stats"] == json.loads(after)["chain_stats"]:
             break
         log.info("%s changed during the fetch (attempt %d); fetching again", address, attempt)
+    (folder / SOURCES_FILE).write_text(json.dumps({"pages": hosts, "stats": served_by(client)}), encoding="utf-8")
     write_gz(folder / STATS_FILE, after)
+
+
+def served_by(client: EsploraEndpoints) -> str:
+    """The host that served the client's latest reply."""
+    return getattr(client, "last_base_url", None) or client.base_url
 
 
 def read_history(address: str, folder: Path) -> History:
     pages = [json.loads(read_gz(p)) for p in sorted(folder.glob("page-*.json.gz"))]
-    return History.from_pages(address, folder, json.loads(read_gz(folder / STATS_FILE)), pages)
+    history = History.from_pages(address, folder, json.loads(read_gz(folder / STATS_FILE)), pages)
+    sources = folder / SOURCES_FILE
+    # Histories saved before failover existed (the first DS1 run) came from the primary host only.
+    history.sources = (sorted(set(json.loads(sources.read_text(encoding="utf-8"))["pages"])) if sources.exists()
+                       else [SETTINGS["source"]["apiBase"]])
+    return history
 
 
 def load_history(client: EsploraClient, address: str, raw_dir: Path, params: dict[str, Any]) -> History:
@@ -515,17 +532,20 @@ def address_summary(history: History, role: str, visit_rank: int, raw_dir: Path)
         "first_tx_utc": utc_iso(min(times)), "last_tx_utc": utc_iso(max(times)),
         "span_days": round(history.span_days, 1),
         "received_sats": sum(f.received for f in history.flows), "sent_sats": sum(f.sent for f in history.flows),
-        "pages": len(history.page_sizes), "folder": history.folder.relative_to(raw_dir).as_posix(),
+        "pages": len(history.page_sizes), "sources": history.sources,
+        "folder": history.folder.relative_to(raw_dir).as_posix(),
     }
 
 
 def request_totals(runs: list[dict[str, Any]]) -> dict[str, Any]:
+    """Request counts summed over every run, per host (a count a reconstructed run lacks adds 0)."""
     totals: dict[str, Any] = {}
-    for source in ("primary", "fallback"):
-        keys = ("requests", "retries", "http_429", "http_5xx", "network_errors")
-        totals[source] = {k: sum(run[source][k] for run in runs) for k in keys}
-        medians = [run[source]["median_latency_ms"] for run in runs if run[source]["median_latency_ms"] is not None]
-        totals[source]["median_of_run_median_latency_ms"] = round(statistics.median(medians)) if medians else None
+    keys = ("requests", "retries", "http_429", "http_5xx", "network_errors")
+    for run in runs:
+        for host, stats in run["hosts"].items():
+            t = totals.setdefault(host, {k: 0 for k in keys})
+            for k in keys:
+                t[k] += stats.get(k) or 0
     return totals
 
 
@@ -643,7 +663,9 @@ def run_snapshot(
             log.info("Candidate %d %s: %d tx, %s -> %s", rank, address, tx_count, group,
                      "kept" if is_kept else skipped[-1]["reason"])
 
-        crosses = [cross_check(fallback, h) for h, _ in kept["main"][: params["crossCheckAddresses"]]]
+        # Cross-check only histories the cross-check host did not serve, or it would compare itself.
+        independent = [h for h, _ in kept["main"] if fallback.base_url not in h.sources]
+        crosses = [cross_check(fallback, h) for h in independent[: params["crossCheckAddresses"]]]
         histories = [h for g in ("main", "short") for h, _ in kept[g]]
         per_address = [{"address": h.address, "checks": verify_history(h)} for h in histories]
         all_checks = all(c["passed"] for a in per_address for c in a["checks"]) and all(c["passed"] for c in crosses)
@@ -651,12 +673,12 @@ def run_snapshot(
         run["completed"] = True
     finally:
         run["finished_utc"] = utc_now()
-        run["primary"] = primary.stats.summary()
-        run["fallback"] = fallback.stats.summary()
+        run["hosts"] = {**primary.host_stats(), **fallback.host_stats()}
+        run["failovers"] = getattr(primary, "switches", 0)
         runs_path = selection_dir / RUNS_FILE
         # A run served entirely from the cache made no requests, so it adds nothing to the record;
         # skipping it keeps an offline rebuild from changing the raw folder.
-        if run["primary"]["requests"] or run["fallback"]["requests"]:
+        if any(h["requests"] for h in run["hosts"].values()):
             runs_path.parent.mkdir(parents=True, exist_ok=True)
             with runs_path.open("a", encoding="utf-8") as f:
                 f.write(json.dumps(run) + "\n")
@@ -676,7 +698,10 @@ def run_snapshot(
         "retrieval": {
             "pace_seconds": params["requestPauseSeconds"], "max_retries": params["maxRetries"],
             "timeout_seconds": params["timeoutSeconds"],
-            "back_off": "exponential (1, 2, 4 ... s, at most 60 s) on HTTP 429 and 5xx, honouring Retry-After",
+            "back_off": "exponential (1, 2, 4 ... s, at most 60 s) on HTTP 429 and 5xx, honouring Retry-After; "
+                        f"after repeated 429s, failover to the other host for {params['failoverHoldSeconds'] // 60} min",
+            "rate_limit_seen": "Blockstream: 700 requests per hour and 500,000 per month per IP for unauthenticated "
+                               "use (HTTP 429 notice, 22 Oct 2026)",
             "runs": runs, "totals": request_totals(runs),
             "note": "A run that reads only the cache makes no requests. Interrupted runs are listed too.",
         },
@@ -715,6 +740,6 @@ def run_snapshot(
     log.info("Skipped: %s", ", ".join(f"{r} {n}" for r, n in reason_counts.items() if n))
     log.info("Checks: %s; fallback cross-check: %s", "all passed" if all_checks else "FAILED",
              ", ".join(c["detail"] for c in crosses) or "not run")
-    log.info("Requests this run: %s", run["primary"])
+    log.info("Requests this run: %s; failovers %d", run["hosts"], run["failovers"])
     log.info("Wrote %s", manifest_path)
     return 0 if targets_met and all_checks else 1

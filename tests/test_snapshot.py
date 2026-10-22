@@ -13,12 +13,27 @@ from typing import Any
 
 from explorer import snapshot
 from explorer.amounts import address_flow
-from explorer.esplora import EsploraError, RequestStats
+from explorer.esplora import EsploraClient, EsploraError, FailoverClient, RequestStats
 from explorer.settings import SETTINGS
 
 DAY = 86_400
 T0 = 1_780_000_000  # unix seconds; any fixed time works
 OTHER = "bc1qsomeoneelse"
+
+
+class EsploraClientStub(EsploraClient):
+    """A real EsploraClient whose transport answers from a dict (FailoverClient needs real clients)."""
+
+    def __init__(self, replies: dict[str, Any], base_url: str):
+        super().__init__(base_url, pause_seconds=0.0)
+        self.replies = replies
+
+    def get_text(self, path: str) -> str:
+        self.stats.requests += 1
+        if path not in self.replies:
+            raise EsploraError(404, self.base_url + path, "not found")
+        reply = self.replies[path]
+        return reply if isinstance(reply, str) else json.dumps(reply)
 
 
 class FakeClient:
@@ -35,6 +50,12 @@ class FakeClient:
             raise EsploraError(404, self.base_url + path, "not found")
         reply = self.replies[path]
         return reply if isinstance(reply, str) else json.dumps(reply)
+
+    def host_stats(self) -> dict[str, dict]:
+        return {self.base_url: self.stats.summary()}
+
+
+FALLBACK_URL = "https://fallback.example/api"
 
 
 def tx(txid: str, address: str, received: int, sent: int, day: int) -> dict[str, Any]:
@@ -185,7 +206,7 @@ class SnapshotRunTests(unittest.TestCase):
 
     def test_selects_by_the_rule_and_logs_every_skip(self):
         replies, fallback_replies = fake_world()
-        code, manifest = self.run_once(FakeClient(replies), FakeClient(fallback_replies))
+        code, manifest = self.run_once(FakeClient(replies), FakeClient(fallback_replies, FALLBACK_URL))
         self.assertEqual(code, 0, manifest["status"])
         kept = {k["address"]: k["role"] for k in manifest["kept"]}
         self.assertEqual(kept, {"main_ok": "main", "short_ok": "short"})
@@ -205,8 +226,8 @@ class SnapshotRunTests(unittest.TestCase):
 
     def test_second_run_rebuilds_from_the_cache_without_requests(self):
         replies, fallback_replies = fake_world()
-        _, first = self.run_once(FakeClient(replies), FakeClient(fallback_replies))
-        offline, offline_fallback = FakeClient({}), FakeClient({})
+        _, first = self.run_once(FakeClient(replies), FakeClient(fallback_replies, FALLBACK_URL))
+        offline, offline_fallback = FakeClient({}), FakeClient({}, FALLBACK_URL)
         code, second = self.run_once(offline, offline_fallback)
         self.assertEqual(code, 0)
         self.assertEqual(offline.stats.requests + offline_fallback.stats.requests, 0)
@@ -231,9 +252,30 @@ class SnapshotRunTests(unittest.TestCase):
             return original(path)
 
         primary.get_text = get_text  # type: ignore[method-assign]
-        code, manifest = self.run_once(primary, FakeClient(fallback_replies))
+        code, manifest = self.run_once(primary, FakeClient(fallback_replies, FALLBACK_URL))
         self.assertEqual(code, 0, manifest["status"])
         self.assertIn("main_ok", [k["address"] for k in manifest["kept"]])
+
+    def test_a_rate_limited_primary_fails_over_and_the_source_is_recorded(self):
+        replies, fallback_replies = fake_world()
+        limited = FakeClient({"/blocks/tip/height": "100"})  # answers only the first request
+        original = limited.get_text
+
+        def get_text(path: str) -> str:
+            if path != "/blocks/tip/height":
+                limited.stats.requests += 1
+                raise EsploraError(429, path, "Too Many Requests")
+            return original(path)
+
+        limited.get_text = get_text  # type: ignore[method-assign]
+        other = EsploraClientStub(replies, "https://other.example/api")
+        client = FailoverClient([limited, other], hold_seconds=3600)
+        code, manifest = self.run_once(client, FakeClient(fallback_replies, FALLBACK_URL))
+        self.assertEqual(code, 0, manifest["status"])
+        self.assertEqual(client.switches, 1)  # one switch, then the hold keeps it on the other host
+        self.assertEqual({k["address"]: k["sources"] for k in manifest["kept"]},
+                         {"main_ok": ["https://other.example/api"], "short_ok": ["https://other.example/api"]})
+        self.assertEqual(manifest["retrieval"]["runs"][0]["failovers"], 1)
 
 
 if __name__ == "__main__":

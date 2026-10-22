@@ -283,23 +283,21 @@ def run_corpus(
     salt = load_or_create_salt() if salt is None else salt
     attempts = SETTINGS["collection"]["historyFetchAttempts"]
     started = utc_now()
-
-    tip, blocks, pool = discover(clients, params, raw_dir)
-    excluded = sorted(a for a in pool if a in ds1)
-    order = sorted(a for a in pool if a not in ds1)
-    random.Random(params["seed"]).shuffle(order)
-    log.info("Pool %d candidates after removing %d addresses from DS1's candidate pool", len(order), len(excluded))
-
     visits_path, rows_path = interim_dir / "visits.jsonl", interim_dir / "rows.jsonl"
     visits = {v["address"]: v for v in read_jsonl(visits_path)}
     kept = sum(v["reason"] == "kept" for v in visits.values())
-    pending = iter([a for a in order if a not in visits])
-    log.info("Resuming with %d visited, %d kept; target %d", len(visits), kept, params["targetAddresses"])
-
     in_flight: set[Future] = set()
     max_in_flight = 2 * len(clients.clients)  # keeps every worker busy without queueing far ahead
     ex = ThreadPoolExecutor(len(clients.clients))
     try:
+        # Inside the try, so a discovery that fails part-way still leaves its request record.
+        tip, blocks, pool = discover(clients, params, raw_dir)
+        excluded = sorted(a for a in pool if a in ds1)
+        order = sorted(a for a in pool if a not in ds1)
+        random.Random(params["seed"]).shuffle(order)
+        log.info("Pool %d candidates after removing %d addresses from DS1's candidate pool", len(order), len(excluded))
+        pending = iter([a for a in order if a not in visits])
+        log.info("Resuming with %d visited, %d kept; target %d", len(visits), kept, params["targetAddresses"])
         exhausted = False
         while True:
             while not exhausted and kept < params["targetAddresses"] and len(in_flight) < max_in_flight:

@@ -33,11 +33,15 @@
     "snapshotNewestBlockBack": 100,
     "snapshotTxPagesPerBlock": 4,
     "historyFetchAttempts": 2,
+    "failoverHoldSeconds": 3600,
+    "_failoverHoldSeconds": "after repeated HTTP 429s from one host, use the other for this long (plan §6.2: switch to mempool.space for an hour)",
     "crossCheckAddresses": 2
   },
 
   "corpus": {
     "seed": 30049,
+    "sources": ["fallbackApiBase"],
+    "_sources": "keys of settings.source to crawl from; Blockstream allows only 700 unauthenticated requests per hour per IP, far too few for DS2",
     "blockCount": 200,
     "oldestBlockBack": 52560,
     "newestBlockBack": 100,

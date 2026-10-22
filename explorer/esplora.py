@@ -5,11 +5,17 @@ mempool.space API. It only sends GET requests, waits between requests, and
 backs off on HTTP 429 and 5xx responses (Risk 15). Standard library only, so
 the D1 check runs on a bare Python install.
 
+Since July 2025 Blockstream caps unauthenticated use at 700 requests per hour
+per IP (and 500,000 per month), so a long collection is rate-limited even at a
+polite pace. FailoverClient sends requests to the other host for a while when
+the active one answers HTTP 429.
+
 API reference: https://github.com/Blockstream/esplora/blob/master/API.md
 """
 from __future__ import annotations
 
 import json
+import logging
 import time
 import urllib.error
 import urllib.request
@@ -18,6 +24,8 @@ from typing import Any, Callable
 
 USER_AGENT = "BitcoinAddressActivityExplorer/0.1 (COS30049 student research project)"
 PAGE_SIZE = 25  # Esplora returns 25 confirmed transactions per history page
+
+log = logging.getLogger(__name__)
 
 
 class EsploraError(RuntimeError):
@@ -50,7 +58,60 @@ class RequestStats:
         }
 
 
-class EsploraClient:
+
+
+class EsploraEndpoints:
+    """The API calls, built on `get_text`/`get_json`, which each client class supplies."""
+
+    def get_text(self, path: str) -> str:
+        raise NotImplementedError
+
+    def get_json(self, path: str) -> Any:
+        return json.loads(self.get_text(path))
+
+    def tip_height(self) -> int:
+        return int(self.get_text("/blocks/tip/height"))
+
+    def tip_hash(self) -> str:
+        return self.get_text("/blocks/tip/hash").strip()
+
+    def block(self, block_hash: str) -> dict[str, Any]:
+        return self.get_json(f"/block/{block_hash}")
+
+    def block_txs(self, block_hash: str, start_index: int = 0) -> list[dict[str, Any]]:
+        return self.get_json(f"/block/{block_hash}/txs/{start_index}")
+
+    def address(self, address: str) -> dict[str, Any]:
+        return self.get_json(f"/address/{address}")
+
+    def address_txs_chain(
+        self, address: str, last_seen_txid: str | None = None
+    ) -> list[dict[str, Any]]:
+        suffix = f"/{last_seen_txid}" if last_seen_txid else ""
+        return self.get_json(f"/address/{address}/txs/chain{suffix}")
+
+    def address_history(
+        self, address: str, cap: int = 1000
+    ) -> tuple[list[dict[str, Any]], list[list[dict[str, Any]]]]:
+        """Fetch confirmed history newest-first, following the last-seen-txid cursor.
+
+        Returns (transactions, raw_pages). Stops at `cap` transactions or when a
+        page comes back shorter than PAGE_SIZE.
+        """
+        txs: list[dict[str, Any]] = []
+        pages: list[list[dict[str, Any]]] = []
+        last_seen: str | None = None
+        while len(txs) < cap:
+            page = self.address_txs_chain(address, last_seen)
+            pages.append(page)
+            txs.extend(page)
+            if len(page) < PAGE_SIZE:
+                break
+            last_seen = page[-1]["txid"]
+        return txs[:cap], pages
+
+
+class EsploraClient(EsploraEndpoints):
     def __init__(
         self,
         base_url: str,
@@ -113,8 +174,9 @@ class EsploraClient:
                 raise EsploraError(None, url, str(err)) from err
         raise AssertionError("unreachable")
 
-    def get_json(self, path: str) -> Any:
-        return json.loads(self.get_text(path))
+    def host_stats(self) -> dict[str, dict[str, Any]]:
+        """Request statistics keyed by host, the shape FailoverClient also returns."""
+        return {self.base_url: self.stats.summary()}
 
     def _record(self, started: float) -> None:
         now = time.monotonic()
@@ -129,45 +191,49 @@ class EsploraClient:
             delay = max(delay, float(retry_after))
         time.sleep(min(delay, 60.0))
 
-    # -- endpoints -----------------------------------------------------------
 
-    def tip_height(self) -> int:
-        return int(self.get_text("/blocks/tip/height"))
+class FailoverClient(EsploraEndpoints):
+    """Sends each request to the active host and switches host when the active one rate-limits.
 
-    def tip_hash(self) -> str:
-        return self.get_text("/blocks/tip/hash").strip()
+    Every host serves the same Esplora API over the same chain, so a reply from either is
+    interchangeable. After a switch the other host stays active for `hold_seconds` (the plan's
+    "switch to mempool.space for an hour"), then the first host is tried again. `last_base_url`
+    names the host that served the latest reply, so callers can record where data came from.
+    """
 
-    def block(self, block_hash: str) -> dict[str, Any]:
-        return self.get_json(f"/block/{block_hash}")
+    def __init__(self, clients: list[EsploraClient], hold_seconds: float):
+        self.clients = clients
+        self.hold_seconds = hold_seconds
+        self.switches = 0
+        self.last_base_url: str | None = None
+        self._active = 0
+        self._hold_until = 0.0
 
-    def block_txs(self, block_hash: str, start_index: int = 0) -> list[dict[str, Any]]:
-        return self.get_json(f"/block/{block_hash}/txs/{start_index}")
+    @property
+    def base_url(self) -> str:
+        return self.clients[self._active].base_url
 
-    def address(self, address: str) -> dict[str, Any]:
-        return self.get_json(f"/address/{address}")
+    def get_text(self, path: str) -> str:
+        if self._active and time.monotonic() >= self._hold_until:
+            self._active = 0
+        error: EsploraError | None = None
+        for _ in self.clients:
+            client = self.clients[self._active]
+            try:
+                text = client.get_text(path)
+            except EsploraError as err:
+                if err.status != 429:
+                    raise
+                error = err
+                self._active = (self._active + 1) % len(self.clients)
+                self._hold_until = time.monotonic() + self.hold_seconds
+                self.switches += 1
+                log.warning("%s is rate-limiting; using %s for the next %.0f min", client.base_url,
+                            self.clients[self._active].base_url, self.hold_seconds / 60)
+                continue
+            self.last_base_url = client.base_url
+            return text
+        raise error  # every host is rate-limiting
 
-    def address_txs_chain(
-        self, address: str, last_seen_txid: str | None = None
-    ) -> list[dict[str, Any]]:
-        suffix = f"/{last_seen_txid}" if last_seen_txid else ""
-        return self.get_json(f"/address/{address}/txs/chain{suffix}")
-
-    def address_history(
-        self, address: str, cap: int = 1000
-    ) -> tuple[list[dict[str, Any]], list[list[dict[str, Any]]]]:
-        """Fetch confirmed history newest-first, following the last-seen-txid cursor.
-
-        Returns (transactions, raw_pages). Stops at `cap` transactions or when a
-        page comes back shorter than PAGE_SIZE.
-        """
-        txs: list[dict[str, Any]] = []
-        pages: list[list[dict[str, Any]]] = []
-        last_seen: str | None = None
-        while len(txs) < cap:
-            page = self.address_txs_chain(address, last_seen)
-            pages.append(page)
-            txs.extend(page)
-            if len(page) < PAGE_SIZE:
-                break
-            last_seen = page[-1]["txid"]
-        return txs[:cap], pages
+    def host_stats(self) -> dict[str, dict[str, Any]]:
+        return {c.base_url: c.stats.summary() for c in self.clients}

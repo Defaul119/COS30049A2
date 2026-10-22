@@ -23,7 +23,7 @@ import logging
 import sys
 import time
 
-from .esplora import EsploraClient
+from .esplora import EsploraClient, FailoverClient
 from .settings import PROJECT_ROOT, SETTINGS
 
 LOG_DIR = PROJECT_ROOT / "reports" / "logs"
@@ -54,7 +54,10 @@ def cmd_snapshot(args: argparse.Namespace) -> int:
     from .snapshot import run_snapshot
 
     primary, fallback = esplora_clients()
-    return run_snapshot(primary, fallback, SETTINGS["collection"], refetch=args.refetch, rule_only=args.rule_only)
+    # Requests go to the primary and fail over to the fallback when rate-limited; the cross-check
+    # always uses the fallback directly, on histories it did not serve.
+    client = FailoverClient([primary, fallback], SETTINGS["collection"]["failoverHoldSeconds"])
+    return run_snapshot(client, fallback, SETTINGS["collection"], refetch=args.refetch, rule_only=args.rule_only)
 
 
 def cmd_corpus(args: argparse.Namespace) -> int:
@@ -63,8 +66,7 @@ def cmd_corpus(args: argparse.Namespace) -> int:
     params = dict(SETTINGS["corpus"])
     if args.target:
         params["targetAddresses"] = args.target
-    src = SETTINGS["source"]
-    clients = ClientPool(make_clients([src["apiBase"], src["fallbackApiBase"]], params["workersPerSource"]))
+    clients = ClientPool(make_clients([SETTINGS["source"][key] for key in params["sources"]], params["workersPerSource"]))
     return run_corpus(clients, params)
 
 
