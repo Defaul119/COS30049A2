@@ -1,0 +1,56 @@
+% 06-schedule
+\section{Time management, Gantt and critical path}
+\label{sec:schedule}
+
+The \textbf{12-week Gantt} places A1 planning and prototype in Weeks 1–4, A2 data/ML in Weeks 4–7, and A3 web integration and tests in Weeks 7–12. A2 starts after the A1 submission (WBS 1.1.8); A3 work starts once the A2 method is selected (1.2.5), so it overlaps the A2 code packaging and report. A1 is due on 11 October 2026 at 23:59 GMT+7. Figure~\ref{fig:gantt} presents WBS codes and weekly bars, and Figure~\ref{fig:cpm} shows the dependencies and the critical path, following the Week 2 scheduling material (Li n.d.c, slides 20–26; Li n.d.d, slides 12–14) and standard critical path practice (Project Management Institute 2011). Durations are planning estimates in calendar days, matching the 84-day unit.
+
+Applying the durations and predecessors in the WBS dictionary (v.2) gives a project-level critical path of 1.1.1 → 1.1.2 → 1.1.3 → 1.1.4 → 1.1.8 → 1.2.1 → 1.2.2 → 1.2.3 → 1.2.4 → 1.2.5 → 1.4.1 → 1.4.3 → 1.4.4 → 1.4.5 → 1.4.6 → 1.4.7 (Figure~\ref{fig:cpm}). Day~0 is Monday 14 September 2026, the start of teaching Week~1, and day~$n$ is the date $n$ calendar days later. On that scale Assignment 1 is due on day~27 (11 October), Assignment 2 on day~55 (8 November) and Assignment 3 on day~83 (6 December). Assignment 1 work (1.1) finishes on day~26 (10 October), one day before its due date. The critical path is 78 days long and finishes on day~78 (1 December), 5 days before the Assignment 3 due date; the 84-day unit window ends on day~84 (7 December). The schedule therefore holds two separate buffers: package 1.4.5 Optional Features (Buffer), 6 days, which lies on the critical path and absorbs slippage in 1.4.1–1.4.4, and the 5-day margin between the planned finish and the Assignment 3 due date. The packages with float are 1.1.5 (2 days), 1.1.6 and 1.1.7 (1 day each), 1.2.6 (3 days), 1.4.2 (2 days) and 1.2.7 (7 days before the Assignment 2 due date). Float for packages that end at an assignment deadline is measured to that assignment's due date. The monitoring packages 1.3.1–1.3.7 span the whole 84-day window, run continuously alongside the delivery work and are not on the critical path.
+
+The activity list below is a detailed breakdown of the Assignment 1 work (WBS 1.1). Its durations are estimates of working days of effort, whereas the WBS, the 12-week Gantt chart (Figure~\ref{fig:gantt}) and the critical path above use calendar days. The WBS column maps each activity to its work package.
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{0.7cm} Y L{1.3cm} >{\raggedleft\arraybackslash}p{1.6cm} L{2.4cm} L{3.0cm}@{}}
+\caption{Assignment 1 activity breakdown (working days)}\label{tab:activities}\\
+\toprule
+\textbf{ID} & \textbf{Activity} & \textbf{WBS} & \textbf{Duration} & \textbf{Immediate predecessors} & \textbf{Output} \\
+\midrule
+\endfirsthead
+\multicolumn{6}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{ID} & \textbf{Activity} & \textbf{WBS} & \textbf{Duration} & \textbf{Immediate predecessors} & \textbf{Output} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+A & Confirm rubric, approved topic/group, due date & 1.1.1 & 0.5 & — & Baseline facts \\
+B & Verify source and one transaction sample & 1.1.2 & 2.0 & A & D1 data decision \\
+C & Approve requirements and scope & 1.1.2 & 1.0 & B & Baseline v1 \\
+D & WBS and dictionary & 1.1.3 & 1.5 & C & Work packages \\
+E & Schedule/Gantt/CPM & 1.1.4 & 1.0 & D & Schedule baseline \\
+F & Risk, quality, change, closure & 1.1.5 & 1.0 & C & Management plans \\
+G & User flow and wireframes & 1.1.6 & 1.0 & C & Prototype content \\
+H & Clickable prototype & 1.1.6 & 2.0 & G & Linked screens/states \\
+I & Heuristic inspection, automated journey checks and revision & 1.1.6 & 1.0 & H & Findings and revision \\
+J & Integrate and cite report & 1.1.7, 1.1.8 & 1.5 & E, F, I & Report draft \\
+K & Rubric audit, PDF export and inspection & 1.1.8 & 0.5 & J & Final checked file \\
+\end{xltabular}
+}
+
+On these estimates, the longest dependent path is \textbf{A → B → C → G → H → I → J → K = 9.5 working days}; D–E has 1.5 days of float relative to that path, and F has 3 days. The two analyses measure different things, so their critical activities differ. In working days of effort, the prototype chain G → H → I (4 days) is longer than the planning chain D → E (2.5 days). In the calendar schedule, 1.1.6 is allowed 8 days against 9 days for 1.1.3 and 1.1.4 together, so the WBS and Gantt work is critical there and 1.1.6 has 1 day of float. The calendar critical path above is the schedule baseline. The data feasibility gate B is a shared predecessor: a wrong source decision would delay both the management baseline and believable interface content. PMI describes the critical path as the path governing schedule completion through dependency and duration logic (Project Management Institute 2011).
+
+% The two schedule charts are wide, so they sit on landscape pages at the end of the section.
+\begin{landscape}
+\begin{figure}[H]
+  \centering
+  \tikzfile{figures/gantt.tex}
+  \caption[Gantt chart for Assignments 1–3 across 12 weeks]{Gantt chart for Assignments 1–3 across 12 weeks. Generated from the WBS dictionary (v.2).}
+  \label{fig:gantt}
+\end{figure}
+\clearpage
+\begin{figure}[H]
+  \centering
+  \tikzfile{figures/critical-path.tex}
+  \caption[Critical path]{Critical path. Generated from the WBS dictionary (v.2).}
+  \label{fig:cpm}
+\end{figure}
+\end{landscape}

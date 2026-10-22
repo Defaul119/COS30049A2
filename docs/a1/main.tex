@@ -1,0 +1,164 @@
+% COS30049 Assignment 1 -- Project Management Plan and Prototype Design
+% Group HCMC_COS30049.1_4. Compile with pdfLaTeX (no shell-escape).
+\documentclass[a4paper,11pt]{article}
+
+% ---------------------------------------------------------------- page and fonts
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{newunicodechar}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+
+% ---------------------------------------------------------------- tables
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{xltabular} % longtable that wraps text in X columns
+\usepackage{pdflscape}
+\renewcommand{\arraystretch}{1.25}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+% narrow columns that may hyphenate their first word (TeX normally never does)
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{Z}{>{\raggedright\arraybackslash\hspace{0pt}}X}
+
+% ---------------------------------------------------------------- figures
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{font=small, labelfont=bf}
+\captionsetup[table]{position=top}
+\captionsetup[figure]{position=bottom}
+\captionsetup[sub]{subrefformat=simple} % \subref prints "c", so ranges read "7a–c"
+\captionsetup[subfigure]{list=true} % list sub-figures 7a–c in the list of figures
+\usepackage[section]{placeins} % keep figures inside their own section
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds, patterns}
+
+% ---------------------------------------------------------------- text
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage{seqsplit}
+
+\counterwithin{table}{section} % keeps the source's Table 10.1-10.3 numbering
+
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\newcommand{\hash}[1]{\texttt{\seqsplit{#1}}} % long addresses and transaction IDs
+
+% framed placeholder for a figure whose file is missing
+\newcommand{\placeholder}[1]{%
+  \fbox{\parbox[c][5cm][c]{0.9\textwidth}{\centering\ttfamily Missing figure: \detokenize{#1}}}}
+% \figfile{path}{options}: include an image, or a placeholder if the file is missing
+\newcommand{\figfile}[2]{\IfFileExists{#1}{\includegraphics[#2]{#1}}{\placeholder{#1}}}
+% \tikzfile{path}: input a generated TikZ chart, or a placeholder if it is missing
+\newcommand{\tikzfile}[1]{\IfFileExists{#1}{\input{#1}}{\placeholder{#1}}}
+
+% numbered reference list [1]-[N], alphabetical, hanging indent
+\newcounter{refnum}
+\newenvironment{references}{%
+  \sloppy\begin{list}{[\arabic{refnum}]}{\usecounter{refnum}\setlength{\labelwidth}{2.2em}%
+    \setlength{\leftmargin}{2.8em}\setlength{\labelsep}{0.6em}%
+    \setlength{\itemsep}{0.6\baselineskip}\setlength{\parsep}{0pt}}}%
+  {\end{list}}
+
+% ---------------------------------------------------------------- links (last)
+\usepackage{xurl}
+\usepackage[colorlinks=true, linkcolor=blue!50!black, citecolor=blue!50!black,
+            urlcolor=blue!60!black]{hyperref}
+\hypersetup{pdftitle={COS30049 Assignment 1 -- Project Management Plan and Prototype Design},
+            pdfauthor={HCMC\_COS30049.1\_4}}
+
+\begin{document}
+
+% ---------------------------------------------------------------- title page
+\begin{titlepage}
+  \pagenumbering{alph}
+  \centering
+  \vspace*{3cm}
+  {\LARGE\bfseries COS30049 Assignment 1 — Project Management Plan and Prototype Design\par}
+  \vspace{1.5cm}
+  {\large COS30049 Computing Technology Innovation Project\par}
+  \vspace{1.5cm}
+  \begin{tabular}{@{}ll@{}}
+    \textbf{Project:} & Cryptocurrency transaction tracking and anomaly detection \\[4pt]
+    \textbf{Group:}   & HCMC\_COS30049.1\_4 \\[4pt]
+    \textbf{Members:} & Cam Dan Bui (105967074); \\
+                      & Cao Tri Tran (106214726); \\
+                      & Le Quang Anh Hoang (106218605); \\
+                      & Minh Khang Nguyen (106216803); \\[4pt]
+    \textbf{Submission deadline:} & 11 October 2026, 23:59 GMT+7 \\
+  \end{tabular}
+  \vfill
+\end{titlepage}
+\pagenumbering{roman}
+
+\tableofcontents
+\clearpage
+\listoffigures
+\listoftables
+\clearpage
+\pagenumbering{arabic}
+
+\input{sections/01-intro}
+\input{sections/02-requirements}
+\input{sections/03-team}
+\input{sections/04-scope}
+\input{sections/05-wbs}
+\input{sections/06-schedule}
+\input{sections/07-risk}
+\input{sections/08-monitoring}
+\input{sections/09-closure}
+\input{sections/10-prototype}
+\input{sections/11-conclusion}
+
+% ---------------------------------------------------------------- references
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\begin{references}
+\item Blockstream (n.d.) \textit{Esplora HTTP API}. Available at: \url{https://github.com/Blockstream/esplora/blob/master/API.md} (Accessed: 29 September 2026).
+
+\item Breunig, M.M., Kriegel, H.-P., Ng, R.T. and Sander, J. (2000) ‘LOF: identifying density-based local outliers’, \textit{Proceedings of the 2000 ACM SIGMOD International Conference on Management of Data}, pp. 93–104. doi: 10.1145/342009.335388.
+
+\item Elmougy, Y. and Liu, L. (2023) ‘Demystifying fraudulent transactions and illicit nodes in the Bitcoin network for financial forensics’, \textit{Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining}. doi: 10.1145/3580305.3599803. Available at: \url{https://doi.org/10.1145/3580305.3599803} (Accessed: 29 September 2026).
+
+\item Iglewicz, B. and Hoaglin, D.C. (1993) \textit{How to detect and handle outliers}. Milwaukee, WI: ASQC Quality Press.
+
+\item Li, N. (n.d.a) \textit{Week 1: Introduction to the unit, Lecture 1}. COS30049 Computing Technology Innovation Project, Swinburne University of Technology, slides 5, 8 and 10. Unit lecture slides supplied to students.
+
+\item Li, N. (n.d.b) \textit{Week 1: Project selection and initiation, Lecture 2}. COS30049 Computing Technology Innovation Project, Swinburne University of Technology, slides 11–18. Unit lecture slides supplied to students.
+
+\item Li, N. (n.d.c) \textit{Week 2: Scope, time, and project communication management, Lecture 1}. COS30049 Computing Technology Innovation Project, Swinburne University of Technology, slides 11–15, 20–26 and 29–33. Unit lecture slides supplied to students.
+
+\item Li, N. (n.d.d) \textit{Week 2: Scope, time, and project communication management, Lecture 2}. COS30049 Computing Technology Innovation Project, Swinburne University of Technology, slides 3–16. Unit lecture slides supplied to students.
+
+\item Li, N. (n.d.e) \textit{Week 3: Monitoring, controlling, and closure in project management and usability of a web project, Lecture 1}. COS30049 Computing Technology Innovation Project, Swinburne University of Technology, slides 8–33, 38–46 and 54–63. Unit lecture slides supplied to students.
+
+\item Liu, F.T., Ting, K.M. and Zhou, Z.-H. (2008) ‘Isolation Forest’, \textit{Proceedings of the 2008 Eighth IEEE International Conference on Data Mining}, pp. 413–422. doi: 10.1109/ICDM.2008.17. Available at: \url{https://doi.org/10.1109/ICDM.2008.17} (Accessed: 29 September 2026).
+
+\item Nielsen, J. (1994) ‘10 usability heuristics for user interface design’, \textit{Nielsen Norman Group} (updated 2020). Available at: \url{https://www.nngroup.com/articles/ten-usability-heuristics/} (Accessed: 29 September 2026).
+
+\item Project Management Institute (2011) ‘Follow the yellow brick road (the critical path)’, \textit{PMI Learning Library}. Available at: \url{https://www.pmi.org/learning/library/critical-path-scheduling-work-breakdown-6212} (Accessed: 29 September 2026).
+
+\item Swinburne University of Technology (n.d.a) \textit{COS30049 Assignment 1 brief}. COS30049 Computing Technology Innovation Project. Unit assessment document supplied via Canvas.
+
+\item Swinburne University of Technology (n.d.b) \textit{COS30049 Assignment 2 brief}. COS30049 Computing Technology Innovation Project. Unit assessment document supplied via Canvas.
+
+\item Swinburne University of Technology (n.d.c) \textit{COS30049 Assignment 3 brief}. COS30049 Computing Technology Innovation Project. Unit assessment document supplied via Canvas.
+
+\item UCI Machine Learning Repository (2020) \textit{Bitcoin Heist Ransomware Address} [Dataset]. doi: 10.24432/C5BG8V. Available at: \url{https://archive.ics.uci.edu/dataset/526/bitcoinheistransomwareaddressdataset} (Accessed: 29 September 2026).
+\end{references}
+
+% ---------------------------------------------------------------- appendix
+\appendix
+\input{sections/appendix-a-dictionary}
+\input{sections/appendix-b-risk}
+
+\end{document}

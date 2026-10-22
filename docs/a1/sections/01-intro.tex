@@ -1,0 +1,82 @@
+% 01-intro
+\section{Project Background and Introduction}
+\label{sec:intro}
+
+Cryptocurrency transaction analysis has become an important area of cybersecurity research since examining transaction and address relationships can help researchers investigate unusual activity. Yet, because there are many unknown labels in research datasets, it is crucial to separate the abnormal activity from verified malicious activity (Elmougy and Liu 2023).
+
+The same problem arises in financial services. Banks, exchanges and payment providers that handle cryptocurrency must monitor transactions for fraud and money laundering, and their analysts face the task this project supports: deciding which of many transactions deserve a closer look. Address-level anomaly detection helps with that triage, while the final judgement remains with a human investigator.
+
+This project proposes a research-oriented Bitcoin Address Activity Explorer. Its intended first user is a student researcher who needs to examine the historical activity of a supported Bitcoin address. Rather than manually navigating individual transaction records, the user will be able to explore an activity timeline, identify flagged transactions, and inspect the underlying transaction information and reasons for each flag. The project therefore aims to make historical Bitcoin activity easier to investigate and understand.
+
+The intended output is an \textbf{unusual activity/anomalies indicator}, not a definitive judgement that an address or its owner has committed fraud. This distinction will guide the system's interface wording and the evaluation of its results.
+
+This report covers Assignment 1, which establishes the project management plan, requirements and scope baseline, Work Breakdown Structure (WBS), schedule, risk and control plans, project closure approach, and a clickable front-end prototype with usability analysis. Assignment 2 will focus on a machine learning technique and its implementation; Assignment 3 will use the established pipeline within a React/FastAPI application, in accordance with the three-assignment pattern of the unit. No trained detection model or live service is claimed in this report.
+
+\subsection{Issue, users and goals}
+\label{sec:goals}
+
+The research-oriented Bitcoin Address Activity Explorer presents numerous transaction details, but researchers still have to determine which transactions warrant closer investigation and why. The proposed tool combines a time view, transaction drilldown and an interpretable anomaly indication for an address selected from a documented historical sample. This in turn reduces the manual effort of scanning the sample, but it does not make identity, intent, ownership or criminality claims.
+
+\textbf{Objectives:}
+
+\begin{enumerate}
+  \item \textbf{Data sample.} Curate a snapshot of 20–30 Bitcoin addresses, each with at least 50 confirmed transactions over at least 90 days, plus 2–3 deliberately short-history addresses to exercise the insufficient-history state. Record every DR-01 field in a dataset manifest and a re-runnable retrieval script. Target: snapshot frozen when data collection (WBS 1.2.1) finishes; manifest reviewed by a second member.
+  \item \textbf{Baseline and ML methods.} Implement one rule-based baseline (robust z-score against the address's own trailing history) and two unsupervised ML methods, Isolation Forest (Liu, Ting and Zhou 2008) and Local Outlier Factor, all using only time-safe features. Target: all three score every transaction in the snapshot by 26 October 2026.
+  \item \textbf{Prototype journey.} Deliver three linked screens (address selection, daily timeline, transaction detail) and five feedback states (invalid, unsupported, loading, empty, insufficient history). Goal for Assignment 1: the heuristic inspection (Table~\ref{tab:inspection}) and the automated journey checks (Table~\ref{tab:walkthrough}) are complete. A walkthrough in which at least two participants complete all four tasks is planned for Week~5, after this submission, and all issues scored high severity are fixed before the Assignment~2 submission.
+  \item \textbf{Trustworthiness assessment.} Assess the algorithms' label-free plan described below in Section~\ref{sec:evaluation} (synthetic-injection detection rate, rank stability, method agreement and reviewer assessment). No metric is interpreted against fraud labels. Target: results table and limitations section in the Assignment 2 report.
+\end{enumerate}
+
+\textbf{Success measure for the whole project:} AC-01 to AC-03 and FR-05 pass on every address in the snapshot in the Assignment 3 build, shown in the demo video.
+
+\subsection{Alternatives and decision gate}
+\label{sec:alternatives}
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{3.2cm} Y Y L{3.3cm}@{}}
+\caption{Alternatives considered}\label{tab:alternatives}\\
+\toprule
+\textbf{Approach} & \textbf{Potential value} & \textbf{Limit for this user journey} & \textbf{Current status} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Approach} & \textbf{Potential value} & \textbf{Limit for this user journey} & \textbf{Current status} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Curated Esplora histories (Blockstream n.d.) & Transaction IDs, timestamps, outputs and address history can support drilldown and transaction-level features. & Pagination (25 transactions per page), unpublished rate limits, Bitcoin input and output interpretation, and scarce ground-truth anomaly labels. & \textbf{Primary source (D1 approved 11 Oct 2026); fallback: BigQuery public Bitcoin dataset.} \\
+Bitcoin Heist address dataset (UCI Machine Learning Repository 2020) & Historical address/day features and ransomware-related labels. & Listed fields are aggregate address/day observations, not the individual transaction records required for this prototype; its “white” class is not known ransomware, not verified innocence. & Comparison source; cannot satisfy drilldown alone. \\
+Elliptic++ (Elmougy and Liu 2023) & Bitcoin transaction/address graph research with temporal interactions. & Its downloadable fields and identifiers were not shown to support the transaction-level and time view this prototype needs. & Comparison source; not selected. \\
+\end{xltabular}
+}
+
+\textbf{Decision D1: primary data source.} The team has selected the Blockstream Esplora HTTP API (Blockstream n.d.) as the primary source of Bitcoin data. For any address, Esplora returns the confirmed transaction history with each transaction’s ID, confirmation time and its inputs and outputs. These are the fields needed to derive the address-specific amount and direction used in the activity timeline and the transaction drilldown. The API is called once, offline, by a re-runnable retrieval script that pages through each address’s history, limits its request rate, backs off when the provider refuses requests, and stores every response in a local snapshot. The application itself makes no live calls. The fallback, if Esplora’s rate limits make retrieval unreliable, is to retrieve the same fields for the same addresses from the public BigQuery Bitcoin dataset (\texttt{crypto\_bitcoin}). The Bitcoin Heist and Elliptic++ datasets remain comparison sources only, because neither supplies the individual transaction records the drilldown requires.
+
+\textbf{Evidence and approval.} The table below records the sample and retrieval details checked for D1. All four members approved the primary source and fallback (D1) and the scope baseline (D2, Section~\ref{sec:scope}) on 11 October 2026; the approval is recorded in Discord and in the addendum to the meeting minutes. Before the snapshot is built (WBS 1.2.1), a second member verifies the address-specific amount and direction against the raw transaction inputs and outputs, reproduces the retrieval, and confirms the applicable source terms.
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{4.6cm} Y@{}}
+\caption{Decision D1 evidence record}\label{tab:d1}\\
+\toprule
+\textbf{Evidence item} & \textbf{Record} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Evidence item} & \textbf{Record} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Sample address & \hash{bc1qv2pf4w5m82wks2msj4w7k0wppl5pxe3qtaf0kh} \\
+Transaction ID & \hash{8ba8e46154216d25ce2f5bafa7f546fcba1d1cb33beed557fd0c4087b6ac5e88} \\
+Confirmed time & \texttt{2026-10-10} 06:53:05 UTC \\
+Address-specific value & Received 0.12188373 BTC (calculated from transaction output vout \#1) \\
+Retrieval method and request rate that worked & GET via Esplora API at 1 req/s with exponential backoff \\
+Date retrieved & 2026-10-10 \\
+Access and use terms & Public API used without authentication; usage terms not found in the API documentation, so the retrieval date and request rate are recorded here \\
+Limitations & History is paged 25 transactions at a time; rate limits are not published; input and output values need interpreting; no ground-truth anomaly labels exist \\
+Decision approved & Approved, 11 Oct 2026, all four members (recorded in Discord) \\
+\end{xltabular}
+}

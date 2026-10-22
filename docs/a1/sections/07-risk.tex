@@ -1,0 +1,34 @@
+% 07-risk
+\section{Risk and quality management}
+\label{sec:risk}
+
+Table~\ref{tab:risks} lists the eight highest-priority risks; the full register of 22 risks is in Appendix~\ref{app:risk}.
+
+Every risk is scored as \textbf{priority = likelihood × impact}, using one fixed mapping: likelihood Unlikely = 1, Low = 2, Moderate = 3, Likely = 4 and High = 4; impact Low = 2, Medium = 3, High = 4 and Critical = 5. The team reviews them weekly and after the data decision, consistent with the Week 3 risk and control material (Li n.d.e, slides 8–27). A mitigation reduces probability or impact; a fallback states what to do if the risk happens. Each risk keeps its register number, and its owner is named from the roles in Section~\ref{sec:team}.
+
+{\small
+\begin{xltabular}{\textwidth}{@{}Y L{2.0cm} L{3.6cm} Y@{}}
+\caption{Highest-priority risks (from the full register, Table~\ref{tab:riskfull})}\label{tab:risks}\\
+\toprule
+\textbf{No. and risk} & \textbf{L × I = score} & \textbf{Trigger / owner} & \textbf{Prevention and fallback} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{No. and risk} & \textbf{L × I = score} & \textbf{Trigger / owner} & \textbf{Prevention and fallback} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+4. Methods fail the label-free checks (low synthetic recall or unstable rankings) & High × High\newline 4×4 = 16 & Synthetic recall below 70\% for two of three patterns, or top-50 Jaccard overlap below 0.7, at 1.2.5 / Cao Tri Tran (Data/\allowbreak{}ML Lead) & \textit{Prevention:} Feature engineering and threshold tuning; compare each method against the baseline early\newline \textit{Fallback:} Report results honestly with an analysis of why; fall back to the baseline if it performs better, and justify the final choice \\
+9. Code doesn't run on the marker's machine & Likely × High\newline 4×4 = 16 & Fresh conda install from the README fails / Le Quang Anh Hoang (Back-end Dev) & \textit{Prevention:} Pinned requirements, test on a clean setup\newline \textit{Fallback:} Add a troubleshooting section and a second install route (pip requirements.txt) to the README, include screenshots of the expected output, and contact the tutor straight away \\
+7. Critical path tasks slip and push Assignments 2 and 3 & Moderate × Critical\newline 3×5 = 15 & Any zero-float task ending a day or more late / Le Quang Anh Hoang (Project Manager) & \textit{Prevention:} Buffers, weekly Gantt review, re-plan early\newline \textit{Fallback:} Use the buffer days first; if more time is needed, drop optional features, add effort to the late task, and tell the tutor early that the deadline is at risk. The tutor does not extend the deadline. \\
+6. Scope creep (live API, full transaction tracing) & Likely × Medium\newline 4×3 = 12 & A feature added with no change request logged, or communication with the group / Le Quang Anh Hoang (Project Manager) & \textit{Prevention:} Scope statement, change control with named approver or with one or more team member\newline \textit{Fallback:} Reject the feature or move it to future work in the report; if it is already built, cut it and re-plan using float on the Gantt chart \\
+13. No ground-truth labels, so results cannot be validated as fraud detection & Moderate × High\newline 3×4 = 12 & Any draft claims fraud-label accuracy, precision, recall, F1 or fraud-detection rates. / Cao Tri Tran (Data/\allowbreak{}ML Lead) & \textit{Prevention:} Use the label-free evaluation plan; treat injected cases as synthetic; report reviewer judgement only as judgement\newline \textit{Fallback:} Remove unsupported claims and restate results as unusual-activity rankings with limitations \\
+17. D1 source check fails: Esplora cannot supply per-address times, amounts or direction for the sample & Moderate × High\newline 3×4 = 12 & D1 worksheet incomplete by 9 Oct 2026, or required fields missing from the real sample / Cao Tri Tran (Data/\allowbreak{}ML Lead) & \textit{Prevention:} Run D1 on one real address before A1 submission; keep Bitcoin Heist and Elliptic++ as documented comparison sources\newline \textit{Fallback:} Record a change: narrow the drilldown to available fields and update FR-03, the prototype and the WBS together \\
+21. Confluence trial ends 15 Oct 2026 and some features or exports may become unavailable & High × Medium\newline 4×3 = 12 & Trial banner, or live docs or databases become read-only or fail to export / Le Quang Anh Hoang (Project Manager) & \textit{Prevention:} Export the report, WBS Dictionary and risk register to PDF or CSV before 15 Oct 2026\newline \textit{Fallback:} Rebuild the tables as static Confluence tables or documents from the exports \\
+8. Demo video is inaccessible, corrupt, or over 7 minutes (most marks depend on it) & Low × Critical\newline 2×5 = 10 & Link untested the day before, or recording is over 7 minutes / Le Quang Anh Hoang (Project Manager) & \textit{Prevention:} Unlisted YouTube link plus file backup, test in a private window, rehearse before submission\newline \textit{Fallback:} Upload a second copy (file and unlisted link), put the link on the cover page and in the .txt file the brief requires, and cut and re-record if the video is over 7 minutes \\
+\end{xltabular}
+}
+
+\textbf{Quality plan:} Section authors verify claims against primary sources and add Harvard citations as they draft. A separate reviewer checks that requirements, WBS, dictionary and Gantt use the same scope and codes; the data lead checks feature definitions and leakage; the UX lead runs a scenario walkthrough; the leader conducts a final rubric/grammar/export review. In A2, a different member reproduces at least one sample and model result from the documented steps. Work is not marked complete merely because text or a graphic exists; the accepted evidence and its reviewer are linked in the progress tracker.

@@ -1,0 +1,69 @@
+% 05-wbs
+\section{Work Breakdown Structure and dictionary}
+\label{sec:wbs}
+
+\textbf{WBS hierarchy (deliverable-oriented):}
+
+\begin{figure}[H]
+  \centering
+  \tikzfile{figures/wbs-chart.tex}
+  \caption[Work Breakdown Structure chart]{Work Breakdown Structure chart. Generated from the WBS dictionary (v.2).}
+  \label{fig:wbs}
+\end{figure}
+
+\textbf{WBS Dictionary}
+
+The full WBS dictionary is provided in Appendix~\ref{app:dictionary} of this report.
+
+The dictionary gives each leaf work package a tangible output, predecessor, duration and owner, applying the Week 2 scope, WBS and dictionary examples (Li n.d.d, slides 3–11). The summary below uses the same codes as the WBS chart (Figure~\ref{fig:wbs}) and Gantt chart (Figure~\ref{fig:gantt}); descriptions, inputs, resources, effort and acceptance criteria for every package are in Appendix~\ref{app:dictionary}. Where a package lists more than one owner, the role lead named in Section 3 is accountable: the Data and ML lead (Cao Tri Tran) for 1.2.1–1.2.7, the UX and web lead (Minh Khang Nguyen) for 1.4.4, and the leader (Cam Dan Bui) for 1.1.1 and 1.1.7.
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{1.0cm} Y L{2.2cm} >{\raggedleft\arraybackslash}p{0.85cm} Y L{2.5cm}@{}}
+\caption{WBS summary}\label{tab:wbs}\\
+\toprule
+\textbf{Code} & \textbf{Work package} & \textbf{Predecessors} & \textbf{Days} & \textbf{Deliverable} & \textbf{Owner} \\
+\midrule
+\endfirsthead
+\multicolumn{6}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Code} & \textbf{Work package} & \textbf{Predecessors} & \textbf{Days} & \textbf{Deliverable} & \textbf{Owner} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\textbf{1} & \textbf{Cryptocurrency Transaction Tracking \& Anomaly Detection ML Project} & None & 84 & Assignment 1 plan; Assignment 2 model and report; Assignment 3 web application & All members \\
+\textbf{1.1} & \textbf{Planning (Assignment 1)} & None & 26 & Assignment 1 project management plan (PDF) with weekly minutes and contribution form & All members \\
+1.1.1 & Analyse Requirements & None & 7 & Requirement list with IDs and user profile & Cam Dan Bui; Cao Tri Tran \\
+1.1.2 & Define Scope \& Data Sources & 1.1.1 & 7 & Scope statement, source comparison and D1 worksheet & Le Quang Anh Hoang \\
+1.1.3 & Create WBS \& Dictionary & 1.1.2 & 6 & WBS chart and WBS dictionary & Le Quang Anh Hoang \\
+1.1.4 & Build Gantt \& Critical Path & 1.1.3 & 3 & Gantt chart and critical path analysis & Le Quang Anh Hoang \\
+1.1.5 & Risk, Change \& Closure Plans & 1.1.2 & 7 & Risk register and plan; change control procedure; closure criteria & Le Quang Anh Hoang \\
+1.1.6 & Design Clickable Prototype & 1.1.2 & 8 & Clickable React and TypeScript prototype and usability explanation & Minh Khang Nguyen \\
+1.1.7 & Write Intro, Team \& Comms Plan & 1.1.2 & 8 & Background, team introduction and communication plan sections & Cam Dan Bui; Cao Tri Tran \\
+1.1.8 & Compile \& Submit A1 & 1.1.4, 1.1.5, 1.1.6, 1.1.7 & 3 & Final Assignment 1 PDF, minutes and contribution form & All members \\
+\textbf{1.2} & \textbf{ML Creation \& Implementation (Assignment 2)} & 1.1.8 & 22 & Assignment 2 report (PDF), processed datasets, README and source code (zip) & Cam Dan Bui; Cao Tri Tran \\
+1.2.1 & Build Data Snapshot & 1.1.8 & 3 & Raw snapshot, retrieval script and dataset manifest & Cam Dan Bui; Cao Tri Tran \\
+1.2.2 & Clean Data \& Build Features & 1.2.1 & 4 & Processed dataset with features F1–F4 & Cam Dan Bui; Cao Tri Tran \\
+1.2.3 & Explore \& Visualise Data & 1.2.2 & 3 & Exploration notebook and plots & Cam Dan Bui; Cao Tri Tran \\
+1.2.4 & Build Baseline \& Models & 1.2.3 & 5 & Baseline, trained models and scoring code & Cam Dan Bui; Cao Tri Tran \\
+1.2.5 & Evaluate \& Select Method & 1.2.4 & 3 & Evaluation table, saved final model and scores & Cam Dan Bui; Cao Tri Tran \\
+1.2.6 & Write Code, README \& Zip & 1.2.5 & 2 & Commented source code, README and zip file & Cam Dan Bui; Cao Tri Tran \\
+1.2.7 & Write Report (3000 words) & 1.2.5 & 4 & Assignment 2 report (PDF) & Cam Dan Bui; Cao Tri Tran \\
+\textbf{1.3} & \textbf{Monitoring \& Quality Control} & None & 84 & Weekly minutes, updated plan and risk register, change log and contribution forms & All members \\
+1.3.1 & Weekly Meetings \& Minutes & None & 84 & Meeting minutes for every week & All members \\
+1.3.2 & Track Progress vs Gantt & 1.1.4 & 61 & Updated progress tracker and Gantt chart & Le Quang Anh Hoang \\
+1.3.3 & Monitor Risks & 1.1.5 & 63 & Updated risk register & Le Quang Anh Hoang \\
+1.3.4 & Control Changes & 1.1.5 & 63 & Change request log & Le Quang Anh Hoang \\
+1.3.5 & Quality \& Peer Review & None & 84 & Completed rubric checklists and review notes & All members \\
+1.3.6 & Manage Files \& Versions & None & 84 & Organised Confluence space and Git repository & All members \\
+1.3.7 & Contribution Records & None & 84 & Signed contribution forms & All members \\
+\textbf{1.4} & \textbf{Integration \& Deployment (Assignment 3)} & 1.2.5 & 34 & Assignment 3 web application, report, README and demo video & All members \\
+1.4.1 & Design Architecture \& API & 1.2.5, 1.1.6 & 3 & Architecture diagram and API specification & Le Quang Anh Hoang; Minh Khang Nguyen \\
+1.4.2 & Build FastAPI Backend & 1.4.1, 1.2.6 & 7 & FastAPI service reading the local store & Le Quang Anh Hoang \\
+1.4.3 & Build React Frontend & 1.4.1 & 9 & React explorer application & Minh Khang Nguyen \\
+1.4.4 & Build Visualisations & 1.4.2, 1.4.3 & 6 & At least two chart types & Cam Dan Bui; Cao Tri Tran; Minh Khang Nguyen \\
+1.4.5 & Optional Features (Buffer) & 1.4.4 & 6 & Approved optional features, or unused buffer & Le Quang Anh Hoang; Minh Khang Nguyen \\
+1.4.6 & Test \& Fix & 1.4.5 & 5 & Test log and bug fixes & All members \\
+1.4.7 & Report, Video \& Submit & 1.4.6 & 5 & Report PDF, demo video, source code zip & All members \\
+\end{xltabular}
+}
