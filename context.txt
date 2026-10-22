@@ -24,9 +24,10 @@ ENVIRONMENT
 
 RUNNING NOW (check with tasklist / logs)
 - Pretraining 152M (window "PRETRAINING", PID 1552): python -m lm.train --config configs/text_150m_pretrain.json;
-  runs\text-150m\console.log. Step ~690/7,630 at 01:00 23 Oct, ~10.7k tok/s, ends about 00:00 Sun 25 Oct.
+  runs\text-150m\console.log. Step 789/7,630 at 01:36 23 Oct, ~11.2k tok/s, ends about 21:30 Sat 24 Oct.
 - DS2 crawl (window "DS2 CRAWL"): python -m explorer.cli corpus (cpu env); reports\logs\corpus.log.
-  8 workers since 23 Oct (was 4; replies take ~4.3 s each). ~230 visited / ~100 kept at 01:00 23 Oct.
+  8 workers since 23 Oct (measured no faster than 4: the server's bandwidth per IP is the limit). 421 visited /
+  184 kept at 01:36 23 Oct; ~2.1 kept/min -> 3,000 about 23:30 23 Oct, 5,000 about 15:30 24 Oct.
   Minimum 3,000 kept (TxGPT can start), target 5,000. mempool.space only; never probe Blockstream.
 
 DONE (committed)

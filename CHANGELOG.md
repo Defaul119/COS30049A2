@@ -34,7 +34,10 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
   accelerate 1.7.0, chosen so that no installed package changed under the running pretraining.
 - **DS2 crawl: 8 workers instead of 4.** Replies take a median 4.3 s (mempool.space throttles large
   pages), so 4 workers reached only about 1 request/s; 8 stay under the 2 request starts/s the
-  pause allows. The data collected is unchanged.
+  pause allows. The data collected is unchanged. **Measured: no faster.** Over 01:15-01:36 the
+  crawl visited 4.9 candidates and kept 2.1 addresses per minute, the same as with 4 workers, so
+  the limit is mempool.space's bandwidth per IP, not the worker count. 8 is kept (it does no harm).
+  At this rate 3,000 kept is reached about 23:30 on 23 Oct and 5,000 about 15:30 on 24 Oct.
 
 - **DS1 pipeline run end to end** (transactions to evaluate). The selection rule recommends the
   **robust-z baseline** (runner-up K-Means); `explorerMethod` stays unset until the team records it.
