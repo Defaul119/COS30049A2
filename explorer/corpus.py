@@ -116,7 +116,7 @@ class SharedPace:
 
     def wait(self) -> None:
         with self._lock:
-            now = time.monotonic()
+            now = time.perf_counter()  # monotonic too, but finer than time.monotonic's ~16 ms ticks on Windows
             start = max(now, self._next_start)
             self._next_start = start + self.interval
         if start > now:

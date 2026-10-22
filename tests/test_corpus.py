@@ -69,11 +69,12 @@ class HelperTests(unittest.TestCase):
         self.assertNotEqual(a, corpus.salted_id("other-salt", "bc1qexample", 16))
 
     def test_shared_pace_spaces_request_starts(self):
-        pace = corpus.SharedPace(0.05)
-        started = time.monotonic()
+        pace = corpus.SharedPace(0.1)
+        started = time.perf_counter()
         for _ in range(4):
             pace.wait()
-        self.assertGreaterEqual(time.monotonic() - started, 0.15 - 0.01)  # three gaps after the first start
+        # Three gaps after the first start; the tolerance covers the OS timer's ~16 ms resolution.
+        self.assertGreaterEqual(time.perf_counter() - started, 0.3 - 0.02)
 
     def test_salt_is_created_once(self):
         with tempfile.TemporaryDirectory() as tmp:
