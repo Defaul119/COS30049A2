@@ -16,6 +16,7 @@ Usage (from the repository root):
     python -m explorer.cli inject                 # synthetic plants and their recomputed features
     python -m explorer.cli baseline --sweep       # robust-z threshold sweep
     python -m explorer.cli outliers               # Isolation Forest and LOF
+    python -m explorer.cli clustering             # K-Means and DBSCAN
     python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
     python -m explorer.cli classify --dataset heist [--splits temporal,random,lofo]
@@ -110,6 +111,12 @@ def cmd_outliers(args: argparse.Namespace) -> int:
     return run_outliers()
 
 
+def cmd_clustering(args: argparse.Namespace) -> int:
+    from .clustering import run_clustering
+
+    return run_clustering()
+
+
 def cmd_scores(args: argparse.Namespace) -> int:
     from .scores import run_scores
 
@@ -166,6 +173,7 @@ def build_parser() -> argparse.ArgumentParser:
     baseline.add_argument("--sweep", action="store_true", help="accepted for the plan's command; the sweep always runs")
     baseline.set_defaults(func=cmd_baseline)
     steps.add_parser("outliers", help="DS1: Isolation Forest and LOF searches").set_defaults(func=cmd_outliers)
+    steps.add_parser("clustering", help="DS1: K-Means and DBSCAN").set_defaults(func=cmd_clustering)
     steps.add_parser("scores", help="DS1: every saved method's score and flag per transaction").set_defaults(
         func=cmd_scores)
 

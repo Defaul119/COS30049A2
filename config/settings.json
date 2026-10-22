@@ -127,6 +127,18 @@
 
   "baselineSweep": [2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
 
+  "clustering": {
+    "kmeansK": [2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "kmeansNInit": 20,
+    "silhouetteSample": 10000,
+    "dbscanMinPtsPerDimension": 2,
+    "dbscanEpsFactors": [0.7, 0.85, 1.0, 1.15, 1.3],
+    "dbscanMinPts": [8, 12, 16],
+    "dbscanNoiseShare": [0.01, 0.05],
+    "describeAbsZ": 1.0,
+    "describeDirectionShare": 0.6
+  },
+
   "outliers": {
     "isolationForest": { "n_estimators": [200, 500], "max_samples": [256, 1024, "auto"], "max_features": [1.0, 0.75] },
     "lof": { "n_neighbors": [10, 20, 35, 50] }

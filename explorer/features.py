@@ -221,11 +221,17 @@ def score_address(input_txs: list[RawTx], cfg: FeatureConfig) -> list[dict[str, 
         scored = e >= cfg.min_history_tx and history_span_days >= cfg.min_history_span_days
         z: dict[str, float | None] = {}
         usual: dict[str, float | None] = {}
+        center: dict[str, float | None] = {}
+        spread: dict[str, float | None] = {}
         for fid in FEATURE_IDS:
             window = size[i] if fid in SIZE_FEATURES else timing[i]
             own = transform(fid, features[i][fid], cfg)
             sample = [v for v in (transform(fid, features[j][fid], cfg) for j in window[0]) if v is not None]
             usual[fid] = readable(fid, median(sample), cfg) if sample else None
+            # The window's median and MAD-based spread on the comparison scale (before the floor):
+            # the robust-z centre, and the regression models' "usual value" inputs (plan §9.5).
+            center[fid] = median(sample) if sample else None
+            spread[fid] = cfg.mad_scale * median([abs(v - center[fid]) for v in sample]) if sample else None
             z[fid] = (None if own is None or len(sample) < cfg.min_comparison_values
                       else robust_z(own, sample, cfg.min_scale[fid], cfg.mad_scale)[0])
         zs = [v for v in z.values() if v is not None]
@@ -235,7 +241,7 @@ def score_address(input_txs: list[RawTx], cfg: FeatureConfig) -> list[dict[str, 
             "received_sats": t.received_sats, "sent_sats": t.sent_sats,
             "net_sats": t.received_sats - t.sent_sats, "earlier_count": e,
             "history_span_days": history_span_days, "scored": scored,
-            "features": features[i], "usual": usual, "z": z,
+            "features": features[i], "usual": usual, "z": z, "center": center, "spread": spread,
             "timing_window": describe(txs, timing[i], "all"),
             "size_window": describe(txs, size[i], dirs[i] if cfg.same_direction else "all"),
             "flagged": scored and score >= cfg.flag_abs_z, "score": score,
@@ -293,6 +299,8 @@ def build_features(transactions: pd.DataFrame, cfg: FeatureConfig) -> pd.DataFra
                 z = s["z"][fid]
                 row[fid] = s["features"][fid]
                 row[f"usual_{fid}"] = s["usual"][fid]
+                row[f"center_{fid}"] = s["center"][fid]
+                row[f"spread_{fid}"] = s["spread"][fid]
                 row[f"z_{fid}"] = z
                 row[f"zc_{fid}"] = None if z is None else max(-cfg.z_clip, min(cfg.z_clip, z))
             row.update(window_columns("timing_window", s["timing_window"]))
