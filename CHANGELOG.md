@@ -8,8 +8,11 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 - **Added a fine-tuned 3B Explorer Assistant (plan D-A2-4, §9).** The tutor, Arthur Hoang, agreed
   to an extra model: a pretrained base model of about 3B parameters, QLoRA-fine-tuned on DS6 and
   DS7 after the 152M model and TxGPT finish. It sits alongside the from-scratch models and
-  doesn't replace them; the report compares the two Assistants. To do: record the tutor's
-  agreement in writing and the team's approval as an amendment to CR-06.
+  doesn't replace them; the report compares the two Assistants. The tutor's agreement is
+  confirmed and the team approved the change as an amendment to CR-06. Base model chosen:
+  Llama 3.2 3B (Llama 3.2 Community License; "Built with Llama" attribution; adapters ship only).
+- **DS1 snapshot complete** (every automated check passed); `histories.json.gz` and the manifest
+  are committed. **DS3 Elliptic classification done**: metrics tables only (no rows or models).
 
 - **Blockstream rate cap.** Since July 2025 Blockstream allows 700 unauthenticated requests per hour
   per IP (and 500,000 per month). DS1 now fails over to mempool.space for an hour after repeated

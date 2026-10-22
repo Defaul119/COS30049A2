@@ -82,6 +82,11 @@ and evaluation with accuracy, precision, recall, F1 and similar metrics. The bri
    is an unusualness score (HD-critical); and the **Explorer Assistant**, the 152M text model in
    `lm/`, pretrained on DS5, chat-tuned on DS6, then taught on DS7 to explain flags behind a
    guardrail that falls back to the template text.
+   **Added 22 Oct (tutor's OK confirmed, team approved, CR-06 amended):** a third, extra model,
+   **Llama 3.2 3B QLoRA-fine-tuned** on DS6 then DS7 (plan §9, `sec:assistant3b`). It is extra and
+   doesn't replace the from-scratch models; it runs after the 152M model and TxGPT, uses the same
+   DS7 splits, measures and guardrail, ships adapters only, and needs "Built with Llama"
+   attribution (Llama 3.2 Community License; gated on Hugging Face, so the user supplies an HF token).
 5. **One repository, two environments**: `environment.yml` (CPU, for markers) and
    `environment-gpu.yml` (CUDA, only to retrain the language models).
 

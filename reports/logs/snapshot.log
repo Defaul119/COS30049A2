@@ -119,3 +119,18 @@
 2026-10-22 21:02:50 INFO Candidate 34 36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L: 700 tx, main -> kept
 2026-10-22 21:04:25 INFO Candidate 35 bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64: 128 tx, main -> kept
 2026-10-22 21:16:50 INFO Candidate 43 3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D: 677 tx, main -> kept
+2026-10-22 21:19:10 INFO Candidate 44 35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY: 558 tx, main -> kept
+2026-10-22 21:19:31 INFO Candidate 45 3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL: 186 tx, main -> kept
+2026-10-22 21:21:54 INFO Candidate 51 1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf: 261 tx, main -> kept
+2026-10-22 21:24:31 INFO Candidate 56 3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf: 282 tx, main -> kept
+2026-10-22 21:29:17 INFO Candidate 59 1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y: 273 tx, main -> kept
+2026-10-22 21:30:00 INFO Candidate 62 bc1qepzmkm94hy889r9hdf6ck3xgkfpptk75n47284plhg3663ksm6as9nduaq: 99 tx, main -> kept
+2026-10-22 21:36:00 INFO Candidate 65 bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh: 455 tx, main -> kept
+2026-10-22 21:37:20 INFO Candidate 71 36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW: 274 tx, main -> kept
+2026-10-22 21:37:38 INFO Candidate 74 bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua: 256 tx, main -> kept
+2026-10-22 21:37:44 INFO Kept 25 main and 3 short addresses, 7966 transactions; visited 74 of 5995 candidates
+2026-10-22 21:37:44 INFO Skipped: too_few 21, between_ranges 7, too_many 8, target_reached 10
+2026-10-22 21:37:44 INFO Checks: all passed; fallback cross-check: 24 transactions on both first pages; 0 differ in time or amount, 25 transactions on both first pages; 0 differ in time or amount
+2026-10-22 21:37:44 INFO Requests this run: {'https://blockstream.info/api': {'requests': 6, 'retries': 5, 'http_429': 6, 'http_5xx': 0, 'network_errors': 0, 'median_latency_ms': 1109, 'max_latency_ms': 2734}, 'https://mempool.space/api': {'requests': 262, 'retries': 3, 'http_429': 0, 'http_5xx': 0, 'network_errors': 3, 'median_latency_ms': 7281, 'max_latency_ms': 94406}}; failovers 1
+2026-10-22 21:37:44 INFO Wrote C:\Users\ADMIN\COS30049A2\data\processed\esplora\manifest.json
+2026-10-22 21:37:44 INFO Step snapshot finished in 3247 s (exit 0)

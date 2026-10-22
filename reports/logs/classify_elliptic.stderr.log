@@ -15,3 +15,5 @@ Returning the number of logical cores instead. You can silence this warning by s
                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\site-packages\sklearn\model_selection\_search.py:317: UserWarning: The total space of parameters 24 is smaller than n_iter=30. Running 24 iterations. For exhaustive searches, use GridSearchCV.
   warnings.warn(
+C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\site-packages\sklearn\model_selection\_search.py:317: UserWarning: The total space of parameters 24 is smaller than n_iter=30. Running 24 iterations. For exhaustive searches, use GridSearchCV.
+  warnings.warn(

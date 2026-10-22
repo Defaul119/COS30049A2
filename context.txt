@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-22 21:25 GMT+7)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 00:30 GMT+7)
 =====================================================================================
 
 USER PREFERENCES
@@ -9,7 +9,7 @@ USER PREFERENCES
 - The user follows progress on the live tracker: https://claude.ai/artifact/NFVrJdEAcT2iLotZTx2J5e
   (db docs: meta/now {text, updated}, meta/log {entries[{time,text}]}, jobs/<id> {order,name,value,total,unit,
   status running|done|idle,note,updated}, steps/sNN {order,phase,title,detail,status done|running|next|waiting|
-  needs-you,who}). Writes need if_version; read back on version_mismatch. Step ids used: s01-s35.
+  needs-you,who}). Writes need if_version; read back on version_mismatch. Step ids used: s01-s36 and s50 (3B pipeline); use s51+ for new steps.
 
 ENVIRONMENT
 - Repo C:\Users\ADMIN\COS30049A2. Miniforge at C:\Users\ADMIN\miniforge3; envs cos30049-a2 (CPU) and
@@ -20,16 +20,14 @@ ENVIRONMENT
   `python -I <scratchpad>\send_ctrl_c.py <python pid>` (AttachConsole + GenerateConsoleCtrlEvent; the script is
   20 lines, recreate it if the scratchpad is gone). Every job resumes with the same command.
 
-RUNNING NOW (check with tasklist / the logs)
+RUNNING NOW (check with tasklist / the logs) - as of 2026-10-23 00:30 GMT+7
 - Pretraining 152M (window "PRETRAINING"): python -m lm.train --config configs/text_150m_pretrain.json
-  log runs\text-150m\console.log + log.jsonl. ~10.5k tok/s, ETA ~2 days (2B tokens, micro_batch 4, gate passed).
-  GPU runs at 86-87 C with fan 100% (user asked to improve airflow / power limit; needs admin).
-- DS1 snapshot (window "DS1 snapshot"): python -m explorer.cli snapshot; log reports\logs\snapshot.log.
-  17 of 25 main + 3 short kept at 21:04; fails over to mempool.space (Blockstream caps 700 req/h per IP; we are
-  blocked - do NOT probe Blockstream, each probe extends the block). Busy addresses have 3 MB pages (~45 s each).
-- DS3 Elliptic classification (window "DS3 Elliptic classification"): log reports\logs\classify.log.
-- DS2 crawl: PAUSED at 21:15 so DS1 gets mempool.space's bandwidth (126 visited, 59 kept, target 5000).
-  Resume after DS1 finishes: python -m explorer.cli corpus (logs reports\logs\corpus.log).
+  log runs\text-150m\console.log + log.jsonl. Step 610/7,630, loss 4.25, ~10.9k tok/s, ETA ~1 d 23 h.
+  GPU 88 C, fan 100%. Live view: Get-Content runs\text-150m\console.log -Wait -Tail 5
+- DS2 crawl: PAUSED (126 visited, 59 kept, target 5000). DS1 is done, so RESUME FIRST:
+  python -m explorer.cli corpus (cpu env; logs reports\logs\corpus.log). mempool.space only; do NOT probe
+  Blockstream (700 req/h per IP cap; each probe extends the block).
+- Nothing else runs. DS1 snapshot and DS3 classification windows can be closed.
 
 DONE (all committed; see git log)
 - Setup, DS4 BitcoinHeist (download, processing, classification incl. leave-one-family-out: DONE),
@@ -40,10 +38,12 @@ DONE (all committed; see git log)
   predict + explain (A1 JSON shapes), txgpt method, labelled + classify (DS3/DS4), lm/tx_tokens, lm/prepare_tx,
   lm/tx_score, lm/tx_baselines, lm.train --seed + early stopping, configs/txgpt_{s,m,l}.json, cli `all --offline`.
 
+- DS1 snapshot COMPLETE (manifest: "complete; every automated check passed"); manifest.json + histories.json.gz
+  committed. DS3 Elliptic classification DONE (AF random forest val F1 0.968, test F1 0.815; tables in
+  reports/tables/elliptic_*.csv, metrics only).
+
 NEXT, IN ORDER
-1. When DS1 finishes (manifest status "complete..."): rerun `python -m explorer.cli snapshot` (offline from cache;
-   writes data/processed/esplora/histories.json.gz + full manifest), check checks/cross-check, commit
-   data/processed/esplora/{manifest.json,histories.json.gz}. Then resume DS2 (corpus).
+1. Resume DS2 (corpus) - see RUNNING NOW.
 2. Run the DS1 pipeline: python -m explorer.cli all --offline is overkill (re-runs DS3/DS4 classification);
    run in order: transactions, features, features --as-written, split, inject, baseline, outliers, clustering,
    regression, scores, evaluate. Commit reports/tables + models (not Elliptic ones). That is M1/M2 for DS1.
@@ -55,16 +55,26 @@ NEXT, IN ORDER
    `figures` + notebooks/01_eda.ipynb, address profiles (DS1+DS2 K-Means), DS7 builder + chat/explain
    fine-tunes + assistant guardrail (after pretraining), README (A2 outline, plan §12.3), DATA_CARD.md,
    MODEL_CARD.md, LICENSES.md, CHANGELOG updates, docs/AI_USE_LOG.md updates, report (LaTeX, 3000 words).
-5. After a choice is recorded by the team: set explorerMethod in settings.json from models/selection.json.
+5. EXTRA MODEL, APPROVED 22 Oct (Arthur's OK confirmed; team accepted; CR-06 amended): Llama 3.2 3B QLoRA
+   Explorer Assistant, AFTER the 152M model's 3 stages and TxGPT (~30 Oct). Plan §9 sec:assistant3b; CLAUDE.md
+   decision 4. Pipeline (also tracker step s50):
+   a) user accepts Meta's licence on HF (meta-llama/Llama-3.2-3B-Instruct) + creates a read token (never commit it)
+   b) add transformers, peft, bitsandbytes, trl to environment-gpu.yml (check bitsandbytes works on Windows)
+   c) DS7 pairs (shared with 152M) + DS6 chat subset
+   d) QLoRA 4-bit NF4, LoRA r=16, loss on replies only: chat stage then DS7; record base revision hash
+   e) evaluate on the same DS7 test, same measures as the 152M table
+   f) behind explorer/assistant.py guardrail, served 4-bit (optional MLX on the user's Mac M5 16 GB)
+   g) LICENSES.md, MODEL_CARD.md, CHANGELOG, AI_USE_LOG, "Built with Llama"; ship adapters only
+6. After a choice is recorded by the team: set explorerMethod in settings.json from models/selection.json.
 
 RESULTS SO FAR (numbers are in reports/tables/*.csv; quote those, never these)
 - DS4 temporal split: every model near chance (2016 val year 4.1% positives vs 0.5% in 2017-18: drift).
   Random split best RF F1 ~0.24. Leave-one-family-out recall 1-3%: models recognise families, not behaviour.
-- DS3 Elliptic LF: LR F1 ~0.73, KNN ~0.74, RF ~0.76; AF logistic ~0.60.
+- DS3 Elliptic LF: LR F1 ~0.73, KNN ~0.74, RF ~0.76; AF logistic ~0.60; AF RF test F1 ~0.815 (best).
 
 WAITING ON THE USER / TEAM
 - Tutor's name: Arthur Hoang (recorded in CLAUDE.md; goes on the report cover).
-- Pause Windows Update 2 weeks; GPU cooling; copy _context/ from the Mac; CR-06 + tutor messages;
+- Pause Windows Update 2 weeks; GPU cooling; copy _context/ from the Mac; CR-06 incl. the 3B amendment is APPROVED (22 Oct); HF licence + token for Llama 3.2;
   Cam Dan Bui's DS1 manifest review + manual tx check; optional Blockstream API key.
 - models/heist_best.joblib (276 MB RF) is git-ignored: over GitHub's 100 MB limit; pick a smaller final DS4
   model or ship a link + SHA-256 when packaging.

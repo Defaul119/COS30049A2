@@ -1,6 +1,6 @@
 {
   "dataset": "DS1: Esplora snapshot of 25 main and 3 short-history Bitcoin addresses",
-  "status": "selection rule recorded; nothing fetched yet",
+  "status": "complete; every automated check passed",
   "limitation": "Unusual activity requires investigation; it does not indicate wrongdoing.",
   "source": {
     "name": "Blockstream Esplora",
@@ -54,5 +54,4852 @@
     "conda activate cos30049-a2",
     "python -m explorer.cli snapshot            # re-verifies from data/raw/esplora; no network",
     "python -m explorer.cli snapshot --refetch  # new tip: different addresses and numbers"
-  ]
+  ],
+  "built_utc": "2026-10-22T14:37:43+00:00",
+  "retrieval": {
+    "pace_seconds": 0.5,
+    "max_retries": 5,
+    "timeout_seconds": 30,
+    "back_off": "exponential (1, 2, 4 ... s, at most 60 s) on HTTP 429 and 5xx, honouring Retry-After; after repeated 429s, failover to the other host for 60 min",
+    "rate_limit_seen": "Blockstream: 700 requests per hour and 500,000 per month per IP for unauthenticated use (HTTP 429 notice, 22 Oct 2026)",
+    "runs": [
+      {
+        "started_utc": "2026-10-22T12:41:14+00:00",
+        "finished_utc": "2026-10-22T13:26:56+00:00",
+        "completed": false,
+        "reconstructed": true,
+        "note": "Stopped by force after Blockstream's hourly cap began refusing requests (HTTP 429), so its in-memory request statistics were lost. Reconstructed from the cache: at least 345 successful requests (296 saved replies, 34 candidate replies and 15 pre-fetch stats reads that are not saved). Retries, 429 responses and latencies were not recorded.",
+        "hosts": {
+          "https://blockstream.info/api": {
+            "requests": 345,
+            "retries": null,
+            "http_429": null,
+            "http_5xx": null,
+            "network_errors": null
+          }
+        },
+        "failovers": 0
+      },
+      {
+        "started_utc": "2026-10-22T13:30:04+00:00",
+        "completed": false,
+        "finished_utc": "2026-10-22T13:38:51+00:00",
+        "hosts": {
+          "https://blockstream.info/api": {
+            "requests": 6,
+            "retries": 5,
+            "http_429": 6,
+            "http_5xx": 0,
+            "network_errors": 0,
+            "median_latency_ms": 797,
+            "max_latency_ms": 1140
+          },
+          "https://mempool.space/api": {
+            "requests": 11,
+            "retries": 1,
+            "http_429": 0,
+            "http_5xx": 0,
+            "network_errors": 1,
+            "median_latency_ms": 39047,
+            "max_latency_ms": 97359
+          }
+        },
+        "failovers": 1
+      },
+      {
+        "started_utc": "2026-10-22T13:43:37+00:00",
+        "completed": true,
+        "finished_utc": "2026-10-22T14:37:43+00:00",
+        "hosts": {
+          "https://blockstream.info/api": {
+            "requests": 6,
+            "retries": 5,
+            "http_429": 6,
+            "http_5xx": 0,
+            "network_errors": 0,
+            "median_latency_ms": 1109,
+            "max_latency_ms": 2734
+          },
+          "https://mempool.space/api": {
+            "requests": 262,
+            "retries": 3,
+            "http_429": 0,
+            "http_5xx": 0,
+            "network_errors": 3,
+            "median_latency_ms": 7281,
+            "max_latency_ms": 94406
+          }
+        },
+        "failovers": 1
+      }
+    ],
+    "totals": {
+      "https://blockstream.info/api": {
+        "requests": 357,
+        "retries": 10,
+        "http_429": 12,
+        "http_5xx": 0,
+        "network_errors": 0
+      },
+      "https://mempool.space/api": {
+        "requests": 273,
+        "retries": 4,
+        "http_429": 0,
+        "http_5xx": 0,
+        "network_errors": 4
+      }
+    },
+    "note": "A run that reads only the cache makes no requests. Interrupted runs are listed too."
+  },
+  "tip": {
+    "height": 972615,
+    "file": "selection/tip-height.txt.gz"
+  },
+  "blocks": [
+    {
+      "height": 968615,
+      "hash": "00000000000000000000ef3a764e0b9f64eaa5e62260da23b076ce762410d720",
+      "time_utc": "2026-09-26T01:21:05+00:00",
+      "tx_count": 7095,
+      "pages_read": 4,
+      "new_candidates": 84
+    },
+    {
+      "height": 968820,
+      "hash": "000000000000000000017f8f27f1be4e614e4cd81e6ea7f5b7bd90ef1c05decf",
+      "time_utc": "2026-09-27T09:11:22+00:00",
+      "tx_count": 6836,
+      "pages_read": 4,
+      "new_candidates": 224
+    },
+    {
+      "height": 969026,
+      "hash": "00000000000000000000a6884a243291cc7424fd5e621d71b84b3158a3bda5ba",
+      "time_utc": "2026-09-28T17:31:51+00:00",
+      "tx_count": 3719,
+      "pages_read": 4,
+      "new_candidates": 207
+    },
+    {
+      "height": 969231,
+      "hash": "00000000000000000001320829e8b2293f4beb31853da2c4ca38338a6869da37",
+      "time_utc": "2026-09-30T00:20:02+00:00",
+      "tx_count": 6749,
+      "pages_read": 4,
+      "new_candidates": 251
+    },
+    {
+      "height": 969436,
+      "hash": "0000000000000000000193f4cd7c8b0159b5608878918eaea58ffe2ea8d4f163",
+      "time_utc": "2026-10-01T09:32:22+00:00",
+      "tx_count": 3054,
+      "pages_read": 4,
+      "new_candidates": 201
+    },
+    {
+      "height": 969641,
+      "hash": "0000000000000000000030cc31abc9f3dcb08d93498c6b65815fd83761f86bd8",
+      "time_utc": "2026-10-02T22:19:44+00:00",
+      "tx_count": 3178,
+      "pages_read": 4,
+      "new_candidates": 188
+    },
+    {
+      "height": 969847,
+      "hash": "00000000000000000001a38bbe781929a58336d5a58e04e3318ca4172dc63a06",
+      "time_utc": "2026-10-04T13:04:47+00:00",
+      "tx_count": 8052,
+      "pages_read": 4,
+      "new_candidates": 117
+    },
+    {
+      "height": 970052,
+      "hash": "0000000000000000000214625f94f0bc4fdc87ccf46e54989a72ff4d2b577cc5",
+      "time_utc": "2026-10-05T17:11:09+00:00",
+      "tx_count": 4162,
+      "pages_read": 4,
+      "new_candidates": 203
+    },
+    {
+      "height": 970257,
+      "hash": "00000000000000000001d1cef4c1d4be35248e1f856c00c9fa43cc2daaa1fa6d",
+      "time_utc": "2026-10-07T00:17:03+00:00",
+      "tx_count": 5901,
+      "pages_read": 4,
+      "new_candidates": 220
+    },
+    {
+      "height": 970462,
+      "hash": "00000000000000000001b2b15bbaeedb21037193beb84ab080943b19e70b2995",
+      "time_utc": "2026-10-08T08:00:30+00:00",
+      "tx_count": 4065,
+      "pages_read": 4,
+      "new_candidates": 246
+    },
+    {
+      "height": 970668,
+      "hash": "000000000000000000018f5a1c61b0bdc5384018c93de71fc030e4816a7bd45e",
+      "time_utc": "2026-10-09T18:25:35+00:00",
+      "tx_count": 3921,
+      "pages_read": 4,
+      "new_candidates": 204
+    },
+    {
+      "height": 970873,
+      "hash": "0000000000000000000044613fbe9eabc9760f684831d4d473a8e8b83e04286c",
+      "time_utc": "2026-10-11T05:01:08+00:00",
+      "tx_count": 3410,
+      "pages_read": 4,
+      "new_candidates": 195
+    },
+    {
+      "height": 971078,
+      "hash": "000000000000000000003e2fef1ada739ba9619aed5842507a4d6cf49aee02d7",
+      "time_utc": "2026-10-12T09:52:12+00:00",
+      "tx_count": 6634,
+      "pages_read": 4,
+      "new_candidates": 280
+    },
+    {
+      "height": 971283,
+      "hash": "000000000000000000013be135004a433ac1a7328eb279155a674328a353680c",
+      "time_utc": "2026-10-13T18:33:23+00:00",
+      "tx_count": 2954,
+      "pages_read": 4,
+      "new_candidates": 265
+    },
+    {
+      "height": 971489,
+      "hash": "00000000000000000000a3c51aa86e6e3a69974f41c329d037f571d7420863c2",
+      "time_utc": "2026-10-15T01:28:28+00:00",
+      "tx_count": 5086,
+      "pages_read": 4,
+      "new_candidates": 200
+    },
+    {
+      "height": 971694,
+      "hash": "00000000000000000001cc9ff84b245b1794af4a1aa6559f6c02fb1baa777436",
+      "time_utc": "2026-10-16T09:54:57+00:00",
+      "tx_count": 4231,
+      "pages_read": 4,
+      "new_candidates": 187
+    },
+    {
+      "height": 971899,
+      "hash": "00000000000000000001e6974fddef800fb7b0e9d350a51a829b01a53e3c1a6b",
+      "time_utc": "2026-10-17T19:20:01+00:00",
+      "tx_count": 4358,
+      "pages_read": 4,
+      "new_candidates": 244
+    },
+    {
+      "height": 972104,
+      "hash": "00000000000000000000f1b12e9d421ac293437281811706f28552095dce186a",
+      "time_utc": "2026-10-19T03:41:10+00:00",
+      "tx_count": 4581,
+      "pages_read": 4,
+      "new_candidates": 1984
+    },
+    {
+      "height": 972310,
+      "hash": "00000000000000000001d15ff829cb905005a1da8bb76b278334e0a4b27b0b00",
+      "time_utc": "2026-10-20T11:22:57+00:00",
+      "tx_count": 3214,
+      "pages_read": 4,
+      "new_candidates": 210
+    },
+    {
+      "height": 972515,
+      "hash": "00000000000000000001d63483f08d55cf40c5bcfe4d86e249554752dcda4b6f",
+      "time_utc": "2026-10-21T18:19:27+00:00",
+      "tx_count": 3717,
+      "pages_read": 4,
+      "new_candidates": 285
+    }
+  ],
+  "candidate_pool": {
+    "size": 5995,
+    "by_script_type": {
+      "p2pkh": 1198,
+      "p2sh": 828,
+      "unknown": 1,
+      "v0_p2wpkh": 3299,
+      "v0_p2wsh": 409,
+      "v1_p2tr": 260
+    },
+    "visited": 74,
+    "not_visited": 5921
+  },
+  "totals": {
+    "main_addresses": 25,
+    "short_addresses": 3,
+    "transactions": 7966,
+    "median_tx_per_main_address": 274,
+    "span_days_main": [
+      136.5,
+      2124.1
+    ]
+  },
+  "kept": [
+    {
+      "address": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd",
+      "role": "main",
+      "visit_rank": 2,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 117,
+      "in": 29,
+      "out": 88,
+      "first_tx_utc": "2026-03-12T08:55:30+00:00",
+      "last_tx_utc": "2026-10-21T19:32:23+00:00",
+      "span_days": 223.4,
+      "received_sats": 43579862,
+      "sent_sats": 43537894,
+      "pages": 5,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd"
+    },
+    {
+      "address": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT",
+      "role": "main",
+      "visit_rank": 6,
+      "script_type": "p2pkh",
+      "tx_count": 248,
+      "in": 126,
+      "out": 122,
+      "first_tx_utc": "2024-02-29T17:50:46+00:00",
+      "last_tx_utc": "2026-10-18T02:09:44+00:00",
+      "span_days": 961.3,
+      "received_sats": 37002819,
+      "sent_sats": 37002819,
+      "pages": 10,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT"
+    },
+    {
+      "address": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3",
+      "role": "main",
+      "visit_rank": 10,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 507,
+      "in": 253,
+      "out": 254,
+      "first_tx_utc": "2026-06-07T18:20:54+00:00",
+      "last_tx_utc": "2026-10-22T06:32:49+00:00",
+      "span_days": 136.5,
+      "received_sats": 70762792,
+      "sent_sats": 70762792,
+      "pages": 21,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3"
+    },
+    {
+      "address": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz",
+      "role": "main",
+      "visit_rank": 15,
+      "script_type": "p2sh",
+      "tx_count": 349,
+      "in": 179,
+      "out": 170,
+      "first_tx_utc": "2022-01-28T02:38:00+00:00",
+      "last_tx_utc": "2026-10-19T05:08:17+00:00",
+      "span_days": 1725.1,
+      "received_sats": 97712577,
+      "sent_sats": 97712577,
+      "pages": 14,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz"
+    },
+    {
+      "address": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf",
+      "role": "main",
+      "visit_rank": 18,
+      "script_type": "v0_p2wsh",
+      "tx_count": 273,
+      "in": 162,
+      "out": 111,
+      "first_tx_utc": "2025-06-03T03:31:59+00:00",
+      "last_tx_utc": "2026-10-22T04:13:18+00:00",
+      "span_days": 506.0,
+      "received_sats": 99273173,
+      "sent_sats": 69497823,
+      "pages": 11,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf"
+    },
+    {
+      "address": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755",
+      "role": "main",
+      "visit_rank": 21,
+      "script_type": "v1_p2tr",
+      "tx_count": 225,
+      "in": 200,
+      "out": 25,
+      "first_tx_utc": "2026-04-06T04:51:14+00:00",
+      "last_tx_utc": "2026-10-22T04:13:18+00:00",
+      "span_days": 199.0,
+      "received_sats": 3579455200,
+      "sent_sats": 3339655321,
+      "pages": 10,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755"
+    },
+    {
+      "address": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz",
+      "role": "main",
+      "visit_rank": 24,
+      "script_type": "p2pkh",
+      "tx_count": 377,
+      "in": 190,
+      "out": 187,
+      "first_tx_utc": "2024-05-16T05:16:19+00:00",
+      "last_tx_utc": "2026-10-19T14:10:25+00:00",
+      "span_days": 886.4,
+      "received_sats": 20568384,
+      "sent_sats": 20171321,
+      "pages": 16,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz"
+    },
+    {
+      "address": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6",
+      "role": "main",
+      "visit_rank": 26,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 289,
+      "in": 121,
+      "out": 168,
+      "first_tx_utc": "2026-01-02T21:09:32+00:00",
+      "last_tx_utc": "2026-10-21T20:16:54+00:00",
+      "span_days": 292.0,
+      "received_sats": 19026462,
+      "sent_sats": 19026462,
+      "pages": 12,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6"
+    },
+    {
+      "address": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5",
+      "role": "main",
+      "visit_rank": 28,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 180,
+      "in": 75,
+      "out": 105,
+      "first_tx_utc": "2024-12-16T19:17:04+00:00",
+      "last_tx_utc": "2026-10-18T18:45:41+00:00",
+      "span_days": 671.0,
+      "received_sats": 204541067,
+      "sent_sats": 204541067,
+      "pages": 8,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5"
+    },
+    {
+      "address": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW",
+      "role": "main",
+      "visit_rank": 30,
+      "script_type": "p2pkh",
+      "tx_count": 284,
+      "in": 142,
+      "out": 142,
+      "first_tx_utc": "2025-06-16T04:18:55+00:00",
+      "last_tx_utc": "2026-10-21T06:55:22+00:00",
+      "span_days": 492.1,
+      "received_sats": 91019661,
+      "sent_sats": 91019661,
+      "pages": 12,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW"
+    },
+    {
+      "address": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5",
+      "role": "main",
+      "visit_rank": 31,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 305,
+      "in": 304,
+      "out": 1,
+      "first_tx_utc": "2025-11-18T04:53:37+00:00",
+      "last_tx_utc": "2026-10-22T04:13:18+00:00",
+      "span_days": 338.0,
+      "received_sats": 618269293,
+      "sent_sats": 176204167,
+      "pages": 13,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5"
+    },
+    {
+      "address": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w",
+      "role": "main",
+      "visit_rank": 32,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 222,
+      "in": 151,
+      "out": 71,
+      "first_tx_utc": "2026-05-25T04:01:32+00:00",
+      "last_tx_utc": "2026-10-22T04:13:18+00:00",
+      "span_days": 150.0,
+      "received_sats": 501232276,
+      "sent_sats": 495827012,
+      "pages": 9,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w"
+    },
+    {
+      "address": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku",
+      "role": "main",
+      "visit_rank": 33,
+      "script_type": "p2pkh",
+      "tx_count": 426,
+      "in": 213,
+      "out": 213,
+      "first_tx_utc": "2024-10-08T03:20:47+00:00",
+      "last_tx_utc": "2026-10-22T08:52:46+00:00",
+      "span_days": 744.2,
+      "received_sats": 129521564,
+      "sent_sats": 129521564,
+      "pages": 18,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku"
+    },
+    {
+      "address": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L",
+      "role": "main",
+      "visit_rank": 34,
+      "script_type": "p2sh",
+      "tx_count": 700,
+      "in": 350,
+      "out": 350,
+      "first_tx_utc": "2025-10-12T19:35:21+00:00",
+      "last_tx_utc": "2026-10-22T05:24:39+00:00",
+      "span_days": 374.4,
+      "received_sats": 917336448,
+      "sent_sats": 917336448,
+      "pages": 29,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L"
+    },
+    {
+      "address": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64",
+      "role": "main",
+      "visit_rank": 35,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 128,
+      "in": 73,
+      "out": 55,
+      "first_tx_utc": "2024-03-04T05:09:18+00:00",
+      "last_tx_utc": "2026-10-11T05:01:08+00:00",
+      "span_days": 951.0,
+      "received_sats": 647082,
+      "sent_sats": 553103,
+      "pages": 6,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64"
+    },
+    {
+      "address": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D",
+      "role": "main",
+      "visit_rank": 43,
+      "script_type": "p2sh",
+      "tx_count": 677,
+      "in": 360,
+      "out": 317,
+      "first_tx_utc": "2020-12-25T02:04:44+00:00",
+      "last_tx_utc": "2026-10-19T03:41:10+00:00",
+      "span_days": 2124.1,
+      "received_sats": 244386519,
+      "sent_sats": 224335691,
+      "pages": 28,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D"
+    },
+    {
+      "address": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY",
+      "role": "main",
+      "visit_rank": 44,
+      "script_type": "p2sh",
+      "tx_count": 558,
+      "in": 298,
+      "out": 260,
+      "first_tx_utc": "2024-10-15T01:17:29+00:00",
+      "last_tx_utc": "2026-10-22T12:42:36+00:00",
+      "span_days": 737.5,
+      "received_sats": 1153975912,
+      "sent_sats": 913040348,
+      "pages": 23,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY"
+    },
+    {
+      "address": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL",
+      "role": "main",
+      "visit_rank": 45,
+      "script_type": "p2sh",
+      "tx_count": 186,
+      "in": 182,
+      "out": 4,
+      "first_tx_utc": "2026-01-08T09:04:13+00:00",
+      "last_tx_utc": "2026-10-22T04:13:18+00:00",
+      "span_days": 286.8,
+      "received_sats": 10387653718,
+      "sent_sats": 6935826662,
+      "pages": 8,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL"
+    },
+    {
+      "address": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf",
+      "role": "main",
+      "visit_rank": 51,
+      "script_type": "p2pkh",
+      "tx_count": 261,
+      "in": 131,
+      "out": 130,
+      "first_tx_utc": "2024-12-18T06:49:44+00:00",
+      "last_tx_utc": "2026-10-19T05:28:35+00:00",
+      "span_days": 669.9,
+      "received_sats": 75242483,
+      "sent_sats": 75242483,
+      "pages": 11,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf"
+    },
+    {
+      "address": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf",
+      "role": "main",
+      "visit_rank": 56,
+      "script_type": "p2sh",
+      "tx_count": 282,
+      "in": 156,
+      "out": 126,
+      "first_tx_utc": "2023-11-16T05:46:52+00:00",
+      "last_tx_utc": "2026-10-22T04:27:18+00:00",
+      "span_days": 1070.9,
+      "received_sats": 296724185,
+      "sent_sats": 273793076,
+      "pages": 12,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf"
+    },
+    {
+      "address": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y",
+      "role": "main",
+      "visit_rank": 59,
+      "script_type": "p2pkh",
+      "tx_count": 273,
+      "in": 164,
+      "out": 109,
+      "first_tx_utc": "2024-11-08T03:59:58+00:00",
+      "last_tx_utc": "2026-10-21T04:25:08+00:00",
+      "span_days": 712.0,
+      "received_sats": 93396285,
+      "sent_sats": 92295024,
+      "pages": 11,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y"
+    },
+    {
+      "address": "bc1qepzmkm94hy889r9hdf6ck3xgkfpptk75n47284plhg3663ksm6as9nduaq",
+      "role": "main",
+      "visit_rank": 62,
+      "script_type": "v0_p2wsh",
+      "tx_count": 99,
+      "in": 67,
+      "out": 32,
+      "first_tx_utc": "2026-02-01T03:46:43+00:00",
+      "last_tx_utc": "2026-10-22T04:13:18+00:00",
+      "span_days": 263.0,
+      "received_sats": 38535599,
+      "sent_sats": 19004714,
+      "pages": 4,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "bc1qepzmkm94hy889r9hdf6ck3xgkfpptk75n47284plhg3663ksm6as9nduaq"
+    },
+    {
+      "address": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh",
+      "role": "main",
+      "visit_rank": 65,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 455,
+      "in": 424,
+      "out": 31,
+      "first_tx_utc": "2025-07-06T06:41:59+00:00",
+      "last_tx_utc": "2026-10-22T04:13:18+00:00",
+      "span_days": 472.9,
+      "received_sats": 2842432927,
+      "sent_sats": 2574728462,
+      "pages": 19,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh"
+    },
+    {
+      "address": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW",
+      "role": "main",
+      "visit_rank": 71,
+      "script_type": "p2sh",
+      "tx_count": 274,
+      "in": 231,
+      "out": 43,
+      "first_tx_utc": "2026-02-08T05:01:14+00:00",
+      "last_tx_utc": "2026-10-22T04:13:18+00:00",
+      "span_days": 256.0,
+      "received_sats": 2739382200,
+      "sent_sats": 1720678341,
+      "pages": 11,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW"
+    },
+    {
+      "address": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua",
+      "role": "main",
+      "visit_rank": 74,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 256,
+      "in": 158,
+      "out": 98,
+      "first_tx_utc": "2026-05-26T15:40:58+00:00",
+      "last_tx_utc": "2026-10-21T12:50:27+00:00",
+      "span_days": 147.9,
+      "received_sats": 374776463,
+      "sent_sats": 374776463,
+      "pages": 11,
+      "sources": [
+        "https://mempool.space/api"
+      ],
+      "folder": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua"
+    },
+    {
+      "address": "bc1qx2stewzm2cel6ytwzraxt9z4d9vlh8e5gdnun6",
+      "role": "short",
+      "visit_rank": 1,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 8,
+      "in": 7,
+      "out": 1,
+      "first_tx_utc": "2026-10-02T22:18:50+00:00",
+      "last_tx_utc": "2026-10-03T09:43:37+00:00",
+      "span_days": 0.5,
+      "received_sats": 96358740,
+      "sent_sats": 96350043,
+      "pages": 1,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "bc1qx2stewzm2cel6ytwzraxt9z4d9vlh8e5gdnun6"
+    },
+    {
+      "address": "bc1q4mj77xnsydlrtkrk092xylkv3cyddwddgp9dvj",
+      "role": "short",
+      "visit_rank": 7,
+      "script_type": "v0_p2wpkh",
+      "tx_count": 4,
+      "in": 2,
+      "out": 2,
+      "first_tx_utc": "2026-10-04T15:51:51+00:00",
+      "last_tx_utc": "2026-10-05T21:18:58+00:00",
+      "span_days": 1.2,
+      "received_sats": 278175,
+      "sent_sats": 278175,
+      "pages": 1,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "bc1q4mj77xnsydlrtkrk092xylkv3cyddwddgp9dvj"
+    },
+    {
+      "address": "1GqdEHU3qyDvq5BkuuLWQECHoUVRw4rU39",
+      "role": "short",
+      "visit_rank": 9,
+      "script_type": "p2pkh",
+      "tx_count": 3,
+      "in": 2,
+      "out": 1,
+      "first_tx_utc": "2025-10-30T23:13:59+00:00",
+      "last_tx_utc": "2026-10-12T09:56:23+00:00",
+      "span_days": 346.4,
+      "received_sats": 349048,
+      "sent_sats": 349048,
+      "pages": 1,
+      "sources": [
+        "https://blockstream.info/api"
+      ],
+      "folder": "1GqdEHU3qyDvq5BkuuLWQECHoUVRw4rU39"
+    }
+  ],
+  "skipped": {
+    "reasons": {
+      "too_few": "fewer confirmed transactions than the short-history range",
+      "between_ranges": "more than the short-history range but fewer than the main range",
+      "too_many": "more confirmed transactions than the main range (busy services; a stated bias)",
+      "span_too_short": "main range, but the full history spans fewer days than the minimum",
+      "target_reached": "in range, but that group's target was already met",
+      "checks_failed": "fetched, but an automated check failed",
+      "fetch_error": "the API still returned an error after every retry"
+    },
+    "counts": {
+      "too_few": 21,
+      "between_ranges": 7,
+      "too_many": 8,
+      "span_too_short": 0,
+      "target_reached": 10,
+      "checks_failed": 0,
+      "fetch_error": 0
+    },
+    "candidates": [
+      {
+        "rank": 3,
+        "address": "bc1q3q86gd76u6wclym0khrulaa69e9fl9djaqk6d0",
+        "tx_count": 1,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 4,
+        "address": "bc1q2qs2t7us0atq9vxga7egkuclvx2mjsv5uydqxl",
+        "tx_count": 20,
+        "reason": "between_ranges",
+        "detail": ""
+      },
+      {
+        "rank": 5,
+        "address": "bc1qtec0csupve9dz55yakgq7a8mkpuyldt4ul9zrj",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 8,
+        "address": "bc1qnncqa8y9x6cre0gwp754955egj5ppetpnr20fx",
+        "tx_count": 1,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 11,
+        "address": "bc1q5xqzpfypw9n09n87dte6jcwlkdh6h3eqw806hr",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 12,
+        "address": "15zKRZ2GweB4pftyZb8tiR1hLctnaS9wUx",
+        "tx_count": 28,
+        "reason": "between_ranges",
+        "detail": ""
+      },
+      {
+        "rank": 13,
+        "address": "bc1q4rjv30390nmuky4vax45y3epjt93dkf5eypulx",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 14,
+        "address": "bc1qdpyj792u70q4k26t7f65u44mltf6d2e4qqn6j4",
+        "tx_count": 3,
+        "reason": "target_reached",
+        "detail": "short target of 3 already met"
+      },
+      {
+        "rank": 16,
+        "address": "bc1q942s82a29azsnllajjztys4vkxpnt7qjx7eedv",
+        "tx_count": 28,
+        "reason": "between_ranges",
+        "detail": ""
+      },
+      {
+        "rank": 17,
+        "address": "bc1qtmf7g7emqq5d3e954amjwn9k7nxvt9ck98xxgd",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 19,
+        "address": "bc1q0kl5wjyed3pcntarzpu2c4snxurppgeyjn757z",
+        "tx_count": 4,
+        "reason": "target_reached",
+        "detail": "short target of 3 already met"
+      },
+      {
+        "rank": 20,
+        "address": "1Dmsm9RZPk8zDDC2Wx2vMf1uCz3eQykfhx",
+        "tx_count": 2620,
+        "reason": "too_many",
+        "detail": ""
+      },
+      {
+        "rank": 22,
+        "address": "bc1q6t3rhfm22pcqx5k3g7pyn93v7sduhx9fcwcxjv",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 23,
+        "address": "bc1qk8ya59mw0z4r0xn0ch43tunjmreqyu8tvuup0r",
+        "tx_count": 3,
+        "reason": "target_reached",
+        "detail": "short target of 3 already met"
+      },
+      {
+        "rank": 25,
+        "address": "bc1qrtjgtu7zmfge7f2rq4lskqzs89khdpg23ne5se",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 27,
+        "address": "bc1q2g73tthnfj6usmasej079azcscptydly2mre3c",
+        "tx_count": 1,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 29,
+        "address": "bc1qajdhhx3eze7n04kstk9znjzx3rqt8ydl62sptz",
+        "tx_count": 1,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 36,
+        "address": "bc1q4taesx6exq2pdwaazl22eutxkesed5pqv5ju7s",
+        "tx_count": 4,
+        "reason": "target_reached",
+        "detail": "short target of 3 already met"
+      },
+      {
+        "rank": 37,
+        "address": "bc1q0nets5gp759parfzvpdjc860nk026dqx9s4229",
+        "tx_count": 9161,
+        "reason": "too_many",
+        "detail": ""
+      },
+      {
+        "rank": 38,
+        "address": "bc1qyl48rdtlc0hmmqpnu484un8ngv84mgeywfgegmxc3mn7x0ctkxastq54ym",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 39,
+        "address": "bc1qsptm6uyxrqjzyk3veuz0clcm7u6acue5t8nsrl",
+        "tx_count": 1,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 40,
+        "address": "bc1q0azhhy2e2fnsphj6tx3guwp079z8c89teem97a",
+        "tx_count": 43,
+        "reason": "between_ranges",
+        "detail": ""
+      },
+      {
+        "rank": 41,
+        "address": "bc1qt70mfvlxmdwzfjxqsxh2y4208ljuwqyy54dw3x",
+        "tx_count": 1,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 42,
+        "address": "bc1qnccemfwes5nx68epy2wnmsp9ajv6047nsytj98",
+        "tx_count": 6,
+        "reason": "target_reached",
+        "detail": "short target of 3 already met"
+      },
+      {
+        "rank": 46,
+        "address": "18uhzy546Qz7CxRNkHohg4W9VSkfTkbSvY",
+        "tx_count": 87154,
+        "reason": "too_many",
+        "detail": ""
+      },
+      {
+        "rank": 47,
+        "address": "bc1qkpetsk2y70uhlunecyfardtuyzfzudkm3jsmee",
+        "tx_count": 28,
+        "reason": "between_ranges",
+        "detail": ""
+      },
+      {
+        "rank": 48,
+        "address": "bc1qq7z0l6txnad5y522krwxvnmdrmdyaaf5khppsa",
+        "tx_count": 1005,
+        "reason": "too_many",
+        "detail": ""
+      },
+      {
+        "rank": 49,
+        "address": "35N3b8UTwUGCnYWzpaUnMMJLC8TgBosQM8",
+        "tx_count": 1074,
+        "reason": "too_many",
+        "detail": ""
+      },
+      {
+        "rank": 50,
+        "address": "bc1qlt0y7e8ttmrwcnwf9877qwufzxdkjyw7er68xf",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 52,
+        "address": "bc1qy78kqs6y2yazeg60vd0907mvjhrz8ymxcfx7mx",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 53,
+        "address": "bc1qp2twlw6n00kx2d4q923m8al7jdepz5rz6yk83k",
+        "tx_count": 10,
+        "reason": "between_ranges",
+        "detail": ""
+      },
+      {
+        "rank": 54,
+        "address": "bc1qephgyhjtzx7z0l4mq6sc7xqaeyw6k4vkzjmax5",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 55,
+        "address": "bc1qhrkfdr4hemy33fqt6t5pcufze8p4snla7mkrhc",
+        "tx_count": 44,
+        "reason": "between_ranges",
+        "detail": ""
+      },
+      {
+        "rank": 57,
+        "address": "bc1quu7asqutupysqe3d076ey6j8rh94xpptm43puc",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 58,
+        "address": "bc1qkzsy96df49rrmn07ymj5fl9xasusswc6vcpayt",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 60,
+        "address": "bc1qx9edufq06k6p26c7l22d0tjeeqqygmff52q6tl",
+        "tx_count": 9,
+        "reason": "target_reached",
+        "detail": "short target of 3 already met"
+      },
+      {
+        "rank": 61,
+        "address": "bc1qngdw69axj5rus8rfsyx4yhafkh5u7qh5n9zl8n",
+        "tx_count": 4,
+        "reason": "target_reached",
+        "detail": "short target of 3 already met"
+      },
+      {
+        "rank": 63,
+        "address": "bc1qgemqq9dv5yer406hmctrkuuy9dtae8rsu3l287",
+        "tx_count": 4,
+        "reason": "target_reached",
+        "detail": "short target of 3 already met"
+      },
+      {
+        "rank": 64,
+        "address": "bc1qfvhsntq6sat0k6kk8pk8wlgenrqtdxwhaeg42h",
+        "tx_count": 198644,
+        "reason": "too_many",
+        "detail": ""
+      },
+      {
+        "rank": 66,
+        "address": "bc1q0qgn9x7hyy3n9l2w0sj2p2n2aurcef7d7vl0v7",
+        "tx_count": 5,
+        "reason": "target_reached",
+        "detail": "short target of 3 already met"
+      },
+      {
+        "rank": 67,
+        "address": "3QfQEfHxciUsMesb565m8D1YocnxX7xBVj",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 68,
+        "address": "bc1qva7z0da6cwhju6x366dx520k4mw2eu8yz8tft4",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 69,
+        "address": "bc1qx0m9t6x4d9nn4rnhk8e6qjm6ykgsyu7ysld6a8",
+        "tx_count": 3,
+        "reason": "target_reached",
+        "detail": "short target of 3 already met"
+      },
+      {
+        "rank": 70,
+        "address": "bc1qv5zl0e7lw2eg43mgjfgpvmf8dstdl9wy8nmetz",
+        "tx_count": 2,
+        "reason": "too_few",
+        "detail": ""
+      },
+      {
+        "rank": 72,
+        "address": "16R7YH4UkpVYaTxGUHhWciFRTneb5VXuDK",
+        "tx_count": 1096,
+        "reason": "too_many",
+        "detail": ""
+      },
+      {
+        "rank": 73,
+        "address": "1LvkE4q2nFaFfbJpu6qgkFRcPcPRVMQ9Zo",
+        "tx_count": 1671,
+        "reason": "too_many",
+        "detail": ""
+      }
+    ]
+  },
+  "checks": {
+    "all_passed": true,
+    "per_address": [
+      {
+        "address": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "117 fetched, 117 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "117 unique of 117"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "43579862 vs 43579862 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "43537894 vs 43537894 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 17]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "248 fetched, 248 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "248 unique of 248"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "37002819 vs 37002819 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "37002819 vs 37002819 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 23]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "507 fetched, 507 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "507 unique of 507"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "70762792 vs 70762792 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "70762792 vs 70762792 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 7]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "349 fetched, 349 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "349 unique of 349"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "97712577 vs 97712577 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "97712577 vs 97712577 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 24]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "273 fetched, 273 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "273 unique of 273"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "99273173 vs 99273173 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "69497823 vs 69497823 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 23]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "225 fetched, 225 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "225 unique of 225"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "3579455200 vs 3579455200 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "3339655321 vs 3339655321 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 0]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "377 fetched, 377 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "377 unique of 377"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "20568384 vs 20568384 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "20171321 vs 20171321 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 2]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "289 fetched, 289 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "289 unique of 289"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "19026462 vs 19026462 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "19026462 vs 19026462 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 14]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "180 fetched, 180 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "180 unique of 180"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "204541067 vs 204541067 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "204541067 vs 204541067 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 5]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "284 fetched, 284 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "284 unique of 284"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "91019661 vs 91019661 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "91019661 vs 91019661 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 9]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "305 fetched, 305 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "305 unique of 305"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "618269293 vs 618269293 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "176204167 vs 176204167 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 5]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "222 fetched, 222 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "222 unique of 222"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "501232276 vs 501232276 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "495827012 vs 495827012 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 22]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "426 fetched, 426 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "426 unique of 426"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "129521564 vs 129521564 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "129521564 vs 129521564 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 1]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "700 fetched, 700 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "700 unique of 700"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "917336448 vs 917336448 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "917336448 vs 917336448 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 0]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "128 fetched, 128 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "128 unique of 128"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "647082 vs 647082 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "553103 vs 553103 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 3]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "677 fetched, 677 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "677 unique of 677"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "244386519 vs 244386519 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "224335691 vs 224335691 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 2]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "558 fetched, 558 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "558 unique of 558"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "1153975912 vs 1153975912 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "913040348 vs 913040348 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 8]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "186 fetched, 186 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "186 unique of 186"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "10387653718 vs 10387653718 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "6935826662 vs 6935826662 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 11]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "261 fetched, 261 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "261 unique of 261"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "75242483 vs 75242483 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "75242483 vs 75242483 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 11]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "282 fetched, 282 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "282 unique of 282"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "296724185 vs 296724185 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "273793076 vs 273793076 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 7]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "273 fetched, 273 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "273 unique of 273"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "93396285 vs 93396285 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "92295024 vs 92295024 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 23]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1qepzmkm94hy889r9hdf6ck3xgkfpptk75n47284plhg3663ksm6as9nduaq",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "99 fetched, 99 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "99 unique of 99"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "38535599 vs 38535599 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "19004714 vs 19004714 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 24]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "455 fetched, 455 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "455 unique of 455"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "2842432927 vs 2842432927 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "2574728462 vs 2574728462 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 5]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "274 fetched, 274 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "274 unique of 274"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "2739382200 vs 2739382200 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "1720678341 vs 1720678341 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 24]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "256 fetched, 256 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "256 unique of 256"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "374776463 vs 374776463 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "374776463 vs 374776463 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 6]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1qx2stewzm2cel6ytwzraxt9z4d9vlh8e5gdnun6",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "8 fetched, 8 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "8 unique of 8"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "96358740 vs 96358740 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "96350043 vs 96350043 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [8]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "bc1q4mj77xnsydlrtkrk092xylkv3cyddwddgp9dvj",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "4 fetched, 4 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "4 unique of 4"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "278175 vs 278175 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "278175 vs 278175 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [4]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      },
+      {
+        "address": "1GqdEHU3qyDvq5BkuuLWQECHoUVRw4rU39",
+        "checks": [
+          {
+            "name": "count equals chain_stats.tx_count",
+            "passed": true,
+            "detail": "3 fetched, 3 reported"
+          },
+          {
+            "name": "no duplicate txids",
+            "passed": true,
+            "detail": "3 unique of 3"
+          },
+          {
+            "name": "every transaction confirmed with a block time",
+            "passed": true,
+            "detail": "status.confirmed and status.block_time"
+          },
+          {
+            "name": "summed received equals funded_txo_sum",
+            "passed": true,
+            "detail": "349048 vs 349048 sats"
+          },
+          {
+            "name": "summed sent equals spent_txo_sum",
+            "passed": true,
+            "detail": "349048 vs 349048 sats"
+          },
+          {
+            "name": "every page but the last holds 25",
+            "passed": true,
+            "detail": "sizes [3]"
+          },
+          {
+            "name": "every transaction involves the address",
+            "passed": true,
+            "detail": "received or sent > 0"
+          }
+        ]
+      }
+    ],
+    "fallback_cross_check": [
+      {
+        "address": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd",
+        "source": "https://mempool.space/api",
+        "passed": true,
+        "shared": 24,
+        "mismatched": [],
+        "detail": "24 transactions on both first pages; 0 differ in time or amount"
+      },
+      {
+        "address": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT",
+        "source": "https://mempool.space/api",
+        "passed": true,
+        "shared": 25,
+        "mismatched": [],
+        "detail": "25 transactions on both first pages; 0 differ in time or amount"
+      }
+    ]
+  },
+  "fields_used": [
+    "txid",
+    "status.confirmed",
+    "status.block_height",
+    "status.block_time",
+    "vin[].prevout.scriptpubkey_address",
+    "vin[].prevout.value",
+    "vout[].scriptpubkey_address",
+    "vout[].scriptpubkey_type",
+    "vout[].value",
+    "fee",
+    "weight",
+    "/address: chain_stats.tx_count, funded_txo_sum, spent_txo_sum (checks only)"
+  ],
+  "missing_values": {
+    "txid": 0,
+    "status.block_height": 0,
+    "status.block_time": 0,
+    "fee": 0,
+    "weight": 0,
+    "vin[].prevout on a non-coinbase input": 0,
+    "vout[].value": 0,
+    "vout[].scriptpubkey_address (OP_RETURN and bare scripts have none; expected, not an error)": 19
+  },
+  "dataset_file": {
+    "path": "histories.json.gz",
+    "bytes": 795260,
+    "sha256": "2bf7f2c16d8bc42fb7f85036268d7af43230b53934aedd5a769d935aa1cfe275",
+    "contents": "address -> {role, chain_stats, txs}; each tx trimmed to its status, fee, weight, size, input and output counts, and the inputs and outputs belonging to the address"
+  },
+  "provenance": {
+    "root": "data/raw/esplora",
+    "note": "Every API reply, unchanged and gzipped. Kept on the collecting machine as evidence (about 0.4 GB, too large for the repository or the zip); the SHA-256 of each file is listed here.",
+    "files": [
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/address.json.gz",
+        "bytes": 172,
+        "sha256": "9c5401be8f167169771ba60b0a68e781a32b3768bf41164289713450a76737b4"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-001.json.gz",
+        "bytes": 1119197,
+        "sha256": "894682153e1ad702d7af1aa52035d8d9a1cafb081feba3bfece694df747a8a5f"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-002.json.gz",
+        "bytes": 1293328,
+        "sha256": "399c2675e9ecbae1f85c8402bf81888c56e1fc0e3b77889a776b1cee14e02116"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-003.json.gz",
+        "bytes": 1181092,
+        "sha256": "f771701480cc495ce4b74e25039ecc17dc5f2fe398a1aacd498f2cf63397292c"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-004.json.gz",
+        "bytes": 1277126,
+        "sha256": "94793181a8d930f2e9772cc3c6428f12de7bfa1d40d22839ac5324daba0caf0c"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-005.json.gz",
+        "bytes": 1152918,
+        "sha256": "e57f9c8952632c451b585aac9b08dbedf69edf4c69d6b312db338f188e109589"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-006.json.gz",
+        "bytes": 651447,
+        "sha256": "9af1fedbac38916ed412856b3cae4fe1bbcc7d65f1afa4331b3f87ea0ced023c"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-007.json.gz",
+        "bytes": 597775,
+        "sha256": "ea3e6e2444e5a52a4029a0d87d8f0322247d023ca8353926c47895d7d511644b"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-008.json.gz",
+        "bytes": 650766,
+        "sha256": "8495b6173d100528f3d6b3265a33a17f09858335df2fa4a7ec6e90d08dc15024"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-009.json.gz",
+        "bytes": 707073,
+        "sha256": "54b2876c14e480b8cca2242a6fa38769530041c390dfe9bece79598e33b03e80"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-010.json.gz",
+        "bytes": 1305073,
+        "sha256": "051f634c40b3ef1e637af1806930bf5445437ec5be57913fe20440c39e49b3d3"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-011.json.gz",
+        "bytes": 1859866,
+        "sha256": "cb7865e8a4d635e25c5ad4093e4f64f7a78f8fdde8dd3f2994df512f7bad585c"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-012.json.gz",
+        "bytes": 1377322,
+        "sha256": "275f5b604d045be7756534e9232997a4eed37260d03b004f1c017bef9713b536"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-013.json.gz",
+        "bytes": 2062144,
+        "sha256": "213ddc2def8d139e86c03c29770a261c1f144170d423a95194c866dc23fae624"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-014.json.gz",
+        "bytes": 797403,
+        "sha256": "b0750875643b6391179a0d42a902e6614a6c2380ded999f66331381f4b4459b1"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-015.json.gz",
+        "bytes": 2288875,
+        "sha256": "4e3b079fabfc815e11c5a99f68a8cd1c17b28ebea993015cbd3bb5b3e883b2f2"
+      },
+      {
+        "path": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz/page-016.json.gz",
+        "bytes": 201367,
+        "sha256": "c6308460c519dbe5859178f613e9edda5c8b9b361f336197ba8cb3a70a08dde9"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/address.json.gz",
+        "bytes": 167,
+        "sha256": "5ce48160a9d31763336e08f9750774e4872b64012b5eb1c9a9773710a1deb047"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/mempool-page-001.json.gz",
+        "bytes": 1187193,
+        "sha256": "b8b78a62004220724bbab26b6fde527a8b27ca051b3afd4b7839705d7c2abd91"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/page-001.json.gz",
+        "bytes": 1187069,
+        "sha256": "657702a7f2cca285e7f2ed6a54296a85c5f0e7f4ba808c08dcb57116c8610235"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/page-002.json.gz",
+        "bytes": 1274860,
+        "sha256": "1fe00778c3a260cf846807b251b07092f46d6f9c9d4a26232add32a0452f0957"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/page-003.json.gz",
+        "bytes": 993030,
+        "sha256": "1df2ecc26c4d53290dff2cc4c56207150f36ee7f8ae72ebc0e86d10388175bd5"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/page-004.json.gz",
+        "bytes": 642364,
+        "sha256": "e6aa5792d7d42082b83dc7d4c67d02e6550d481426f4c90137fb273ad0d23b15"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/page-005.json.gz",
+        "bytes": 1221684,
+        "sha256": "20eb5d6fef35757af6d71ff47c36dcdb617441953da6ef3735fcf20b87672e49"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/page-006.json.gz",
+        "bytes": 2713937,
+        "sha256": "4ab2e989fa1c2427baa27c27b53eee427c864471bc5445f637a6b2bf2e55e3d7"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/page-007.json.gz",
+        "bytes": 1877797,
+        "sha256": "df7c6b6349ddd8c06697d911832f64bd2db5068d397c5e037aa5d93d3c5d14b9"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/page-008.json.gz",
+        "bytes": 626818,
+        "sha256": "88b7cf2551ea812fc248a55b431590a7a659a0c381dfbcb53b2d89ea49b093f0"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/page-009.json.gz",
+        "bytes": 455329,
+        "sha256": "54d749b9200a58fb57da5ff7a116d609475019e620cb341aa754578c31253352"
+      },
+      {
+        "path": "1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT/page-010.json.gz",
+        "bytes": 326619,
+        "sha256": "02c35312ea8ea247f8c83b302bafd3bd36a9da1d2b174f0ceff6ca0a6eadf530"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/address.json.gz",
+        "bytes": 169,
+        "sha256": "926fa0e1ac1f544f686bdb84d12ca35635bc83654257747ef909eaf7ceecca7e"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-001.json.gz",
+        "bytes": 1797849,
+        "sha256": "8b604204ecac6f8a784b7859ea0e14f9ffa7a26d5a54c8f0c3d9b35781eae17b"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-002.json.gz",
+        "bytes": 1938575,
+        "sha256": "a82f18464395e0cd77dc63f84fe334e91965d5815fcf8c376cc629ce02077fb8"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-003.json.gz",
+        "bytes": 1784741,
+        "sha256": "565950de3f2ec76e12738b73299de46aa93194c37dfa2c543d5ac508c115ddf6"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-004.json.gz",
+        "bytes": 1899964,
+        "sha256": "21d9e4e7c7401f50aa6e7523e8ed24d330d0730d76cab32e75428cad19925514"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-005.json.gz",
+        "bytes": 1762095,
+        "sha256": "004041d3b0d77f13afe6b709124c293bf7f04973d4ec6b2c1e0d823e138f2f93"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-006.json.gz",
+        "bytes": 1873210,
+        "sha256": "ffa33e61f8547d945e78e9ee2490a82370537c8597cb5664383b3a1c8894059d"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-007.json.gz",
+        "bytes": 1748870,
+        "sha256": "38ec1b71d402c783d5b4faf1ee350e7b2ece2852a1f7dae1190a4647defa6da9"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-008.json.gz",
+        "bytes": 1806863,
+        "sha256": "2b1e02d66410e3bffcbac9a0105baee7cea19c18b65c51f7ce38c6e3a6f0f744"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-009.json.gz",
+        "bytes": 1641765,
+        "sha256": "332bd7a81703e1521337d99194cf3c43e1d3aee1560749321334358254898e2a"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-010.json.gz",
+        "bytes": 1624755,
+        "sha256": "1b70cb446a99f880dac3f51e25246660630c45527ff63cf065fb01d2794738db"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-011.json.gz",
+        "bytes": 1891012,
+        "sha256": "34ebbc801d61594bb27d0b61ac0fefdc0ce065d50be8e4260738b3418440a768"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-012.json.gz",
+        "bytes": 1976929,
+        "sha256": "a28de2c84b2b61886adc744a9d1b201216dc7292ef730282b9b8abe2c830aab7"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-013.json.gz",
+        "bytes": 1759182,
+        "sha256": "bad12afc0257a8641761d87276b9e2c2678014e7f6ef4d879805bc8ba6196c8b"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-014.json.gz",
+        "bytes": 1976566,
+        "sha256": "4c3f26f24a18935244a5aff3c964341dba0526200123f36f1f131074608b1858"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-015.json.gz",
+        "bytes": 1877979,
+        "sha256": "856ae07e05a1d0e45f334137881e10228f2cf8783186450406aeb97f35993893"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-016.json.gz",
+        "bytes": 1983149,
+        "sha256": "eaef838973e93eedd4a956e67c0f2f307411fc5c5569ce000dc1097089ffa195"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-017.json.gz",
+        "bytes": 1871499,
+        "sha256": "d3eb3cba13219ee9b97f7b24bc3e7c442d4c136a0d19bc20b8cdc85edaae263b"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/page-018.json.gz",
+        "bytes": 143754,
+        "sha256": "2456f1e9f1d1531623c1863e577f426810b5408678e11c77fbd4ed77b890fe7e"
+      },
+      {
+        "path": "1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku/sources.json",
+        "bytes": 571,
+        "sha256": "df5ca69514ddb9f9336e7a27821c01ab41d7aeac59aa884e7d7125acad0c3c4c"
+      },
+      {
+        "path": "1GqdEHU3qyDvq5BkuuLWQECHoUVRw4rU39/address.json.gz",
+        "bytes": 161,
+        "sha256": "6f73672d7de5848963230becce31cd7677ad3ba1a0bdbe2135d5ec001ab74efc"
+      },
+      {
+        "path": "1GqdEHU3qyDvq5BkuuLWQECHoUVRw4rU39/page-001.json.gz",
+        "bytes": 2247,
+        "sha256": "aca98f9e0884ac7cfc6f52629f305ec9bbfc1ad5539dabd074da0bf9302095fb"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/address.json.gz",
+        "bytes": 171,
+        "sha256": "f37e6b8cd4d20649f1ef158842b6d92022599852b5f444165ebdad162a97d3bd"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-001.json.gz",
+        "bytes": 2339674,
+        "sha256": "7554984fea57e21d0645c5c4a350c6acf382737a7818d83191708f6d1878c7bb"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-002.json.gz",
+        "bytes": 2123614,
+        "sha256": "8ff93e9aafca91fdf27e6e8731f507d44e0cbf80c76d177cc7d164a9e8cdcbba"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-003.json.gz",
+        "bytes": 2001490,
+        "sha256": "803f981247dcaaf3bc9e0e8b2951f9e9751eae4cbda354e5d42c0a1690af7e88"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-004.json.gz",
+        "bytes": 1812275,
+        "sha256": "d12807412ee916dfcae13311eed6c1fe81f4cacc72ff585100d1b2e7fd2651c8"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-005.json.gz",
+        "bytes": 1978665,
+        "sha256": "477f568c396d7087ecea929776e6d19a9dd4abd3e33077d53a486e52b20cabf1"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-006.json.gz",
+        "bytes": 2382888,
+        "sha256": "83744b218af506ecd6f03db46a21f72186cf8fb2673f41bf40ea0568c3a50bf6"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-007.json.gz",
+        "bytes": 2395008,
+        "sha256": "2d50f6aa2ad80d41d8467cd448ca6a6320c4275941ae370aa4e54fb0354650b7"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-008.json.gz",
+        "bytes": 1972302,
+        "sha256": "ba36c2af2b712a670138b1b1d8ce6f61bea8217961bf220decfa1f1f68f8ff39"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-009.json.gz",
+        "bytes": 2194669,
+        "sha256": "72798e220b7d33192191b62e7a808272f54690258713f448c013b772a1739a8c"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-010.json.gz",
+        "bytes": 1861919,
+        "sha256": "d39d703d46161b387b978954dbfd20438b19e0418321e0dc10027bec2dd26f73"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/page-011.json.gz",
+        "bytes": 2177240,
+        "sha256": "84d128a6c05f7ff85edb75dbed02aa370064e6d8d4ed7fc19508499fbdfeda27"
+      },
+      {
+        "path": "1KgDX9KC5GiAuKJNd4Wo2x1pje75Xj952Y/sources.json",
+        "bytes": 368,
+        "sha256": "e2627a87aa01771cf23fbcf70f471df44cfec1d4670630ecf6039b2b0d744f15"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/address.json.gz",
+        "bytes": 166,
+        "sha256": "b82d81af91737ef1c9f97272a7b3aacfe5d1519bee5074ad8041c992b9f0e1f5"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-001.json.gz",
+        "bytes": 1836474,
+        "sha256": "e0f124bcea47ebd6c6efebe06d54d27d03009138bf662ee4996e76792d5770e6"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-002.json.gz",
+        "bytes": 2061044,
+        "sha256": "3ef27f9b09d105bcb4e0fdb60d47d03dfdde2ccf1190d383666f43bc38aec962"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-003.json.gz",
+        "bytes": 1916102,
+        "sha256": "a05752a01b88d8a223c6ce19a9b69f60f4357b4d5aece4b9679df383673e5a44"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-004.json.gz",
+        "bytes": 2038114,
+        "sha256": "d59986dd08f063b5bf7c123ccdd573689a0c14e2ef737b80eacc3e953772f5ae"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-005.json.gz",
+        "bytes": 1886839,
+        "sha256": "d385f2551b2fa34fd434d634b9970e3f5eee64b833d0d0d193309f787471dc48"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-006.json.gz",
+        "bytes": 2007093,
+        "sha256": "06572369a3268bb56e14faace88c0f28bf7594096f7c69cab831145fae82254b"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-007.json.gz",
+        "bytes": 1890645,
+        "sha256": "060bf4fd9899c9de63b68e09bc288b7c6c065d1e64fbf1d12a35db7cde2540e5"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-008.json.gz",
+        "bytes": 1959121,
+        "sha256": "7e8fd711aafaf979904a290f01a5a1c7c94f81a7836f2ebf5f0deb1c9fea5991"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-009.json.gz",
+        "bytes": 1811718,
+        "sha256": "f066ce166615f612e84573a9e57940c6a6e2ef6203b380c111c8dfcdb0296e23"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-010.json.gz",
+        "bytes": 1938067,
+        "sha256": "cceb25b643dafe85a0c8ccfe3c4e2201f599b3764c9af493d7253b5c6e44734d"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-011.json.gz",
+        "bytes": 1805658,
+        "sha256": "16a07b2326d533378c6a3e4b9e29780459b27e4cb3a5acb9b420d12e51a0cf33"
+      },
+      {
+        "path": "1KvuP3cjQQ42fVt4sKNwvUhFsnFXPEZcwW/page-012.json.gz",
+        "bytes": 698023,
+        "sha256": "065a02e0f117f8e328a4562dcc8d33f14b3de441371d701efdf0de2f7e5f9056"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/address.json.gz",
+        "bytes": 166,
+        "sha256": "ac4b4803bdf6eeff58a3aec167d04125233cbe4a32af3ec67ae23f59c13c3885"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-001.json.gz",
+        "bytes": 1917907,
+        "sha256": "e91824a90c01ac0bafb0f35fcf88776b4d483e44add0093e06bef6b41171a54c"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-002.json.gz",
+        "bytes": 1927136,
+        "sha256": "00e2063deef8cc4acbde5d8f28cf94eb3a9f8f1ed8464e2665bbab69bf9fb3c0"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-003.json.gz",
+        "bytes": 1770302,
+        "sha256": "b65acb49d727329ab7f3c9cb9203a372f53772f1d8535b5895dacb74fb65a73e"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-004.json.gz",
+        "bytes": 2162303,
+        "sha256": "ba217cc5ea51991a6d06b4f849a4e29f0981f8f34dde0da00613805eb4a6c51a"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-005.json.gz",
+        "bytes": 2015454,
+        "sha256": "bf8a6a8ca9065cb27cfbe39286da7098a8ea1a55960ed1959a8822f6a4fe6fb0"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-006.json.gz",
+        "bytes": 2098892,
+        "sha256": "65eb230ffe04e7033caf1172081027c30624122a23464ec93f0beef02d421d83"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-007.json.gz",
+        "bytes": 1884092,
+        "sha256": "b76e121575baf3ba9735b5e4a793ba8e32dd8dee3dd20bd536a659816a70fcc3"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-008.json.gz",
+        "bytes": 2032742,
+        "sha256": "3152e8cda97df8fa89f7388e1e40fdc038ce172fa49cddfb76bbfe50f3f40cbb"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-009.json.gz",
+        "bytes": 1954425,
+        "sha256": "3d8dde80e056664e10d30bc7734b579c9285aea9d47068ada0435d7cebed1737"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-010.json.gz",
+        "bytes": 2083533,
+        "sha256": "2cf2e5709905636409a3e439c4325898f562a62afa32c038ad10a27d5d90837a"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/page-011.json.gz",
+        "bytes": 943696,
+        "sha256": "c2bec75dda5b1f87d0f3382594632876a0c6fa4824370c10cef06579def4a117"
+      },
+      {
+        "path": "1MCBADd1fUThNNGEdg4C7gZAxi2oY6btuf/sources.json",
+        "bytes": 368,
+        "sha256": "e2627a87aa01771cf23fbcf70f471df44cfec1d4670630ecf6039b2b0d744f15"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/address.json.gz",
+        "bytes": 175,
+        "sha256": "100787f0ad55264b51d380f64cc006d1f43193707ad31be081394a68059d4a1a"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-001.json.gz",
+        "bytes": 1175179,
+        "sha256": "e37d1df0fbbdcbbdf97e76d01f9edb35631f30499ad42346860b235f1b194402"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-002.json.gz",
+        "bytes": 1776258,
+        "sha256": "bdb545af3a81033b0f61dc6b63df12f27918453b28e1231adddd0bfb0372d3bf"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-003.json.gz",
+        "bytes": 1315944,
+        "sha256": "760fb8b818fc9f848a9b94bf3a185f7f659f5e16722f4c3851771a32df8db828"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-004.json.gz",
+        "bytes": 1728289,
+        "sha256": "caa029f4b648ef5db921397053be1a9d1f94de357da2743a847495bed015ea6d"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-005.json.gz",
+        "bytes": 1905294,
+        "sha256": "f9cf24a351bdc3001f8bb516c7cd440d48220d68473f888b019cc209fcaaad0e"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-006.json.gz",
+        "bytes": 1098168,
+        "sha256": "52e2d45098627bef6cfe3229c3edbbdff5abd2703b144fe3b8e2085227886a68"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-007.json.gz",
+        "bytes": 1937739,
+        "sha256": "0aa19d47c2ec33ffdda73929262a2edbd5fd40974ce1ee9bdd80b591d34526a6"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-008.json.gz",
+        "bytes": 1370214,
+        "sha256": "3f0e9e8b066f80c9be761080069da21df5014a64a3712a936eed1e4ae7704570"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-009.json.gz",
+        "bytes": 1483133,
+        "sha256": "ba9137227ff3e6cb1f0e044c120f0b55f6e02d5ce030d5871e2a9b4e86b9a90e"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-010.json.gz",
+        "bytes": 1276299,
+        "sha256": "3562b4cea7fc4ab01b5efa7a78c1f2b832fc934ea6bfa14cfd8eccff243511c6"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-011.json.gz",
+        "bytes": 1055052,
+        "sha256": "9ac6386796fb6710a0e23fb3de1633845187ef7eeab1cb438d5d361af2481e38"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-012.json.gz",
+        "bytes": 1402493,
+        "sha256": "785b763528fabdb002fb92afcd05679fd30646a46c4a0a8c2e227569d26c6b2a"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-013.json.gz",
+        "bytes": 957636,
+        "sha256": "60bd65d8d4dee4d2e7ec8b5e2c839b656904004bd2c63c9f6a79c98044cc645a"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-014.json.gz",
+        "bytes": 770570,
+        "sha256": "66bb630f2755db0015cfbc5f65de41fe66a47863faf01b2f6b68ba40efda95d1"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-015.json.gz",
+        "bytes": 1014840,
+        "sha256": "fb229b99099e103861c1f2a51dee1e9cf2a3268712135eedd77a833f4ee33cbd"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-016.json.gz",
+        "bytes": 719900,
+        "sha256": "e2f74e87fed7f45925b4276ddb741b7e7e2b819527c6a99c14fa950d3857224f"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-017.json.gz",
+        "bytes": 791369,
+        "sha256": "e78e5b829450f841cb1d91f84c43825fcc429585225347297c5684562f99a622"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-018.json.gz",
+        "bytes": 336323,
+        "sha256": "2d767c230816f72be60c4d2df6f7abdc8816cfd9274051fdc22291257d72e04b"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-019.json.gz",
+        "bytes": 257512,
+        "sha256": "46ea2ca95ca418f680763b22a017f97f268743be35d8bf31aeda29a888027a95"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-020.json.gz",
+        "bytes": 32463,
+        "sha256": "8b749dc565b96213dfa54de0f8017d2771cb2571df13805fc236882bfe9a1505"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-021.json.gz",
+        "bytes": 289833,
+        "sha256": "426aa06daa77a53138c4db24d5886d99c15821a256ebb487f663bbb796c16b72"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-022.json.gz",
+        "bytes": 612344,
+        "sha256": "471896419f2d36619d6fec7c7369ac17f60ae1cf8964e27d31a7d5a157cbcf3d"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/page-023.json.gz",
+        "bytes": 206216,
+        "sha256": "79c12945380e5a9790120f8f8707bd13340d027b3c3957091401979d87244f82"
+      },
+      {
+        "path": "35ZCxf5uyfc2VN194t8WRzz6RCEN6tQfmY/sources.json",
+        "bytes": 716,
+        "sha256": "690f8cd06016d64deebbce55783294835f8c0e2159d06c461a7492d738d960c3"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/address.json.gz",
+        "bytes": 175,
+        "sha256": "b8fc3c7f79262cf3787b7b5c6394db3a3a217c8129e727a77220f79a3b9844de"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-001.json.gz",
+        "bytes": 3133209,
+        "sha256": "9601e910c97100395c4feb220ba0ed0b5a0fb627748ccef98de095ee3d0019ca"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-002.json.gz",
+        "bytes": 2679275,
+        "sha256": "0b360020111d86ca603de9927c41289e1cb2cde24e17113ef334a51995428711"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-003.json.gz",
+        "bytes": 2806200,
+        "sha256": "c6c43e87bc3c66cc6a9f091bec79c961b03205c74ef472f0cfa4ac6cb7f4fc79"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-004.json.gz",
+        "bytes": 2770575,
+        "sha256": "aed1099edc097620b532a2f3ea60e9c222201063037f9eefac509e551ac47d74"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-005.json.gz",
+        "bytes": 719341,
+        "sha256": "9cceaa50870b602784fa456263fd39bede99bb3b32b738c2b3138e81b41eb1b4"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-006.json.gz",
+        "bytes": 547195,
+        "sha256": "c023a2f6cb0da3544e6294db1e48eb9e7a2c1a8db50811638a2eef75dcec7e02"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-007.json.gz",
+        "bytes": 409255,
+        "sha256": "fbbb787302f3033dbfb5d4e373e55873f4cabae851e51b66b49074b51b52759c"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-008.json.gz",
+        "bytes": 403801,
+        "sha256": "376ae14b5593b005e420c0355f9518d6044f137820313f1bdc07ca5d069e0001"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-009.json.gz",
+        "bytes": 386547,
+        "sha256": "2a33cb416afefb8d8f162a1ca3d99307f4bdbfe5691a00b4e61fa301735a77ae"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-010.json.gz",
+        "bytes": 358131,
+        "sha256": "922b6b9d712bf593f18742a77f419ab8f488c0bf0f93450ca6a6218fa2135c95"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/page-011.json.gz",
+        "bytes": 383691,
+        "sha256": "5ecb0d0fb4f96733f6b96bbadf8668ee03ad01a34f89bd6d93c39b9fdd87ee56"
+      },
+      {
+        "path": "36L3ugrJi4iU3tvLxUV9XzQ21GBrmhT4cW/sources.json",
+        "bytes": 368,
+        "sha256": "e2627a87aa01771cf23fbcf70f471df44cfec1d4670630ecf6039b2b0d744f15"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/address.json.gz",
+        "bytes": 165,
+        "sha256": "ee6f3397d1f700cb7326d82fd57f7c744ef9084df1ea42116aeb24a4c37cd900"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-001.json.gz",
+        "bytes": 1768885,
+        "sha256": "bc79ad69fcedeb8ee9a2bf7afd8c1b25adb689241b210265cddd94aac626b1f2"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-002.json.gz",
+        "bytes": 1884022,
+        "sha256": "772c22d1f348a8df7d6a372236f56f493a693c0dfd3897a3a58da2d657b59ab3"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-003.json.gz",
+        "bytes": 1713637,
+        "sha256": "07cdcb4901c9f8551d1b31287095908bb39abf90d8e2730451fd8816c4a93687"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-004.json.gz",
+        "bytes": 1855861,
+        "sha256": "50f9e061ed57060b169a59af22440a6049c3bf4d6ab08178466e0a8eff6abfff"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-005.json.gz",
+        "bytes": 1718303,
+        "sha256": "4792b1aa91945b9b090a38a3eb14c2476963813bd6141cdaad458864d109f0bb"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-006.json.gz",
+        "bytes": 1788562,
+        "sha256": "5cec9bfa296392e46d6ce5b2029c2a8e7efa4965f35bf8c4bce5f76e8a8d5ab6"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-007.json.gz",
+        "bytes": 1666948,
+        "sha256": "be574e74a29a847e31a6279c4ebad5009a92c19fe774139f479f48cd25333d34"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-008.json.gz",
+        "bytes": 1716563,
+        "sha256": "0a935ca661a2ec33a49b6591c43d3ebe774e51ba8fceab9816d64209a75a046f"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-009.json.gz",
+        "bytes": 1651040,
+        "sha256": "8fcc5338a29131098415221f779638b519abc322eaa38283b3cf263d9afc0315"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-010.json.gz",
+        "bytes": 1760411,
+        "sha256": "571eb6088617e30a906a43bd74f34f361a20ebcb99783279a299d222a3871a04"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-011.json.gz",
+        "bytes": 1660376,
+        "sha256": "313c396b80132280e8e66bb70935c672b36cc8ebb8effd8a8ed9b0fc6b6aa5df"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-012.json.gz",
+        "bytes": 1627824,
+        "sha256": "18c9d2fd3aeaf8066c24261432bde4a4e09d4a2e511470814067dfb23438fa14"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-013.json.gz",
+        "bytes": 1752587,
+        "sha256": "266237411cf6e4aa9423ebba68f26795755331c156451524e94100fcca96219d"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-014.json.gz",
+        "bytes": 1659119,
+        "sha256": "e8f349ee57c45b889f558251ab41a1126953ceeb54d540230e4a19f4f879fcda"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-015.json.gz",
+        "bytes": 1494513,
+        "sha256": "e8da40b4d26e08048131f595802ed470d2be071157f8d07b3443f2ef65f3844d"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-016.json.gz",
+        "bytes": 1596344,
+        "sha256": "71dd32e88f32ed096a99cf9fe8bf980d0c2396f02dba5e7018df5ca538593529"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-017.json.gz",
+        "bytes": 1480589,
+        "sha256": "6eb3d82daca369260cd04182d772e7e9f647bf7eee604290c56e52403b59caf1"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-018.json.gz",
+        "bytes": 1653258,
+        "sha256": "8cd6a5330670d6fd177041b84aab9237d1599d6dd68359f353e351849c175b6f"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-019.json.gz",
+        "bytes": 1625060,
+        "sha256": "d7e43cdf57a78ad452b07095a23842cd522a8f4f0523e15f586257be91a657ae"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-020.json.gz",
+        "bytes": 1544366,
+        "sha256": "1c56629d9b536bfed075b5c81001244ab9c11b64ea53f755a4fc06bebea2765e"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-021.json.gz",
+        "bytes": 1544799,
+        "sha256": "dca93cb10c14ad3cf933496aa2ba8529916066d0465f73ba29f391e29258345a"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-022.json.gz",
+        "bytes": 1460979,
+        "sha256": "3c278e52c11c0e9a8b317d61ffb8e6aa2a18f0e98d22f1cbe88bd0f536906ff3"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-023.json.gz",
+        "bytes": 1430529,
+        "sha256": "d9a8cf3eefbee69cd8604feb8587303f6ac29753a07cdae00c87ba1e34d7fa77"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-024.json.gz",
+        "bytes": 1175445,
+        "sha256": "03e1f0c062b3e8d04352569562d1b95ca798a18982d39408857d51f6c633212a"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-025.json.gz",
+        "bytes": 1257529,
+        "sha256": "18642d4dd4cafebc1ba0c8b63270dd9dbe8cfa3deda3d760fa276d2fa48dfad6"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-026.json.gz",
+        "bytes": 1023781,
+        "sha256": "cb15917687aba5a2f31a92e2d1917eb96b98e3ed701545852d9d1c711d778180"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-027.json.gz",
+        "bytes": 1556911,
+        "sha256": "bb6bc202146f5fb5c2bd8205ea3ec58f0ae1e50e99ce07d288223b4f4b4ecc8e"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-028.json.gz",
+        "bytes": 1684441,
+        "sha256": "01fcc4ba6b95865efdcb7534ba296b50cf41440e366782a0ef0b3c9247dceebd"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/page-029.json.gz",
+        "bytes": 22,
+        "sha256": "61663fde99b3394d71653f41c19fe91269442622a4a6695f8352a70fbf5ca4c1"
+      },
+      {
+        "path": "36V7afbhZnvpMpBJmZf7XJKDeL2vtHDB6L/sources.json",
+        "bytes": 890,
+        "sha256": "b52017d95104638cfbb39b8289413608941fdc124ada6f1c713e7e2aa249826c"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/address.json.gz",
+        "bytes": 163,
+        "sha256": "7e73678be8319db3a5d9a1a20d94c6bd7ad84442d483b1e5aa775b7dd4c9345d"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-001.json.gz",
+        "bytes": 2207948,
+        "sha256": "40163b9cf751ebd195d32f258842666e0eb90c4cca6221e667097005c278606e"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-002.json.gz",
+        "bytes": 2531398,
+        "sha256": "e88d8f89ece5e8f0f75d60c023cbaf2884df636973364f8716c60cb73da44068"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-003.json.gz",
+        "bytes": 3245636,
+        "sha256": "5d2b4fd2932bfce1266aecbed470e693c5de8c89c2a1a3ca2103f36bc023b57d"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-004.json.gz",
+        "bytes": 3935151,
+        "sha256": "cb5651cb7941b50bb0ebe1602a06413c1c45d77d71f2fb15f5fa06e11498a9c5"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-005.json.gz",
+        "bytes": 4041612,
+        "sha256": "1c5930435678b67476d5309219b89ae991c4fa7dca7063e235ca61853928251b"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-006.json.gz",
+        "bytes": 4474032,
+        "sha256": "dd8af73eedd4b088aa3d395c773262275f2df91b16aa168b19a8e12253f84627"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-007.json.gz",
+        "bytes": 4926071,
+        "sha256": "832c7a04e6f575985b4c4321ac1099fbde374c243dd618cf9032a382184220a6"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-008.json.gz",
+        "bytes": 4827297,
+        "sha256": "439d4486a210f52c84f6325f622dba71136891b5a1169d67fa918f2df77d25b8"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-009.json.gz",
+        "bytes": 4543649,
+        "sha256": "bfdd690d6f35e9a04acad07e9f21462e7993f33280319b6f26a75d6f76a1042b"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-010.json.gz",
+        "bytes": 4924368,
+        "sha256": "fc43f4b847ee08553f01d219bdebfd53d845fc85c3f18eaee8222f5487d46913"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-011.json.gz",
+        "bytes": 4258746,
+        "sha256": "cc161abe0ba64961895b024534971639ce00b03c79a01e2faf40bea8a093db2a"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-012.json.gz",
+        "bytes": 3884196,
+        "sha256": "b662534c9ff65fdf5ba3a36cd783f7daad2458f59cd571c857284882d75d829c"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-013.json.gz",
+        "bytes": 4144497,
+        "sha256": "c5352c4baaa4afbafe2a348e3627371795d6b3e7e052ae8877add5233b1c4e08"
+      },
+      {
+        "path": "3Aw7V5ibs39eL3otstFN4wrwa6VAN9BKhz/page-014.json.gz",
+        "bytes": 4448360,
+        "sha256": "f43336547f6244669b91480aeae4a48167c48dbe7ef90e71852cb5427d488823"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/address.json.gz",
+        "bytes": 175,
+        "sha256": "95566fe4559b134f19b5aa91193835e1f8f185e08fdc641f8d50c8bfb23f3338"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-001.json.gz",
+        "bytes": 1749816,
+        "sha256": "b47ddb50e625973211e26ef004774d9b4f972e479f4f7341faf049c0a40f8342"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-002.json.gz",
+        "bytes": 2596770,
+        "sha256": "b4372377ec6fa9ddb227931faf6b16c2e00c67b3a736538fd05019753c0102ce"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-003.json.gz",
+        "bytes": 1702813,
+        "sha256": "2733e1da14937a08a3bf8f018f5afd1a84778be87cee2005faae68d6cdc6f7db"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-004.json.gz",
+        "bytes": 1810562,
+        "sha256": "e6c13dd6ddfdabd11c110f482cea1bbb3faa0e9915d9c38eee8fbef68bbc2c82"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-005.json.gz",
+        "bytes": 2786268,
+        "sha256": "a7d986ff2a0d4a632ecc42c24ce6fc3bf920f22d75405461ed3826c68bb7c77f"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-006.json.gz",
+        "bytes": 1747494,
+        "sha256": "efccd34ef452456db250c9ba5cfef7c8dbf2e8fc75e88fdec2ea19a10c0695d6"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-007.json.gz",
+        "bytes": 1599227,
+        "sha256": "c62abe8cc061bf74e69e147dd17670578a0d4cf184f381994b97c4fe41942b52"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-008.json.gz",
+        "bytes": 1776171,
+        "sha256": "0571c585a46281bd0e7d21b312fc8adf6148f02e7df46f5d8cfd82e6d78dbc9b"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-009.json.gz",
+        "bytes": 1619556,
+        "sha256": "f5b07405db216c7212d6c3e5a1e62b170c9604c78a16f00ef8b735e30792772a"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-010.json.gz",
+        "bytes": 1646863,
+        "sha256": "ea3c2c98433ac991fd12ae1ae54164198bae1ffb713d394992a5127e3c3059d7"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-011.json.gz",
+        "bytes": 2555498,
+        "sha256": "53feb8cb4a73a5a1203249146e66d6867ea31a3a2117f53bdb8a87a67974e074"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/page-012.json.gz",
+        "bytes": 1004600,
+        "sha256": "01fde266d7acdc9f122cca0c1cc546cc67196f823d79042b75879ed72da2fda7"
+      },
+      {
+        "path": "3D9itUsp4v4qW4zWutGBBhnJqwvJRbCgWf/sources.json",
+        "bytes": 397,
+        "sha256": "3fba821ce8bae27fd811086a566f1f30938947ccf1ee97317720b4ca8be2312a"
+      },
+      {
+        "path": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL/address.json.gz",
+        "bytes": 174,
+        "sha256": "dc3dade06a209f0962fcb960684906f5996821fb7a62043ae352f02701d60ae9"
+      },
+      {
+        "path": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL/page-001.json.gz",
+        "bytes": 920948,
+        "sha256": "211f06a8791caacec504854a6ebfe2a8aa714e014e6d11619d10504b42dab952"
+      },
+      {
+        "path": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL/page-002.json.gz",
+        "bytes": 447917,
+        "sha256": "02f5993670efdc516ba2bb44afbcd8d33e17292016d1eb67510d2f5a0d5522db"
+      },
+      {
+        "path": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL/page-003.json.gz",
+        "bytes": 421122,
+        "sha256": "062a2b8d60daa867b0d0b2c10e50dd86f1cc5414f208e617aa37b5031f2f832e"
+      },
+      {
+        "path": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL/page-004.json.gz",
+        "bytes": 416042,
+        "sha256": "92abf3d1c44482ecb3c3079923d4f71c4f4543f59736897d26b53428a5b2a40c"
+      },
+      {
+        "path": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL/page-005.json.gz",
+        "bytes": 384665,
+        "sha256": "f7dbf960f7c5c9c23ff94a1fe1441ec8ac166627582296ac32697a3005da6de3"
+      },
+      {
+        "path": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL/page-006.json.gz",
+        "bytes": 382447,
+        "sha256": "3c349b10d8512bc6dd03093330fa3ae8b9b470ce4d7f47fa99ad259718179a2b"
+      },
+      {
+        "path": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL/page-007.json.gz",
+        "bytes": 394084,
+        "sha256": "19a66cb949df5be2d7d56960350972ea660bb2a55f99b4903e3022610af56c47"
+      },
+      {
+        "path": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL/page-008.json.gz",
+        "bytes": 169312,
+        "sha256": "051072be7d403c0dad4804083cc681b8955fdd8a4f63f51d039fcffcc06362b7"
+      },
+      {
+        "path": "3Gcf5hgreMGFzz445Vg7Y5GKRFcfHzpcFL/sources.json",
+        "bytes": 281,
+        "sha256": "b22e5f1b36ac29d66dd67acf800be59db07bcd38ced057b06f64446a410d5840"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/address.json.gz",
+        "bytes": 175,
+        "sha256": "7098d5c36c258db19ff762db783669d94411bc820010c7e1a6e99e3fc8e27880"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-001.json.gz",
+        "bytes": 3337078,
+        "sha256": "3ed45135990dd3645100d3479e32008398396555f32165f55316dea6de3bd167"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-002.json.gz",
+        "bytes": 2376417,
+        "sha256": "4a3517a75d86d5eb54936335437b535c8bedf0a42beabbf75a92b5ffc7ffbf31"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-003.json.gz",
+        "bytes": 861844,
+        "sha256": "f859050c3ac5bbcb9fce7db83ac6a144ebc320447dfbbf1e28c69926d39d3d88"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-004.json.gz",
+        "bytes": 2540493,
+        "sha256": "bd547f0298dbd28cda78b1d76e7ccfb1c122345d4a1df75849d94201c209e185"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-005.json.gz",
+        "bytes": 1507724,
+        "sha256": "07c66f2caf7be7f133f567291bbc5d421fbf9c48d266a90edc6e96c2b460aa34"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-006.json.gz",
+        "bytes": 615961,
+        "sha256": "6cad51b8ee5bca6e7b225f0aa9748d8090a5b729805495917c8bda8663e14b17"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-007.json.gz",
+        "bytes": 1796899,
+        "sha256": "7bed68d5f83bdbae4a11e73e709783bee2e19c3f4383ef4142801f1c7027f2e4"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-008.json.gz",
+        "bytes": 3483216,
+        "sha256": "00f13341d9e9339000abb3e0c009bde74fa056d92665a7e8df891b37b28e7e06"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-009.json.gz",
+        "bytes": 3199204,
+        "sha256": "7c8433aa1a9af80f351244b969af6b141fcd68314a073f4ca89cd5fcc372a367"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-010.json.gz",
+        "bytes": 2538896,
+        "sha256": "e76064bdf2c1c03919382393b74b82dddad3cd1ce587fd460399778229b7ff10"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-011.json.gz",
+        "bytes": 3214856,
+        "sha256": "2762cdb6646213a801074de84e4fdc386e0c4c93f30e0fce4b53280cb54f3eca"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-012.json.gz",
+        "bytes": 3260308,
+        "sha256": "d67da567470dc77d84dded365f71f92eef908c83a388cdead5c12a9a27280a1d"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-013.json.gz",
+        "bytes": 2131746,
+        "sha256": "662c2bb2a934ba04ba023b82f0024f9b892688f28a484e4d2b5a407d6c9390b3"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-014.json.gz",
+        "bytes": 1659043,
+        "sha256": "83cc5816dd5b46bf65603e72240e1758c91389af1cc2dad50205d02aa26229ad"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-015.json.gz",
+        "bytes": 1660586,
+        "sha256": "c874ccbf687e6a7ba8ec85fad67eb60777095e9c08dd487dcc5ef5c0bdc6bfe4"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-016.json.gz",
+        "bytes": 1137258,
+        "sha256": "07f4a7f29e5c71d117935ed86d7a3691becaa34d3dfa2f769d8b0ef3d7757fef"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-017.json.gz",
+        "bytes": 1658054,
+        "sha256": "97b4813e1fcac860cc8a2778cdca961cd646cbce8be835eada0b0373c2107226"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-018.json.gz",
+        "bytes": 1654241,
+        "sha256": "ededbe0784f45e86638765971661b18dd47ba5a3052e2a9eb7721faa75e4a012"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-019.json.gz",
+        "bytes": 1651777,
+        "sha256": "89ffa3624c9483e2fb2f0f51e4b335615309a8ca6d60a2627e2c2a12f808a50f"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-020.json.gz",
+        "bytes": 1465609,
+        "sha256": "3730041d5ca3394a4db833ff54569a5b8ce34b7910fdd51c6a8b3f2fee556f81"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-021.json.gz",
+        "bytes": 771989,
+        "sha256": "788e695ba24e6db5bd9f2f5f6a16f72de3cb589f1a83812b0e8700d7c331a5cf"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-022.json.gz",
+        "bytes": 885086,
+        "sha256": "2bce5f82f44c608bc2754df8b90ddc70d8d2e62f8f7dba38f3c3e8a5341d66a9"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-023.json.gz",
+        "bytes": 821401,
+        "sha256": "b7a34a58110baa18b057b4d396f95400f5ec0cc8b2d847847f60f0b902a1866f"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-024.json.gz",
+        "bytes": 656255,
+        "sha256": "0dc4db0c47eda2fd5f18f8cf5e1021462aaee40030fef7a14f8f75b8cbeb8061"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-025.json.gz",
+        "bytes": 872155,
+        "sha256": "64c97881a92f5342797d1bcc241f3f5360e6ce8cb06abb64537256a183880c0c"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-026.json.gz",
+        "bytes": 871773,
+        "sha256": "5f43ce909a80cf190deb45f802d043225af5532c6d7b7cc6fca223443d5c001a"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-027.json.gz",
+        "bytes": 3686404,
+        "sha256": "d8b2737cd66f7c3fb7433942d4e6abe28c72a42c12bfa135f2796388d026e6e8"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/page-028.json.gz",
+        "bytes": 524510,
+        "sha256": "78f2e799f2582a3b97a3658e0db194962e4c885b6c5e97999b97bef576a75256"
+      },
+      {
+        "path": "3HTmUj5wFDQZ2TF8SAcngV7EQ88rptx35D/sources.json",
+        "bytes": 861,
+        "sha256": "cd9d717747a32697cbefd3f4ff7d1c535b379f68e644f1c3c33b860c97024614"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/address.json.gz",
+        "bytes": 182,
+        "sha256": "6ed82312aa7ed87f81877ea770679b65f934357797b8b266fd9ba0729825285d"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/page-001.json.gz",
+        "bytes": 2999094,
+        "sha256": "1b2c55ce1dbc0867dd03299f21cccd15651874b4ba7498475f2e0a68ea92a588"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/page-002.json.gz",
+        "bytes": 3318813,
+        "sha256": "1993eb7eb4ec366c33b379dc32a564d9c329f562090ab2ceb480a513c4889976"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/page-003.json.gz",
+        "bytes": 3044928,
+        "sha256": "00c504f443a2c138732165f2864e2891481ca637b51a431693e3d7d66b9f09f0"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/page-004.json.gz",
+        "bytes": 2752074,
+        "sha256": "d86091986410fbf751bb39d1cacff1edb337c1d3ea84e0076c515cda23d826cd"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/page-005.json.gz",
+        "bytes": 2512098,
+        "sha256": "ac8533de6996fba5bbb8c23ec3e3dc0afded80b181958a4adf8c2954f549664a"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/page-006.json.gz",
+        "bytes": 2807488,
+        "sha256": "bd83673fcc086ed7d036782b04bab0b26fb23a9fcae8f3bdcfcefe17fe8d9d5f"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/page-007.json.gz",
+        "bytes": 2860352,
+        "sha256": "0c1cf7879e81565e4f8d28f7203a4c681abe6a0077feac7a9865e84fefa01d03"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/page-008.json.gz",
+        "bytes": 2611984,
+        "sha256": "3d8fa7c236644927214dfaab528e568f6d667808f3ad59ceb0c61317c18d833a"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/page-009.json.gz",
+        "bytes": 2657636,
+        "sha256": "d7e0268e1049c6ce6bbc75f6c8684a6aeecf79c7d40728ed53fe1f572ef02a65"
+      },
+      {
+        "path": "bc1pum0cn22s3ekpzmqrddhrxnfz4ksqcjdq0y3d3p675sj3a0sls76q7cj755/page-010.json.gz",
+        "bytes": 22,
+        "sha256": "61663fde99b3394d71653f41c19fe91269442622a4a6695f8352a70fbf5ca4c1"
+      },
+      {
+        "path": "bc1q4mj77xnsydlrtkrk092xylkv3cyddwddgp9dvj/address.json.gz",
+        "bytes": 158,
+        "sha256": "d52a990296efa6ab11bfcdb7bb5dddf47445e2a1e277cd5f51d951f3e29acc51"
+      },
+      {
+        "path": "bc1q4mj77xnsydlrtkrk092xylkv3cyddwddgp9dvj/page-001.json.gz",
+        "bytes": 178868,
+        "sha256": "d9524475cc541b76a5b0d290525bad3f6f42a3008c88f465c25f8aa0dbea0798"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/address.json.gz",
+        "bytes": 161,
+        "sha256": "2e4fae6b4772f234ef789aa40a37d400b6d1fe6714c463ca586c258a710f17bd"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-001.json.gz",
+        "bytes": 9420,
+        "sha256": "8e27fc0d0dc60da3f0640b003950a43cfc33b2bd6dc35c316cecc4a1442a6b20"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-002.json.gz",
+        "bytes": 10507,
+        "sha256": "f466fb3b2c3ca0f84e93dae2de1912d2d74c12dee50e2349c49494003f9c8f47"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-003.json.gz",
+        "bytes": 10658,
+        "sha256": "1867843c2eae36d0dcd5c18816f6709e2399fcf0bd9dcc88a16e402a73118a75"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-004.json.gz",
+        "bytes": 10000,
+        "sha256": "e70b6dc9bee2f7a606d841ff1ec0e19a55bad5adec1149b0bda958ce9bcdf17b"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-005.json.gz",
+        "bytes": 9757,
+        "sha256": "e32801747243fcc80c52415ca6cb1ede78a56c5ce1058e63ce7d8843d867494f"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-006.json.gz",
+        "bytes": 10028,
+        "sha256": "04825fae0003441e75334915c6eec9e7c248c6a07a24e80115977ac3091c9b12"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-007.json.gz",
+        "bytes": 10297,
+        "sha256": "15f12021d5e55645f7ebaed76550c7c699cd1d2dd0aa5aa88d9ce9e58bd1fb7e"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-008.json.gz",
+        "bytes": 9738,
+        "sha256": "a15a64a6f4e1afd0a4b7b132193fdaac5067a573d3ef5bf76e83c6a18a9f83db"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-009.json.gz",
+        "bytes": 9753,
+        "sha256": "e1d86172772e270a1a40d5336f958c5ca2a98723d8a045b3b841e242601b9e46"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-010.json.gz",
+        "bytes": 10516,
+        "sha256": "8e5458cb871f167ef35a6d1860df094198c0c7990e8151630d179f03ad5cb657"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-011.json.gz",
+        "bytes": 10506,
+        "sha256": "8df1f268cdec369581cad8e0493252e498cac2fb07ec60b215b63ed2b54d6f05"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-012.json.gz",
+        "bytes": 10171,
+        "sha256": "ae3951ea28d004baa912590bc0383e699808d12d37029276817344b71521441b"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-013.json.gz",
+        "bytes": 9730,
+        "sha256": "c0040ea69fc0342f0bb8a30c2a60501317d3872421957977d913a3a41c358b78"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-014.json.gz",
+        "bytes": 10792,
+        "sha256": "a2d2915ed04805c3669beec4c8c251109b9c7f82f259393c645794e6917fd1b1"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-015.json.gz",
+        "bytes": 10985,
+        "sha256": "4dd6c54dd2f439da094e6a010da954e46fbaa7b5846a7de439ab20384c1d39ae"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-016.json.gz",
+        "bytes": 9987,
+        "sha256": "22cc2e631f6c4a1f9503567db38eb639f619deb7bc3936e9c4e15ea9df983419"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-017.json.gz",
+        "bytes": 10042,
+        "sha256": "794757e05a9c25565cafe434f6ef1b638ed3bd75b3010257e55e30e5ae5636bc"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-018.json.gz",
+        "bytes": 9717,
+        "sha256": "1e49235c5bddef2ae0f6785f8db8eea311c7ac99a63520a8a79e3482acd3d01b"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-019.json.gz",
+        "bytes": 10432,
+        "sha256": "5cbd6e92b3c3b650612527d0232121f104a625afdd803c846236048c98f79833"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-020.json.gz",
+        "bytes": 8471,
+        "sha256": "1f8f0c55796bd23fdb4ad822b633b00f9d5f12cb937c656310e7a34fed944b3b"
+      },
+      {
+        "path": "bc1q7evspfauqve6ll84juuj0anlzrxxpdeq7raqn3/page-021.json.gz",
+        "bytes": 2734,
+        "sha256": "f20c06d38b8ee732daa92c6287746f396c4504d9c58d44822ac996b33b1f52b2"
+      },
+      {
+        "path": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd/address.json.gz",
+        "bytes": 165,
+        "sha256": "1ab25342208c87a5860e2712710a079351aaf07ec5f1b9fa09e7811cf2e9f44a"
+      },
+      {
+        "path": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd/mempool-page-001.json.gz",
+        "bytes": 7895,
+        "sha256": "a5dc1ad0ca179242aa9a095af57ddb3192b3a551522385b8907bddb1ca698bc2"
+      },
+      {
+        "path": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd/page-001.json.gz",
+        "bytes": 7885,
+        "sha256": "442672e5ba0c66e630a4919a262702a4bc044ea981cc73da7b04ad9d20146ffc"
+      },
+      {
+        "path": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd/page-002.json.gz",
+        "bytes": 7394,
+        "sha256": "3b1f31115657e137c9e9ff3009e03906cfcc53b369e516f9e7b0eb93a4b1addd"
+      },
+      {
+        "path": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd/page-003.json.gz",
+        "bytes": 6614,
+        "sha256": "04a3b9314e95f669ac25031f05419d26e8f8a00f886ec07bef4d973615316c02"
+      },
+      {
+        "path": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd/page-004.json.gz",
+        "bytes": 6156,
+        "sha256": "a0b0bfd272b74dff6fbb36c2ccda6a2ab8803419a986d3c099104958a542e19d"
+      },
+      {
+        "path": "bc1q7na9gc7ahwwj8hsqwywctx9mdremufadt2r5dd/page-005.json.gz",
+        "bytes": 5029,
+        "sha256": "756c00ee896b80d193014b660cec9ba6e5e3605c30742036e5076746808d2347"
+      },
+      {
+        "path": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64/address.json.gz",
+        "bytes": 165,
+        "sha256": "d408f2c5edfdaff9e84584371eef13b0feb51b874e15cadfea2b561938d066a9"
+      },
+      {
+        "path": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64/page-001.json.gz",
+        "bytes": 4206908,
+        "sha256": "a5588da66360eda9a0f85241169ab1c9cba1542f6b1596b2dac33341da94901b"
+      },
+      {
+        "path": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64/page-002.json.gz",
+        "bytes": 5624361,
+        "sha256": "d92588f11f8895a9fd4e557271a32545805962ec034e8dc01ba792242002aeee"
+      },
+      {
+        "path": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64/page-003.json.gz",
+        "bytes": 2542303,
+        "sha256": "e78d7723a813d857c5349a1aeaceaba07df0f1cdfad8015f5c1191fd43cada02"
+      },
+      {
+        "path": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64/page-004.json.gz",
+        "bytes": 77899,
+        "sha256": "d0a329f87b24c44620d89448f911c1f040026875c44c19f2515b62a5111bdffb"
+      },
+      {
+        "path": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64/page-005.json.gz",
+        "bytes": 19270,
+        "sha256": "a239da4fc798e642fa945c2f797b64b45cde3c53b563359a40ef8ce7d21d1c4c"
+      },
+      {
+        "path": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64/page-006.json.gz",
+        "bytes": 44233,
+        "sha256": "7ef2b098d5bbc8af6f2c42fd7b64f9ee082af1794ff7aced0c4d1b1674ce28c5"
+      },
+      {
+        "path": "bc1qe7pj6dhlturtx5rftgm3annldjjd9333hnfc64/sources.json",
+        "bytes": 223,
+        "sha256": "f33927babdfc88de6477d3f5b85118384e70b1ab4b98f43f28c2b08da6c75210"
+      },
+      {
+        "path": "bc1qepzmkm94hy889r9hdf6ck3xgkfpptk75n47284plhg3663ksm6as9nduaq/address.json.gz",
+        "bytes": 182,
+        "sha256": "09fbcddf30ce2c2c103dc6a476eb985c1c82e034510cf3fb62b044a55b7754c4"
+      },
+      {
+        "path": "bc1qepzmkm94hy889r9hdf6ck3xgkfpptk75n47284plhg3663ksm6as9nduaq/page-001.json.gz",
+        "bytes": 3328391,
+        "sha256": "911b732005e613693856f01b86a30248eb18e47152c2753aee0ec620ed5905c9"
+      },
+      {
+        "path": "bc1qepzmkm94hy889r9hdf6ck3xgkfpptk75n47284plhg3663ksm6as9nduaq/page-002.json.gz",
+        "bytes": 2043994,
+        "sha256": "c9ab912853b5bf26488f13bd738f0f15dadfe74c4ee28e37248de5e56581eade"
+      },
+      {
+        "path": "bc1qepzmkm94hy889r9hdf6ck3xgkfpptk75n47284plhg3663ksm6as9nduaq/page-003.json.gz",
+        "bytes": 1901083,
+        "sha256": "0bf3fdf5b73ccef4fb7a365ff337e6c38ef3a61efce310bfb31257117ee39826"
+      },
+      {
+        "path": "bc1qepzmkm94hy889r9hdf6ck3xgkfpptk75n47284plhg3663ksm6as9nduaq/page-004.json.gz",
+        "bytes": 1578483,
+        "sha256": "fd54809d807b50ee93b169f7a86904d38cff8155436330305fafd87ede4b4a08"
+      },
+      {
+        "path": "bc1qepzmkm94hy889r9hdf6ck3xgkfpptk75n47284plhg3663ksm6as9nduaq/sources.json",
+        "bytes": 165,
+        "sha256": "ca5d340d9228d33f8c70a04f7eda8e8a38f5d1e3820b0839399c25dc880c9447"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/address.json.gz",
+        "bytes": 163,
+        "sha256": "de1a08f9c09319c4bdb2d779cf808cbc1e4472a0ddbfcd6530c8ede43b757e28"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-001.json.gz",
+        "bytes": 34300,
+        "sha256": "f0c01c645ec86f80945134318fea7403b2e89e11b01d5a2e9ba34927bf317fa5"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-002.json.gz",
+        "bytes": 31580,
+        "sha256": "96a08e4e485ceb2a309007877d9c91750e3be830bc81812374fafcb8fb738539"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-003.json.gz",
+        "bytes": 38817,
+        "sha256": "2cd81b37929c124dccec32cf9b8e8edaf55ddccacfbbd4e6626a421036c6e5d7"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-004.json.gz",
+        "bytes": 34046,
+        "sha256": "187a01ddc64cb4640cc2f5e6b46ec3afca86b6dc10665508177d8250a2344b3d"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-005.json.gz",
+        "bytes": 33722,
+        "sha256": "94f40f65a7d4db8fe4b9ee15d6092f102fed5fa2265971335903aae7bed908dc"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-006.json.gz",
+        "bytes": 50491,
+        "sha256": "d9570149618d1f3cf4f091ab4b7a1aa020e9cd3f407de4a4b49a77824613d19e"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-007.json.gz",
+        "bytes": 36879,
+        "sha256": "dc6f8e236460b74b159ae5cad112075662514dd0f941495670a1c8566a9debda"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-008.json.gz",
+        "bytes": 43321,
+        "sha256": "ca13b25265fba5ba73f075401418404c10d6a87b30cbd87c77db56e8fe715a07"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-009.json.gz",
+        "bytes": 43663,
+        "sha256": "caa14c99b3c2e8187aef8e1e7039038966818bd1877b45fc8f4add8246ad182b"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-010.json.gz",
+        "bytes": 47950,
+        "sha256": "047b8fb8d2109b0abad8c5e264b626e701a0625ca03eed84f6a88d3dbdb958d5"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/page-011.json.gz",
+        "bytes": 8798,
+        "sha256": "abfe6fe8bd75cabd9eb6b6f31d20c1e8a37526e347b883bc2ef0ca1bb8cff302"
+      },
+      {
+        "path": "bc1qfju08pla5swp97e6f330drmjxf767j3cfaw5ua/sources.json",
+        "bytes": 368,
+        "sha256": "e2627a87aa01771cf23fbcf70f471df44cfec1d4670630ecf6039b2b0d744f15"
+      },
+      {
+        "path": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5/address.json.gz",
+        "bytes": 160,
+        "sha256": "6b753ea98b45b9b64cb21ff6e1ecc38a8e77e8134668129c38b38e79d3773aa1"
+      },
+      {
+        "path": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5/page-001.json.gz",
+        "bytes": 7113,
+        "sha256": "f003f7c149cf525da9736bd855056720c1799cf1f73aa3b149eeb40f37b5de5f"
+      },
+      {
+        "path": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5/page-002.json.gz",
+        "bytes": 6647,
+        "sha256": "1698efc96b60ceffe0c3b30d91667bca24ed7edf48e9c99b7b4493c9d729cae5"
+      },
+      {
+        "path": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5/page-003.json.gz",
+        "bytes": 6301,
+        "sha256": "6e91fbf8d4967cae032d3861b8c2de4e189e06c34fb2ce141d9bc2960e779194"
+      },
+      {
+        "path": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5/page-004.json.gz",
+        "bytes": 7053,
+        "sha256": "09e7940886b65d00993c76d4570b4d637159d19865abeff1983c0dd77326ff80"
+      },
+      {
+        "path": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5/page-005.json.gz",
+        "bytes": 7124,
+        "sha256": "01ce7a9f0c9a77719e6178668c6f59245c4741c7a515d51c0731f5fc58a948c8"
+      },
+      {
+        "path": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5/page-006.json.gz",
+        "bytes": 8430,
+        "sha256": "f8885d452f352cf0583097de47361e14f794bb8cca9a1806ff60491aeb3ddd28"
+      },
+      {
+        "path": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5/page-007.json.gz",
+        "bytes": 7647,
+        "sha256": "2ad509b1390adace3df4fedbe4c18f91700981bff3f852e2f2bf22281b2d55ed"
+      },
+      {
+        "path": "bc1qppv3g3ye70emasjdrt9t5hteydeqatzpm852d5/page-008.json.gz",
+        "bytes": 2287,
+        "sha256": "ac64dedefd53bdbb4206329a7f7555262e3d5b64c59544ba1f5a42b375ca96cf"
+      },
+      {
+        "path": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w/address.json.gz",
+        "bytes": 170,
+        "sha256": "c79946042dbc36550be6d8541c93de7d153c08eb1fec8e8eb604f7871d5dd9a0"
+      },
+      {
+        "path": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w/page-001.json.gz",
+        "bytes": 1756621,
+        "sha256": "e6c5827924ddcaa5b321dae6e3fbddc1be6d439d5e8f7acdb2946e2ba640a976"
+      },
+      {
+        "path": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w/page-002.json.gz",
+        "bytes": 1645454,
+        "sha256": "9c9d2ded1638f809e87596d3ef1b0ef22ee6157757030981477a0fb00d1096bc"
+      },
+      {
+        "path": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w/page-003.json.gz",
+        "bytes": 1865164,
+        "sha256": "8ea18c11190a6e58004cf8785dbc15eb720aedef5b3a891b66ed6679a2afe826"
+      },
+      {
+        "path": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w/page-004.json.gz",
+        "bytes": 2407165,
+        "sha256": "c812e13e83a5cb0a1adedb60c4ca2ae858c364da3520563c58d71f0f754d4938"
+      },
+      {
+        "path": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w/page-005.json.gz",
+        "bytes": 2890896,
+        "sha256": "e020c5fcf877b79b71f2b819ca964511396762b76b9936530a02109dd31df315"
+      },
+      {
+        "path": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w/page-006.json.gz",
+        "bytes": 2336372,
+        "sha256": "a5fb4be519556b327ddb929dc4ed9fe64dba918e3f13c60c924fba7e0e3cf4a2"
+      },
+      {
+        "path": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w/page-007.json.gz",
+        "bytes": 2752084,
+        "sha256": "1385a99391ee5b8e62d036df667103fa26d279428982a5d66c79e4327f744e8b"
+      },
+      {
+        "path": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w/page-008.json.gz",
+        "bytes": 2164097,
+        "sha256": "613ed7f0d86b62237383d444220d9594553d82aa8770f03bcad21053a6af34f1"
+      },
+      {
+        "path": "bc1qq804eu7wrsrm952xc8e8c8vlk240c3cusycn4w/page-009.json.gz",
+        "bytes": 1875145,
+        "sha256": "d558a0c428ffc4acca55f26fed6963f9d477b1dc15c85fd92d483ec6b6209c01"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/address.json.gz",
+        "bytes": 162,
+        "sha256": "784d3eecbae3a3152a5f99dff22a0b96cb7e0f33321abdf162e7d8c7c6f9c82e"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-001.json.gz",
+        "bytes": 19086,
+        "sha256": "363c9513ac3de8d80f1a284c352017c437f0b71c68099fbc86a36fc78c825809"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-002.json.gz",
+        "bytes": 15948,
+        "sha256": "af09fa1317ee3803a86d6cb56ea5a4f97b48ebfcfcc023ee0223094b98fa5523"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-003.json.gz",
+        "bytes": 17803,
+        "sha256": "37124ef6807c15252710e3e15cbd52c7f595a7ee941d272f925331f436a249b4"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-004.json.gz",
+        "bytes": 90883,
+        "sha256": "7b1683e87f60ce3e891ca2b6c49af8a67d672ed0d3a786e2601c59b70fb0f50d"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-005.json.gz",
+        "bytes": 15462,
+        "sha256": "ddda26961efd398112baefeb7248ff5f426f387807941f4d9e181d0f77a28d79"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-006.json.gz",
+        "bytes": 17690,
+        "sha256": "30c5bd294e9f1040773bb0e1268eea428c4e71b1badd6f72d5c3567e4ede192f"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-007.json.gz",
+        "bytes": 16419,
+        "sha256": "ac9443271f94ecd5a8b4d722fbe580e0f8cca6db41fd11f6d21c656a52a2e413"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-008.json.gz",
+        "bytes": 21848,
+        "sha256": "7b81946b9e08c1938c9ce75bee2f962f771639dc49a56d0d4bf0943d641b07d4"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-009.json.gz",
+        "bytes": 20766,
+        "sha256": "1549006a847bd2dee804611133f976b12054ed8b4637acc38f02422d54b5447b"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-010.json.gz",
+        "bytes": 17842,
+        "sha256": "2197330e6a17781bca86a4847e48fb258207ee95f719e130d9d61a8e587e27d0"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-011.json.gz",
+        "bytes": 14815,
+        "sha256": "9ec3935b74ee81c88779fbd119538d68b9b80e294907df86fd9d84656706d49c"
+      },
+      {
+        "path": "bc1qsxjuxwlyyc4shfg3r6c5djjf8ehzqftt7zzcl6/page-012.json.gz",
+        "bytes": 6141,
+        "sha256": "f4c90f5a12b2838ba679c5cdde5f995a405e65004ed89dfab2c64f6d58af3ead"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/address.json.gz",
+        "bytes": 170,
+        "sha256": "b01c7539f251be3114b8820ece31e280c07537c5bf3709cdb172b88576be7402"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-001.json.gz",
+        "bytes": 3391324,
+        "sha256": "81880bb6a514f14c5a3c90035b8c1594b231e6f25c37404e1ef73b07cd58cfd7"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-002.json.gz",
+        "bytes": 3326173,
+        "sha256": "282270eb4ca9ff95cdda43bb16ca6fa8ee88502c6dc4f9cfac523c84187f47d0"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-003.json.gz",
+        "bytes": 3290937,
+        "sha256": "06536ed2fd466d0965e2c43f4b73943e1d2deb1d96ee8eb981f3b80dcab9dbbc"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-004.json.gz",
+        "bytes": 3124438,
+        "sha256": "bda61e8ba9de4f13c96db6719747c6f1218cd4186831dad2623886d30887c4aa"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-005.json.gz",
+        "bytes": 3145860,
+        "sha256": "85a5a9e4ba16e6d9fe90d306ec4d4972ec05f1c3d92026766a8f767d9fc216ec"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-006.json.gz",
+        "bytes": 3113980,
+        "sha256": "43c9642850892ed8eb50d9f6f9b1e4c48715f29ed13db62f8e167a8330474493"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-007.json.gz",
+        "bytes": 3134278,
+        "sha256": "0850b09af38ee3c2bec7cd3708c1b700c134f99d1e4331f4689fc12ce282a059"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-008.json.gz",
+        "bytes": 2908567,
+        "sha256": "04558fbf72d4dde890563bdd7d00956f050a76600adc659f2f285ff884ba1a33"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-009.json.gz",
+        "bytes": 2895269,
+        "sha256": "bee72d55a7f691d81996f902ed427c1c9de3f66a91081aafaf953cfbab6469de"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-010.json.gz",
+        "bytes": 3058612,
+        "sha256": "b2a91c2384461ca0f4136a02b8748ac83232ba5e7128521e695975f345db150a"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-011.json.gz",
+        "bytes": 2862322,
+        "sha256": "0924c59cd5f14183bce66a7d5bab2c0df65c425369513a1b6667d5328685c95e"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-012.json.gz",
+        "bytes": 3545272,
+        "sha256": "721310c443267b83b3759f5e14cc629b9cdb791f21b0ef683656787bb3a29844"
+      },
+      {
+        "path": "bc1qu6pzmup040ufksvs9x06ther9zag9tj9l68tc5/page-013.json.gz",
+        "bytes": 730669,
+        "sha256": "97b7654af7459dfbac55a3a7e62fe192af7c2fcedaab3b848ef90a1ce80d19f4"
+      },
+      {
+        "path": "bc1qx2stewzm2cel6ytwzraxt9z4d9vlh8e5gdnun6/address.json.gz",
+        "bytes": 161,
+        "sha256": "49c233782a896d8c50d574de6aecc4194ef475403e4e638917d1af9f4316bda4"
+      },
+      {
+        "path": "bc1qx2stewzm2cel6ytwzraxt9z4d9vlh8e5gdnun6/page-001.json.gz",
+        "bytes": 41681,
+        "sha256": "8dafcd9efd9e8450a62dd41698eb85ba54aee5c58888c4edde120652e2788eca"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/address.json.gz",
+        "bytes": 168,
+        "sha256": "f85f7a719156bfd53851bb85aefcf0e3821f46ef4b17ea305ed3a7534ac916a6"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-001.json.gz",
+        "bytes": 3127462,
+        "sha256": "17c33348f0b1c9b4283d7dc80378b795ab68cdfd525a3f879e52dfb5d7c3657b"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-002.json.gz",
+        "bytes": 3056279,
+        "sha256": "90b88d2aec9ca4d1a5c0567b64cc0f5eb3345654709fa0dfeef183a17c562e94"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-003.json.gz",
+        "bytes": 3053485,
+        "sha256": "6643afd9d6249b8325160b6f198ea5fd9f19a07e0c911f6edc27a5fab13f158b"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-004.json.gz",
+        "bytes": 3007640,
+        "sha256": "7b43e6404bb149e009681099cd9517c22b99b4f4d6d45cbcbd5a7ec531efe3f2"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-005.json.gz",
+        "bytes": 2877925,
+        "sha256": "208f5ad0b91f627e57b27f72ac690e8e21f5d5dc3df6c2278153bd1d521485c0"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-006.json.gz",
+        "bytes": 2924901,
+        "sha256": "23209f68b040f9510d7dcc5ad63809d5adfb14c9937851727dcc19ae1db4a21f"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-007.json.gz",
+        "bytes": 2875621,
+        "sha256": "cc25d4a7c871dd59cdf8ed113fb400bee40bd8bff8a08e42c88fa8aaef9b5fb4"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-008.json.gz",
+        "bytes": 2808726,
+        "sha256": "9e7294d4d62fd898bc77110f8d96131b78066108c5e1b9d468deb04f086dfebc"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-009.json.gz",
+        "bytes": 2544238,
+        "sha256": "7117b4bba07e5b73203fe5b107d91a6a196352374eecde5455cdd034bbae1500"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-010.json.gz",
+        "bytes": 2206923,
+        "sha256": "66c584df22cc140e924d43ac214372cca9b58f3c98387410ea0be20047e59167"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-011.json.gz",
+        "bytes": 2951668,
+        "sha256": "a85b29b814fd93dc77b00b1de5d7f5ba4c5f3ba1d437c76ea2a633b7ea555c00"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-012.json.gz",
+        "bytes": 2848444,
+        "sha256": "c19317d61c39244f8bf595764883341fd266fc6e2304b72283cf1259d27ae471"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-013.json.gz",
+        "bytes": 3500133,
+        "sha256": "960ea39b552064d440e4a2f572afd796fe598208766a1bd1e9dd3e2ce9d95212"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-014.json.gz",
+        "bytes": 3332814,
+        "sha256": "c49b2c4cf00ca4a803670e1a8ab96e22f565e9b8f06116b460f97de7284476a3"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-015.json.gz",
+        "bytes": 3459859,
+        "sha256": "6c9c84bb947abf49b8284e686caf4edb0ed0f72f9f73c18873c9b39fdce182f0"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-016.json.gz",
+        "bytes": 3547957,
+        "sha256": "30e3182fd272d530ec51e65d5360a208e7c3b40f69d97d0714e384e593695e7c"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-017.json.gz",
+        "bytes": 3365933,
+        "sha256": "e69c10c39e9bfde3621cbcb897b2ad658f2bf4940a739e741856538f719f440a"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-018.json.gz",
+        "bytes": 3410159,
+        "sha256": "f251d6ae75fee9fe9c4b8bae88036fcb70fd7480469b42b2b830adc8cdbe78e8"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/page-019.json.gz",
+        "bytes": 679520,
+        "sha256": "2a517b35cf092ad62cceb7dacc68403f4643872825ff2d4a97978bcc6bff8501"
+      },
+      {
+        "path": "bc1qxsq47e8qacpx04e0tdxr6m4kmdsapt3weul9jh/sources.json",
+        "bytes": 600,
+        "sha256": "cc9fcc55fb51bbafae10daa2669d5c0a67b3396bb755166c93d09f54dedd09d5"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/address.json.gz",
+        "bytes": 185,
+        "sha256": "dfeb823616700a1f69129c3cafbaaf457693217d23cecabaad379086f78b38e9"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-001.json.gz",
+        "bytes": 3336134,
+        "sha256": "22d8e9a010813577efd1f036b234b190c0f2a5299044c3eb2ac0feeb924f950d"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-002.json.gz",
+        "bytes": 3217982,
+        "sha256": "73944576acf99b266573ec80a0aca6608b62c0fcc34e44b8abb541b434169c5f"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-003.json.gz",
+        "bytes": 1242913,
+        "sha256": "487cddee7149aeb58202cd56aa9aabd3a53ab32cf35470d95527b0ca42bbf7ac"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-004.json.gz",
+        "bytes": 2107265,
+        "sha256": "b09f5f3f2eaed40d05187f037ea3e68b35ed7332b61fa2da3660844d981981a3"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-005.json.gz",
+        "bytes": 1679078,
+        "sha256": "78bc32c7a9130ad48c394cab3847004c630f0c94864e70f18a78c72f41bd5c2e"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-006.json.gz",
+        "bytes": 881952,
+        "sha256": "d85cd0c499dee93caadbcb87c5441a0d4b2ec2c38a5b3bf38793cb868f3e2727"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-007.json.gz",
+        "bytes": 481030,
+        "sha256": "02053361dc61bd0a633a0f8ce6cdf65ab1dd7937884be46d160b62867ed9385f"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-008.json.gz",
+        "bytes": 881150,
+        "sha256": "6b067aa8f27a6a62cc474d3d8cee832f5516472e56e68156d75c9a0472849281"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-009.json.gz",
+        "bytes": 3602703,
+        "sha256": "f070681739322665360c359c0d0bc1d520a76a8cb70c09bbe5659453551214eb"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-010.json.gz",
+        "bytes": 3448522,
+        "sha256": "59522ec7fe0d3383e976f5fb5e01b2f4100d0d5ffc0245df042cae1484a001d5"
+      },
+      {
+        "path": "bc1qz3xjrvd7vch7pnlwxeqgqsmtezpqew52myum42cxz90wrhvm4fsqjk4gmf/page-011.json.gz",
+        "bytes": 2962121,
+        "sha256": "c83f1a21c8681b1620b9a040c2f2a7fc1de4f59f2c815bd0db74f6a000c54b53"
+      },
+      {
+        "path": "selection/blocks/968615/block.json.gz",
+        "bytes": 299,
+        "sha256": "7e62b0dda1ea9b604663a18efbf6a9852f59c82502ab99ad9d5a3bb93cee7809"
+      },
+      {
+        "path": "selection/blocks/968615/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "c783f6495f0b638f066871dc3876a84420344667f33bf6c4e587010e647df9a0"
+      },
+      {
+        "path": "selection/blocks/968615/txs-0000.json.gz",
+        "bytes": 11349,
+        "sha256": "4cac7a4f67ff55127fbb8e40baf52e7bead2736747c89baf831886ef01dc6728"
+      },
+      {
+        "path": "selection/blocks/968615/txs-0025.json.gz",
+        "bytes": 10959,
+        "sha256": "68652cc35bca16dd27f298a0f0db24761eb5d4fecbbcd8ef358ee4354f45f450"
+      },
+      {
+        "path": "selection/blocks/968615/txs-0050.json.gz",
+        "bytes": 4179,
+        "sha256": "c49caf7226283c72322d7b8621dccc1df88dae5853209d7e9f5d7d586d688b74"
+      },
+      {
+        "path": "selection/blocks/968615/txs-0075.json.gz",
+        "bytes": 8741,
+        "sha256": "dd5a1dac86e67cc06c3d00ed899f102dde3280bdc766aa1824a1a90d74d77772"
+      },
+      {
+        "path": "selection/blocks/968820/block.json.gz",
+        "bytes": 302,
+        "sha256": "8783eb8e232fac8c12a8d5dea5d8579a74f460478750b3e8140ec46929ad8af0"
+      },
+      {
+        "path": "selection/blocks/968820/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "bae23ec3f2b1767766e6a9deb1f6dc43cb1d6fd30f8811ee65df3afb2d374e42"
+      },
+      {
+        "path": "selection/blocks/968820/txs-0000.json.gz",
+        "bytes": 13873,
+        "sha256": "e2d06b99ca54e0db667fd7a38dd68db71096252a060fd0a2bbdffaf8e95dcd0a"
+      },
+      {
+        "path": "selection/blocks/968820/txs-0025.json.gz",
+        "bytes": 13161,
+        "sha256": "adc9a9b924577daee6cb1fd3a0de6a239dcc57a5b0b17efdf9597964c27bf1a2"
+      },
+      {
+        "path": "selection/blocks/968820/txs-0050.json.gz",
+        "bytes": 13772,
+        "sha256": "dfac4966e5212eafa000d9af172cac6a0c78a6b3d52f53c5f60a8bfc211fa73f"
+      },
+      {
+        "path": "selection/blocks/968820/txs-0075.json.gz",
+        "bytes": 13835,
+        "sha256": "32131072b7176f5d89c27556a24f8d81918ac5ac7bbbcf2c61959c3828b1aabd"
+      },
+      {
+        "path": "selection/blocks/969026/block.json.gz",
+        "bytes": 298,
+        "sha256": "c81f785148d5a6a533068714dc7cc9604e0445d38e3e11c791b0583ea0d867f2"
+      },
+      {
+        "path": "selection/blocks/969026/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "7926f3ac4953152a337cec212d65e0efc299f6c4209eaf9d647dfd05fd4f599b"
+      },
+      {
+        "path": "selection/blocks/969026/txs-0000.json.gz",
+        "bytes": 15128,
+        "sha256": "348d302b8f5fb82c9ff4647891080565966d3785ab13ccc873c1f1d326e3e2da"
+      },
+      {
+        "path": "selection/blocks/969026/txs-0025.json.gz",
+        "bytes": 12153,
+        "sha256": "a870a831ed959cfe384c012acec559ffe3d8f57a1a8baf9708f60db719ade39d"
+      },
+      {
+        "path": "selection/blocks/969026/txs-0050.json.gz",
+        "bytes": 13861,
+        "sha256": "a17e82aa08f520844ffec343890460db02323e0ba89d3908566d58c1d765b432"
+      },
+      {
+        "path": "selection/blocks/969026/txs-0075.json.gz",
+        "bytes": 12508,
+        "sha256": "92f9fb727ee5be5afe0a117a91c068bea98763f84219ddd01e990c431dc31237"
+      },
+      {
+        "path": "selection/blocks/969231/block.json.gz",
+        "bytes": 302,
+        "sha256": "94397f3b47f35b28fdcbb21f72c3cafc496907469e2d0c058f3e849a631758b6"
+      },
+      {
+        "path": "selection/blocks/969231/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "69d2c80d9d8cc9199b4ef4066d6759aed6066680b93d8cd25661b41598b1a61f"
+      },
+      {
+        "path": "selection/blocks/969231/txs-0000.json.gz",
+        "bytes": 16736,
+        "sha256": "979030ef3e6fa4d9e50c837f47ae51a9cc8924656085c755acedb5ff5ea5f805"
+      },
+      {
+        "path": "selection/blocks/969231/txs-0025.json.gz",
+        "bytes": 17199,
+        "sha256": "8f6f6c182720e5785e7be40243376f1c8d755fbc4abd6b4469ed6cd9a29356cc"
+      },
+      {
+        "path": "selection/blocks/969231/txs-0050.json.gz",
+        "bytes": 22944,
+        "sha256": "29ac8ffdd4e672239c243c34f8f3a6e65038de9b92f4ca4062f5097a403b8c63"
+      },
+      {
+        "path": "selection/blocks/969231/txs-0075.json.gz",
+        "bytes": 10263,
+        "sha256": "2ebaa9ae2962b995d77c9db5fdc937fc38cd9bedbf39a2271f170f663054534e"
+      },
+      {
+        "path": "selection/blocks/969436/block.json.gz",
+        "bytes": 300,
+        "sha256": "709b0755859c85c9b46c7368a19c1e89acacb14ef5fb93e7efbb1de38f82eaef"
+      },
+      {
+        "path": "selection/blocks/969436/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "976d652261ed68372999e0826c2ed231205b9a71a4a9a5161dc1ce305f9c5fc9"
+      },
+      {
+        "path": "selection/blocks/969436/txs-0000.json.gz",
+        "bytes": 13157,
+        "sha256": "8c40cbf08e51d224adb825aba49940ae3c1c24c1f913ec5568f0246a91583657"
+      },
+      {
+        "path": "selection/blocks/969436/txs-0025.json.gz",
+        "bytes": 15232,
+        "sha256": "18e8945ac0710e84cb0e0291ab05da852fa9bb70585024ac7f1a81f818a25dbc"
+      },
+      {
+        "path": "selection/blocks/969436/txs-0050.json.gz",
+        "bytes": 13047,
+        "sha256": "506fc23d3964935a1ea736b337361d43da0c61c1ce27be60257ebcfdfe18969b"
+      },
+      {
+        "path": "selection/blocks/969436/txs-0075.json.gz",
+        "bytes": 11721,
+        "sha256": "a1df67d00d3fd0b23e5e06276fa3768691bf324b106f64be4b5984f691faeea2"
+      },
+      {
+        "path": "selection/blocks/969641/block.json.gz",
+        "bytes": 299,
+        "sha256": "af1bbdbbeeb647e73241f4291092b87c0ec46229759d31f75a7f73c010f2f60f"
+      },
+      {
+        "path": "selection/blocks/969641/hash.txt.gz",
+        "bytes": 62,
+        "sha256": "1501fe0673ea9da31243e93fc5d15239a6ab5aa22bf0bcf7f47098dbf094a17a"
+      },
+      {
+        "path": "selection/blocks/969641/txs-0000.json.gz",
+        "bytes": 20794,
+        "sha256": "fee766c050a19990ad39d59cf1036ca5c3b1e3558972ae687019572882a47338"
+      },
+      {
+        "path": "selection/blocks/969641/txs-0025.json.gz",
+        "bytes": 24698,
+        "sha256": "4193f95b8974b75e0e509f65640c61fe826d2d1238e0ecfac2d8d8b4281b621a"
+      },
+      {
+        "path": "selection/blocks/969641/txs-0050.json.gz",
+        "bytes": 16246,
+        "sha256": "d580a46355faaf0f357ce93912e78a6c5e049932aa4b2a6264963ae5bab7fefe"
+      },
+      {
+        "path": "selection/blocks/969641/txs-0075.json.gz",
+        "bytes": 14884,
+        "sha256": "b430fee1c89ae1dd5843b3aa5617b7c9c936bdfc250cf0e9a7fd91907dbcd3b9"
+      },
+      {
+        "path": "selection/blocks/969847/block.json.gz",
+        "bytes": 300,
+        "sha256": "f1723a2f0f6dbe575806f20508c344b35a6374df4f4621f6799313053e1fa2f4"
+      },
+      {
+        "path": "selection/blocks/969847/hash.txt.gz",
+        "bytes": 64,
+        "sha256": "30ac8cf343a66e103eebf1563f3379dd30b8816b4cc07998796b6cd38908d09e"
+      },
+      {
+        "path": "selection/blocks/969847/txs-0000.json.gz",
+        "bytes": 13656,
+        "sha256": "e37bedc11791d3bf10226841d63a282cc0829c8ed4f81d01c10226bc4592f587"
+      },
+      {
+        "path": "selection/blocks/969847/txs-0025.json.gz",
+        "bytes": 17926,
+        "sha256": "209de58937079a0fb7abbb6b6826ee689f66b8754732dcace7c7f02f28523105"
+      },
+      {
+        "path": "selection/blocks/969847/txs-0050.json.gz",
+        "bytes": 11360,
+        "sha256": "ce8712aedfb88af7985e01dba4ea5d624926c92944d734766c9d1c26c1adf663"
+      },
+      {
+        "path": "selection/blocks/969847/txs-0075.json.gz",
+        "bytes": 3791,
+        "sha256": "81f67403df7a5b6607f72aa348878e4362ce03dab43002c0c2cef261fd501765"
+      },
+      {
+        "path": "selection/blocks/970052/block.json.gz",
+        "bytes": 300,
+        "sha256": "620a333ac1c72e6436609529d0caaa33ca8804a7d26afdc3815bd12cebc7ea33"
+      },
+      {
+        "path": "selection/blocks/970052/hash.txt.gz",
+        "bytes": 64,
+        "sha256": "dba381895098756becb45273c7461b160cf7b7b50b2651ac7193fa27bf09713b"
+      },
+      {
+        "path": "selection/blocks/970052/txs-0000.json.gz",
+        "bytes": 14734,
+        "sha256": "70468fcc6ad6a47f5e5f66af16637161a18346aab2f734c1a47fe9c0a827a763"
+      },
+      {
+        "path": "selection/blocks/970052/txs-0025.json.gz",
+        "bytes": 12236,
+        "sha256": "e7d49c9aa9da25d6a23ac0d5fb6a35dc05635617ca27dc1ddb26eea874ad6bde"
+      },
+      {
+        "path": "selection/blocks/970052/txs-0050.json.gz",
+        "bytes": 18187,
+        "sha256": "474c1023eec1220b7e6dfda716b25f2f8a00cbe747f6d20472fdfc0bad607b4b"
+      },
+      {
+        "path": "selection/blocks/970052/txs-0075.json.gz",
+        "bytes": 14125,
+        "sha256": "49b861f83cd89c63fa7dae0b0be7c3e0c67063a0da3f703ef7ef6bea891ab6a4"
+      },
+      {
+        "path": "selection/blocks/970257/block.json.gz",
+        "bytes": 298,
+        "sha256": "f4b31d6cf7d92107bd2163c31c109bcf47784d47ae6505126b09200a914bbd43"
+      },
+      {
+        "path": "selection/blocks/970257/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "34b9de6f47d2260d886489354fdc96919277bee1682bff42e4625e66cdbdc6d5"
+      },
+      {
+        "path": "selection/blocks/970257/txs-0000.json.gz",
+        "bytes": 13082,
+        "sha256": "4992b311e7738e5205cea6523dc907f8543fa66c96bada5bb5bb04986ca06576"
+      },
+      {
+        "path": "selection/blocks/970257/txs-0025.json.gz",
+        "bytes": 13906,
+        "sha256": "e040b33158f0f242736595540d7bdff8c288948ade3015901a9226af97ef7232"
+      },
+      {
+        "path": "selection/blocks/970257/txs-0050.json.gz",
+        "bytes": 10346,
+        "sha256": "12a3adfaaa0924f511037cc2715af2f4f16884fae3498a85513701f8654c367a"
+      },
+      {
+        "path": "selection/blocks/970257/txs-0075.json.gz",
+        "bytes": 24481,
+        "sha256": "54280261b3ed5182fe145290ea13be8ae1e0d9cd2ee35a9d3cb47d7994d1e131"
+      },
+      {
+        "path": "selection/blocks/970462/block.json.gz",
+        "bytes": 298,
+        "sha256": "f3e82176b90fbf7be0649c78fb640197717f614fb9713bf394b792482e2caeb4"
+      },
+      {
+        "path": "selection/blocks/970462/hash.txt.gz",
+        "bytes": 62,
+        "sha256": "c7c27e1af2aa9f70aaf0098be9e7151a6db23bfb649298200084a892151352fa"
+      },
+      {
+        "path": "selection/blocks/970462/txs-0000.json.gz",
+        "bytes": 17643,
+        "sha256": "11dc35d4c106057934e3b5224b2c8bfd05d9553687c5c397720bed8c7188b858"
+      },
+      {
+        "path": "selection/blocks/970462/txs-0025.json.gz",
+        "bytes": 12277,
+        "sha256": "ee2f802da50d59b87289b31a3f75154c8a0f1e2dcc0658bab2a9331af4640ddf"
+      },
+      {
+        "path": "selection/blocks/970462/txs-0050.json.gz",
+        "bytes": 12282,
+        "sha256": "51335105c983680ae57ae083d682fefc92335fd5179d66eef742d031b15a65bb"
+      },
+      {
+        "path": "selection/blocks/970462/txs-0075.json.gz",
+        "bytes": 15264,
+        "sha256": "5690349cce041b1c4f58578e9d660a25bf9993fea7d50f3183e4fc66524f5fe9"
+      },
+      {
+        "path": "selection/blocks/970668/block.json.gz",
+        "bytes": 300,
+        "sha256": "593fec21dfadb2e589376e0ffbc0ed54599e0bc4eb2e24ca089dbcbbd74b39da"
+      },
+      {
+        "path": "selection/blocks/970668/hash.txt.gz",
+        "bytes": 65,
+        "sha256": "71aaab4c701f75fec354608c496b7cf7c89781864a27ab791e268140e5f09408"
+      },
+      {
+        "path": "selection/blocks/970668/txs-0000.json.gz",
+        "bytes": 11537,
+        "sha256": "32b64993cd6025c56431b9bff0a0258a6daf1361e103b23e78c36af5a84bd0e7"
+      },
+      {
+        "path": "selection/blocks/970668/txs-0025.json.gz",
+        "bytes": 15623,
+        "sha256": "d44bc9aa34d007ab75d2e1578ae69e003dac5674fa2433d0bfcfe7824d5a2628"
+      },
+      {
+        "path": "selection/blocks/970668/txs-0050.json.gz",
+        "bytes": 15127,
+        "sha256": "ad9d4efb507c24a581abd50679f5b422c6eaf7fc1626685314e0c7abcc031679"
+      },
+      {
+        "path": "selection/blocks/970668/txs-0075.json.gz",
+        "bytes": 16000,
+        "sha256": "1c24c96c4a78810faba8e6c44d7dd6c9a794b833448995255937a9fd979a71c1"
+      },
+      {
+        "path": "selection/blocks/970873/block.json.gz",
+        "bytes": 300,
+        "sha256": "23e401c0128ffe4c89e804b2c391634c52afc8a8ed9d4a2f052c6a34087283cb"
+      },
+      {
+        "path": "selection/blocks/970873/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "1e11399444e652d067dae4c1de9fbb8f33691a56a19f6470b57ee4c77d85ce15"
+      },
+      {
+        "path": "selection/blocks/970873/txs-0000.json.gz",
+        "bytes": 12677,
+        "sha256": "67e1060ba8eb685e331c993d48379c80e22d70aa218adcc4f3496a8298dbc2f3"
+      },
+      {
+        "path": "selection/blocks/970873/txs-0025.json.gz",
+        "bytes": 14890,
+        "sha256": "ac443398d6d22bd4399b5b8ba929b4a88cc5537e4cf842cf1daa2720cc19c65c"
+      },
+      {
+        "path": "selection/blocks/970873/txs-0050.json.gz",
+        "bytes": 18418,
+        "sha256": "3fd11eb6f8eb4811f27cb0c1f14e592b693b838c2bf471bde5c23149c605e5f4"
+      },
+      {
+        "path": "selection/blocks/970873/txs-0075.json.gz",
+        "bytes": 14332,
+        "sha256": "19f879865815678453a6de7ab2387697d7bdf6ac81d68120f4f9ad6ba9d5c341"
+      },
+      {
+        "path": "selection/blocks/971078/block.json.gz",
+        "bytes": 299,
+        "sha256": "5fbc31e6bbd0dbb75cbecb151250c0f831c183e1053d9d167a53ab31bff6ab1b"
+      },
+      {
+        "path": "selection/blocks/971078/hash.txt.gz",
+        "bytes": 64,
+        "sha256": "1f210fb30cc75d24c43d0e5dd8201646bc5735ed8fc507865b37da8e178c83ac"
+      },
+      {
+        "path": "selection/blocks/971078/txs-0000.json.gz",
+        "bytes": 34611,
+        "sha256": "774502b1456b3a1c845e51a77fb0699117afa7f13ad6e4fd7b9d3ae5fdf03b87"
+      },
+      {
+        "path": "selection/blocks/971078/txs-0025.json.gz",
+        "bytes": 11949,
+        "sha256": "54deaefb5f7be8aaa98791e6a729f4be7ffa1117fd132ec3785e7231258bde2e"
+      },
+      {
+        "path": "selection/blocks/971078/txs-0050.json.gz",
+        "bytes": 19592,
+        "sha256": "7fddfed681c7194270eb9e333cdb705db54d75656960b316b34df96d16179644"
+      },
+      {
+        "path": "selection/blocks/971078/txs-0075.json.gz",
+        "bytes": 24496,
+        "sha256": "1bce4705379711c6b99cb9bc4a52c87ededf9aeaa1f6f6667e1083bf77056b55"
+      },
+      {
+        "path": "selection/blocks/971283/block.json.gz",
+        "bytes": 301,
+        "sha256": "ee40065a15e68514f642cbef4f58c91ea31659ebd559d2ae42f00aed8b5fb8c3"
+      },
+      {
+        "path": "selection/blocks/971283/hash.txt.gz",
+        "bytes": 64,
+        "sha256": "1ef6970fc183bf8ae16f17388733f48817af0f62c50bcfb4201f42f3b01686fe"
+      },
+      {
+        "path": "selection/blocks/971283/txs-0000.json.gz",
+        "bytes": 15044,
+        "sha256": "7c1ee7814396f8ca11c41b532cdad90032f58e1bdb77610917c1331e2aa3c1e3"
+      },
+      {
+        "path": "selection/blocks/971283/txs-0025.json.gz",
+        "bytes": 11738,
+        "sha256": "46a55daa88317a182d6847f3c92383c852a476a44bca9aeed147474f43d92978"
+      },
+      {
+        "path": "selection/blocks/971283/txs-0050.json.gz",
+        "bytes": 17457,
+        "sha256": "0668b5089221d25e0aa3997290759bd92812bd8cf63e967923bbcbfbde3eee8d"
+      },
+      {
+        "path": "selection/blocks/971283/txs-0075.json.gz",
+        "bytes": 13903,
+        "sha256": "f9d30cbb499a3bace56d0b26dae3b6bce0e3a7ea612bbba05a89325cfbf9c1e6"
+      },
+      {
+        "path": "selection/blocks/971489/block.json.gz",
+        "bytes": 301,
+        "sha256": "7e88e81a78abdcb71a325061c78b1683709930bcda942fab4c9c0ecd47c406cd"
+      },
+      {
+        "path": "selection/blocks/971489/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "13feea1d88ca9e7575adbebd6251118f8177b3b1af71543136b3fcda5c9cf30d"
+      },
+      {
+        "path": "selection/blocks/971489/txs-0000.json.gz",
+        "bytes": 21522,
+        "sha256": "dee272d875def6366ee9ac634571595ab5e297864f1b749a271a5ef263617c93"
+      },
+      {
+        "path": "selection/blocks/971489/txs-0025.json.gz",
+        "bytes": 12286,
+        "sha256": "9c1e1d19984bd211d97daeecb0fc04c70cd524831b23bb5ce6c4ec3d38a5990a"
+      },
+      {
+        "path": "selection/blocks/971489/txs-0050.json.gz",
+        "bytes": 16654,
+        "sha256": "48101329937dbd42833968ce87fd4e72fe4ffad4e774694b3803017a67e76609"
+      },
+      {
+        "path": "selection/blocks/971489/txs-0075.json.gz",
+        "bytes": 17743,
+        "sha256": "04269993a2d24e7cb1061601f9cc475bc230c337c551781d61e59d78f3593cd3"
+      },
+      {
+        "path": "selection/blocks/971694/block.json.gz",
+        "bytes": 300,
+        "sha256": "5d4738dacb5a501c4d88ffa6c99cba67f532e30ca541446461a164e988c271d9"
+      },
+      {
+        "path": "selection/blocks/971694/hash.txt.gz",
+        "bytes": 64,
+        "sha256": "53c6767e6a2de1d637fa05b7b922e6711b5671f972efbdae0e1276ed4da41185"
+      },
+      {
+        "path": "selection/blocks/971694/txs-0000.json.gz",
+        "bytes": 11152,
+        "sha256": "61479db57782a88bb98ce28ff2654989cfa071077b1b86f65a90486991b9a5a3"
+      },
+      {
+        "path": "selection/blocks/971694/txs-0025.json.gz",
+        "bytes": 14419,
+        "sha256": "63b9b49349e7fb7af2b3e7b9f4eb66ea08c5c8f4667fcd9e969f820716238359"
+      },
+      {
+        "path": "selection/blocks/971694/txs-0050.json.gz",
+        "bytes": 16115,
+        "sha256": "631ef98afe3b1d6945ffbed395cfbeb5e9c93e643239bd81fadef5a556705b3e"
+      },
+      {
+        "path": "selection/blocks/971694/txs-0075.json.gz",
+        "bytes": 13212,
+        "sha256": "8bf4a83b2a4f83eb00e8dc4df6891eca23a492a47a4d97beb371e1fe03b46b23"
+      },
+      {
+        "path": "selection/blocks/971899/block.json.gz",
+        "bytes": 301,
+        "sha256": "bef453ec27d28470742ebaac006d86233ed4ac712742eeb55da3c7edc489c9a4"
+      },
+      {
+        "path": "selection/blocks/971899/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "e459bd2f29c39c5fb382429924f71f760fd7c080a8c86cb740280ba91a9e884d"
+      },
+      {
+        "path": "selection/blocks/971899/txs-0000.json.gz",
+        "bytes": 29591,
+        "sha256": "2b2c3bb37c8a026b5f5c8eaf47272573a46acacda6474de8c0e61b0298906f81"
+      },
+      {
+        "path": "selection/blocks/971899/txs-0025.json.gz",
+        "bytes": 10366,
+        "sha256": "6bfea5e455f7fdef1235506a73259f6d6caf3bd70650c72074c4291c593624dc"
+      },
+      {
+        "path": "selection/blocks/971899/txs-0050.json.gz",
+        "bytes": 10464,
+        "sha256": "73d339b4928e3851fa837b240b72be9b31c0f7b06464e0b11f905f46edf02d43"
+      },
+      {
+        "path": "selection/blocks/971899/txs-0075.json.gz",
+        "bytes": 16160,
+        "sha256": "bfb6b7c958aa38db3ab973218c5d28fdca6c4cccd3d6ae0c273b139fb5697125"
+      },
+      {
+        "path": "selection/blocks/972104/block.json.gz",
+        "bytes": 298,
+        "sha256": "4fdb712aa93d87cd34ceac2b0b0d754a7b2fbfeba9ab8d6c116d9d8ffcdb12d0"
+      },
+      {
+        "path": "selection/blocks/972104/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "2ff9a389357a907a133cba6b8f1b80bfdd099ca3c6e1188cb698267affa0afa8"
+      },
+      {
+        "path": "selection/blocks/972104/txs-0000.json.gz",
+        "bytes": 148517,
+        "sha256": "bbea1848ee3d7972f533090fdc61d23955847a683fa15200566116f3c572f6a4"
+      },
+      {
+        "path": "selection/blocks/972104/txs-0025.json.gz",
+        "bytes": 11479,
+        "sha256": "3e373f800f43ada07a94c561c7ccbce26f2e40c25448d6e4496f5ee4f2688f6f"
+      },
+      {
+        "path": "selection/blocks/972104/txs-0050.json.gz",
+        "bytes": 13173,
+        "sha256": "10f1cfa840442f03e77c79501d3123162175e9a7f5cfcba1010ae8553a6dc776"
+      },
+      {
+        "path": "selection/blocks/972104/txs-0075.json.gz",
+        "bytes": 12511,
+        "sha256": "8fb3de930d49f3112386c764113ae2ed67f42fab291d3a4464f726a5a752e935"
+      },
+      {
+        "path": "selection/blocks/972310/block.json.gz",
+        "bytes": 301,
+        "sha256": "dfecb626f89b53455f9749d846378b870561294a05c5ae10baaf39e1cdfc2e68"
+      },
+      {
+        "path": "selection/blocks/972310/hash.txt.gz",
+        "bytes": 65,
+        "sha256": "99edf97716d9daf7655592776fd9f3bd60f6bcbfb1b7f0d9c623b751259d10da"
+      },
+      {
+        "path": "selection/blocks/972310/txs-0000.json.gz",
+        "bytes": 14231,
+        "sha256": "fc98869a9de1f4de0c022fb4237f1ce85a2e31e35868f8f1949b943d1ac21840"
+      },
+      {
+        "path": "selection/blocks/972310/txs-0025.json.gz",
+        "bytes": 13541,
+        "sha256": "06fc6022344b38271d4f230d1a7851f847f6caa02b06468aac9acd9be3a56b5f"
+      },
+      {
+        "path": "selection/blocks/972310/txs-0050.json.gz",
+        "bytes": 18135,
+        "sha256": "c9250a6a1ff4fdff72cb88dde2fcaacc257a591fb3fb5c0ecfa0b7b31aa84884"
+      },
+      {
+        "path": "selection/blocks/972310/txs-0075.json.gz",
+        "bytes": 11599,
+        "sha256": "f0aa916a14f346ca7d4276418e54c2c60a97ee3c31d611abad20eb9083f9a797"
+      },
+      {
+        "path": "selection/blocks/972515/block.json.gz",
+        "bytes": 300,
+        "sha256": "98e3d4e925036b271ea0f679f703b9324d3d9a16473e1ff624fc4cf057661f3d"
+      },
+      {
+        "path": "selection/blocks/972515/hash.txt.gz",
+        "bytes": 63,
+        "sha256": "596fe19422b181dfbf18eaf975a0d7edbe48f2736920fa4b9ced9fd5bf08f0f1"
+      },
+      {
+        "path": "selection/blocks/972515/txs-0000.json.gz",
+        "bytes": 20891,
+        "sha256": "2b39584b25fa63f3b3e003d60c40e03a532d991b334368324c1e78238524811f"
+      },
+      {
+        "path": "selection/blocks/972515/txs-0025.json.gz",
+        "bytes": 19147,
+        "sha256": "13d7799c809b24a8ed02d2eab0aa46e949b97d5c96e95fd0969977b9252a46bb"
+      },
+      {
+        "path": "selection/blocks/972515/txs-0050.json.gz",
+        "bytes": 15597,
+        "sha256": "e99d72b585a884a2ed50084e6b3b40a13734b82349c547f5f5c7e02d2483a2a0"
+      },
+      {
+        "path": "selection/blocks/972515/txs-0075.json.gz",
+        "bytes": 10673,
+        "sha256": "358b6b41a96ff525a8dbdd8cb6f0fa4f353f811ce9330350426f415c838e6b87"
+      },
+      {
+        "path": "selection/candidates.jsonl",
+        "bytes": 31769,
+        "sha256": "32e6f95b82a8d30ba212eab329e90f4b115dbc12311abeb1acf22ceaeb0e66c3"
+      },
+      {
+        "path": "selection/runs.jsonl",
+        "bytes": 1575,
+        "sha256": "58b2215b9986e23ecfc22b1b6f09f4779aab3d55767e02e1e069b52a6ce7b6d0"
+      },
+      {
+        "path": "selection/tip-height.txt.gz",
+        "bytes": 26,
+        "sha256": "89ff7e00df4ff2e95682f34039d183d581ed3e3107dfdedd3701eaa0160e3ce1"
+      }
+    ]
+  }
 }
