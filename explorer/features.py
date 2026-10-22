@@ -44,6 +44,7 @@ FEATURE_IDS = ("F1", "F2", "F3", "F4")
 SIZE_FEATURES = ("F1", "F4")
 HOUR = 3600
 DAY = 86_400
+EPOCH_WEEKDAY = 3  # 1 January 1970 was a Thursday; Monday is 0
 
 
 @dataclass(frozen=True)
@@ -275,7 +276,7 @@ def build_features(transactions: pd.DataFrame, cfg: FeatureConfig) -> pd.DataFra
 
     Columns: the transaction's own fields; earlier_count; history_span_days; scorable; F1-F4 and
     their usual values and z-scores (z_*), clipped copies (zc_*, +/- cfg.z_clip) for pooled models;
-    window descriptions; score_baseline and flag_baseline; and F5-F8.
+    window descriptions; score_baseline and flag_baseline; F5-F8; and history_inputs.
     """
     rows = []
     for address, group in transactions.groupby("address", sort=True):
@@ -285,7 +286,7 @@ def build_features(transactions: pd.DataFrame, cfg: FeatureConfig) -> pd.DataFra
              for r in group.itertuples(index=False)],
             cfg,
         )
-        for s in scored:
+        for s, history in zip(scored, history_inputs(scored)):
             src = extra.loc[s["txid"]]
             row = {
                 "address": address, "role": src["role"], "txid": s["txid"], "block_height": s["block_height"],
@@ -309,8 +310,33 @@ def build_features(transactions: pd.DataFrame, cfg: FeatureConfig) -> pd.DataFra
             row["score_baseline"] = s["score"]
             row["flag_baseline"] = s["flagged"]
             row.update(extended_features(row))
+            row.update(history)
             rows.append(row)
     return pd.DataFrame(rows)
+
+
+def history_inputs(scored: list[dict[str, Any]]) -> list[dict[str, float]]:
+    """Per-transaction inputs for the regression models (plan §9.5), from strictly earlier
+    transactions only (DR-02): the previous transaction's log size and direction, the address's
+    age (log10 of 1 + hours since its first transaction), its in-share so far, and the weekday
+    (sin, cos) of the transaction's own time, which DR-02 allows. `scored` is in time order.
+    """
+    out = []
+    for s in scored:
+        e = s["earlier_count"]
+        prev = scored[e - 1] if e > 0 else None
+        prev_dir = (None if prev is None else
+                    "in" if prev["net_sats"] > 0 else "out" if prev["net_sats"] < 0 else "none")
+        n_in = sum(1 for p in scored[:e] if p["net_sats"] > 0)
+        weekday = (s["time"] // DAY + EPOCH_WEEKDAY) % 7
+        out.append({
+            "prev_log_size": math.log10(1 + abs(prev["net_sats"])) if prev else math.nan,
+            "prev_dir_in": float(prev_dir == "in"), "prev_dir_out": float(prev_dir == "out"),
+            "age_log_hours": math.log10(1 + (s["time"] - scored[0]["time"]) / HOUR) if e > 0 else 0.0,
+            "in_share_prior": n_in / e if e > 0 else math.nan,
+            "weekday_sin": math.sin(2 * math.pi * weekday / 7), "weekday_cos": math.cos(2 * math.pi * weekday / 7),
+        })
+    return out
 
 
 def run_features(as_written: bool = False, transactions_path: Path = TRANSACTIONS_PATH) -> int:

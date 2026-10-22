@@ -17,6 +17,7 @@ Usage (from the repository root):
     python -m explorer.cli baseline --sweep       # robust-z threshold sweep
     python -m explorer.cli outliers               # Isolation Forest and LOF
     python -m explorer.cli clustering             # K-Means and DBSCAN
+    python -m explorer.cli regression             # naive, Ridge, random forest, gradient boosting, quantiles
     python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
     python -m explorer.cli classify --dataset heist [--splits temporal,random,lofo]
@@ -117,6 +118,12 @@ def cmd_clustering(args: argparse.Namespace) -> int:
     return run_clustering()
 
 
+def cmd_regression(args: argparse.Namespace) -> int:
+    from .regression import run_regression
+
+    return run_regression()
+
+
 def cmd_scores(args: argparse.Namespace) -> int:
     from .scores import run_scores
 
@@ -174,6 +181,8 @@ def build_parser() -> argparse.ArgumentParser:
     baseline.set_defaults(func=cmd_baseline)
     steps.add_parser("outliers", help="DS1: Isolation Forest and LOF searches").set_defaults(func=cmd_outliers)
     steps.add_parser("clustering", help="DS1: K-Means and DBSCAN").set_defaults(func=cmd_clustering)
+    steps.add_parser("regression", help="DS1: expected size and gap, residual and range flags").set_defaults(
+        func=cmd_regression)
     steps.add_parser("scores", help="DS1: every saved method's score and flag per transaction").set_defaults(
         func=cmd_scores)
 

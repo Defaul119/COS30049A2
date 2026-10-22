@@ -31,7 +31,7 @@ def saved_methods(models_dir: Path = MODELS_DIR) -> dict[str, Method]:
     if (models_dir / "baseline.json").exists():
         chosen = json.loads((models_dir / "baseline.json").read_text(encoding="utf-8"))["chosen"]["refined"]
         methods["baseline"] = Baseline(chosen["threshold"])
-    for name in ("isolation_forest", "lof", "kmeans", "dbscan", "regression"):
+    for name in ("isolation_forest", "lof", "kmeans", "dbscan", "regression", "regression_interval"):
         path = models_dir / f"{name}.joblib"
         if path.exists():
             methods[name] = joblib.load(path)["method"]
