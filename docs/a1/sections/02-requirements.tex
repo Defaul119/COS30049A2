@@ -1,0 +1,221 @@
+% 02-requirements
+\section{Project Requirement List and Description}
+\label{sec:requirements}
+
+\subsection{Requirements hierarchy and project scope}
+\label{sec:hierarchy}
+
+The project requirements follow a structured hierarchy from the research question to user tasks, data requirements, project scope, system features, quality expectations and acceptance criteria. This approach supports requirements definition and traceability throughout the project lifecycle.
+
+The selected unit of analysis is an individual transaction associated with one supported Bitcoin address. Transactions are grouped by day in the activity timeline. The system accepts a Bitcoin address as input but does not claim to identify all addresses belonging to an entire wallet or individual.
+
+\subsection{Functional requirements}
+\label{sec:fr}
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{1.3cm} L{1.4cm} Y L{4.3cm}@{}}
+\caption{Functional requirements}\label{tab:fr}\\
+\toprule
+\textbf{ID} & \textbf{Priority} & \textbf{Requirement} & \textbf{Phase and verification} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{ID} & \textbf{Priority} & \textbf{Requirement} & \textbf{Phase and verification} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+FR-01 & Must & A user can select a documented sample address; a typed address is accepted only if its history is in the supported dataset. The interface explains coverage. & A1 input and unsupported-address states; A3 input test. \\
+FR-02 & Must & A selected address displays a timeline of its observed confirmed transactions, with the date range and source/snapshot noted. & A1 timeline frame; A3 comparison with sample records. \\
+FR-03 & Must & Selecting a timeline period lists its individual transactions; selecting a transaction displays its ID, confirmed time, address-related amount/direction when derivable, and source link. & A1 linked detail frame; A3 record-level test. \\
+FR-04 & Must & Each transaction-level anomaly indication includes the contributing features, comparison basis and a statement that unusual activity requires investigation. & A1 annotated result; A2 analysis; A3 output test. \\
+FR-05 & Must & Invalid, unsupported, loading, empty and insufficient-history states are distinguishable and offer a next action. & A1 clickable states, heuristic inspection and automated journey checks; walkthrough planned for Week~5 (Section~\ref{sec:walkthrough}); A3 tests. \\
+\end{xltabular}
+}
+
+\subsection{Data requirements}
+\label{sec:dr}
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{1.3cm} L{1.4cm} Y L{4.3cm}@{}}
+\caption{Data requirements}\label{tab:dr}\\
+\toprule
+\textbf{ID} & \textbf{Priority} & \textbf{Requirement} & \textbf{Phase and verification} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{ID} & \textbf{Priority} & \textbf{Requirement} & \textbf{Phase and verification} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+DR-01 & Must & The team records source, collection date, sample selection, fields, missing values, provenance, use terms and retrieval instructions. & A1 data feasibility note; A2 reproducible dataset manifest. \\
+DR-02 & Must & A feature may use the current transaction’s own confirmed time and address-related amount/direction. Any historical baseline, aggregate or comparison uses only transactions confirmed before the transaction being scored. Models are fitted on the earlier part of the snapshot and evaluated on the later part.\newline
+\textbf{Pass:} (1) a unit test recomputes F1–F4 for 20 random transactions, using the current transaction only where its definition requires it and earlier records for every historical quantity, and gets identical values; (2) no transaction ID appears in both the fit and evaluation periods; (3) the Assignment 2 report states how sample addresses were chosen and any resulting bias. & A1 plan; A2 code review by a member other than the author. \\
+\end{xltabular}
+}
+
+\subsubsection{Anomaly definition}
+\label{sec:anomaly}
+
+A transaction is flagged when it is unusual compared with the same address's own earlier activity. The amount and direction rule below is confirmed against the first real sample at decision gate D1.
+
+\textbf{Address-related amount and direction:} received = sum of outputs paying the address; sent = sum of inputs spent from the address; net = received minus sent. Positive net is shown as “in”, negative as “out”.
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{0.8cm} L{2.0cm} Y L{4.0cm}@{}}
+\caption{Anomaly features F1–F4}\label{tab:features}\\
+\toprule
+\textbf{ID} & \textbf{Feature} & \textbf{Definition (current transaction may supply its own value; historical quantities use only prior confirmed transactions)} & \textbf{Why} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{ID} & \textbf{Feature} & \textbf{Definition (current transaction may supply its own value; historical quantities use only prior confirmed transactions)} & \textbf{Why} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+F1 & Size & Absolute net amount in BTC, log-scaled & Unusually large or small transfers \\
+F2 & Burst & Number of the address's transactions in the previous 7 days & Sudden bursts of activity \\
+F3 & Gap & Hours since the address's previous transaction & Dormant address waking up \\
+F4 & Relative size & Absolute net amount divided by the median absolute net amount of the previous 30 days & Size relative to the address's own habit \\
+\end{xltabular}
+}
+
+\textbf{Minimum history:} at least 10 earlier transactions spanning at least 14 days. Below that the transaction is not scored and the interface shows the insufficient-history state.
+
+\textbf{Baseline method:} for each feature,
+\[
+  \text{robust } z = \frac{\text{value} - \text{median of previous 30 days}}{1.4826 \times \text{median absolute deviation of previous 30 days}}.
+\]
+A transaction is flagged when any feature has an absolute robust z of 3.5 or more. This is the modified z-score; the 3.5 starting threshold follows Iglewicz and Hoaglin (1993) and is tuned in Assignment 2.
+
+\textbf{Refinements under review.} The prototype tests three refinements proposed as change requests CR-02, CR-04 and CR-05: each comparison window extends back to at least the last 20 earlier transactions, so that a dormant address still has a baseline; amounts are compared only with earlier transactions in the same direction; and gaps and ratios are compared on a log scale with a minimum spread. They are adopted only if the team approves them in the Change Log.
+
+\textbf{ML methods:} Isolation Forest uses F1–F4, is fitted on the earlier part of the snapshot, and scores transactions in the later evaluation period. Local Outlier Factor (LOF) (Breunig et al. 2000) is run in novelty mode (\texttt{novelty=True}) so that it can score transactions that were not in its training data: it is fitted on the earlier period and scores the later evaluation period. The flag threshold starts at the top 2\% of scores and is tuned with the synthetic-injection results below.
+
+\textbf{Detail panel (FR-04, AC-03):} shows each feature with an absolute robust z of 2 or more against the address's usual range; the comparison basis (previous 30 days, number of transactions); and the fixed line “Unusual activity requires investigation; it does not indicate wrongdoing.”
+
+\subsubsection{Assignment 2 evaluation plan without labels}
+\label{sec:evaluation}
+
+The methods are compared on four checks that need no fraud labels, all run on the later part of the snapshot only.
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{2.4cm} Y L{3.6cm} L{3.0cm}@{}}
+\caption{Label-free evaluation checks for Assignment 2}\label{tab:evaluation}\\
+\toprule
+\textbf{Check} & \textbf{Method} & \textbf{Measure} & \textbf{Target} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Check} & \textbf{Method} & \textbf{Measure} & \textbf{Target} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Synthetic-injection detection & Insert 50 synthetic transactions of each pattern: value spike (10× the address median), burst (10 transactions in one day), dormant wake-up (after 60+ idle days). They are marked as synthetic. & Share of injected transactions flagged & 70\% or more for at least two of the three patterns \\
+Stability & Re-run each ML method with 5 random seeds and 5 bootstrap resamples & Jaccard overlap of the top 50 flagged transactions between runs & 0.7 or more \\
+Method agreement & Compare flagged sets of the baseline, Isolation Forest and Local Outlier Factor & Pairwise Jaccard overlap; transactions flagged by only one method listed & Reported, no target \\
+Reviewer check & Two members independently rate 20 top-flagged and 20 random unflagged transactions without seeing which is which & Share of flagged rated “worth a look”; agreement between reviewers (Cohen's kappa) & Reported as reviewer judgement, never as ground truth \\
+\end{xltabular}
+}
+
+\textbf{Sanity rule:} no single address should have more than 20\% of its transactions flagged; if one does, the threshold or features are revisited before results are used.
+
+\textbf{Selection rule:} choose the method with the highest synthetic-injection detection rate among those meeting the stability target. If two methods are within 5 percentage points, prefer the one whose flags are easier to explain in the detail panel.
+
+\subsection{Non-functional requirements}
+\label{sec:nfr}
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{1.3cm} L{1.4cm} Y L{4.3cm}@{}}
+\caption{Non-functional requirements}\label{tab:nfr}\\
+\toprule
+\textbf{ID} & \textbf{Priority} & \textbf{Requirement} & \textbf{Phase and verification} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{ID} & \textbf{Priority} & \textbf{Requirement} & \textbf{Phase and verification} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+NFR-01 & Must & Charts and the anomaly view state units, source and uncertainty, and never imply guilt.\newline
+\textbf{Pass:} (1) every chart has a title, axis labels with units (BTC, count, date) and the snapshot date; (2) the detail panel shows the fixed limitation line on every flagged transaction; (3) a wording check of the user-facing interface finds none of: fraud, criminal, illicit, guilty, suspicious; (4) at least two walkthrough participants correctly say a flag means “needs investigation”, not “wrongdoing”. & A1 heuristic review and automated wording check (conditions 1–3); condition (4) by the walkthrough planned for Week~5 (Section~\ref{sec:walkthrough}); A3 usability test. \\
+NFR-02 & Should & The sample and feature process can be reproduced by another team member using documented versions and procedures. & A2 reproduction exercise. \\
+NFR-03 & Should & The interface supports keyboard navigation, visible focus, readable contrast and recovery from mistakes. & A1 design checklist; A3 accessibility inspection. \\
+\end{xltabular}
+}
+
+\textbf{Acceptance criteria}
+
+\textbf{AC-01 — supported sample:} Given a researcher is on the start screen, when they select a documented sample address, then the timeline shows the observed date range, labelled transaction counts, and a clear path to the flagged transaction list.
+
+\textbf{AC-02 — unsupported input:} Given an address outside the curated sample, when submitted, then the interface explains the coverage limit and offers supported examples without inventing a result.
+
+\textbf{AC-03 — anomaly interpretation:} Given a transaction is flagged, when its details open, then the researcher can see the actual contextual features, comparison basis and a “requires investigation” limitation.
+
+\subsection{Association with WBS and Gantt chart}
+\label{sec:traceability}
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{3.1cm} Y L{2.6cm} L{3.2cm}@{}}
+\caption{Association of requirements with WBS work packages and Gantt phases}\label{tab:traceability}\\
+\toprule
+\textbf{Requirement} & \textbf{WBS work packages} & \textbf{Gantt phase and due date} & \textbf{Verified by} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Requirement} & \textbf{WBS work packages} & \textbf{Gantt phase and due date} & \textbf{Verified by} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+FR-01 Supported-address selection & 1.1.6 prototype; 1.2.1 sample defines coverage; 1.4.2 back-end validation; 1.4.3 input form & A1 (11 Oct), A3 (6 Dec) & AC-02; 1.4.6 test log \\
+FR-02 Daily timeline & 1.1.6; 1.4.3; 1.4.4 charts & A1, A3 & AC-01 \\
+FR-03 Transaction drilldown & 1.1.2 source check (D1); 1.2.1; 1.4.2; 1.4.3 & A1, A2 (8 Nov), A3 & AC-01; record-level comparison with the snapshot \\
+FR-04 Anomaly indication & 1.1.6 annotated result; 1.2.4 models; 1.2.5 evaluation; 1.4.2 scoring endpoint & A1, A2, A3 & AC-03; Assignment 2 evaluation checks \\
+FR-05 Feedback states & 1.1.6; 1.4.2; 1.4.3; 1.4.6 & A1, A3 & Walkthrough task 4; 1.4.6 test log \\
+DR-01 Source record and manifest & 1.1.2; 1.2.1; 1.2.2; 1.2.6 README & A1, A2 & Manifest reviewed by a second member \\
+DR-02 Time-safe features & 1.2.2; 1.2.4; 1.2.5; 1.3.5 review & A2 & DR-02 pass conditions (1)–(3) \\
+NFR-01 Units and uncertainty wording & 1.1.6; 1.4.4; 1.4.6 & A1, A3 & NFR-01 pass conditions (1)–(4) \\
+NFR-02 Reproducibility & 1.2.6; 1.3.5 & A2 & Second member re-runs the README from a clean environment \\
+NFR-03 Accessibility & 1.1.6; 1.4.3; 1.4.6 & A1, A3 & Keyboard-only run of the journey; contrast check \\
+\end{xltabular}
+}
+
+\subsection{Planned Assignment 3 architecture and API}
+\label{sec:api}
+
+Esplora is called once, offline, to build the snapshot. A snapshot script (paged and rate-limited) feeds the feature and scoring pipeline (F1–F4, baseline, Isolation Forest, Local Outlier Factor), which writes the snapshot, scores and manifest to a local store once. In the demo, the React front end calls the FastAPI back end with GET and POST requests, and FastAPI only reads the local store. No live blockchain calls are made from the application.
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{1.5cm} L{5.3cm} Y L{2.3cm}@{}}
+\caption{Planned Assignment 3 API endpoints}\label{tab:api}\\
+\toprule
+\textbf{Method} & \textbf{Path} & \textbf{Returns} & \textbf{Serves} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Method} & \textbf{Path} & \textbf{Returns} & \textbf{Serves} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+GET & \texttt{/api/addresses} & Supported sample addresses, date range, snapshot date & FR-01, AC-01 \\
+POST & \texttt{/api/lookup} & For a typed address: supported, unsupported or invalid, with a message & FR-01, FR-05, AC-02 \\
+GET & \texttt{/api/addresses/\{address\}/\allowbreak timeline} & Daily transaction counts, flagged days, source and snapshot date & FR-02 \\
+GET & \texttt{/api/addresses/\{address\}/\allowbreak transactions?date=} & Transactions for one day, with flag status & FR-03 \\
+GET & \texttt{/api/transactions/\{txid\}?\allowbreak address=} & ID, confirmed time, amount and direction, features, comparison basis, limitation line, source link & FR-03, FR-04, AC-03 \\
+\end{xltabular}
+}
+
+\textbf{Error states (FR-05):} 400 invalid format; 404 address outside the sample; 422 insufficient history (no score). The front end maps each to its feedback state, and a loading state covers every request.

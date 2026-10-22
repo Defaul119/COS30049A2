@@ -1,0 +1,179 @@
+% 10-prototype
+\section{Prototype design and usability}
+\label{sec:prototype}
+
+The Assignment 1 prototype is a working React and TypeScript front end that runs on \textbf{illustrative data}, following the Week 1 prototyping guidance (Li n.d.b, slides 14–18). A banner on every page states that all addresses, transactions and values are invented. Behind the screens, a mock service answers the same five endpoints, with the same error codes, as the planned FastAPI back end (Section 2.6), so in Assignment 3 the screens can be pointed at the real snapshot without changing screen code. The mock applies the anomaly definition in Section 2.3 to the illustrative histories, so every explanation shown is computed rather than drawn by hand. The source code, tests and screenshots are in the team repository (\href{https://github.com/Defaul119/dmeoinnovproj}{github.com/Defaul119/dmeoinnovproj}).
+
+\subsection{Screens and user journey}
+\label{sec:screens}
+
+\textbf{Screen 1, address selection (Figure~\ref{fig:screen1}).} The researcher either types an address, which is validated in the browser before any request is sent, or picks one from the table of snapshot addresses. The table shows each address's type, active period, transaction count and number of unusual transactions; addresses with too little history are labelled “Short history, not scored” instead of showing a count.
+
+\begin{figure}[htbp]
+  \centering
+  \figfile{figures/01-select.png}{width=0.85\textwidth}
+  \caption{Screen 1: address lookup and the snapshot address list (illustrative data)}
+  \label{fig:screen1}
+\end{figure}
+
+\textbf{Screen 2, activity timeline (Figure~\ref{fig:screen2}).} The full address, its source and snapshot date sit above four summary tiles (transactions, active period, unusual count and how many transactions could be scored). A bar chart shows transactions per day; days containing an unusual transaction are orange and marked with a triangle, and the chart has a title, axis units, “Date (UTC)” and the snapshot date (NFR-01). The same data is available as a table, and a list of “Days with unusual transactions” gives a direct path to the flagged days (AC-01).
+
+\begin{figure}[htbp]
+  \centering
+  \figfile{figures/05-timeline.png}{width=0.85\textwidth}
+  \caption{Screen 2: daily activity timeline, summary tiles and the list of days with unusual transactions}
+  \label{fig:screen2}
+\end{figure}
+
+\textbf{Screen 3, day and transaction detail (Figure~\ref{fig:screen3}).} The day's transactions are listed beside a detail panel showing the transaction ID, confirmed time, block, address-related amount and direction, and how that amount is made up from received and sent values (FR-03). For a flagged transaction, “Why this transaction stands out” states each contributing feature in plain words (for example, “0.044 BTC moved, against a usual 0.001923 BTC”), then the comparison basis and the fixed line “Unusual activity requires investigation; it does not indicate wrongdoing” (FR-04, AC-03). A second chart shows how far each feature is from the address's usual value, with a table repeating every number. Buttons move to the previous or next day and the previous or next unusual day.
+
+\begin{figure}[htbp]
+  \centering
+  \figfile{figures/08-flagged-detail.png}{width=\textwidth,height=0.78\textheight,keepaspectratio}
+  \caption{Screen 3: a flagged transaction with its explanation, comparison basis, limitation line and feature chart}
+  \label{fig:screen3}
+\end{figure}
+
+\subsection{Feedback states, responsiveness and accessibility}
+\label{sec:states}
+
+All five FR-05 states are built, each with a next action (Figure~\ref{fig:states}). \textbf{Invalid} input gets a specific message, such as “This address fails its checksum, so it probably contains a typo”. An \textbf{unsupported} but valid address is explained as outside the snapshot, with three supported examples and a “Clear and try another address” button, and no invented result (AC-02). Every request shows a \textbf{loading} message. The day screen starts \textbf{empty}, with an instruction to choose a transaction. \textbf{Insufficient history} appears for a whole address (a banner offering “Browse its transactions anyway” or “Choose an address with more history”) and for a single unscored transaction, whose facts are still shown. A sixth state covers a \textbf{network failure}, with a working “Try again”.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{\textwidth}
+    \centering
+    \figfile{figures/02-invalid.png}{width=0.8\textwidth}
+    \caption{Invalid input: a mistyped address caught before any request}
+    \label{fig:invalid}
+  \end{subfigure}
+
+  \vspace{1em}
+  \begin{subfigure}{\textwidth}
+    \centering
+    \figfile{figures/03-unsupported.png}{width=0.8\textwidth}
+    \caption{Unsupported address: coverage explained, supported examples offered}
+    \label{fig:unsupported}
+  \end{subfigure}
+  \caption{Feedback states}
+  \label{fig:states}
+\end{figure}
+
+\begin{figure}[htbp]
+  \ContinuedFloat
+  \centering
+  \begin{subfigure}{\textwidth}
+    \centering
+    \figfile{figures/06-insufficient-address.png}{width=0.8\textwidth}
+    \caption{Insufficient history: transactions listed but not scored, with two next steps}
+    \label{fig:insufficient}
+  \end{subfigure}
+  \caption[]{Feedback states (continued)}
+\end{figure}
+
+The layout was checked at desktop (1280 px), tablet (820 px) and mobile (390 px) widths, and the screenshot script fails if any page scrolls sideways (Figure~\ref{fig:mobile}). Every action is a link or button with a visible focus ring; a skip link is provided; focus moves to the new heading after navigation; and the timeline chart can be used with the arrow keys and Enter (NFR-03). Flags never rely on colour alone: they combine orange, a triangle and the word “Unusual”, and the blue/orange chart pair was checked for colour-blind contrast in light and dark mode. Addresses, IDs and amounts use a monospace font with eight decimal places.
+
+\begin{figure}[htbp]
+  \centering
+  \figfile{figures/14-timeline-mobile.png}{height=0.8\textheight}
+  \caption{Screen 2 at mobile width (390 px)}
+  \label{fig:mobile}
+\end{figure}
+
+\subsection{Usability principles applied}
+\label{sec:heuristics}
+
+The design applies Nielsen's ten usability heuristics (Nielsen 1994), as covered in the Week 3 usability lecture (Li n.d.e, slides 38–46 and 54–63). Table~\ref{tab:heuristics} maps each heuristic to a design decision. These are design intentions, not evidence of usability; the walkthrough in Section 10.4 is intended to assess them with real users.
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{4.2cm} Y L{2.2cm}@{}}
+\caption{Nielsen's heuristics applied in the prototype}\label{tab:heuristics}\\
+\toprule
+\textbf{Heuristic} & \textbf{How the prototype applies it} & \textbf{Where} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Heuristic} & \textbf{How the prototype applies it} & \textbf{Where} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+1. Visibility of system status & A loading message on every request; snapshot date and source in the header; “Scored 126 of 137” shows how much of the history could be assessed. & Fig.~\ref{fig:screen1}, \ref{fig:screen2} \\
+2. Match between system and the real world & Reasons in plain language with real units (“0.044 BTC moved, against a usual 0.001923 BTC”); times labelled UTC; “unusual” instead of words implying guilt. & Fig.~\ref{fig:screen3} \\
+3. User control and freedom & Breadcrumbs on every page; each screen and state has its own address, so the browser's back button works; “Clear and try another address”. & Fig.~\ref{fig:screen2}, \ref{fig:screen3}, \ref{fig:unsupported} \\
+4. Consistency and standards & One flag style everywhere (orange, triangle, “Unusual”); monospace for every address, ID and amount; the same page structure on all screens. & Fig.~\ref{fig:screen1}–\ref{fig:screen3} \\
+5. Error prevention & Addresses are checked (format, network and checksum) before a request is sent; the snapshot list means most users never need to type an address. & Fig.~\ref{fig:screen1}, \ref{fig:invalid} \\
+6. Recognition rather than recall & Snapshot addresses and unusual days are listed rather than remembered; the detail panel repeats what each transaction was compared with. & Fig.~\ref{fig:screen1}, \ref{fig:screen2}, \ref{fig:screen3} \\
+7. Flexibility and efficiency of use & Jump straight to the next unusual day; copy buttons for addresses and IDs; keyboard control of the chart; a table view of the chart data. & Fig.~\ref{fig:screen2}, \ref{fig:screen3} \\
+8. Aesthetic and minimalist design & Each screen shows only what the task needs; the full chart data is collapsed into an optional table. & Fig.~\ref{fig:screen2} \\
+9. Help users recognise, diagnose and recover from errors & Specific messages (“fails its checksum, so it probably contains a typo”); “Try again” after a network failure; two ways forward when history is too short. & Fig.~\ref{fig:invalid}–\subref{fig:insufficient} \\
+10. Help and documentation & A hint under the input (“Addresses start with 1, 3 or bc1”); instructions under the chart; a method note in the detail panel. & Fig.~\ref{fig:screen1}–\ref{fig:screen3} \\
+\end{xltabular}
+}
+
+A heuristic inspection by Cao Tri Tran, recorded on 10 October 2026, found three issues to watch in the walkthrough (Table~\ref{tab:inspection}). Severity uses Nielsen's 0–4 scale; the plan fixes every issue rated 3 or 4 before the Assignment~2 submission.
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{0.5cm} Y L{1.7cm} L{1.5cm} Y@{}}
+\caption{Issues found in the heuristic inspection}\label{tab:inspection}\\
+\toprule
+\textbf{\#} & \textbf{Issue} & \textbf{Heuristic} & \textbf{Severity} & \textbf{Planned response} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{\#} & \textbf{Issue} & \textbf{Heuristic} & \textbf{Severity} & \textbf{Planned response} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+1 & The detail panel shows robust z-scores (for example “z +10.0”), which a student researcher may not understand. & 2 & 2 & The plain-language reason is shown first; walkthrough task 3 checks whether the z-score confuses. If it does, move it into the feature table only. \\
+2 & The “Days with unusual transactions” list scrolls inside a fixed-height box, so later days are cut off with no clear scroll cue. & 1 & 2 & Add a “Show all” control or a visible fade at the bottom of the list. \\
+3 & The “Prototype tools” button can cover table content at the bottom right of the page. & 8 & 1 & Prototype-only control; hidden in the Assignment 3 build. \\
+\end{xltabular}
+}
+
+\subsection{Planned usability walkthrough}
+\label{sec:walkthrough}
+
+The four walkthrough tasks are also scripted as automated journeys in the prototype's test suite, which checks that every FR-05 state renders with a next step and that none of the five prohibited terms appears on any screen (NFR-01 condition 3). Automated tests can check rendering and wording, but they cannot establish whether people understand the interface. The UX lead will therefore run a think-aloud walkthrough with at least two people who did not build the prototype. Each participant completes four tasks without help: (1) open the activity of a given address, (2) find a day with unusual activity and open it, (3) find the transaction that stands out and explain in their own words what the marker means, and (4) look up an address outside the snapshot and decide what to do next. Task 3 is the test of NFR-01 condition 4: success is describing the flag as “worth a closer look”, not as wrongdoing. Table~\ref{tab:walkthrough} records the results of the automated journeys, which are not a participant session. The think-aloud sessions with two participants are planned for Week~5, after this submission, following the plan in Table~\ref{tab:walkthroughplan}; their results and any revisions are reported with Assignment~2. For Assignment 1, the usability evidence is therefore the heuristic inspection (Table~\ref{tab:inspection}) and the automated journey checks (Table~\ref{tab:walkthrough}).
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{2.6cm} L{1.5cm} L{1.5cm} L{2.2cm} L{1.5cm} Y@{}}
+\caption{Automated journey test results}\label{tab:walkthrough}\\
+\toprule
+\textbf{Test run (who, when)} & \textbf{Task 1} & \textbf{Task 2} & \textbf{Task 3 (meaning of flag)} & \textbf{Task 4} & \textbf{Issues observed and revision made} \\
+\midrule
+\endfirsthead
+\multicolumn{6}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Test run (who, when)} & \textbf{Task 1} & \textbf{Task 2} & \textbf{Task 3 (meaning of flag)} & \textbf{Task 4} & \textbf{Issues observed and revision made} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Automated journeys in the prototype test suite (not a participant), run by Cao Tri Tran, 11~Oct~2026, 09:34, commit \texttt{8375cf0} & Pass (AC-01) & Pass & Pass (AC-03): the reason and the limitation line are shown. A person's own reading of the flag cannot be automated. & Pass & None. All 66 front-end tests and all 9 Python tests passed, including the check that no prohibited term appears on any screen (NFR-01 condition 3). \\
+\end{xltabular}
+}
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{6.2cm} Y@{}}
+\caption{Walkthrough plan}\label{tab:walkthroughplan}\\
+\toprule
+\textbf{Task} & \textbf{What success looks like} \\
+\midrule
+\endfirsthead
+\multicolumn{2}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Task} & \textbf{What success looks like} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+1. Open the activity of a given address & Reaches the timeline and can say which dates it covers (AC-01) \\
+2. Find a day with unusual activity and open it & Opens a flagged day from the chart or the “Days with unusual transactions” list \\
+3. Find the transaction that stands out and explain the marker & Describes the flag as “worth a closer look”, not as wrongdoing (NFR-01 condition 4) \\
+4. Look up an address outside the snapshot & Recognises it isn't covered and picks a suggested address or clears the box (AC-02) \\
+\end{xltabular}
+}

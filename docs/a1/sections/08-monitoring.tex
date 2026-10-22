@@ -1,0 +1,111 @@
+% 08-monitoring
+\section{Monitoring and change control}
+\label{sec:monitoring}
+
+Monitoring and controlling means tracking, reviewing and regulating progress so that problems are found early and the plan changes deliberately, not by accident. The team will monitor actual progress against four baselines: the scope baseline (Section 4 and the WBS dictionary in Section 5), the schedule baseline (the Gantt chart and critical path in Section 6), the risk register (Section 7) and the acceptance criteria (Section 9). The team has four members with the roles set out in Section 3, and the work is shared: every package owner reports on their own packages, and all members attend the weekly meeting, reviewing each other's work.
+
+\subsection{Weekly monitoring cycle}
+\label{sec:cycle}
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{1.6cm} L{2.6cm} L{2.4cm} Y L{3.0cm}@{}}
+\caption{Weekly monitoring cycle}\label{tab:cycle}\\
+\toprule
+\textbf{Step} & \textbf{When} & \textbf{Who} & \textbf{What happens} & \textbf{Output} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Step} & \textbf{When} & \textbf{Who} & \textbf{What happens} & \textbf{Output} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+1. Update & Before each weekly meeting & Each package owner & Update \% complete, effort used and blockers on the progress tracker. & Updated progress tracker \\
+2. Review & Weekly meeting on Discord (W1 to W12) & All four members & Compare planned and completed packages with the Gantt chart, starting with critical-path packages. Review blockers, risk triggers, open change requests and review findings. & Minutes with decisions, actions, owners and due dates \\
+3. Record & Within one working day of the meeting & PM and schedule lead & Update progress on the Gantt chart, calculate the indicators and update the risk register status. & Updated Gantt chart, indicators and registers \\
+4. Act & At the meeting or within the week & Owner of the affected package & Apply the relevant response in Section 8.2. Raise a change request if a baseline must change. & Corrective action or change request \\
+\end{xltabular}
+}
+
+The minutes of each meeting are checked by the attendees before they are filed, so that the record shows what was actually discussed and decided.
+
+\textbf{Initial project indicators:} percentage of A1 packages accepted by their reviewer, count of overdue critical-path items, open high-priority risks, unresolved decisions and usability issues by severity. Since this student project has no approved financial budget, cost performance indices from the lecture are not applied as if real costs existed.
+
+\subsection{Responding to variance}
+\label{sec:variance}
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{4.6cm} Y L{3.4cm}@{}}
+\caption{Responses to variance}\label{tab:variance}\\
+\toprule
+\textbf{Situation} & \textbf{Response} & \textbf{Decided by} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Situation} & \textbf{Response} & \textbf{Decided by} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+A package is late but within its float & Re-plan inside the week and update the Gantt chart. & Package owner \\
+A critical-path package is late & Reassign work, use buffer days if needed, record the decision in the minutes and update the critical path. & Weekly meeting \\
+More than half the buffer is used, or SPI is below 0.8 & Defer or remove optional items through a change request, and tell the tutor early if a due date is at risk. & Change request, approved by the team \\
+A review fails & The owner fixes the work and the reviewer rechecks it within two working days. & Reviewer \\
+A risk trigger fires & Start the contingency plan in the risk register and update the risk status. & Risk owner \\
+\end{xltabular}
+}
+
+\subsection{Quality control}
+\label{sec:qc}
+
+Quality is controlled through the same weekly cycle: every deliverable is reviewed by someone other than its author against the unit rubric and its acceptance criteria. The evidence and reviewer are linked on the progress tracker, and a package is not marked complete because a document or graphic merely exists. Code and README are checked by a clean installation by another member, and the prototype is checked by a heuristic inspection and automated journey tests for Assignment 1, followed by a walkthrough with at least two people who did not design it, planned for Week~5 (Section~\ref{sec:walkthrough}).
+
+\subsection{Risk monitoring}
+\label{sec:riskmonitoring}
+
+The risk register (Appendix~\ref{app:risk}, with the eight highest-priority risks in Section~\ref{sec:risk}) is reviewed at every weekly meeting. Each risk has a status (open, mitigating, triggered or closed), and likelihood and impact are re-scored after the data source decision and at the start of Assignments 2 and 3. Four risks need particular attention because they can be missed until late; each keeps its register number:
+
+{\small
+\begin{xltabular}{\textwidth}{@{}Y Y Y L{2.0cm}@{}}
+\caption{Risks needing particular attention}\label{tab:riskmonitoring}\\
+\toprule
+\textbf{Risk} & \textbf{Where it is checked} & \textbf{Trigger} & \textbf{WBS} \\
+\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Risk} & \textbf{Where it is checked} & \textbf{Trigger} & \textbf{WBS} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+12. Predictions misread as proof that someone committed fraud & Every results screen and every report section, before the demo is recorded & Wording that suggests guilt, or a result without the “Unusual activity requires investigation; it does not indicate wrongdoing” statement & 1.4.3, 1.4.7 \\
+13. Weak or noisy labels lead to misleading model training or evaluation & When the sample is audited, and before the evaluation is written & Labels cannot be traced to a source, or a result claims fraud precision or recall without valid labels & 1.2.1, 1.2.5 \\
+15. External or live API limits prevent reliable requests or the one-off snapshot & When the snapshot is collected, and before the video is recorded & Failed or rate-limited requests, or the application needing a live call to run & 1.2.1, 1.4.2, 1.4.7 \\
+16. Data rights or privacy requirements are unclear, or the data contains information that should not be exposed & When the source is chosen, and before any record is shown in the interface & Licence or use terms not recorded, or a field that could identify a person & 1.1.2, 1.2.1 \\
+\end{xltabular}
+}
+
+\subsection{Change control}
+\label{sec:changecontrol}
+
+Change control makes sure that changes to the baselines are reviewed, approved and recorded, so that the scope, schedule and risks may stay consistent. The lecture describes a Change Control Board and a change log, the four members act as the change control group, and the change log is the record.
+
+Changes are recorded in the \href{https://cos30039g14.atlassian.net/wiki/spaces/COS30049G1/database/8912906}{Change Log} (ID, date, requestor, proposal, impact, decision, approvers, changed artifacts); CR-01 records the 6 October 2026 alignment of the plan with the Explorer scope.
+
+\textbf{What needs a change request.} A change request is needed to change a must-have item or add an optional item from the scope exhibit; to move a package's end date by more than its float; to add or remove a package; to change a package owner or its acceptance criteria; or to use more than half of an assignment buffer.
+
+\textbf{Approval rule.} A change is approved when all four members agree, including the owner of the affected package, at a weekly meeting or by a recorded message within 48 hours. Changes that touch an assignment brief, a due date or a marking requirement go to the tutor first. No approval is assumed from silence.
+
+\begin{enumerate}
+  \item \textbf{Raise.} Any member records the proposal and the reason on the day it arises.
+  \item \textbf{Log.} The change receives an ID and the status Pending.
+  \item \textbf{Assess.} The package owner and other team members assess the effect on scope, schedule (including the critical path), effort, risk, quality and usability.
+  \item \textbf{Decide.} The group approves, rejects or defers the change, and records who decided and when.
+  \item \textbf{Implement.} The scope baseline, WBS dictionary, Gantt chart, critical path and risk register are updated together, and the baseline version number is increased.
+  \item \textbf{Verify and close.} A reviewer confirms that the updated documents agree with each other, and the status becomes Implemented.
+\end{enumerate}
+
+Scope baseline v1 (Section 4 and the WBS dictionary) and schedule baseline v1 (the Gantt chart and critical path) are saved when the team approves this plan. Each approved change creates the next version, and the change log records which documents changed. Urgent changes may be discussed asynchronously, but they are still logged and reviewed at the next meeting.

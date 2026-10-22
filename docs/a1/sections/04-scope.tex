@@ -1,0 +1,97 @@
+% 04-scope
+\section{Scope statement and baseline}
+\label{sec:scope}
+
+Scope of the project in this section is defined as what the project will and will not produce. This scope baseline (decision D2) was approved by all four members on 11 October 2026 (recorded in Discord).
+
+\subsection{Scope statement and deliverables}
+\label{sec:deliverables}
+
+\textbf{Project scope.} The project builds a research-focused Bitcoin Address Activity Explorer: one supported Bitcoin address at a time from a curated sample, an activity timeline aggregated per day, drilldown to individual confirmed transactions, and a transparent transaction-level indication of unusual activity that shows its contributing features and a limitation statement. The work is delivered across three assignments.
+
+\textbf{Success boundary.} The final system can explain why the observed transactions in its selected sample stand out; it cannot independently establish wrongdoing.
+
+\textbf{Assignment 1 (Project Management \& Prototype):} Scope baseline, WBS \& dictionary, Gantt chart/critical path, risk, quality, monitoring, change control, and closure plans; usability explanation; meeting minutes; contribution form.
+
+\textbf{Assignment 2 (ML Pipeline \& Data):} Versioned data sample \& data trained on, time-safe feature pipeline, 2+ ML models (justified \& evaluated), commented code, README (setup/train/predict), 3,000 word report, meeting minutes, contribution form.
+
+\textbf{Assignment 3 (Web App \& Deployment):} Web app incorporating model (form using validated input, address timeline, transactional drilldown, 2+ chart types, error handling, backend supporting 2+ HTTP methods), README, 8-page report (including API doc), 7-min responsive demo video (desktop/tablet/mobile), meeting minutes.
+
+\subsection{Minimum viable demonstration}
+\label{sec:mvd}
+
+The minimum viable demonstration is one complete journey through the Explorer:
+
+\begin{enumerate}
+  \item The researcher selects a documented sample address; an address outside the sample receives an explanation, not a result.
+  \item The daily timeline shows the observed date range and the source or snapshot used.
+  \item Selecting a period lists its transactions; selecting one shows its ID, confirmed time, address-related amount and direction, and a source link.
+  \item The anomaly indication shows its contributing features, its comparison basis and the statement “Unusual activity requires investigation; it does not indicate wrongdoing.”
+  \item Invalid, empty, loading and insufficient-history states are distinguishable and offer a next action.
+\end{enumerate}
+
+The demonstration is met when AC-01 to AC-03 and FR-05 (Section 2) pass on documented sample records. Everything classed as optional below is considered only after this journey works end to end.
+
+\subsection{Scope exhibit: must-have, optional and excluded}
+\label{sec:exhibit}
+
+{\small
+\begin{xltabular}{\textwidth}{@{}L{1.6cm} Y L{1.5cm} L{2.3cm} L{1.9cm} L{2.7cm}@{}}
+\caption{Scope exhibit: must-have, optional and excluded items}\label{tab:exhibit}\\
+\toprule
+\textbf{Class} & \textbf{Item} & \textbf{Phase} & \textbf{Requirement} & \textbf{WBS} & \textbf{Reason} \\
+\midrule
+\endfirsthead
+\multicolumn{6}{@{}l}{\itshape Table \thetable\ (continued)}\\
+\toprule
+\textbf{Class} & \textbf{Item} & \textbf{Phase} & \textbf{Requirement} & \textbf{WBS} & \textbf{Reason} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Must-have & Reproducible data sample (metadata, terms, retrieval steps) with processed dataset and README & A2 & DR-01, NFR-02 & 1.2.1, 1.2.2, 1.2.6 & Required for A2; ensures repeatability. \\
+Must-have & 2+ justified ML methods (e.g., Isolation Forest) evaluated honestly without unlabelled claims & A2 & FR-04 & 1.2.4, 1.2.5 & Meets A2 criteria; data lacks ground-truth labels \\
+Must-have & Address daily activity timeline \& detailed transaction list/view & A1 prototype, A3 & FR-02, FR-03 & 1.1.6, 1.4.3 & Core MVD requirement \\
+Must-have & Front-end and back-end validation with proper states (invalid, loading, empty, error) & A1 prototype, A3 & FR-05 & 1.1.6, 1.4.2, 1.4.3, 1.4.6 & A3 requirement and usability standard \\
+Must-have & React FE + FastAPI BE (2+ HTTP methods), 2+ charts, responsive layout (desktop/tablet/mobile) & A3 & FR-01–FR-05, NFR-03 & 1.4.1 to 1.4.4 & Required by A3 brief and demo video. \\
+Must-have & All required deliverables (A1–A3 reports, prototype, code, READMEs, API docs, video, minutes, contribution forms) & A1 to A3 & – & 1.1.8, 1.2.6, 1.2.7, 1.3.1, 1.3.7, 1.4.7 & Marked deliverables. \\
+Optional & 3rd chart type and advanced interactive features (zoom, filtering, tooltips) & A3 & NFR-01 & 1.4.4 & Bonus A3 marks; not needed for the minimum viable demonstration. \\
+Optional & Additional ML model experiments beyond the core two & A2 & FR-04 & 1.2.4 & Bonus A2 marks; adds tuning and report effort. \\
+Excluded & Non-Bitcoin chains and addresses outside the curated sample & – & FR-01 & – & Preserves scope; unsupported inputs return explanation \\
+Excluded & Identity de-anonymization, wallet tracking, or private wallet monitoring & – & – & – & Ethics and data limitations \\
+\end{xltabular}
+}
+
+WBS codes refer to the WBS and dictionary in Section 5. Requirement IDs refer to Section 2.
+
+\subsection{Assumptions and constraints}
+\label{sec:assumptions}
+
+\textbf{Assumptions}
+
+\begin{itemize}
+  \item The tutor-approved topic remains acceptable across the three assignments.
+  \item Members have access to Confluence and the development tools, and the tools used are free or open source.
+  \item The due dates and requirements quoted in 4.1 are those on Canvas; any difference is confirmed and recorded.
+  \item Named role assignments follow Meeting Minutes 3; effort and duration figures remain planning estimates, and any changes are recorded in the Change Log and the meeting minutes.
+\end{itemize}
+
+\textbf{Constraints}
+
+\begin{itemize}
+  \item The unit takes 12 teaching weeks: Assignment 1: plan and prototype, Assignment 2: the data and the model, and Assignment 3: the full-stack (Li n.d.a, slides 5 and 8).
+  \item Due dates are 11 Oct, 8 Nov and 6 Dec 2026 at 23:59. Late work loses 10\% of the available mark per calendar day, and work more than seven days late scores zero (Swinburne University of Technology n.d.a, n.d.b, n.d.c).
+  \item A team of four works part-time alongside other units, with no financial budget.
+  \item Format limits: Assignment 1 report requires a minimum of 800 words, the Assignment 2 report is up to 3000 words, the Assignment 3 report is up to 8 pages, and the demo video is up to 7 minutes and must be accessible to markers.
+\end{itemize}
+
+\subsection{Scope validation}
+\label{sec:validation}
+
+\textbf{Validation.} Deliverables are verified and formally accepted, not assumed complete (Li n.d.c, slides 14–15):
+
+\begin{itemize}
+  \item Each deliverable is checked against its requirement, acceptance criteria and the unit rubric by a reviewer other than its author; the reviewer and the evidence are linked on the progress tracker.
+  \item The prototype and, later, the application are walked through against AC-01 to AC-03 and FR-05.
+  \item The four members record acceptance at a weekly meeting. The tutor remains the academic acceptance authority.
+\end{itemize}
