@@ -21,6 +21,7 @@ Usage (from the repository root):
     python -m explorer.cli txgpt                  # after lm.tx_score: choose raw or relative surprisal
     python -m explorer.cli evaluate               # every DS1 check and the recommended method
     python -m explorer.cli predict address bc1q...  # or: predict what-if / heist / elliptic
+    python -m explorer.cli all --offline          # every step above, in order, from the data on disk
     python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
     python -m explorer.cli classify --dataset heist [--splits temporal,random,lofo]
@@ -31,6 +32,7 @@ import argparse
 import logging
 import sys
 import time
+from typing import Callable
 
 from .esplora import EsploraClient, FailoverClient
 from .settings import PROJECT_ROOT, SETTINGS
@@ -189,6 +191,62 @@ def cmd_classify(args: argparse.Namespace) -> int:
     return run_classify_elliptic(force=args.force)
 
 
+def offline_steps() -> list[tuple[str, Callable[[], int]]]:
+    """Every step that rebuilds results from data already on disk, in run order (plan Appendix D).
+
+    Steps whose inputs are absent are skipped with a message: TxGPT needs lm.tx_score's output, and
+    DS3/DS4 need their downloads (python -m explorer.cli external).
+    """
+    from .baseline import run_baseline_sweep
+    from .classify import run_classify_elliptic, run_classify_heist
+    from .clustering import run_clustering
+    from .evaluate import run_evaluate
+    from .external import EXTERNAL_DIR
+    from .features import run_features
+    from .inject import run_inject
+    from .labelled import run_process_elliptic, run_process_heist
+    from .outliers import run_outliers
+    from .regression import run_regression
+    from .scores import run_scores
+    from .split import run_split
+    from .transactions import run_transactions
+    from .txgpt import SCORES_PATH as TXGPT_SCORES, run_txgpt
+
+    steps: list[tuple[str, Callable[[], int]]] = [
+        ("transactions", run_transactions),
+        ("features", run_features),
+        ("features --as-written", lambda: run_features(as_written=True)),
+        ("split", run_split),
+        ("inject", run_inject),
+        ("baseline", run_baseline_sweep),
+        ("outliers", run_outliers),
+        ("clustering", run_clustering),
+        ("regression", run_regression),
+    ]
+    if TXGPT_SCORES.exists():
+        steps.append(("txgpt", run_txgpt))
+    steps += [("scores", run_scores), ("evaluate", run_evaluate)]
+    if (EXTERNAL_DIR / "bitcoinheist" / "BitcoinHeistData.csv").exists():
+        steps += [("process-external (DS4)", run_process_heist),
+                  ("classify --dataset heist", lambda: run_classify_heist(["temporal", "random", "lofo"]))]
+    if (EXTERNAL_DIR / "elliptic" / "elliptic_txs_features.csv").exists():
+        steps += [("process-external (DS3)", run_process_elliptic),
+                  ("classify --dataset elliptic", run_classify_elliptic)]
+    return steps
+
+
+def cmd_all(args: argparse.Namespace) -> int:
+    for name, step in offline_steps():
+        started = time.monotonic()
+        log.info("== %s", name)
+        code = step()
+        log.info("== %s finished in %.0f s (exit %d)", name, time.monotonic() - started, code)
+        if code:
+            log.info("Stopping: %s failed, and later steps depend on it", name)
+            return code
+    return 0
+
+
 def cmd_external(args: argparse.Namespace) -> int:
     from .external import run_external
 
@@ -256,6 +314,10 @@ def build_parser() -> argparse.ArgumentParser:
     classify.add_argument("--splits", default="temporal,random,lofo", help="BitcoinHeist schemes, comma-separated")
     classify.add_argument("--force", action="store_true", help="redo results that are already saved")
     classify.set_defaults(func=cmd_classify)
+
+    everything = steps.add_parser("all", help="rebuild every result from the data on disk, in run order")
+    everything.add_argument("--offline", action="store_true", help="the plan's spelling; every step here is offline")
+    everything.set_defaults(func=cmd_all)
 
     external = steps.add_parser("external", help="DS3/DS4: download, unpack, record checksums and licences")
     external.add_argument("--elliptic", action="store_true", help="DS3, from Kaggle (needs an API token)")
