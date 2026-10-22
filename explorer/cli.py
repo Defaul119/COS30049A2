@@ -48,10 +48,14 @@ log = logging.getLogger("explorer")
 
 
 def setup_logging(step: str) -> None:
-    """Log INFO lines to the console and append them to reports/logs/<step>.log."""
+    """Log INFO lines to the console and append them to reports/logs/<step>.log.
+
+    `predict` logs to stderr, so its stdout is only the JSON result and can be piped.
+    """
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s", "%Y-%m-%d %H:%M:%S")
-    for handler in (logging.StreamHandler(sys.stdout), logging.FileHandler(LOG_DIR / f"{step}.log", encoding="utf-8")):
+    console = sys.stderr if step == "predict" else sys.stdout
+    for handler in (logging.StreamHandler(console), logging.FileHandler(LOG_DIR / f"{step}.log", encoding="utf-8")):
         handler.setFormatter(formatter)
         log.addHandler(handler)
     log.setLevel(logging.INFO)
