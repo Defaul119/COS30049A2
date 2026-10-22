@@ -35,9 +35,9 @@ DONE (committed)
 - Label check (reports/tables/label_check.csv): unsupervised methods are BELOW chance on Elliptic (ROC-AUC
   0.18-0.37) and ~0.41 on BitcoinHeist: "unusual" is not "labelled illicit" (evidence for the wording).
 - Reviewer sheet/score code (reviewer-sheet, reviewer-score); key in data/interim/reviewer/ (git-ignored).
-- Fine-tuning pipeline for the Assistant 3B = Qwen2.5-3B base (CHANGED from Llama on 23 Oct at the user's
-  request; the team must be told): explorer/ds7.py (build-ds7), explorer/assistant.py (prompt + guardrail),
-  lm/chat_subset.py, lm/qlora.py (+ configs/qwen3b_chat.json, qwen3b_explain.json), lm/eval_explain.py.
+- Fine-tuning pipeline for the Assistant 3B = Qwen2.5-3B-Instruct, one mixed stage DS7 + 2,500 DS6 conversations
+  (CHANGED from Llama, then from the base model, on 23 Oct at the user's request; the team must be told): explorer/ds7.py (build-ds7), explorer/assistant.py (prompt + guardrail),
+  lm/chat_subset.py, lm/qlora.py (+ configs/qwen3b_explain.json), lm/eval_explain.py.
   Smoke-tested on CPU. DS7 currently DS1-only (1,003 pairs); template control scores 1.0 on every measure.
 
 NEXT, IN ORDER
@@ -48,9 +48,11 @@ NEXT, IN ORDER
 2. Rebuild DS7 with DS2: python -m explorer.cli build-ds7.
 3. After pretraining: 152M chat stage (configs/text_150m_chat.json), write configs/text_150m_explain.json
    (DS7 via lm.prepare_chat --source jsonl), explanation stage; lm.eval_explain --model text150m.
-4. Then the 3B (GPU env, GPU free): python -m lm.chat_subset; python -m lm.qlora --config configs/qwen3b_chat.json;
-   python -m lm.qlora --config configs/qwen3b_explain.json; python -m lm.eval_explain --model qwen3b
-   --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best. Base download ~6 GB.
+4. Then the 3B (GPU env, GPU free; Instruct weights in the HF cache; data/qwen/ = 2,500 DS6 conversations):
+   python -m lm.qlora --config configs/qwen3b_explain.json  (~10.5M tokens, est. 5-6 h; check tok/s and
+   memory on the first 20 steps), then python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json
+   --adapter runs/qwen3b-explain/adapter_best. Roles: 152M explains DS1 transactions only; Qwen is the chatbot
+   and the 2nd writer (explain cascade 152M -> Qwen -> template, each through the code guardrail).
 5. Still to write: plots.py + `figures` + notebooks/01_eda.ipynb (+ eda_tests.csv), address profiles,
    README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text and NOTICE), AI_USE_LOG,
    report (LaTeX, 3,000 words). Glossary pairs for DS7 (data/processed/ds7/glossary.jsonl) are team-written.

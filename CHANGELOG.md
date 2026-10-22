@@ -5,6 +5,18 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 23 October 2026
 
+- **Assistant 3B: Qwen2.5-3B-Instruct, one mixed fine-tune** (user's decision, later on 23 Oct;
+  replaces the base-model plan below). Revision `aa8e72537993ba99e69dfaafa59ed015b17504d1`, same
+  Qwen Research License. Reason: the Assistant is also to serve as a chatbot next to the
+  transaction checks, and a chat-tuned start is far more reliable than any chat stage we can afford
+  (making the base model a dependable chatbot would need roughly 30-60M tokens, 17-35 h on the
+  3060). One stage (`configs/qwen3b_explain.json`): DS7 plus 2,500 DS6 conversations (to keep its
+  general chat from degrading), 2 passes, about 10.5M tokens, estimated 5-6 h. `qwen3b_chat.json`
+  is removed. The report's comparison becomes "trained from scratch vs fine-tuned from a
+  chat-tuned pretrained model", and says so.
+- **Assistant roles (user's design):** the 152M model explains DS1 transactions only; Qwen 3B is
+  the chatbot and the second writer. `explorer.assistant.explain` tries 152M, then Qwen, then the
+  template; every answer passes the same code checks, which stay deterministic.
 - **Assistant 3B base model: Qwen2.5-3B instead of Llama 3.2 3B** (user's decision). Qwen is not
   gated, so no Hugging Face token is needed; the plan already named it as an option. Base model
   `Qwen/Qwen2.5-3B` at revision `3aab1f1954e9cc14eb9509a215f9e5ca08227a9b`. Licence: Qwen Research

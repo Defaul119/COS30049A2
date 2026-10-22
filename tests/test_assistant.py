@@ -49,12 +49,18 @@ class GuardrailTests(unittest.TestCase):
         self.assertFalse(assistant.check(good.replace(SETTINGS["limitationLine"], ""), messages, facts)["limitation_ok"])
         self.assertFalse(assistant.check(good + " This looks suspicious.", messages, facts)["wording_ok"])
 
-    def test_explain_falls_back_to_the_template_when_the_answer_fails(self):
+    def test_explain_tries_each_writer_then_the_template(self):
         t = tx()
-        result = assistant.explain(t, lambda messages: "It moved 123 BTC.")
-        self.assertEqual(result["source"], "template")
-        self.assertEqual(result["text"], ds7.phrase(t, 0))
-        self.assertEqual(assistant.explain(t, lambda m: ds7.phrase(t, 2))["source"], "assistant")
+        bad, good = (lambda m: "It moved 123 BTC."), (lambda m: ds7.phrase(t, 2))
+        self.assertEqual(assistant.explain(t)["source"], "template")
+        first = assistant.explain(t, [("text150m", good), ("qwen3b", bad)])
+        self.assertEqual(first["source"], "text150m")
+        self.assertEqual(len(first["attempts"]), 1)
+        second = assistant.explain(t, [("text150m", bad), ("qwen3b", good)])
+        self.assertEqual((second["source"], second["text"]), ("qwen3b", ds7.phrase(t, 2)))
+        neither = assistant.explain(t, [("text150m", bad), ("qwen3b", bad)])
+        self.assertEqual((neither["source"], neither["text"]), ("template", ds7.phrase(t, 0)))
+        self.assertFalse(neither["attempts"][1]["checks"]["numbers_ok"])
 
     def test_rouge_l(self):
         self.assertEqual(assistant.rouge_l("a b c", "a b c"), 1.0)

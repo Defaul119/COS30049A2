@@ -2,11 +2,10 @@
 
 Serves plan §9 (docs/plan/sections/s09-lm.tex, "The Explorer Assistant 3B"), an extra model added
 alongside the two trained from scratch. The base weights load in 4-bit NF4 (bitsandbytes) and only
-low-rank adapters train, which fits a 12 GB RTX 3060. Two stages mirror the 152M model, each a
-config in configs/:
-
-    qwen3b_chat.json      chat on a DS6 (smol-smoltalk) subset, from the base model
-    qwen3b_explain.json   explanations on DS7, continuing the chat stage's adapter
+low-rank adapters train, which fits a 12 GB RTX 3060. The base is Qwen2.5-3B-Instruct, which is
+already chat-tuned, so one stage is enough (configs/qwen3b_explain.json): DS7 mixed with a small
+DS6 (smol-smoltalk) subset, which keeps its general chat from degrading while it learns the
+explanations. Several train files are simply concatenated and shuffled together.
 
 Loss is on assistant replies only: every other token's label is -100. Conversations are rendered
 with the base model's own chat template; one longer than seq_len is cut after the last reply that
@@ -17,12 +16,11 @@ continues with the same data order and learning-rate schedule. The GPU must be f
 and TxGPT have priority; plan §9 "When").
 
 Usage (cos30049-a2-gpu environment):
-    python -m lm.qlora --config configs/qwen3b_chat.json
     python -m lm.qlora --config configs/qwen3b_explain.json
     python -m lm.qlora --config configs/qwen3b_explain.json --smoke   # tiny random model, CPU, a few steps
 
 Files written to the run folder (out_dir):
-    adapter/           latest LoRA adapter (resume point; the next stage's init_adapter)
+    adapter/           latest LoRA adapter (resume point; or a later stage's init_adapter)
     adapter_best/      adapter with the lowest validation loss: the one to evaluate and ship
     state.pt           optimizer, step and data order, for resuming
     log.jsonl          one line per step and per evaluation

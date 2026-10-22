@@ -9,8 +9,11 @@ before the Explorer shows it:
     limitation   a flagged transaction's answer contains the fixed limitation line exactly
     wording      no banned word (settings.json -> bannedWords; A1 NFR-01)
 
-If any check fails, the Explorer shows the template explanation instead: the template is
-authoritative, and the Assistant only rephrases it. The evaluation measures (number faithfulness,
+The Explorer tries its writers in order (the team's design, 23 Oct): the 152M model, trained from
+scratch, explains DS1 transactions first; if its answer fails a check, the fine-tuned Qwen 3B
+writes one; if that fails too, the template explanation is shown. The checks are code, not a
+model, so they are exact. The template is authoritative, and the Assistants only rephrase it.
+Qwen 3B also answers general questions as the Explorer's chatbot; that is outside this module. The evaluation measures (number faithfulness,
 limitation line, banned words, feature coverage, ROUGE-L against the template) use the same
 functions, so the reported pass rate is the guardrail's real behaviour.
 """
@@ -116,17 +119,19 @@ def check(answer: str, messages: list[dict[str, str]], facts: dict[str, Any]) ->
     return result
 
 
-def explain(tx: dict[str, Any], generate: Generator | None = None) -> dict[str, Any]:
-    """The explanation the Explorer shows: the Assistant's answer if it passes, else the template.
+def explain(tx: dict[str, Any], writers: list[tuple[str, Generator]] | None = None) -> dict[str, Any]:
+    """The explanation the Explorer shows: the first writer's answer that passes every check, else the template.
 
-    `generate` maps chat messages to the model's reply; None (the default, plan risk 15's
-    `use_assistant=False`) always returns the template.
+    `writers` is an ordered list of (name, generate), e.g. [("text150m", ...), ("qwen3b", ...)];
+    each generate maps chat messages to the model's reply. None or [] (the default, plan risk 15's
+    `use_assistant=False`) always returns the template. `attempts` records every answer and its checks.
     """
-    template = template_explanation(tx)
-    if generate is None:
-        return {"text": template, "source": "template", "checks": None}
-    messages = prompt_messages(tx)
-    answer = generate(messages).strip()
-    checks = check(answer, messages, summary(tx))
-    return {"text": answer if checks["passed"] else template, "source": "assistant" if checks["passed"] else "template",
-            "checks": checks, "answer": answer}
+    messages, facts = prompt_messages(tx), summary(tx)
+    attempts = []
+    for name, generate in writers or []:
+        answer = generate(messages).strip()
+        checks = check(answer, messages, facts)
+        attempts.append({"source": name, "answer": answer, "checks": checks})
+        if checks["passed"]:
+            return {"text": answer, "source": name, "attempts": attempts}
+    return {"text": template_explanation(tx), "source": "template", "attempts": attempts}

@@ -1,16 +1,18 @@
-"""The DS6 chat subset for the Assistant 3B's first QLoRA stage (plan §9, "The Explorer Assistant 3B").
+"""The DS6 chat subset mixed into the Assistant 3B's QLoRA fine-tune (plan §9, "The Explorer Assistant 3B").
 
 The 152M model's chat stage tokenises smol-smoltalk with our own tokenizer (lm.prepare_chat). The
 3B model has its own tokenizer and chat template, so this writes the same conversations as plain
 messages (JSON Lines) and lm.qlora renders them. It reads the same smol-smoltalk files from the
 same hub mirror, in the same order, and holds out every `val_every`-th conversation the same way,
-so the two Assistants' chat data overlap rather than differ.
+so the two Assistants' chat data overlap rather than differ. Qwen2.5-3B-Instruct is already
+chat-tuned, so this subset is small: it only keeps the model's general chat from degrading while
+it learns DS7 ("forgetting"), not teach it to chat.
 
 A conversation without a system message gets a neutral one, so the model never falls back to the
 base template's built-in default.
 
 Usage:
-    python -m lm.chat_subset                         # 10,000 conversations into data/qwen/
+    python -m lm.chat_subset                         # 2,500 conversations into data/qwen/
     python -m lm.chat_subset --max-conversations 2000 --out data/qwen_small
 """
 from __future__ import annotations
@@ -34,7 +36,8 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--out", default="data/qwen")
     p.add_argument("--raw", default="data/raw/smol-smoltalk")
-    p.add_argument("--max-conversations", type=int, default=10000)
+    p.add_argument("--max-conversations", type=int, default=2500,
+                   help="2,500 x 2 epochs is about 3M tokens: enough to keep general chat, small next to DS7")
     p.add_argument("--val-every", type=int, default=100, help="every Nth conversation is held out (as lm.prepare_chat)")
     args = p.parse_args()
 
