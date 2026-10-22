@@ -46,6 +46,7 @@ DEFAULTS = {
     "betas": [0.9, 0.95],
     "grad_clip": 1.0,
     "eval_every": 200,          # steps between validation runs
+    "early_stop_evals": None,   # stop after this many evaluations without a new best (None: never)
     "eval_batches": 40,
     "log_every": 1,
     "ckpt_every_minutes": 30,
@@ -183,9 +184,14 @@ def main() -> None:
     p.add_argument("--bench", action="store_true", help="measure speed and memory, then exit")
     p.add_argument("--max-steps", type=int, help="stop after this step (testing); the schedule is unchanged")
     p.add_argument("--fresh", action="store_true", help="ignore an existing checkpoint and start over")
+    p.add_argument("--seed", type=int, help="override the config's seed; the run folder gets a -s<seed> suffix")
     args = p.parse_args()
 
     cfg = load_config(args.config)
+    if args.seed is not None:
+        # One folder per seed, so repeated runs of one config (TxGPT: 3 seeds per size) never share a checkpoint.
+        cfg["seed"] = args.seed
+        cfg["out_dir"] = f"{cfg['out_dir']}-s{args.seed}"
     device = pick_device(args.device)
     torch.manual_seed(cfg["seed"])
     if device.type == "cuda":
@@ -239,6 +245,8 @@ def main() -> None:
 
     step = ckpt["step"] if ckpt else 0
     best_val = ckpt.get("best_val", float("inf")) if ckpt else float("inf")
+    evals_since_best = ckpt.get("evals_since_best", 0) if ckpt else 0
+    stopped_early = bool(ckpt.get("stopped_early")) if ckpt else False
     n_params = model.num_params()
     print(f"[train] {cfg.get('name', out_dir.name)} on {device}"
           f"{' (' + torch.cuda.get_device_name(device) + ')' if device.type == 'cuda' else ''}"
@@ -257,8 +265,9 @@ def main() -> None:
     if args.bench:
         bench(run_model, optimizer, train_data, cfg, device, autocast, T, total_tokens)
         return
-    if step >= max_steps:
-        print(f"[train] already finished ({step:,}/{max_steps:,} steps). Weights: {out_dir / 'model.pt'}")
+    if step >= max_steps or stopped_early:
+        print(f"[train] already finished ({step:,}/{max_steps:,} steps"
+              f"{', stopped early' if stopped_early else ''}). Weights: {out_dir / 'model.pt'}")
         return
 
     def weights(val_loss=None) -> dict:
@@ -267,19 +276,22 @@ def main() -> None:
                 "kind": meta.get("kind"), "train_config": cfg}
 
     def checkpoint() -> None:
-        save_atomic({**weights(), "optimizer": optimizer.state_dict(), "best_val": float(best_val)}, ckpt_path)
+        save_atomic({**weights(), "optimizer": optimizer.state_dict(), "best_val": float(best_val),
+                     "evals_since_best": evals_since_best, "stopped_early": stopped_early}, ckpt_path)
 
     log = open(out_dir / "log.jsonl", "a", encoding="utf-8")
 
     def run_eval() -> float:
-        nonlocal best_val
+        nonlocal best_val, evals_since_best
         val = evaluate(run_model, val_data, cfg["eval_batches"], B, device, autocast)
         print(f"[eval] step {step:,} | validation loss {val:.4f} (perplexity {math.exp(min(val, 20)):.1f})", flush=True)
         log.write(json.dumps({"step": step, "val_loss": val, "time": time.time()}) + "\n")
         log.flush()
         if val < best_val:
-            best_val = val
+            best_val, evals_since_best = val, 0
             save_atomic(weights(val), out_dir / "model_best.pt")
+        else:
+            evals_since_best += 1
         return val
 
     if step == 0:
@@ -346,6 +358,11 @@ def main() -> None:
 
             if step % cfg["eval_every"] == 0 and step < max_steps:
                 run_eval()
+                if cfg["early_stop_evals"] and evals_since_best >= cfg["early_stop_evals"]:
+                    stopped_early = True
+                    print(f"[train] no improvement in {evals_since_best} evaluations: stopping early "
+                          f"(best validation loss {best_val:.4f} in model_best.pt)", flush=True)
+                    break
             if time.time() - last_ckpt > cfg["ckpt_every_minutes"] * 60:
                 checkpoint()
                 last_ckpt = time.time()
@@ -359,7 +376,7 @@ def main() -> None:
         log.close()
 
     checkpoint()
-    if step >= max_steps:
+    if step >= max_steps or stopped_early:
         log = open(out_dir / "log.jsonl", "a", encoding="utf-8")
         val = run_eval()
         log.close()

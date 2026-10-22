@@ -1,0 +1,24 @@
+{
+  "name": "txgpt-l",
+  "data_dir": "data/txgpt",
+  "out_dir": "runs/txgpt-l",
+  "model": {
+    "seq_len": 768,
+    "n_layer": 8,
+    "n_head": 6,
+    "d_model": 384,
+    "mlp_hidden": 1024,
+    "dropout": 0.1
+  },
+  "epochs": 20,
+  "batch_tokens": 24576,
+  "micro_batch": 32,
+  "lr": 0.0006,
+  "min_lr": 5.9999999999999995e-05,
+  "warmup_steps": 100,
+  "weight_decay": 0.1,
+  "eval_every": 100,
+  "eval_batches": 10,
+  "early_stop_evals": 5,
+  "ckpt_every_minutes": 10
+}
