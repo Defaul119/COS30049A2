@@ -3,7 +3,8 @@
 Serves plan §6.2 (docs/plan/sections/s05-data.tex): TxGPT needs far more sequences than DS1's 28
 addresses. Also A1 risk 16 (privacy: addresses and txids are stored only as salted hashes, and the
 salt in config/salt.txt never leaves this machine) and the leakage rule that no DS1 address
-enters DS2, so TxGPT never trains on an address it later scores.
+enters DS2, so TxGPT never trains on an address it later scores. DS2 excludes DS1's whole
+candidate pool, a superset of DS1, so the crawl need not wait for the DS1 fetch to finish.
 
 Discovery uses DS1's block sampling over 200 blocks spread across the last 12 months, for seasonal
 variety. Candidates are shuffled with the seed and visited by worker threads on two
@@ -42,8 +43,8 @@ from .amounts import address_flow
 from .esplora import EsploraClient, EsploraError
 from .settings import PROJECT_ROOT, SETTINGS
 from .snapshot import (
-    MANIFEST_PATH as DS1_MANIFEST_PATH, History, block_heights, cached_get, pool_from_blocks, read_block,
-    utc_iso, utc_now, verify_history,
+    MANIFEST_PATH as DS1_MANIFEST_PATH, RAW_DIR as DS1_RAW_DIR, SELECTION_DIR, History, add_output_addresses,
+    block_heights, cached_get, pool_from_blocks, read_block, read_gz, utc_iso, utc_now, verify_history,
 )
 
 log = logging.getLogger(__name__)
@@ -95,12 +96,22 @@ def salted_id(salt: str, value: str, hex_chars: int) -> str:
     return hashlib.sha256((salt + value).encode("utf-8")).hexdigest()[:hex_chars]
 
 
-def ds1_addresses(manifest_path: Path = DS1_MANIFEST_PATH) -> set[str]:
-    """The DS1 addresses, which DS2 must exclude. Raises if DS1 is not complete yet."""
+def ds1_exclusions(ds1_raw_dir: Path = DS1_RAW_DIR, manifest_path: Path = DS1_MANIFEST_PATH) -> set[str]:
+    """Every address in DS1's candidate pool, plus the DS1 addresses themselves: what DS2 excludes.
+
+    The pool (the outputs of DS1's sampled blocks) is fixed before DS1 keeps anything and contains
+    every address DS1 can keep, so excluding all of it keeps DS1 out of DS2 even while the DS1
+    fetch is still running. Raises if DS1's blocks have not all been read yet.
+    """
+    col = SETTINGS["collection"]
+    blocks = sorted((ds1_raw_dir / SELECTION_DIR / "blocks").glob("*/block.json.gz"))
+    if len(blocks) < col["snapshotBlockCount"]:
+        raise SystemExit("DS1's sampled blocks must be read before the DS2 crawl (run: python -m explorer.cli snapshot)")
+    pool: dict[str, str] = {}
+    for page in sorted((ds1_raw_dir / SELECTION_DIR / "blocks").glob("*/txs-*.json.gz")):
+        add_output_addresses(json.loads(read_gz(page)), pool)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else {}
-    if not manifest.get("status", "").startswith("complete"):
-        raise SystemExit("DS1 must be complete before the DS2 crawl (run: python -m explorer.cli snapshot)")
-    return {row["address"] for row in manifest["kept"]}
+    return set(pool) | {row["address"] for row in manifest.get("kept", [])}
 
 
 # -- concurrency ---------------------------------------------------------------------
@@ -268,7 +279,7 @@ def run_corpus(
 ) -> int:
     """Discover, crawl until the target is reached (or the pool runs out), then write DS2 and its
     manifest. Returns 0 if at least `minimumAddresses` were kept and every check passed, else 1."""
-    ds1 = ds1_addresses() if ds1 is None else ds1
+    ds1 = ds1_exclusions() if ds1 is None else ds1
     salt = load_or_create_salt() if salt is None else salt
     attempts = SETTINGS["collection"]["historyFetchAttempts"]
     started = utc_now()
@@ -277,7 +288,7 @@ def run_corpus(
     excluded = sorted(a for a in pool if a in ds1)
     order = sorted(a for a in pool if a not in ds1)
     random.Random(params["seed"]).shuffle(order)
-    log.info("Pool %d candidates after removing %d DS1 addresses", len(order), len(excluded))
+    log.info("Pool %d candidates after removing %d addresses from DS1's candidate pool", len(order), len(excluded))
 
     visits_path, rows_path = interim_dir / "visits.jsonl", interim_dir / "rows.jsonl"
     visits = {v["address"]: v for v in read_jsonl(visits_path)}
@@ -349,7 +360,7 @@ def write_outputs(
         {"name": "no duplicate txid_hash within an address",
          "passed": not frame.duplicated(["addr_id", "txid_hash"]).any(), "detail": "(addr_id, txid_hash) pairs"},
         {"name": "no DS1 address in DS2", "passed": not (ds1_ids & set(counts.index)),
-         "detail": f"{len(excluded)} DS1 addresses were in the pool and removed before the crawl"},
+         "detail": f"{len(excluded)} pool addresses were in DS1's candidate pool and removed before the crawl"},
         {"name": "no missing values", "passed": not missing, "detail": f"{missing} missing cells"},
     ]
     all_passed = all(c["passed"] for c in checks)
@@ -376,7 +387,8 @@ def write_outputs(
                 f"Read the tip height. Take {params['blockCount']} block heights spread evenly from tip - "
                 f"{params['oldestBlockBack']} to tip - {params['newestBlockBack']} (about the last 12 months).",
                 f"From each block, take the output addresses of up to {params['txPagesPerBlock']} pages of "
-                "transactions; remove duplicates; remove every DS1 address.",
+                "transactions; remove duplicates; remove every address in DS1's candidate pool (a superset of the DS1 "
+                "addresses, so DS1 can never leak into TxGPT's training data).",
                 f"Sort the pool, shuffle it with seed {params['seed']}, and visit candidates in that order.",
                 f"Keep a candidate with {params['minTx']}-{params['maxTx']} confirmed transactions whose history "
                 f"passes every check. Stop once {params['targetAddresses']} are kept (the minimum is "

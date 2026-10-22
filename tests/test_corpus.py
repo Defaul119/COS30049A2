@@ -16,6 +16,8 @@ import pandas as pd
 
 from explorer import corpus
 from explorer.esplora import EsploraClient, EsploraError
+from explorer.settings import SETTINGS
+from explorer.snapshot import write_gz
 from tests.test_snapshot import DAY, T0, address_reply, history
 
 SALT = "test-salt"
@@ -75,6 +77,22 @@ class HelperTests(unittest.TestCase):
             pace.wait()
         # Three gaps after the first start; the tolerance covers the OS timer's ~16 ms resolution.
         self.assertGreaterEqual(time.perf_counter() - started, 0.3 - 0.02)
+
+    def test_ds1_exclusions_cover_the_whole_ds1_pool(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            raw = Path(tmp) / "esplora"
+            blocks = raw / "selection" / "blocks"
+            manifest = Path(tmp) / "manifest.json"
+            n_blocks = SETTINGS["collection"]["snapshotBlockCount"]
+            for h in range(n_blocks - 1):
+                write_gz(blocks / str(h) / "block.json.gz", "{}")
+            with self.assertRaises(SystemExit):  # one block still unread: the pool is not fixed yet
+                corpus.ds1_exclusions(raw, manifest)
+            write_gz(blocks / str(n_blocks) / "block.json.gz", "{}")
+            write_gz(blocks / "0" / "txs-0000.json.gz",
+                     json.dumps([{"vout": [{"scriptpubkey_address": "pool_a"}, {"scriptpubkey_address": "pool_b"}]}]))
+            manifest.write_text(json.dumps({"kept": [{"address": "kept_x"}]}), encoding="utf-8")
+            self.assertEqual(corpus.ds1_exclusions(raw, manifest), {"pool_a", "pool_b", "kept_x"})
 
     def test_salt_is_created_once(self):
         with tempfile.TemporaryDirectory() as tmp:
