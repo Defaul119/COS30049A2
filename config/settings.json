@@ -85,7 +85,17 @@
     "minHistoryTx": 10,
     "minHistorySpanDays": 14,
     "sizeComparison": "same-direction",
-    "_sizeComparisonOptions": "same-direction (proposed CR-04: size features compared only with earlier transactions in the same direction) or all (report §2.3 as written)"
+    "_sizeComparisonOptions": "same-direction (proposed CR-04: size features compared only with earlier transactions in the same direction) or all (report §2.3 as written)",
+    "zClip": 20,
+    "_zClip": "own-history z-scores are clipped to +/- this before pooled models (plan §6.2), so one extreme value cannot dominate"
+  },
+
+  "featuresAsWritten": {
+    "_about": "The method exactly as A1 §2.3 wrote it, for the refinement ablation (plan §6.2): a plain 30-day window with no extension (CR-02), all directions (CR-04), no log transform of F3/F4 and no floor on the spread (CR-05). Every other value comes from features and baseline.",
+    "comparisonMinTx": 0,
+    "sizeComparison": "all",
+    "transform": false,
+    "minScale": { "F1": 0, "F2": 0, "F3": 0, "F4": 0 }
   },
 
   "baseline": {
