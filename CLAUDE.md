@@ -25,7 +25,7 @@ data, the machine-learning models, the code zip and a 3,000-word report.** Assig
   line if it is wrong.)
 - **Team** (A1 roles): Cam Dan Bui (105967074), leader and report integrator; Le Quang Anh Hoang
   (106218605), project manager and back end; Minh Khang Nguyen (106216803), front end.
-- **Tutor's name:** unknown. It must be on the report cover, so ask the user.
+- **Tutor's name:** Arthur Hoang (given by the user, 22 Oct 2026). It goes on the report cover.
 - **Due:** Sunday 8 November 2026, 23:59 GMT+7 (Week 8, 40% of the unit). **The plan submits on
   Saturday 7 November.** Late penalty: 10% per day. Unit hurdle: at least 40% in every assignment.
 - **Milestones:** M1 Sun 25 Oct (baseline, Isolation Forest and LOF score every DS1 transaction;

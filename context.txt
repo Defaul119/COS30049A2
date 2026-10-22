@@ -63,7 +63,8 @@ RESULTS SO FAR (numbers are in reports/tables/*.csv; quote those, never these)
 - DS3 Elliptic LF: LR F1 ~0.73, KNN ~0.74, RF ~0.76; AF logistic ~0.60.
 
 WAITING ON THE USER / TEAM
-- Pause Windows Update 2 weeks; GPU cooling; tutor's name; copy _context/ from the Mac; CR-06 + tutor messages;
+- Tutor's name: Arthur Hoang (recorded in CLAUDE.md; goes on the report cover).
+- Pause Windows Update 2 weeks; GPU cooling; copy _context/ from the Mac; CR-06 + tutor messages;
   Cam Dan Bui's DS1 manifest review + manual tx check; optional Blockstream API key.
 - models/heist_best.joblib (276 MB RF) is git-ignored: over GitHub's 100 MB limit; pick a smaller final DS4
   model or ship a link + SHA-256 when packaging.
