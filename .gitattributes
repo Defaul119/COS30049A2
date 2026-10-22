@@ -1,0 +1,2 @@
+# Data files keep their exact bytes, so the SHA-256 in each manifest matches on every machine.
+data/processed/** -text
