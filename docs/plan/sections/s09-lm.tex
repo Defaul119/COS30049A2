@@ -115,6 +115,30 @@ report says so: ``the template is authoritative; the assistant only rephrases''.
 scratch on one consumer GPU. They are not comparable to commercial LLMs. Their value is that
 they show the whole pipeline: tokenizer, pretraining, alignment, evaluation and a safety wrapper.
 
+\subsection{The Explorer Assistant 3B: a fine-tuned comparison (added 22 October)}
+\label{sec:assistant3b}
+
+The tutor, Arthur Hoang, agreed to an extra model: a pretrained base model of about 3B parameters
+(for example Qwen2.5-3B or Llama-3.2-3B, chosen by its licence), fine-tuned by the team. It is added
+to the 152M Assistant and doesn't replace it.
+
+\textbf{Method.} QLoRA: the base weights are loaded in 4-bit and only low-rank adapters are
+trained, which fits the RTX 3060's 12\,GB. Two stages mirror the 152M model: chat on a DS6
+subset, then explanations on DS7, with loss on replies only. The DS7 train, validation and
+test splits are the same ones the 152M model uses. A few hours of GPU time in total\est{}.
+
+\textbf{When.} After the 152M model's three stages and TxGPT are done (both have priority).
+It never pauses those runs.
+
+\textbf{Evaluation and guardrail.} The same measures as the table above, on the same DS7 test
+inputs, so the report has a direct from-scratch vs fine-tuned comparison. It serves 4-bit
+quantised behind the same \code{explorer/assistant.py} validator, with the template answer as the
+fallback.
+
+\textbf{Records.} The base model's name, revision and licence go in \code{LICENSES.md} and the
+model card. The change goes in \code{CHANGELOG.md} and the AI declaration. The adapter weights
+ship (or a link to them if they are too large); the base weights don't.
+
 \subsection{GPU timetable}
 
 \begin{center}
@@ -129,7 +153,7 @@ Mon 26 Oct & Pretraining ends (or is paused if it overruns). TxGPT sweep, 9 runs
 Tue 27 Oct & TxGPT scoring of DS1; perplexity baselines. Resume pretraining if it was paused. \\
 Wed 28 Oct & Chat fine-tune, 3--4 h. \\
 Thu 29 -- Fri 30 Oct & Build DS7 → explanation fine-tune → faithfulness evaluation. TxGPT plant evaluation (CPU or GPU). \\
-After 30 Oct & GPU free. Re-runs only if a bug is found. \\
+After 30 Oct & 3B QLoRA fine-tune (chat, then DS7) and its evaluation, a few hours. Then GPU free; re-runs only if a bug is found. \\
 \bottomrule
 \end{tabularx}
 \end{center}

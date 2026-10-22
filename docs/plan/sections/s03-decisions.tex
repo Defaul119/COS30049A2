@@ -111,6 +111,14 @@ the text model drops from \emph{Must for HD} to \emph{Should}, and its GPU time 
 schedule instead.
 \end{team}
 
+\textbf{Update, 22 October: a fine-tuned 3B model is added.} The tutor, Arthur Hoang, agreed that
+the team may also fine-tune a pretrained base model of about 3B parameters. It is \emph{added}
+alongside the two from-scratch models and replaces neither: the 152M Assistant finishes all three
+stages, and TxGPT is unchanged. The 3B model is QLoRA-tuned on the same chat and DS7 data after
+the from-scratch work (Section~\ref{sec:assistant3b}), and the report compares the two Assistants
+on the same measures. Before work starts, the tutor's agreement is recorded in writing, and
+the team approves this addition as an amendment to CR-06.
+
 \subsection{D-A2-5: one repository and two environments}
 \label{sec:repo}
 
