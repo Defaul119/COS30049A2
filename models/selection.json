@@ -1,0 +1,21 @@
+{
+  "chosen": "baseline",
+  "runner_up": "kmeans",
+  "rule": "highest mean injection recall among stable methods; within 5 points, the easier to explain (baseline > regression_interval > regression > kmeans > isolation_forest > dbscan > lof > txgpt_method)",
+  "no_method_stable": false,
+  "combination": {
+    "methods": "baseline + kmeans",
+    "recall_spike": 0.744,
+    "recall_dormant": 0.84,
+    "recall_burst_tx": 0.38120000000000004,
+    "recall_burst_event": 0.776,
+    "precision_lower_bound": 0.12526697000650014,
+    "pr_auc": 0.07540626390611295,
+    "plant_prevalence": 0.03466605038132656,
+    "flag_rate": 0.1043212570929725,
+    "flagged": 239,
+    "eval_rows": 2291,
+    "max_address_share": 0.4528301886792453,
+    "addresses_over_limit": 4
+  }
+}

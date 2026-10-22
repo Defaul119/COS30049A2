@@ -1,0 +1,10 @@
+2026-10-23 00:33:22 INFO Step transactions started: C:\Users\ADMIN\COS30049A2\explorer\cli.py transactions
+2026-10-23 00:33:22 INFO Read C:\Users\ADMIN\COS30049A2\data\processed\esplora\histories.json.gz: 28 addresses
+2026-10-23 00:33:22 INFO parse every saved page: 7966 -> 7966 rows (0 removed)
+2026-10-23 00:33:22 INFO keep confirmed transactions: 7966 -> 7966 rows (0 removed)
+2026-10-23 00:33:22 INFO remove duplicate (address, txid) pairs: 7966 -> 7966 rows (0 removed)
+2026-10-23 00:33:22 INFO drop transactions that neither pay nor spend from the address: 7966 -> 7966 rows (0 removed)
+2026-10-23 00:33:22 INFO sort by address, block time and txid: 7966 -> 7966 rows (0 removed)
+2026-10-23 00:33:22 INFO Wrote C:\Users\ADMIN\COS30049A2\data\processed\esplora\transactions.csv: 7966 rows, 28 addresses, directions {'in': 4750, 'out': 3216}
+2026-10-23 00:33:22 INFO Wrote C:\Users\ADMIN\COS30049A2\reports\tables\cleaning_ds1.csv
+2026-10-23 00:33:22 INFO Step transactions finished in 1 s (exit 0)

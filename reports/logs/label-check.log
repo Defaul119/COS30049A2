@@ -1,0 +1,11 @@
+2026-10-23 00:42:50 INFO Step label-check started: C:\Users\ADMIN\COS30049A2\explorer\cli.py label-check
+2026-10-23 00:42:51 INFO elliptic_AF: fitting on 10000 of 136265 training rows, 167 features; 16670 test rows (1083 positive)
+2026-10-23 00:42:55 INFO K-Means k=2: silhouette 0.538, Davies-Bouldin 1.805, inertia 1543663
+2026-10-23 00:42:56 INFO K-Means k=3: silhouette 0.064, Davies-Bouldin 3.119, inertia 1487342
+2026-10-23 00:42:58 INFO K-Means k=4: silhouette 0.070, Davies-Bouldin 2.695, inertia 1434077
+2026-10-23 00:42:59 INFO K-Means k=5: silhouette 0.072, Davies-Bouldin 2.248, inertia 1379387
+2026-10-23 00:43:01 INFO K-Means k=6: silhouette 0.060, Davies-Bouldin 2.280, inertia 1338593
+2026-10-23 00:43:03 INFO K-Means k=7: silhouette 0.065, Davies-Bouldin 2.282, inertia 1311253
+2026-10-23 00:43:05 INFO K-Means k=8: silhouette 0.063, Davies-Bouldin 2.353, inertia 1288284
+2026-10-23 00:43:07 INFO K-Means k=9: silhouette 0.064, Davies-Bouldin 2.141, inertia 1266112
+2026-10-23 00:43:09 INFO K-Means k=10: silhouette 0.069, Davies-Bouldin 2.143, inertia 1239719

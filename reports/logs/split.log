@@ -1,0 +1,4 @@
+2026-10-23 00:33:27 INFO Step split started: C:\Users\ADMIN\COS30049A2\explorer\cli.py split
+2026-10-23 00:33:28 INFO Periods: {'fit': 5308, 'eval': 2291, 'history': 367}
+2026-10-23 00:33:28 INFO Wrote the period column of C:\Users\ADMIN\COS30049A2\data\processed\esplora\features.csv and features_as_written.csv and C:\Users\ADMIN\COS30049A2\reports\tables\split_ds1.csv
+2026-10-23 00:33:28 INFO Step split finished in 1 s (exit 0)

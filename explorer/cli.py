@@ -25,6 +25,9 @@ Usage (from the repository root):
     python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
     python -m explorer.cli classify --dataset heist [--splits temporal,random,lofo]
+    python -m explorer.cli label-check            # unsupervised scores against DS3/DS4 labels
+    python -m explorer.cli reviewer-sheet         # 40 shuffled rows for the blind reviewer check
+    python -m explorer.cli reviewer-score --ratings ratings_mkn.csv ratings_cdb.csv
 """
 from __future__ import annotations
 
@@ -32,6 +35,7 @@ import argparse
 import logging
 import sys
 import time
+from pathlib import Path
 from typing import Callable
 
 from .esplora import EsploraClient, FailoverClient
@@ -191,6 +195,24 @@ def cmd_classify(args: argparse.Namespace) -> int:
     return run_classify_elliptic(force=args.force)
 
 
+def cmd_label_check(args: argparse.Namespace) -> int:
+    from .label_check import run_label_check
+
+    return run_label_check()
+
+
+def cmd_reviewer_sheet(args: argparse.Namespace) -> int:
+    from .reviewer import run_reviewer_sheet
+
+    return run_reviewer_sheet()
+
+
+def cmd_reviewer_score(args: argparse.Namespace) -> int:
+    from .reviewer import run_reviewer_score
+
+    return run_reviewer_score([Path(p) for p in args.ratings])
+
+
 def offline_steps() -> list[tuple[str, Callable[[], int]]]:
     """Every step that rebuilds results from data already on disk, in run order (plan Appendix D).
 
@@ -204,6 +226,7 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
     from .external import EXTERNAL_DIR
     from .features import run_features
     from .inject import run_inject
+    from .label_check import run_label_check
     from .labelled import run_process_elliptic, run_process_heist
     from .outliers import run_outliers
     from .regression import run_regression
@@ -238,6 +261,7 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
                   ("classify --dataset elliptic", run_classify_elliptic)]
     else:
         log.info("Skipping DS3: not downloaded (python -m explorer.cli external --elliptic)")
+    steps.append(("label-check", run_label_check))  # after outliers (it reuses their DS1 configurations)
     return steps
 
 
@@ -320,6 +344,13 @@ def build_parser() -> argparse.ArgumentParser:
     classify.add_argument("--splits", default="temporal,random,lofo", help="BitcoinHeist schemes, comma-separated")
     classify.add_argument("--force", action="store_true", help="redo results that are already saved")
     classify.set_defaults(func=cmd_classify)
+    steps.add_parser("reviewer-sheet", help="DS1: the blind sheet for the reviewer check, and its key").set_defaults(
+        func=cmd_reviewer_sheet)
+    reviewer_score = steps.add_parser("reviewer-score", help="DS1: reviewers' ratings against the flags; Cohen's kappa")
+    reviewer_score.add_argument("--ratings", nargs="+", required=True, help="one returned sheet per reviewer")
+    reviewer_score.set_defaults(func=cmd_reviewer_score)
+    steps.add_parser("label-check", help="DS3/DS4: unsupervised methods' scores against the labels").set_defaults(
+        func=cmd_label_check)
 
     everything = steps.add_parser("all", help="rebuild every result from the data on disk, in run order")
     everything.add_argument("--offline", action="store_true", help="the plan's spelling; every step here is offline")

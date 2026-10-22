@@ -1,0 +1,17 @@
+2026-10-23 00:34:12 INFO Step baseline started: C:\Users\ADMIN\COS30049A2\explorer\cli.py baseline --sweep
+2026-10-23 00:34:14 INFO refined |z| >= 2.5: recall spike 0.88, burst 0.61/0.93, dormant 0.89; flag rate 0.235; 12 addresses over the limit
+2026-10-23 00:34:14 INFO refined |z| >= 3.0: recall spike 0.87, burst 0.54/0.89, dormant 0.89; flag rate 0.184; 9 addresses over the limit
+2026-10-23 00:34:14 INFO refined |z| >= 3.5: recall spike 0.84, burst 0.48/0.85, dormant 0.82; flag rate 0.149; 7 addresses over the limit
+2026-10-23 00:34:14 INFO refined |z| >= 4.0: recall spike 0.84, burst 0.46/0.82, dormant 0.82; flag rate 0.133; 5 addresses over the limit
+2026-10-23 00:34:14 INFO refined |z| >= 4.5: recall spike 0.82, burst 0.40/0.78, dormant 0.80; flag rate 0.120; 5 addresses over the limit
+2026-10-23 00:34:14 INFO refined |z| >= 5.0: recall spike 0.79, burst 0.35/0.74, dormant 0.80; flag rate 0.104; 4 addresses over the limit
+2026-10-23 00:34:15 INFO as_written |z| >= 2.5: recall spike 0.90, burst 0.69/0.99, dormant 0.00; flag rate 0.460; 23 addresses over the limit
+2026-10-23 00:34:15 INFO as_written |z| >= 3.0: recall spike 0.89, burst 0.62/0.98, dormant 0.00; flag rate 0.412; 22 addresses over the limit
+2026-10-23 00:34:15 INFO as_written |z| >= 3.5: recall spike 0.89, burst 0.56/0.98, dormant 0.00; flag rate 0.373; 21 addresses over the limit
+2026-10-23 00:34:15 INFO as_written |z| >= 4.0: recall spike 0.88, burst 0.54/0.94, dormant 0.00; flag rate 0.351; 20 addresses over the limit
+2026-10-23 00:34:15 INFO as_written |z| >= 4.5: recall spike 0.86, burst 0.49/0.91, dormant 0.00; flag rate 0.333; 20 addresses over the limit
+2026-10-23 00:34:15 INFO as_written |z| >= 5.0: recall spike 0.85, burst 0.44/0.87, dormant 0.00; flag rate 0.313; 19 addresses over the limit
+2026-10-23 00:34:15 INFO refined: chosen |z| >= 5.0 (no threshold met the sanity rule; fewest addresses over the limit); differs from A1's 3.5, so this is CR-03 for the team
+2026-10-23 00:34:15 INFO as_written: chosen |z| >= 5.0 (no threshold met the sanity rule; fewest addresses over the limit); differs from A1's 3.5, so this is CR-03 for the team
+2026-10-23 00:34:15 INFO Wrote C:\Users\ADMIN\COS30049A2\reports\tables\tuning_baseline.csv and C:\Users\ADMIN\COS30049A2\models\baseline.json
+2026-10-23 00:34:15 INFO Step baseline finished in 3 s (exit 0)

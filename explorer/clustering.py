@@ -122,8 +122,8 @@ def describe_centroid(centroid: np.ndarray) -> str:
     return (", ".join(parts) if parts else "typical for the address") + f"; {direction}"
 
 
-def tune_kmeans(rows: pd.DataFrame, seed: int) -> tuple[pd.DataFrame, int]:
-    x = model_inputs(rows)
+def tune_kmeans(x: np.ndarray, seed: int) -> tuple[pd.DataFrame, int]:
+    """Every k in the grid on inputs x; k is the best silhouette."""
     table = []
     for k in SETTINGS["clustering"]["kmeansK"]:
         model = KMeans(n_clusters=k, n_init=SETTINGS["clustering"]["kmeansNInit"], random_state=seed).fit(x)
@@ -140,9 +140,9 @@ def tune_kmeans(rows: pd.DataFrame, seed: int) -> tuple[pd.DataFrame, int]:
     return table, best_k
 
 
-def tune_dbscan(rows: pd.DataFrame, seed: int) -> tuple[pd.DataFrame, dict[str, Any]]:
+def tune_dbscan(x: np.ndarray, seed: int) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """The eps x MinPts grid on inputs x, around the knee eps0 at MinPts = 2D."""
     c = SETTINGS["clustering"]
-    x = model_inputs(rows)
     min_pts0 = c["dbscanMinPtsPerDimension"] * x.shape[1]
     eps0 = knee_distance(x, min_pts0)
     lo, hi = c["dbscanNoiseShare"]
@@ -172,7 +172,7 @@ def run_clustering() -> int:
     rows = fit_rows(features)
     log.info("Fit period: %d rows, inputs %s", len(rows), INPUT_COLUMNS)
 
-    km_table, k = tune_kmeans(rows, seed)
+    km_table, k = tune_kmeans(model_inputs(rows), seed)
     km = KMeansMethod(k, seed).fit(rows)
     labels = km.cluster(rows)
     clusters = pd.DataFrame(km.model.cluster_centers_, columns=INPUT_COLUMNS)
@@ -180,7 +180,7 @@ def run_clustering() -> int:
     clusters["fit_rows"] = np.bincount(labels, minlength=k)
     clusters["description"] = [describe_centroid(c) for c in km.model.cluster_centers_]
 
-    db_table, db_choice = tune_dbscan(rows, seed)
+    db_table, db_choice = tune_dbscan(model_inputs(rows), seed)
     db = DBSCANMethod(db_choice["eps"], db_choice["min_samples"]).fit(rows)
 
     TABLES_DIR.mkdir(parents=True, exist_ok=True)

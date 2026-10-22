@@ -1,0 +1,11 @@
+target,model,params,mae,rmse,r2,skill_vs_naive,coverage,mean_width
+size,naive,{},0.18604702540694637,0.4161064130322688,0.7295954149061035,0.0,,
+size,ridge,"{""alpha"": 0.001}",0.18107173001743115,0.37290531979747427,0.7828287200522215,0.026742138868560805,,
+size,randomForest,"{""max_depth"": 10, ""max_features"": 1.0, ""min_samples_leaf"": 20, ""n_estimators"": 300}",0.16768923860979404,0.36830556964061834,0.7881532499135518,0.09867283154351858,,
+size,histGradientBoosting,"{""l2_regularization"": 1, ""learning_rate"": 0.03, ""max_leaf_nodes"": 63}",0.18142178300037362,0.3828487580309315,0.7710926602846606,0.02486060928120626,,
+size,"quantile [0.05, 0.95]","{""l2_regularization"": 1, ""learning_rate"": 0.03, ""max_leaf_nodes"": 63}",,,,,0.896551724137931,1.0277887649084492
+gap,naive,{},0.47565839219903894,0.6654379287956684,0.03944719566383714,0.0,,
+gap,ridge,"{""alpha"": 0.001}",0.2787911977458072,0.410393911164229,0.6346509695515771,0.4138835720801344,,
+gap,randomForest,"{""max_depth"": 20, ""max_features"": 1.0, ""min_samples_leaf"": 5, ""n_estimators"": 300}",0.1888517132690802,0.30121599316440145,0.8031831865803936,0.6029677676956546,,
+gap,histGradientBoosting,"{""l2_regularization"": 0, ""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",0.19073658581269884,0.30168055077909955,0.8025756274956816,0.5990051075712226,,
+gap,"quantile [0.05, 0.95]","{""l2_regularization"": 0, ""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",,,,,0.7865560890440856,0.7047674583637416

@@ -1,0 +1,29 @@
+a,b,jaccard,only_count,flagged
+baseline,isolation_forest,0.3472803347280335,,
+baseline,lof,0.27238805970149255,,
+baseline,kmeans,0.36401673640167365,,
+baseline,dbscan,0.3723849372384937,,
+baseline,regression,0.24875621890547264,,
+baseline,regression_interval,0.16666666666666666,,
+isolation_forest,lof,0.4015151515151515,,
+isolation_forest,kmeans,0.8085106382978723,,
+isolation_forest,dbscan,0.6226415094339622,,
+isolation_forest,regression,0.14807692307692308,,
+isolation_forest,regression_interval,0.08357348703170028,,
+lof,kmeans,0.4318181818181818,,
+lof,dbscan,0.5528455284552846,,
+lof,regression,0.122040072859745,,
+lof,regression_interval,0.09418282548476455,,
+kmeans,dbscan,0.6448598130841121,,
+kmeans,regression,0.14476190476190476,,
+kmeans,regression_interval,0.08882521489971347,,
+dbscan,regression,0.13988657844990549,,
+dbscan,regression_interval,0.09770114942528736,,
+regression,regression_interval,0.2589703588143526,,
+baseline,(only this method),,61.0,239.0
+isolation_forest,(only this method),,0.0,83.0
+lof,(only this method),,21.0,102.0
+kmeans,(only this method),,0.0,87.0
+dbscan,(only this method),,0.0,89.0
+regression,(only this method),,262.0,514.0
+regression_interval,(only this method),,114.0,293.0

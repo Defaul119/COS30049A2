@@ -1,0 +1,18 @@
+{
+  "method": "robust-z baseline (A1 \u00a72.3)",
+  "score": "max |z| over F1-F4 when scorable",
+  "a1_threshold": 3.5,
+  "chosen": {
+    "refined": {
+      "threshold": 5.0,
+      "rule": "no threshold met the sanity rule; fewest addresses over the limit",
+      "differs_from_a1": true
+    },
+    "as_written": {
+      "threshold": 5.0,
+      "rule": "no threshold met the sanity rule; fewest addresses over the limit",
+      "differs_from_a1": true
+    }
+  },
+  "tuned_on": "tuning plants, seeds 40000, 40001, 40002, 40003, 40004"
+}

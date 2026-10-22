@@ -3,6 +3,22 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 23 October 2026
+
+- **DS1 pipeline run end to end** (transactions to evaluate). The selection rule recommends the
+  **robust-z baseline** (runner-up K-Means); `explorerMethod` stays unset until the team records it.
+- **The baseline flags far more than A1 expected.** At A1's |z| >= 3.5 it flags about 15% of
+  evaluation transactions (the plan expected about 2%), and no threshold in the sweep (2.5-5.0)
+  meets the 20%-per-address sanity rule, so the sweep fell back to |z| >= 5.0, the fewest addresses
+  over the limit (`reports/tables/tuning_baseline.csv`). This is CR-03 for the team: keep 5.0, or
+  accept that the sanity rule fails for a few addresses with very regular histories.
+- **Added the label check** (`explorer.cli label-check`): Isolation Forest, LOF, K-Means and DBSCAN
+  fitted without labels on a 10,000-row training sample of DS3 and DS4, scored against their labels.
+  One StandardScaler fitted on that sample feeds all four (DBSCAN's nearest-core scoring cannot sit
+  in a Pipeline); it never sees test rows.
+- **Added the reviewer sheet and score** (`reviewer-sheet`, `reviewer-score`). The key that says
+  which rows were flagged stays in `data/interim/` (git-ignored), because the repository is public.
+
 ## 22 October 2026
 
 - **Added a fine-tuned 3B Explorer Assistant (plan D-A2-4, §9).** The tutor, Arthur Hoang, agreed
