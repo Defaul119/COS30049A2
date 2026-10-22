@@ -50,7 +50,8 @@
     "maxTx": 1000,
     "targetAddresses": 5000,
     "minimumAddresses": 3000,
-    "workersPerSource": 4,
+    "workersPerSource": 8,
+    "_workersPerSource": "replies take a median 4.3 s (mempool.space throttles large pages), so 4 workers reached ~1 request/s; 8 stay under the 2 request starts/s that requestPauseSeconds allows",
     "idHexChars": 16,
     "progressEvery": 200
   },
@@ -240,6 +241,18 @@
     "_about": "The blind reviewer check (plan §11.1): top flagged plus random unflagged evaluation rows of the selected method, shuffled.",
     "flaggedRows": 20,
     "unflaggedRows": 20,
+    "seed": 30049
+  },
+
+  "ds7": {
+    "_about": "Explanation pairs for both Explorer Assistants (plan §6.7). DS1 transactions are what the Explorer shows, so DS1 addresses give more pairs each; DS2 fills the rest.",
+    "targetPairs": 10000,
+    "maxPairsPerAddress": 10,
+    "ds1PairsPerAddress": 40,
+    "unscoredPerAddress": 1,
+    "phrasings": 5,
+    "trainShare": 0.9,
+    "valShare": 0.05,
     "seed": 30049
   },
 

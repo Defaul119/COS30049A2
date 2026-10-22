@@ -25,6 +25,7 @@ Usage (from the repository root):
     python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
     python -m explorer.cli classify --dataset heist [--splits temporal,random,lofo]
+    python -m explorer.cli build-ds7              # DS7 explanation pairs, split by source address
     python -m explorer.cli label-check            # unsupervised scores against DS3/DS4 labels
     python -m explorer.cli reviewer-sheet         # 40 shuffled rows for the blind reviewer check
     python -m explorer.cli reviewer-score --ratings ratings_mkn.csv ratings_cdb.csv
@@ -201,6 +202,12 @@ def cmd_label_check(args: argparse.Namespace) -> int:
     return run_label_check()
 
 
+def cmd_build_ds7(args: argparse.Namespace) -> int:
+    from .ds7 import run_build_ds7
+
+    return run_build_ds7()
+
+
 def cmd_reviewer_sheet(args: argparse.Namespace) -> int:
     from .reviewer import run_reviewer_sheet
 
@@ -344,6 +351,8 @@ def build_parser() -> argparse.ArgumentParser:
     classify.add_argument("--splits", default="temporal,random,lofo", help="BitcoinHeist schemes, comma-separated")
     classify.add_argument("--force", action="store_true", help="redo results that are already saved")
     classify.set_defaults(func=cmd_classify)
+    steps.add_parser("build-ds7", help="DS7: explanation pairs for the Assistants (rebuild after DS2)").set_defaults(
+        func=cmd_build_ds7)
     steps.add_parser("reviewer-sheet", help="DS1: the blind sheet for the reviewer check, and its key").set_defaults(
         func=cmd_reviewer_sheet)
     reviewer_score = steps.add_parser("reviewer-score", help="DS1: reviewers' ratings against the flags; Cohen's kappa")

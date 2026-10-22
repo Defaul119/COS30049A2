@@ -119,7 +119,7 @@ they show the whole pipeline: tokenizer, pretraining, alignment, evaluation and 
 \label{sec:assistant3b}
 
 The tutor, Arthur Hoang, agreed to an extra model: a pretrained base model of about 3B parameters
-(for example Qwen2.5-3B or Llama-3.2-3B, chosen by its licence), fine-tuned by the team. It is added
+(Qwen2.5-3B base, revision \code{3aab1f19}, chosen on 23 October because it is not gated), fine-tuned by the team. It is added
 to the 152M Assistant and doesn't replace it.
 
 \textbf{Method.} QLoRA: the base weights are loaded in 4-bit and only low-rank adapters are

@@ -1,0 +1,2 @@
+model,prompts,number_faithfulness,limitation_line,banned_word_share,guardrail_pass,feature_coverage,rouge_l,seconds,source
+template,80,1.0,1.0,0.0,1.0,1.0,1.0,0.0,explorer.explain.template_explanation

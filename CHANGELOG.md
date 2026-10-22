@@ -5,6 +5,25 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 23 October 2026
 
+- **Assistant 3B base model: Qwen2.5-3B instead of Llama 3.2 3B** (user's decision). Qwen is not
+  gated, so no Hugging Face token is needed; the plan already named it as an option. Base model
+  `Qwen/Qwen2.5-3B` at revision `3aab1f1954e9cc14eb9509a215f9e5ca08227a9b`. Licence: Qwen Research
+  License (non-commercial, research or evaluation use; derivatives must ship the licence text, a
+  NOTICE line "Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) Alibaba
+  Cloud. All Rights Reserved.", and "Built with Qwen" in the documentation). **The team approved
+  Llama specifically, so it must be told.** The base (not Instruct) model is used so that its two
+  stages (DS6 chat, then DS7) mirror the 152M model's.
+- **Fine-tuning pipeline ready** (runs after pretraining and TxGPT): `explorer.cli build-ds7`
+  (DS7 pairs, five phrasings, split by address; DS1 only until DS2 exists), `explorer/assistant.py`
+  (prompt and guardrail), `lm.chat_subset` (DS6 subset as messages), `lm.qlora` (4-bit NF4, LoRA
+  r=16 on all projections, loss on replies only, resumable), `lm.eval_explain` (the plan's measures
+  for template, 152M and 3B). Smoke-tested on the CPU with a tiny random model of the same
+  architecture. GPU environment gained transformers 4.52.4, peft 0.15.2, bitsandbytes 0.48.1 and
+  accelerate 1.7.0, chosen so that no installed package changed under the running pretraining.
+- **DS2 crawl: 8 workers instead of 4.** Replies take a median 4.3 s (mempool.space throttles large
+  pages), so 4 workers reached only about 1 request/s; 8 stay under the 2 request starts/s the
+  pause allows. The data collected is unchanged.
+
 - **DS1 pipeline run end to end** (transactions to evaluate). The selection rule recommends the
   **robust-z baseline** (runner-up K-Means); `explorerMethod` stays unset until the team records it.
 - **The baseline flags far more than A1 expected.** At A1's |z| >= 3.5 it flags about 15% of

@@ -23,3 +23,9 @@ dependencies:
       - seaborn==0.13.2
       - joblib==1.4.2
       - pytest==8.3.5
+      # QLoRA fine-tuning of the Assistant 3B (lm/qlora.py). These versions keep tokenizers 0.21.1 and
+      # huggingface_hub 0.30.2 above; bitsandbytes 0.48 ships Windows CUDA wheels.
+      - transformers==4.52.4
+      - peft==0.15.2
+      - bitsandbytes==0.48.1
+      - accelerate==1.7.0

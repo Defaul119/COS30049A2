@@ -83,10 +83,12 @@ and evaluation with accuracy, precision, recall, F1 and similar metrics. The bri
    `lm/`, pretrained on DS5, chat-tuned on DS6, then taught on DS7 to explain flags behind a
    guardrail that falls back to the template text.
    **Added 22 Oct (tutor's OK confirmed, team approved, CR-06 amended):** a third, extra model,
-   **Llama 3.2 3B QLoRA-fine-tuned** on DS6 then DS7 (plan §9, `sec:assistant3b`). It is extra and
-   doesn't replace the from-scratch models; it runs after the 152M model and TxGPT, uses the same
-   DS7 splits, measures and guardrail, ships adapters only, and needs "Built with Llama"
-   attribution (Llama 3.2 Community License; gated on Hugging Face, so the user supplies an HF token).
+   **Qwen2.5-3B (base) QLoRA-fine-tuned** on DS6 then DS7 (plan §9, `sec:assistant3b`; `lm/qlora.py`,
+   `configs/qwen3b_*.json`). Changed from Llama 3.2 3B on 23 Oct at the user's request (not gated, no
+   HF token); the team must be told, since it approved Llama. It is extra and doesn't replace the
+   from-scratch models, runs after the 152M model and TxGPT, uses the same DS7 splits, measures
+   (`lm/eval_explain.py`) and guardrail (`explorer/assistant.py`), and ships adapters only. Licence:
+   Qwen Research License (non-commercial; ship its text and a NOTICE line; "Built with Qwen").
 5. **One repository, two environments**: `environment.yml` (CPU, for markers) and
    `environment-gpu.yml` (CUDA, only to retrain the language models).
 

@@ -1,0 +1,10 @@
+split,source,kind,pairs,groups
+train,DS1,flagged,320,21
+train,DS1,not_flagged,538,22
+train,DS1,unscored,25,25
+val,DS1,flagged,20,1
+val,DS1,not_flagged,19,1
+val,DS1,unscored,1,1
+test,DS1,flagged,34,2
+test,DS1,not_flagged,44,2
+test,DS1,unscored,2,2

@@ -1,81 +1,65 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 00:30 GMT+7)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 01:30 GMT+7)
 =====================================================================================
 
 USER PREFERENCES
 - Finish A2 as fast as possible at the highest quality; ignore the plan's calendar dates, keep its content and rules.
 - Commits: author Defaul119, NO Co-Authored-By / AI lines. Run `python -m pytest -q` (cos30049-a2 env) and check
-  its EXIT CODE before every commit (piping into tail hides failures). The user approved pushing on 22 Oct
-  (pushed up to c5c80ce); push again when they ask.
-- The user follows progress on the live tracker: https://claude.ai/artifact/NFVrJdEAcT2iLotZTx2J5e
-  (db docs: meta/now {text, updated}, meta/log {entries[{time,text}]}, jobs/<id> {order,name,value,total,unit,
-  status running|done|idle,note,updated}, steps/sNN {order,phase,title,detail,status done|running|next|waiting|
-  needs-you,who}). Writes need if_version; read back on version_mismatch. Step ids used: s01-s36 and s50 (3B pipeline); use s51+ for new steps.
+  its EXIT CODE before every commit. Push when the user asks (they asked on 23 Oct: push after each finished batch).
+- Do NOT update the tracker artifact (https://claude.ai/artifact/NFVrJdEAcT2iLotZTx2J5e) mid-task; only when the
+  current tasks are finished or the user asks. Its db: meta/now {text,updated}, meta/log {entries[{time,text}]},
+  jobs/<id>, steps/sNN (s01-s36, s50 used; s51+ for new). Writes need if_version.
+- Medium effort by default. Keep replies short; answer the user's questions first.
 
 ENVIRONMENT
-- Repo C:\Users\ADMIN\COS30049A2. Miniforge at C:\Users\ADMIN\miniforge3; envs cos30049-a2 (CPU) and
-  cos30049-a2-gpu (CUDA). Python: C:\Users\ADMIN\miniforge3\envs\<env>\python.exe
-- In cmd one-liners write `set "PYTHONUTF8=1"` (with quotes): `set PYTHONUTF8=1 && ...` stores "1 " and Python dies.
-- Long jobs run in their own cmd windows with stdout redirected to a log (a click in a console window's select
-  mode freezes a program that prints to it). Graceful stop: Ctrl+C in the window, or from a shell
-  `python -I <scratchpad>\send_ctrl_c.py <python pid>` (AttachConsole + GenerateConsoleCtrlEvent; the script is
-  20 lines, recreate it if the scratchpad is gone). Every job resumes with the same command.
+- Repo C:\Users\ADMIN\COS30049A2. Miniforge C:\Users\ADMIN\miniforge3; envs cos30049-a2 (CPU) and cos30049-a2-gpu
+  (CUDA; also transformers 4.52.4, peft 0.15.2, bitsandbytes 0.48.1, accelerate 1.7.0).
+- In cmd one-liners write `set "PYTHONUTF8=1"` (with quotes).
+- Long jobs run in their own cmd windows. Graceful stop: Ctrl+C in the window, or
+  `python -I <scratchpad>\send_ctrl_c.py <pid>` (AttachConsole + GenerateConsoleCtrlEvent(0,0); ~15 lines;
+  recreate if the scratchpad is gone). Every job resumes with the same command.
+- LaTeX: MiKTeX (user install) at %LOCALAPPDATA%\Programs\MiKTeX\miktex\bin\x64, packages auto-install.
+  docs/a1/main.tex and docs/plan/main.tex build with pdflatex (3 passes).
+- _context/ (brief, slides, A1 submission) is NOT on this PC and not on GitHub (it is git-ignored). Only
+  docs/a1/ (A1 LaTeX) arrived from the Mac on 23 Oct.
 
-RUNNING NOW (check with tasklist / the logs) - as of 2026-10-23 00:30 GMT+7
-- Pretraining 152M (window "PRETRAINING"): python -m lm.train --config configs/text_150m_pretrain.json
-  log runs\text-150m\console.log + log.jsonl. Step 610/7,630, loss 4.25, ~10.9k tok/s, ETA ~1 d 23 h.
-  GPU 88 C, fan 100%. Live view: Get-Content runs\text-150m\console.log -Wait -Tail 5
-- DS2 crawl: PAUSED (126 visited, 59 kept, target 5000). DS1 is done, so RESUME FIRST:
-  python -m explorer.cli corpus (cpu env; logs reports\logs\corpus.log). mempool.space only; do NOT probe
-  Blockstream (700 req/h per IP cap; each probe extends the block).
-- Nothing else runs. DS1 snapshot and DS3 classification windows can be closed.
+RUNNING NOW (check with tasklist / logs)
+- Pretraining 152M (window "PRETRAINING", PID 1552): python -m lm.train --config configs/text_150m_pretrain.json;
+  runs\text-150m\console.log. Step ~690/7,630 at 01:00 23 Oct, ~10.7k tok/s, ends about 00:00 Sun 25 Oct.
+- DS2 crawl (window "DS2 CRAWL"): python -m explorer.cli corpus (cpu env); reports\logs\corpus.log.
+  8 workers since 23 Oct (was 4; replies take ~4.3 s each). ~230 visited / ~100 kept at 01:00 23 Oct.
+  Minimum 3,000 kept (TxGPT can start), target 5,000. mempool.space only; never probe Blockstream.
 
-DONE (all committed; see git log)
-- Setup, DS4 BitcoinHeist (download, processing, classification incl. leave-one-family-out: DONE),
-  DS3 Elliptic recorded (CC BY-NC-ND 4.0: processed rows/models never committed or zipped), DS5 corpus (2B tokens).
-- Code + tests (109+ tests) for: snapshot (DS1, trimmed histories.json.gz ships; raw 0.4 GB stays local),
-  corpus (DS2), transactions, features (prototype port, parity-tested), split, inject, methods (checks),
-  baseline sweep, outliers (IF/LOF), clustering (K-Means/DBSCAN), regression, scores, evaluate (selection rule),
-  predict + explain (A1 JSON shapes), txgpt method, labelled + classify (DS3/DS4), lm/tx_tokens, lm/prepare_tx,
-  lm/tx_score, lm/tx_baselines, lm.train --seed + early stopping, configs/txgpt_{s,m,l}.json, cli `all --offline`.
-
-- DS1 snapshot COMPLETE (manifest: "complete; every automated check passed"); manifest.json + histories.json.gz
-  committed. DS3 Elliptic classification DONE (AF random forest val F1 0.968, test F1 0.815; tables in
-  reports/tables/elliptic_*.csv, metrics only).
+DONE (committed)
+- DS1 snapshot; DS3/DS4 classification; DS5 corpus; DS1 pipeline run end to end (23 Oct): baseline recommended
+  (runner-up K-Means). Baseline sweep: no threshold meets the 20% sanity rule; fell back to |z|>=5.0 (CR-03, team).
+- Label check (reports/tables/label_check.csv): unsupervised methods are BELOW chance on Elliptic (ROC-AUC
+  0.18-0.37) and ~0.41 on BitcoinHeist: "unusual" is not "labelled illicit" (evidence for the wording).
+- Reviewer sheet/score code (reviewer-sheet, reviewer-score); key in data/interim/reviewer/ (git-ignored).
+- Fine-tuning pipeline for the Assistant 3B = Qwen2.5-3B base (CHANGED from Llama on 23 Oct at the user's
+  request; the team must be told): explorer/ds7.py (build-ds7), explorer/assistant.py (prompt + guardrail),
+  lm/chat_subset.py, lm/qlora.py (+ configs/qwen3b_chat.json, qwen3b_explain.json), lm/eval_explain.py.
+  Smoke-tested on CPU. DS7 currently DS1-only (1,003 pairs); template control scores 1.0 on every measure.
 
 NEXT, IN ORDER
-1. Resume DS2 (corpus) - see RUNNING NOW.
-2. Run the DS1 pipeline: python -m explorer.cli all --offline is overkill (re-runs DS3/DS4 classification);
-   run in order: transactions, features, features --as-written, split, inject, baseline, outliers, clustering,
-   regression, scores, evaluate. Commit reports/tables + models (not Elliptic ones). That is M1/M2 for DS1.
-3. When DS2 reaches >= 3000 kept (target 5000): corpus writes ds2.parquet; python -m lm.prepare_tx; pause
-   pretraining (Ctrl+C), train TxGPT S/M/L x seeds 1-3 (python -m lm.train --config configs/txgpt_m.json --seed 1),
-   python -m lm.tx_baselines --model ..., python -m lm.tx_score --model <best> --plants, explorer.cli txgpt,
-   scores, evaluate; resume pretraining.
-4. Still to write: label-check (unsupervised methods vs DS3/DS4 labels), reviewer sheet/score, plots.py +
-   `figures` + notebooks/01_eda.ipynb, address profiles (DS1+DS2 K-Means), DS7 builder + chat/explain
-   fine-tunes + assistant guardrail (after pretraining), README (A2 outline, plan §12.3), DATA_CARD.md,
-   MODEL_CARD.md, LICENSES.md, CHANGELOG updates, docs/AI_USE_LOG.md updates, report (LaTeX, 3000 words).
-5. EXTRA MODEL, APPROVED 22 Oct (Arthur's OK confirmed; team accepted; CR-06 amended): Llama 3.2 3B QLoRA
-   Explorer Assistant, AFTER the 152M model's 3 stages and TxGPT (~30 Oct). Plan §9 sec:assistant3b; CLAUDE.md
-   decision 4. Pipeline (also tracker step s50):
-   a) user accepts Meta's licence on HF (meta-llama/Llama-3.2-3B-Instruct) + creates a read token (never commit it)
-   b) add transformers, peft, bitsandbytes, trl to environment-gpu.yml (check bitsandbytes works on Windows)
-   c) DS7 pairs (shared with 152M) + DS6 chat subset
-   d) QLoRA 4-bit NF4, LoRA r=16, loss on replies only: chat stage then DS7; record base revision hash
-   e) evaluate on the same DS7 test, same measures as the 152M table
-   f) behind explorer/assistant.py guardrail, served 4-bit (optional MLX on the user's Mac M5 16 GB)
-   g) LICENSES.md, MODEL_CARD.md, CHANGELOG, AI_USE_LOG, "Built with Llama"; ship adapters only
-6. After a choice is recorded by the team: set explorerMethod in settings.json from models/selection.json.
+1. When DS2 >= 3,000 kept (or 5,000): Ctrl+C the crawl and run it once more so it writes ds2.parquet; then
+   python -m lm.prepare_tx; pause pretraining (Ctrl+C); TxGPT S/M/L x seeds 1-3
+   (python -m lm.train --config configs/txgpt_m.json --seed 1); lm.tx_baselines; lm.tx_score --model <best>
+   --plants; explorer.cli txgpt, scores, evaluate; resume pretraining.
+2. Rebuild DS7 with DS2: python -m explorer.cli build-ds7.
+3. After pretraining: 152M chat stage (configs/text_150m_chat.json), write configs/text_150m_explain.json
+   (DS7 via lm.prepare_chat --source jsonl), explanation stage; lm.eval_explain --model text150m.
+4. Then the 3B (GPU env, GPU free): python -m lm.chat_subset; python -m lm.qlora --config configs/qwen3b_chat.json;
+   python -m lm.qlora --config configs/qwen3b_explain.json; python -m lm.eval_explain --model qwen3b
+   --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best. Base download ~6 GB.
+5. Still to write: plots.py + `figures` + notebooks/01_eda.ipynb (+ eda_tests.csv), address profiles,
+   README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text and NOTICE), AI_USE_LOG,
+   report (LaTeX, 3,000 words). Glossary pairs for DS7 (data/processed/ds7/glossary.jsonl) are team-written.
+6. Team: CR-03 (baseline threshold), the Qwen switch, explorerMethod in settings.json, reviewer ratings.
 
-RESULTS SO FAR (numbers are in reports/tables/*.csv; quote those, never these)
-- DS4 temporal split: every model near chance (2016 val year 4.1% positives vs 0.5% in 2017-18: drift).
-  Random split best RF F1 ~0.24. Leave-one-family-out recall 1-3%: models recognise families, not behaviour.
-- DS3 Elliptic LF: LR F1 ~0.73, KNN ~0.74, RF ~0.76; AF logistic ~0.60; AF RF test F1 ~0.815 (best).
+RESULTS SO FAR (quote reports/tables/*.csv, never these)
+- DS4 temporal near chance (drift); LOFO recall 1-3%. DS3 AF random forest test F1 ~0.815.
+- DS1: baseline mean plant recall ~0.66 (2 of 3 patterns >= 0.7), flag rate ~10% at |z|>=5.
 
 WAITING ON THE USER / TEAM
-- Tutor's name: Arthur Hoang (recorded in CLAUDE.md; goes on the report cover).
-- Pause Windows Update 2 weeks; GPU cooling; copy _context/ from the Mac; CR-06 incl. the 3B amendment is APPROVED (22 Oct); HF licence + token for Llama 3.2;
-  Cam Dan Bui's DS1 manifest review + manual tx check; optional Blockstream API key.
-- models/heist_best.joblib (276 MB RF) is git-ignored: over GitHub's 100 MB limit; pick a smaller final DS4
-  model or ship a link + SHA-256 when packaging.
-- A second Claude session (admin-17) did the Elliptic download only; it has ended.
+- Copy _context/ from the Mac (not via the public repo). Pause Windows Update; GPU cooling (87-88 C).
+- Cam Dan Bui's DS1 manifest review + manual tx check. models/heist_best.joblib (263 MB) is git-ignored.

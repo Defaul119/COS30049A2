@@ -1,0 +1,5 @@
+2026-10-23 00:50:42 INFO Step build-ds7 started: C:\Users\ADMIN\COS30049A2\explorer\cli.py build-ds7
+2026-10-23 00:50:44 INFO DS1: 1003 pairs from 28 addresses (method baseline)
+2026-10-23 00:50:44 INFO No C:\Users\ADMIN\COS30049A2\data\processed\corpus\ds2.parquet yet: DS7 holds DS1 pairs only; rebuild when the DS2 crawl has finished
+2026-10-23 00:50:44 INFO Wrote 1003 pairs to C:\Users\ADMIN\COS30049A2\data\processed\ds7: {'test': 80, 'train': 883, 'val': 40}
+2026-10-23 00:50:44 INFO Step build-ds7 finished in 3 s (exit 0)
