@@ -10,6 +10,9 @@ Usage (from the repository root):
     python -m explorer.cli snapshot --refetch     # clear the DS1 cache and start again from a new tip
     python -m explorer.cli corpus                 # DS2: crawl for TxGPT; run again to resume
     python -m explorer.cli external               # DS3 and DS4 (or --elliptic / --bitcoinheist alone)
+    python -m explorer.cli transactions           # DS1 clean table + cleaning log
+    python -m explorer.cli features [--as-written]  # F1-F8, z-scores, baseline flags
+    python -m explorer.cli split                  # fit / evaluation periods
 """
 from __future__ import annotations
 
@@ -63,6 +66,24 @@ def cmd_corpus(args: argparse.Namespace) -> int:
     return run_corpus(clients, params)
 
 
+def cmd_transactions(args: argparse.Namespace) -> int:
+    from .transactions import run_transactions
+
+    return run_transactions()
+
+
+def cmd_features(args: argparse.Namespace) -> int:
+    from .features import run_features
+
+    return run_features(as_written=args.as_written)
+
+
+def cmd_split(args: argparse.Namespace) -> int:
+    from .split import run_split
+
+    return run_split()
+
+
 def cmd_external(args: argparse.Namespace) -> int:
     from .external import run_external
 
@@ -85,6 +106,14 @@ def build_parser() -> argparse.ArgumentParser:
     corpus = steps.add_parser("corpus", help="DS2: crawl address histories for TxGPT (resumable)")
     corpus.add_argument("--target", type=int, help="addresses to keep (default: settings.json -> corpus)")
     corpus.set_defaults(func=cmd_corpus)
+
+    steps.add_parser("transactions", help="DS1: clean transaction table and cleaning log").set_defaults(
+        func=cmd_transactions)
+    features = steps.add_parser("features", help="DS1: F1-F8, z-scores, scorable flag, baseline flag")
+    features.add_argument("--as-written", action="store_true",
+                          help="the A1 method exactly as written, for the refinement ablation")
+    features.set_defaults(func=cmd_features)
+    steps.add_parser("split", help="DS1: fit and evaluation periods per address").set_defaults(func=cmd_split)
 
     external = steps.add_parser("external", help="DS3/DS4: download, unpack, record checksums and licences")
     external.add_argument("--elliptic", action="store_true", help="DS3, from Kaggle (needs an API token)")

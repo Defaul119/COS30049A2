@@ -25,13 +25,20 @@ Reads data/processed/esplora/transactions.csv; writes data/processed/esplora/fea
 """
 from __future__ import annotations
 
+import logging
 import math
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable
 
 import pandas as pd
 
 from .settings import SETTINGS
+from .snapshot import MANIFEST_PATH
+
+log = logging.getLogger(__name__)
+
+TRANSACTIONS_PATH = MANIFEST_PATH.parent / "transactions.csv"
 
 FEATURE_IDS = ("F1", "F2", "F3", "F4")
 SIZE_FEATURES = ("F1", "F4")
@@ -296,3 +303,18 @@ def build_features(transactions: pd.DataFrame, cfg: FeatureConfig) -> pd.DataFra
             row.update(extended_features(row))
             rows.append(row)
     return pd.DataFrame(rows)
+
+
+def run_features(as_written: bool = False, transactions_path: Path = TRANSACTIONS_PATH) -> int:
+    """Score every DS1 transaction and write features.csv (or features_as_written.csv)."""
+    cfg = FeatureConfig.as_written() if as_written else FeatureConfig.refined()
+    transactions = pd.read_csv(transactions_path)
+    frame = build_features(transactions, cfg)
+    out_path = transactions_path.parent / ("features_as_written.csv" if as_written else "features.csv")
+    frame.to_csv(out_path, index=False)
+    scorable = frame["scorable"]
+    log.info("%s method: %d transactions, %d scorable, %d flagged by the baseline (%.1f%% of scorable)",
+             "As-written" if as_written else "Refined", len(frame), scorable.sum(), frame["flag_baseline"].sum(),
+             100 * frame["flag_baseline"].sum() / max(scorable.sum(), 1))
+    log.info("Wrote %s", out_path)
+    return 0
