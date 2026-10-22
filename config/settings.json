@@ -120,6 +120,20 @@
     "flagTopFraction": 0.02
   },
 
+  "injection": {
+    "_about": "Synthetic plants (plan §6.4, A1 §2.3.2). Tuning seeds never score the reported results.",
+    "plantsPerPattern": 50,
+    "tuningSeeds": [40000, 40001, 40002, 40003, 40004],
+    "reportingSeeds": [30049, 30050, 30051, 30052, 30053],
+    "spikeMultiplier": 10,
+    "burstSize": 10,
+    "burstWindowHours": 24,
+    "dormantDaysMin": 60,
+    "dormantDaysMax": 120,
+    "recallTarget": 0.7,
+    "patternsMeetingTarget": 2
+  },
+
   "bitcoinheist": {
     "_about": "DS4 processing (plan §6.4). Features exclude address, year and day; year only defines splits.",
     "seed": 30049,
