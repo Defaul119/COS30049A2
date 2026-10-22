@@ -20,6 +20,7 @@ Usage (from the repository root):
     python -m explorer.cli regression             # naive, Ridge, random forest, gradient boosting, quantiles
     python -m explorer.cli txgpt                  # after lm.tx_score: choose raw or relative surprisal
     python -m explorer.cli evaluate               # every DS1 check and the recommended method
+    python -m explorer.cli predict address bc1q...  # or: predict what-if / heist / elliptic
     python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
     python -m explorer.cli classify --dataset heist [--splits temporal,random,lofo]
@@ -138,6 +139,34 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
     return run_evaluate()
 
 
+def cmd_predict(args: argparse.Namespace) -> int:
+    import json
+
+    import pandas as pd
+
+    from .predict import InsufficientHistory, Predictor, Unsupported, check_outputs
+
+    predictor = Predictor.load()
+    try:
+        if args.kind == "address":
+            result = predictor.score_address(args.address)
+        elif args.kind == "what-if":
+            result = predictor.score_what_if(args.address, args.amount, args.direction, args.time)
+        elif args.kind == "heist":
+            result = predictor.classify_heist(args.length, args.weight, args.count, args.looped, args.neighbors, args.income)
+        else:
+            result = predictor.classify_elliptic(pd.read_csv(args.rows))
+    except Unsupported as err:
+        log.info("Not in the snapshot: %s", err)
+        return 2
+    except InsufficientHistory as err:
+        print(json.dumps(err.body, indent=2))
+        return 3
+    check_outputs(result)
+    print(json.dumps(result, indent=2))
+    return 0
+
+
 def cmd_scores(args: argparse.Namespace) -> int:
     from .scores import run_scores
 
@@ -202,6 +231,21 @@ def build_parser() -> argparse.ArgumentParser:
     steps.add_parser("txgpt", help="DS1: TxGPT raw vs relative surprisal, threshold").set_defaults(func=cmd_txgpt)
     steps.add_parser("evaluate", help="DS1: injection, stability, agreement, sanity, ablation, selection").set_defaults(
         func=cmd_evaluate)
+    predict = steps.add_parser("predict", help="use the trained models: an address, a what-if, DS4 or DS3 rows")
+    kinds = predict.add_subparsers(dest="kind", required=True)
+    address = kinds.add_parser("address", help="timeline and every transaction's scores for a snapshot address")
+    address.add_argument("address")
+    what_if = kinds.add_parser("what-if", help="score a hypothetical next transaction for a snapshot address")
+    what_if.add_argument("--address", required=True)
+    what_if.add_argument("--amount", type=float, required=True, help="BTC")
+    what_if.add_argument("--direction", choices=["in", "out"], required=True)
+    what_if.add_argument("--time", required=True, help="ISO 8601 UTC, e.g. 2026-10-01T12:00Z")
+    heist = kinds.add_parser("heist", help="BitcoinHeist: does an address-day resemble the labelled ransomware rows?")
+    for name in ("length", "weight", "count", "looped", "neighbors", "income"):
+        heist.add_argument(f"--{name}", type=float, required=True)
+    elliptic = kinds.add_parser("elliptic", help="Elliptic: class probabilities for feature rows (CSV)")
+    elliptic.add_argument("--rows", required=True)
+    predict.set_defaults(func=cmd_predict)
     steps.add_parser("scores", help="DS1: every saved method's score and flag per transaction").set_defaults(
         func=cmd_scores)
 
