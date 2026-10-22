@@ -1,0 +1,37 @@
+{
+  "dataset": "DS3",
+  "name": "Elliptic Data Set (Kaggle)",
+  "page": "https://www.kaggle.com/datasets/ellipticco/elliptic-data-set",
+  "url": "https://www.kaggle.com/api/v1/datasets/download/ellipticco/elliptic-data-set",
+  "doi": null,
+  "citation": "Weber, M. et al. (2019) Anti-money laundering in Bitcoin: experimenting with graph convolutional networks for financial forensics. KDD '19 Workshop on Anomaly Detection in Finance.",
+  "licence": "CC BY-NC-ND 4.0 (https://creativecommons.org/licenses/by-nc-nd/4.0/); creator Claudio Bellei",
+  "licence_checked_on": "2026-10-22",
+  "retrieved_utc": "2026-10-22T13:56:37+00:00",
+  "archive": {
+    "file": "elliptic.zip",
+    "bytes": 153218318,
+    "sha256": "70ed052c52002392720615a03261039b62d1ad594f6081ad021cb174a8ad5717"
+  },
+  "files": [
+    {
+      "file": "elliptic_txs_features.csv",
+      "bytes": 689683771,
+      "sha256": "fd7f83573443c9e302e371d3f110e3b6224160f5d1ed8a287757936127800ff0",
+      "lines": 203769
+    },
+    {
+      "file": "elliptic_txs_classes.csv",
+      "bytes": 3305144,
+      "sha256": "93e2e7b2405c735ba752bf6ba06b947561deddd1f5a8fc91e46f6a4c0e439493",
+      "lines": 203770
+    },
+    {
+      "file": "elliptic_txs_edgelist.csv",
+      "bytes": 4470584,
+      "sha256": "a35053ba68a98e4382cae2ba65b9d9e36b23b6439e02dff084971b1b72a5156e",
+      "lines": 234356
+    }
+  ],
+  "location": "data/external/elliptic/ (git-ignored; rebuilt with python -m explorer.cli external --elliptic)"
+}

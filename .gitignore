@@ -31,3 +31,7 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .DS_Store
+
+# DS3 Elliptic is CC BY-NC-ND 4.0: no processed rows may be redistributed
+data/processed/elliptic/*
+!data/processed/elliptic/download.json
