@@ -13,6 +13,10 @@ Usage (from the repository root):
     python -m explorer.cli transactions           # DS1 clean table + cleaning log
     python -m explorer.cli features [--as-written]  # F1-F8, z-scores, baseline flags
     python -m explorer.cli split                  # fit / evaluation periods
+    python -m explorer.cli inject                 # synthetic plants and their recomputed features
+    python -m explorer.cli baseline --sweep       # robust-z threshold sweep
+    python -m explorer.cli outliers               # Isolation Forest and LOF
+    python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
     python -m explorer.cli classify --dataset heist [--splits temporal,random,lofo]
 """
@@ -88,6 +92,30 @@ def cmd_split(args: argparse.Namespace) -> int:
     return run_split()
 
 
+def cmd_inject(args: argparse.Namespace) -> int:
+    from .inject import run_inject
+
+    return run_inject()
+
+
+def cmd_baseline(args: argparse.Namespace) -> int:
+    from .baseline import run_baseline_sweep
+
+    return run_baseline_sweep()
+
+
+def cmd_outliers(args: argparse.Namespace) -> int:
+    from .outliers import run_outliers
+
+    return run_outliers()
+
+
+def cmd_scores(args: argparse.Namespace) -> int:
+    from .scores import run_scores
+
+    return run_scores()
+
+
 def cmd_process_external(args: argparse.Namespace) -> int:
     from .labelled import run_process_heist
 
@@ -132,6 +160,14 @@ def build_parser() -> argparse.ArgumentParser:
                           help="the A1 method exactly as written, for the refinement ablation")
     features.set_defaults(func=cmd_features)
     steps.add_parser("split", help="DS1: fit and evaluation periods per address").set_defaults(func=cmd_split)
+    steps.add_parser("inject", help="DS1: tuning and reporting plants, and their copies' features").set_defaults(
+        func=cmd_inject)
+    baseline = steps.add_parser("baseline", help="DS1: robust-z baseline threshold sweep")
+    baseline.add_argument("--sweep", action="store_true", help="accepted for the plan's command; the sweep always runs")
+    baseline.set_defaults(func=cmd_baseline)
+    steps.add_parser("outliers", help="DS1: Isolation Forest and LOF searches").set_defaults(func=cmd_outliers)
+    steps.add_parser("scores", help="DS1: every saved method's score and flag per transaction").set_defaults(
+        func=cmd_scores)
 
     steps.add_parser("process-external", help="DS4: labels, transforms and split schemes").set_defaults(
         func=cmd_process_external)
