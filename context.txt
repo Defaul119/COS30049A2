@@ -28,7 +28,8 @@ RUNNING NOW (check with tasklist / logs)
 - DS2 crawl (window "DS2 CRAWL"): python -m explorer.cli corpus (cpu env); reports\logs\corpus.log.
   8 workers since 23 Oct (measured no faster than 4: the server's bandwidth per IP is the limit). 421 visited /
   184 kept at 01:36 23 Oct; ~2.1 kept/min -> 3,000 about 23:30 23 Oct, 5,000 about 15:30 24 Oct.
-  Minimum 3,000 kept (TxGPT can start), target 5,000. mempool.space only; never probe Blockstream.
+  Minimum 3,000 kept (TxGPT can start), target 5,000. mempool.space only; never probe Blockstream. No paid
+  Blockstream key (user's decision, 23 Oct): DS2 finishes before the GPU is free anyway.
 
 DONE (committed)
 - DS1 snapshot; DS3/DS4 classification; DS5 corpus; DS1 pipeline run end to end (23 Oct): baseline recommended
