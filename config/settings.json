@@ -36,6 +36,32 @@
     "crossCheckAddresses": 2
   },
 
+  "external": {
+    "downloadTimeoutSeconds": 60,
+    "bitcoinheist": {
+      "id": "DS4",
+      "name": "BitcoinHeist Ransomware Address Dataset (UCI Machine Learning Repository, dataset 526)",
+      "page": "https://archive.ics.uci.edu/dataset/526/bitcoinheistransomwareaddressdataset",
+      "url": "https://archive.ics.uci.edu/static/public/526/bitcoinheistransomwareaddressdataset.zip",
+      "doi": "10.24432/C5BG8V",
+      "citation": "Akcora, C.G., Li, Y., Gel, Y.R. and Kantarcioglu, M. (2020) BitcoinHeist: topological data analysis for ransomware prediction on the Bitcoin blockchain. IJCAI-PRICAI 2020.",
+      "licence": "CC BY 4.0",
+      "licenceCheckedOn": "2026-10-20",
+      "expectedFiles": ["BitcoinHeistData.csv"]
+    },
+    "elliptic": {
+      "id": "DS3",
+      "name": "Elliptic Data Set (Kaggle)",
+      "page": "https://www.kaggle.com/datasets/ellipticco/elliptic-data-set",
+      "url": "https://www.kaggle.com/api/v1/datasets/download/ellipticco/elliptic-data-set",
+      "doi": null,
+      "citation": "Weber, M. et al. (2019) Anti-money laundering in Bitcoin: experimenting with graph convolutional networks for financial forensics. KDD '19 Workshop on Anomaly Detection in Finance.",
+      "licence": null,
+      "licenceCheckedOn": null,
+      "expectedFiles": ["elliptic_txs_features.csv", "elliptic_txs_classes.csv", "elliptic_txs_edgelist.csv"]
+    }
+  },
+
   "features": {
     "burstWindowDays": 7,
     "comparisonWindowDays": 30,

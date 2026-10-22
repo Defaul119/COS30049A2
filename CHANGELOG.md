@@ -22,3 +22,10 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
   kept move to `data/raw/esplora/skipped/` (git-ignored), so `data/raw/esplora/<address>/` holds
   exactly the DS1 addresses; every reply, including each candidate's `/address` reply and the
   sampled blocks, is cached, so a re-run is offline and an interrupted run resumes.
+- **settings.json → external** (new section): source page, download URL, DOI, citation, licence
+  and expected files for DS3 (Elliptic) and DS4 (BitcoinHeist), read by
+  `python -m explorer.cli external`. The Elliptic licence is left empty until it is read on the
+  Kaggle page on the day of download (plan §6.3).
+- **DS5 preparation is much faster than planned.** `lm.prepare_text` produced 265M training tokens
+  in about 3 minutes on this PC's connection, so the 2B-token corpus takes about 25 minutes, not
+  the 1.5–3 h the plan estimated. No decision changes.

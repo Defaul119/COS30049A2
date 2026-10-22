@@ -8,6 +8,7 @@ Usage (from the repository root):
     python -m explorer.cli snapshot               # DS1: select, fetch (or read the cache), verify, manifest
     python -m explorer.cli snapshot --rule-only   # write the selection rule into the manifest, fetch nothing
     python -m explorer.cli snapshot --refetch     # clear the DS1 cache and start again from a new tip
+    python -m explorer.cli external               # DS3 and DS4 (or --elliptic / --bitcoinheist alone)
 """
 from __future__ import annotations
 
@@ -50,6 +51,13 @@ def cmd_snapshot(args: argparse.Namespace) -> int:
     return run_snapshot(primary, fallback, SETTINGS["collection"], refetch=args.refetch, rule_only=args.rule_only)
 
 
+def cmd_external(args: argparse.Namespace) -> int:
+    from .external import run_external
+
+    keys = [k for k in ("elliptic", "bitcoinheist") if getattr(args, k)] or ["elliptic", "bitcoinheist"]
+    return run_external(keys)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="python -m explorer.cli", description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -61,6 +69,11 @@ def build_parser() -> argparse.ArgumentParser:
     snapshot.add_argument("--rule-only", action="store_true",
                           help="write the selection rule into the manifest and stop before any request")
     snapshot.set_defaults(func=cmd_snapshot)
+
+    external = steps.add_parser("external", help="DS3/DS4: download, unpack, record checksums and licences")
+    external.add_argument("--elliptic", action="store_true", help="DS3, from Kaggle (needs an API token)")
+    external.add_argument("--bitcoinheist", action="store_true", help="DS4, from UCI")
+    external.set_defaults(func=cmd_external)
     return parser
 
 

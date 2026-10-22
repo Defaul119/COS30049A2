@@ -1,0 +1,25 @@
+{
+  "dataset": "DS4",
+  "name": "BitcoinHeist Ransomware Address Dataset (UCI Machine Learning Repository, dataset 526)",
+  "page": "https://archive.ics.uci.edu/dataset/526/bitcoinheistransomwareaddressdataset",
+  "url": "https://archive.ics.uci.edu/static/public/526/bitcoinheistransomwareaddressdataset.zip",
+  "doi": "10.24432/C5BG8V",
+  "citation": "Akcora, C.G., Li, Y., Gel, Y.R. and Kantarcioglu, M. (2020) BitcoinHeist: topological data analysis for ransomware prediction on the Bitcoin blockchain. IJCAI-PRICAI 2020.",
+  "licence": "CC BY 4.0",
+  "licence_checked_on": "2026-10-20",
+  "retrieved_utc": "2026-10-22T12:47:22+00:00",
+  "archive": {
+    "file": "bitcoinheist.zip",
+    "bytes": 116104947,
+    "sha256": "cdf3bb34199367b08285cf7f9c1db06c4a262d353aa596055e97db77f4514e5b"
+  },
+  "files": [
+    {
+      "file": "BitcoinHeistData.csv",
+      "bytes": 235882597,
+      "sha256": "8ecc3744e444f35534a1bcabedc7a3b405fb5bbf41a752e51ee9a57987b8c438",
+      "lines": 2916698
+    }
+  ],
+  "location": "data/external/bitcoinheist/ (git-ignored; rebuilt with python -m explorer.cli external --bitcoinheist)"
+}
