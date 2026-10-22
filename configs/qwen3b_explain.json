@@ -2,8 +2,13 @@
   "name": "qwen3b-explain",
   "base_model": "Qwen/Qwen2.5-3B-Instruct",
   "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
-  "train_files": ["data/processed/ds7/train.jsonl", "data/qwen/chat_train.jsonl"],
-  "val_files": ["data/processed/ds7/val.jsonl"],
+  "train_files": [
+    "data/processed/ds7/train.jsonl",
+    "data/qwen/chat_train.jsonl"
+  ],
+  "val_files": [
+    "data/processed/ds7/val.jsonl"
+  ],
   "out_dir": "runs/qwen3b-explain",
   "init_adapter": null,
   "seq_len": 1024,
@@ -16,5 +21,8 @@
   "eval_every": 100,
   "eval_batches": 25,
   "ckpt_every_minutes": 20,
-  "seed": 1
+  "seed": 1,
+  "retention_val_files": [
+    "data/qwen/chat_retention.jsonl"
+  ]
 }

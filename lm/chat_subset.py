@@ -11,6 +11,10 @@ it learns DS7 ("forgetting"), not teach it to chat.
 A conversation without a system message gets a neutral one, so the model never falls back to the
 base template's built-in default.
 
+Writes data/qwen/chat_train.jsonl and chat_val.jsonl (every `val_every`-th of the first
+`max_conversations`), and chat_retention.jsonl: the next `retention` conversations, never trained on,
+whose loss lm.qlora logs to show that fine-tuning on DS7 did not degrade general chat.
+
 Usage:
     python -m lm.chat_subset                         # 2,500 conversations into data/qwen/
     python -m lm.chat_subset --max-conversations 2000 --out data/qwen_small
@@ -39,25 +43,32 @@ def main() -> None:
     p.add_argument("--max-conversations", type=int, default=2500,
                    help="2,500 x 2 epochs is about 3M tokens: enough to keep general chat, small next to DS7")
     p.add_argument("--val-every", type=int, default=100, help="every Nth conversation is held out (as lm.prepare_chat)")
+    p.add_argument("--retention", type=int, default=200,
+                   help="conversations right after the subset, never trained on: the retention check's held-out set")
     args = p.parse_args()
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    counts = {"train": 0, "val": 0, "skipped": 0}
-    with open(out / "chat_train.jsonl", "w", encoding="utf-8", newline="\n") as train, \
-            open(out / "chat_val.jsonl", "w", encoding="utf-8", newline="\n") as val:
+    counts = {"train": 0, "val": 0, "retention": 0, "skipped": 0}
+    files = {name: open(out / f"chat_{name}.jsonl", "w", encoding="utf-8", newline="\n")
+             for name in ("train", "val", "retention")}
+    try:
         for i, messages in enumerate(hub_conversations(Path(args.raw))):
-            if i >= args.max_conversations:
+            if i >= args.max_conversations + args.retention:
                 break
             if not any(m["role"] == "assistant" for m in messages):
                 counts["skipped"] += 1
                 continue
-            split = "val" if i % args.val_every == 0 else "train"
-            (val if split == "val" else train).write(json.dumps({"messages": with_system(list(messages))}, ensure_ascii=False) + "\n")
+            split = ("retention" if i >= args.max_conversations else "val" if i % args.val_every == 0 else "train")
+            files[split].write(json.dumps({"messages": with_system(list(messages))}, ensure_ascii=False) + "\n")
             counts[split] += 1
+    finally:
+        for f in files.values():
+            f.close()
     (out / "chat_meta.json").write_text(json.dumps({"source": "HuggingFaceTB/smol-smoltalk (Apache 2.0)",
                                                     "max_conversations": args.max_conversations,
-                                                    "val_every": args.val_every, **counts}, indent=2) + "\n", encoding="utf-8")
+                                                    "val_every": args.val_every, "retention_after": args.max_conversations,
+                                                    **counts}, indent=2) + "\n", encoding="utf-8")
     print(f"[chat-subset] {counts} -> {out}")
 
 

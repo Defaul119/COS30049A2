@@ -64,7 +64,10 @@ def text150m_generator(checkpoint: str, max_new_tokens: int) -> Generate:
 
     model = load_model(checkpoint)
     tok = load_tokenizer(str(Path(checkpoint).with_name("tokenizer.json")))
-    return lambda messages: reply(model, tok, messages, max_new_tokens=max_new_tokens, temperature=0)
+    # Greedy, and no repetition penalty: lm.chat's default penalty also counts the prompt's tokens, so it
+    # would push the model away from copying the prompt's numbers, which a faithful explanation must do.
+    return lambda messages: reply(model, tok, messages, max_new_tokens=max_new_tokens, temperature=0,
+                                  repetition_penalty=1.0)
 
 
 def qwen_generator(config: str, adapter: str, max_new_tokens: int) -> Generate:

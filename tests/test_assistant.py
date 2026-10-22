@@ -36,6 +36,19 @@ class GuardrailTests(unittest.TestCase):
                 self.assertEqual(SETTINGS["limitationLine"] in reply, flagged)
                 self.assertEqual(assistant.coverage(reply, facts), 1.0)
 
+    def test_flagged_without_a_standout_feature_never_reads_as_not_flagged(self):
+        # A pattern-level method (e.g. Isolation Forest) can flag a transaction whose features are each
+        # within usual; the explanation then lists the largest differences and must not deny the flag.
+        t = tx()
+        for f in t["features"]:
+            f["role"] = "within-usual"
+        for k in range(SETTINGS["ds7"]["phrasings"]):
+            reply = ds7.phrase(t, k)
+            self.assertTrue(assistant.check(reply, assistant.prompt_messages(t), assistant.summary(t))["passed"])
+            for denial in ("not flag", "enough to flag", "neither is unusual"):
+                self.assertNotIn(denial, reply.lower(), (k, reply))
+            self.assertIn(SETTINGS["limitationLine"], reply)
+
     def test_unscored_phrasings_pass(self):
         t = tx(scored=False)
         for k in range(SETTINGS["ds7"]["phrasings"]):

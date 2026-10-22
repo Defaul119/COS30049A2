@@ -1,6 +1,6 @@
 {
   "dataset": "DS7: Explorer explanation pairs (derived from DS1 and DS2 pipeline outputs)",
-  "built_utc": "2026-10-22T17:50:44+00:00",
+  "built_utc": "2026-10-22T19:26:44+00:00",
   "method": "baseline",
   "settings": {
     "_about": "Explanation pairs for both Explorer Assistants (plan \u00a76.7). DS1 transactions are what the Explorer shows, so DS1 addresses give more pairs each; DS2 fills the rest.",
@@ -21,17 +21,17 @@
     {
       "path": "data/processed/ds7/train.jsonl",
       "pairs": 883,
-      "sha256": "5e891f79dd5c455317217c03e2c1b7fdf07fdd7da8bf0272f0886842f8d29399"
+      "sha256": "db1b1f365fe1df3ad6a59967cab84659e4c7069385f129242f5d4d0bfafa7b73"
     },
     {
       "path": "data/processed/ds7/val.jsonl",
       "pairs": 40,
-      "sha256": "e5ff019857050037a15ad74dd16f2299a6b94c0821320fb48679a99a5ae69898"
+      "sha256": "fbd7522482ac605f3f2087761b345d4696a7bdde550b53bd154a9d9240173b4b"
     },
     {
       "path": "data/processed/ds7/test.jsonl",
       "pairs": 80,
-      "sha256": "d0c33b45d2618b94468cfe8c9d7da3bc0dd99656b30c7b353dae05bf6afa2bbf"
+      "sha256": "45cf347e8a3284443402691112031f46b73a8504a936bd01d87e30bbd78b9fbd"
     }
   ]
 }

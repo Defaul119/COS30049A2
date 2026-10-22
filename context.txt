@@ -1,14 +1,17 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 01:30 GMT+7)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 02:35 GMT+7)
 =====================================================================================
 
 USER PREFERENCES
 - Finish A2 as fast as possible at the highest quality; ignore the plan's calendar dates, keep its content and rules.
 - Commits: author Defaul119, NO Co-Authored-By / AI lines. Run `python -m pytest -q` (cos30049-a2 env) and check
-  its EXIT CODE before every commit. Push when the user asks (they asked on 23 Oct: push after each finished batch).
+  its EXIT CODE before every commit. Push after each finished batch (the user asked, 23 Oct).
 - Do NOT update the tracker artifact (https://claude.ai/artifact/NFVrJdEAcT2iLotZTx2J5e) mid-task; only when the
   current tasks are finished or the user asks. Its db: meta/now {text,updated}, meta/log {entries[{time,text}]},
-  jobs/<id>, steps/sNN (s01-s36, s50 used; s51+ for new). Writes need if_version.
-- Medium effort by default. Keep replies short; answer the user's questions first.
+  jobs/<id>, steps/sNN (s01-s37, s50-s56 used; s57+ for new). Writes need if_version.
+- Keep replies short; answer the user's questions first. Since 23 Oct 02:20 the user wants a proof-checking pass:
+  every claim checked against the data and the rubric before new features.
+- Shell: Git Bash heredocs mangle backslash escapes in Python source (\n became a real newline twice on 23 Oct).
+  Write Python to a file with the Write tool, or use Edit, whenever the code contains backslashes.
 
 ENVIRONMENT
 - Repo C:\Users\ADMIN\COS30049A2. Miniforge C:\Users\ADMIN\miniforge3; envs cos30049-a2 (CPU) and cos30049-a2-gpu
@@ -19,51 +22,71 @@ ENVIRONMENT
   recreate if the scratchpad is gone). Every job resumes with the same command.
 - LaTeX: MiKTeX (user install) at %LOCALAPPDATA%\Programs\MiKTeX\miktex\bin\x64, packages auto-install.
   docs/a1/main.tex and docs/plan/main.tex build with pdflatex (3 passes).
+- Jupyter: a system Python 3.12 "python3" kernel shadows the env's. Execute notebooks with
+  --ExecutePreprocessor.kernel_name=cos30049-a2 (registered 23 Oct), then reset the notebook's kernelspec to python3.
 - The A2 brief is in docs/brief/ (PDF + .txt); docs/a1/ holds the A1 LaTeX. The rest of _context/ (slides,
   A1 submission, notes) is still not on this PC (git-ignored; copy by USB/OneDrive, not the public repo).
 
 RUNNING NOW (check with tasklist / logs)
 - Pretraining 152M (window "PRETRAINING", PID 1552): python -m lm.train --config configs/text_150m_pretrain.json;
-  runs\text-150m\console.log. Step 789/7,630 at 01:36 23 Oct, ~11.2k tok/s, ends about 21:30 Sat 24 Oct.
-- DS2 crawl (window "DS2 CRAWL"): python -m explorer.cli corpus (cpu env); reports\logs\corpus.log.
-  8 workers since 23 Oct (measured no faster than 4: the server's bandwidth per IP is the limit). 421 visited /
-  184 kept at 01:36 23 Oct; ~2.1 kept/min -> 3,000 about 23:30 23 Oct, 5,000 about 15:30 24 Oct.
-  Minimum 3,000 kept (TxGPT can start), target 5,000. mempool.space only; never probe Blockstream. No paid
-  Blockstream key (user's decision, 23 Oct): DS2 finishes before the GPU is free anyway.
+  runs\text-150m\console.log. Step ~900/7,630 at 02:20 23 Oct, ~11.4k tok/s, ends about 21:00 Sat 24 Oct.
+- DS2 crawl (window "DS2 CRAWL"): python -m explorer.cli corpus (cpu env); reports\logs\corpus.log. Target 5,000
+  (minimum 3,000). ~2 kept/min: 3,000 about midnight 23-24 Oct, 5,000 about Sat 24 Oct afternoon. 8 workers are no
+  faster than 4 (mempool.space's bandwidth per IP is the limit). mempool.space only; never probe Blockstream;
+  no paid Blockstream key (user's decision).
+
+TRAINING SPEED (checked 23 Oct 02:20)
+- Software is near the practical limit: SDPA (flash) attention, fused AdamW, bf16 autocast, TF32, pinned memory;
+  MFU ~49% on the RTX 3060.
+- The GPU is THERMALLY THROTTLED: "SW Thermal Slowdown" active (4.7 h of it since boot), SM clock ~1,867 MHz of 2,130,
+  85 C, fan 100%; power limit now reads 153 W (was 170 W). Better airflow (side panel off, desk fan, clean filters)
+  or an Afterburner undervolt could give up to ~10% (~4 h of the remaining pretraining). User's call; an unstable
+  undervolt crash only loses work since the last checkpoint (30 min) and the run resumes.
+- torch.compile: possible after all. triton-windows 3.3.1.post21 matches torch 2.7.1 (pip dry-run: installs cleanly).
+  Typically 10-25% on small GPTs. Testing needs pretraining paused ~15 min (both cannot fit in 12 GB); then resume
+  with "compile": true. Not tried; user's call. If tried: bench first, keep the old setting if it fails.
+- GPU queue after pretraining (~13 h, done about Sun 25 Oct midday; M2 is Thu 29 Oct, so no need to pause
+  pretraining): TxGPT 9 runs ~2.5 h -> 152M chat ~2.4 h (100M tokens) -> 152M DS7 stage ~0.5 h -> Qwen ~6 h
+  (10.5M tokens at an estimated ~500 tok/s; run `--bench` first) -> evaluations ~1.5 h.
 
 DONE (committed)
-- DS1 snapshot; DS3/DS4 classification; DS5 corpus; DS1 pipeline run end to end (23 Oct): baseline recommended
-  (runner-up K-Means). Baseline sweep: no threshold meets the 20% sanity rule; fell back to |z|>=5.0 (CR-03, team).
-- Label check (reports/tables/label_check.csv): unsupervised methods are BELOW chance on Elliptic (ROC-AUC
-  0.18-0.37) and ~0.41 on BitcoinHeist: "unusual" is not "labelled illicit" (evidence for the wording).
-- Reviewer sheet/score code (reviewer-sheet, reviewer-score); key in data/interim/reviewer/ (git-ignored).
-- Fine-tuning pipeline for the Assistant 3B = Qwen2.5-3B-Instruct, one mixed stage DS7 + 2,500 DS6 conversations
-  (CHANGED from Llama, then from the base model, on 23 Oct at the user's request; the team must be told): explorer/ds7.py (build-ds7), explorer/assistant.py (prompt + guardrail),
-  lm/chat_subset.py, lm/qlora.py (+ configs/qwen3b_explain.json), lm/eval_explain.py.
-  Smoke-tested on CPU. DS7 currently DS1-only (1,003 pairs); template control scores 1.0 on every measure.
+- DS1 snapshot; DS3/DS4 classification; DS5 corpus; DS1 pipeline end to end: baseline recommended (runner-up
+  K-Means; regression has the highest mean recall but stability 0.61 < 0.7). Baseline sweep: no threshold meets the
+  20% sanity rule; fell back to |z| >= 5.0 (CR-03, team).
+- Label check: unsupervised methods are BELOW chance against Elliptic's labels and below chance on BitcoinHeist
+  (PR-AUC / prevalence 0.57-0.80), supervised RF 10-12x: "unusual" is not "labelled illicit".
+- Reviewer sheet/score code; key in data/interim/reviewer/ (git-ignored).
+- Assistant pipeline: explorer/ds7.py (build-ds7), explorer/assistant.py (prompt, guardrail, explain cascade
+  152M -> Qwen -> template), lm/chat_subset.py (2,500 DS6 train + 25 val + 200 held-out retention conversations),
+  lm/qlora.py (Qwen2.5-3B-Instruct; --bench, --smoke, retention loss), configs/qwen3b_explain.json,
+  lm/eval_explain.py. Qwen weights cached. DS7 is DS1-only (1,003 pairs) until DS2 exists.
+- Figures (17 PDFs, explorer/plots.py, `figures`), reports/tables/eda_tests.csv, notebooks/01_eda.ipynb.
+- Proof-check fixes (23 Oct 02:20-02:35): 152M greedy decoding no longer applies the repetition penalty to the prompt
+  (it would have hurt number faithfulness); DS7 fallback intros no longer contradict a flag; Qwen trainer ETA after
+  resume; three notebook notes corrected (selection reasoning, burst claim, gap buckets).
 
 NEXT, IN ORDER
-1. When DS2 >= 3,000 kept (or 5,000): Ctrl+C the crawl and run it once more so it writes ds2.parquet; then
-   python -m lm.prepare_tx; pause pretraining (Ctrl+C); TxGPT S/M/L x seeds 1-3
-   (python -m lm.train --config configs/txgpt_m.json --seed 1); lm.tx_baselines; lm.tx_score --model <best>
-   --plants; explorer.cli txgpt, scores, evaluate; resume pretraining.
-2. Rebuild DS7 with DS2: python -m explorer.cli build-ds7.
-3. After pretraining: 152M chat stage (configs/text_150m_chat.json), write configs/text_150m_explain.json
-   (DS7 via lm.prepare_chat --source jsonl), explanation stage; lm.eval_explain --model text150m.
-4. Then the 3B (GPU env, GPU free; Instruct weights in the HF cache; data/qwen/ = 2,500 DS6 conversations):
-   python -m lm.qlora --config configs/qwen3b_explain.json  (~10.5M tokens, est. 5-6 h; check tok/s and
-   memory on the first 20 steps), then python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json
-   --adapter runs/qwen3b-explain/adapter_best. Roles: 152M explains DS1 transactions only; Qwen is the chatbot
-   and the 2nd writer (explain cascade 152M -> Qwen -> template, each through the code guardrail).
-5. Still to write (figures + notebooks/01_eda.ipynb DONE 23 Oct; add the DS2-vs-DS1 figure once DS2 exists): address profiles,
-   README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text and NOTICE), AI_USE_LOG,
-   report (LaTeX, 3,000 words). Glossary pairs for DS7 (data/processed/ds7/glossary.jsonl) are team-written.
-6. Team: CR-03 (baseline threshold), the Qwen switch, explorerMethod in settings.json, reviewer ratings.
+1. When DS2 reaches 5,000 (or at least 3,000 when pretraining ends): Ctrl+C the crawl and run it once more so it
+   writes ds2.parquet; python -m lm.prepare_tx; then, once pretraining has finished, TxGPT S/M/L x seeds 1-3
+   (python -m lm.train --config configs/txgpt_m.json --seed 1); lm.tx_baselines; lm.tx_score --model <best> --plants;
+   explorer.cli txgpt, scores, evaluate.
+2. Rebuild DS7 with DS2: python -m explorer.cli build-ds7. Add the DS2-vs-DS1 figure.
+3. 152M chat stage (configs/text_150m_chat.json; build data/chat with lm.prepare_chat first, CPU), write
+   configs/text_150m_explain.json (DS7 via lm.prepare_chat --source jsonl), explanation stage;
+   lm.eval_explain --model text150m.
+4. Qwen: python -m lm.qlora --config configs/qwen3b_explain.json --bench, then without --bench;
+   python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best.
+5. Still to write: address profiles, README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text
+   and NOTICE), report (LaTeX, 3,000 words). DS7 glossary pairs (data/processed/ds7/glossary.jsonl) are team-written.
+6. Team: CR-03 (baseline threshold), the Qwen switch, explorerMethod in settings.json, reviewer ratings, review of the
+   notebook's notes.
 
 RESULTS SO FAR (quote reports/tables/*.csv, never these)
-- DS4 temporal near chance (drift); LOFO recall 1-3%. DS3 AF random forest test F1 ~0.815.
-- DS1: baseline mean plant recall ~0.66 (2 of 3 patterns >= 0.7), flag rate ~10% at |z|>=5.
+- DS4 temporal near chance (drift); held-out families: recall 1-3% except logistic regression, whose ~48% comes with a
+  ~49% false-positive rate. DS3 AF random forest test F1 ~0.815; F1 ~0.90 on steps 35-42, ~0.05 on 43-49.
+- DS1: baseline mean plant recall ~0.66 (2 of 3 patterns >= 0.7), flag rate ~10% at |z| >= 5.
 
 WAITING ON THE USER / TEAM
-- Copy _context/ from the Mac (not via the public repo). Windows Update paused 1 month (23 Oct); sleep/hibernate off. GPU 86 C, fan 100%, 149 of 170 W.
+- Copy _context/ from the Mac (not via the public repo). Windows Update paused 1 month (23 Oct); sleep/hibernate off.
+- Decide: GPU cooling/undervolt; whether to try torch.compile (pauses pretraining ~15 min).
 - Cam Dan Bui's DS1 manifest review + manual tx check. models/heist_best.joblib (263 MB) is git-ignored.

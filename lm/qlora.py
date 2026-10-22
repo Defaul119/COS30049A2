@@ -17,6 +17,7 @@ and TxGPT have priority; plan §9 "When").
 
 Usage (cos30049-a2-gpu environment):
     python -m lm.qlora --config configs/qwen3b_explain.json
+    python -m lm.qlora --config configs/qwen3b_explain.json --bench   # 5 steps on the longest batches: speed, memory
     python -m lm.qlora --config configs/qwen3b_explain.json --smoke   # tiny random model, CPU, a few steps
 
 Files written to the run folder (out_dir):
@@ -25,6 +26,10 @@ Files written to the run folder (out_dir):
     state.pt           optimizer, step and data order, for resuming
     log.jsonl          one line per step and per evaluation
     meta.json          base model and revision, data files with SHA-256, counts, speed and memory
+
+`retention_val_files` (optional) are general-chat conversations held out from training. Their loss is
+logged at every evaluation next to the main validation loss, as evidence that fine-tuning on DS7 did
+not degrade the model's general chat; the best adapter is still chosen on `val_files` only.
 """
 from __future__ import annotations
 
@@ -59,6 +64,7 @@ DEFAULTS: dict[str, Any] = {
     "eval_batches": 40,
     "ckpt_every_minutes": 20,
     "load_in_4bit": True,
+    "retention_val_files": [],   # general-chat conversations whose loss is only logged (see the module docstring)
     "lora": {"r": 16, "alpha": 32, "dropout": 0.05,
              "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]},
 }
@@ -210,6 +216,32 @@ def evaluate(model, examples: list, val_batches: list[list[int]], pad_id: int, d
     return total / max(count, 1)
 
 
+def bench(model, optimizer, params: list, examples: list, cfg: dict[str, Any], pad_id: int, device: torch.device,
+          steps: int) -> None:
+    """Optimizer steps on the longest examples first, so an out-of-memory error shows in minutes, not hours.
+
+    Prints tokens per second and peak GPU memory; nothing is saved. The longest batches are the worst
+    case for memory, so real training (shorter batches on average) runs a little faster.
+    """
+    longest = sorted(range(len(examples)), key=lambda i: -len(examples[i][0]))
+    micro = [longest[j:j + cfg["micro_batch"]] for j in range(0, len(longest), cfg["micro_batch"])]
+    needed = steps * cfg["grad_accum"]
+    micro = (micro * (needed // max(len(micro), 1) + 1))[:needed]
+    tokens, started = 0, time.time()
+    for s in range(steps):
+        optimizer.zero_grad(set_to_none=True)
+        for idx in micro[s * cfg["grad_accum"]:(s + 1) * cfg["grad_accum"]]:
+            batch = {k: v.to(device) for k, v in collate(examples, idx, pad_id).items()}
+            (model(**batch).loss / cfg["grad_accum"]).backward()
+            tokens += int(batch["attention_mask"].sum())
+        torch.nn.utils.clip_grad_norm_(params, cfg["grad_clip"])
+        optimizer.step()
+        memory = torch.cuda.max_memory_allocated() / 2 ** 30 if device.type == "cuda" else 0.0
+        print(f"[bench] step {s + 1}/{steps}: {tokens / (time.time() - started):,.0f} tok/s, peak memory {memory:.1f} GB",
+              flush=True)
+    print("[bench] done; nothing saved. If peak memory is near the GPU's limit, lower micro_batch and raise grad_accum.")
+
+
 def sha256(path: str) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
@@ -218,6 +250,8 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--config", required=True)
     p.add_argument("--smoke", action="store_true", help="tiny random model on the CPU for a few steps (tests the code path)")
+    p.add_argument("--bench", type=int, nargs="?", const=5, metavar="STEPS",
+                   help="run STEPS optimizer steps on the longest batches, print speed and peak memory, save nothing")
     args = p.parse_args()
     cfg = load_config(args.config)
     if args.smoke:
@@ -235,12 +269,14 @@ def main() -> None:
         train_conv, val_conv = train_conv[:16], val_conv[:8]
     train, train_stats = encode_all(tok, train_conv, cfg["seq_len"])
     val, val_stats = encode_all(tok, val_conv, cfg["seq_len"])
-    print(f"[qlora] train {train_stats}\n[qlora] val {val_stats}", flush=True)
+    retention, retention_stats = encode_all(tok, read_conversations(cfg["retention_val_files"]), cfg["seq_len"])
+    print(f"[qlora] train {train_stats}\n[qlora] val {val_stats}\n[qlora] retention {retention_stats}", flush=True)
 
     rng = random.Random(cfg["seed"])
     steps_per_epoch = math.ceil(math.ceil(len(train) / cfg["micro_batch"]) / cfg["grad_accum"])
     max_steps = cfg["max_steps"] or cfg["epochs"] * steps_per_epoch
     val_batches = batches(val, cfg["micro_batch"], random.Random(cfg["seed"]))[: cfg["eval_batches"]]
+    retention_batches = batches(retention, cfg["micro_batch"], random.Random(cfg["seed"]))[: cfg["eval_batches"]]
 
     model = load_model(cfg, args.smoke)
     model.train()
@@ -249,6 +285,10 @@ def main() -> None:
     n_trainable = sum(q.numel() for q in params)
     print(f"[qlora] {cfg['base_model']} @ {cfg['revision']}: {n_trainable:,} trainable parameters; "
           f"{max_steps} steps of {cfg['micro_batch']}x{cfg['grad_accum']} sequences", flush=True)
+
+    if args.bench:
+        bench(model, optimizer, params, train, cfg, tok.pad_token_id, device, args.bench)
+        return
 
     # Resume: the adapter weights, optimizer, step and the epoch's batch order.
     step, epoch, cursor, best = 0, 0, 0, float("inf")
@@ -273,9 +313,11 @@ def main() -> None:
                          "best": best, "rng": rng.getstate(), "epoch_batches": epoch_batches}, state_path)
 
     meta = {"config": cfg, "smoke": args.smoke, "trainable_parameters": n_trainable, "train": train_stats,
-            "val": val_stats, "data": [{"path": f, "sha256": sha256(f)} for f in cfg["train_files"] + cfg["val_files"]]}
+            "val": val_stats, "retention": retention_stats,
+            "data": [{"path": f, "sha256": sha256(f)}
+                     for f in cfg["train_files"] + cfg["val_files"] + cfg["retention_val_files"]]}
     log = open(out / "log.jsonl", "a", encoding="utf-8")
-    started, last_ckpt, tokens_seen = time.time(), time.time(), 0
+    started, last_ckpt, tokens_seen, first_step = time.time(), time.time(), 0, step
     try:
         while step < max_steps:
             optimizer.zero_grad(set_to_none=True)
@@ -300,14 +342,19 @@ def main() -> None:
             rate = tokens_seen / max(elapsed, 1e-9)
             memory = torch.cuda.max_memory_allocated() / 2 ** 30 if device.type == "cuda" else 0.0
             print(f"[qlora] step {step:,}/{max_steps:,} | loss {loss_sum:.4f} | lr {lr:.2e} | grad {grad:.2f} | "
-                  f"{rate:,.0f} tok/s | {memory:.1f} GB | ETA {fmt_duration((max_steps - step) * elapsed / max(step, 1))}",
+                  f"{rate:,.0f} tok/s | {memory:.1f} GB | "
+                  f"ETA {fmt_duration((max_steps - step) * elapsed / max(step - first_step, 1))}",
                   flush=True)
             log.write(json.dumps({"step": step, "loss": loss_sum, "lr": lr, "grad_norm": grad, "tok_per_s": rate,
                                   "epoch": epoch, "time": time.time()}) + "\n")
             if step % cfg["eval_every"] == 0 or step == max_steps:
                 val_loss = evaluate(model, val, val_batches, tok.pad_token_id, device)
-                print(f"[qlora] validation loss {val_loss:.4f} (best {min(best, val_loss):.4f})", flush=True)
-                log.write(json.dumps({"step": step, "val_loss": val_loss, "time": time.time()}) + "\n")
+                record = {"step": step, "val_loss": val_loss, "time": time.time()}
+                if retention_batches:
+                    record["retention_loss"] = evaluate(model, retention, retention_batches, tok.pad_token_id, device)
+                print(f"[qlora] validation loss {val_loss:.4f} (best {min(best, val_loss):.4f})"
+                      + (f"; retention loss {record['retention_loss']:.4f}" if retention_batches else ""), flush=True)
+                log.write(json.dumps(record) + "\n")
                 if val_loss < best:
                     best = val_loss
                     save("adapter_best")

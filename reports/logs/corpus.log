@@ -1020,3 +1020,4 @@
 2026-10-23 01:44:15 INFO Block 972517: 4 pages read, 190 new candidates (pool 49260)
 2026-10-23 01:44:15 INFO Pool 47727 candidates after removing 1533 addresses from DS1's candidate pool
 2026-10-23 01:44:15 INFO Resuming with 438 visited, 190 kept; target 5000
+2026-10-23 02:22:54 INFO Visited 600 candidates, kept 252 (https://mempool.space/api: 995 requests, 3 x 429)

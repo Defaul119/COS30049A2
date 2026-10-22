@@ -126,7 +126,8 @@ and evaluation with accuracy, precision, recall, F1 and similar metrics. The bri
 - Run from an **Anaconda Prompt** in the repository root. `set PYTHONUTF8=1` first.
 - `conda activate cos30049-a2-gpu` for anything that trains a language model;
   `cos30049-a2` (CPU) to check what markers will see.
-- `torch.compile` stays off (no Triton on Windows). Use `pathlib` for every path.
+- `torch.compile` is off. triton-windows (3.3.1 for torch 2.7.1) now makes it possible, but it is untested
+  here and switching mid-run is the user's decision (see context.txt, TRAINING SPEED). Use `pathlib` for every path.
 - Text pretraining takes about 60–80 h. It is **gated**: run `--bench` first, and if 2B tokens
   would take over 72 h, set `total_tokens` = 60 h × measured tokens/s (floor 1B). Pause Windows
   Update, turn off sleep, and keep the GPU free while it trains. Ctrl+C saves; the same command

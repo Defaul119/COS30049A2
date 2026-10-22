@@ -71,9 +71,12 @@ INTROS = [
     ("What stands out compared with this address's own history:", "Largest differences from this address's usual activity:"),
     ("Compared with this address's own past:", "The biggest differences from what this address usually does:"),
     ("Why:", "Closest to standing out:"),
-    ("Here is what differs from the address's usual pattern:", "None of these is far from usual, but these differ most:"),
-    ("The reasons, strongest first:", "The two largest differences, though neither is unusual enough to flag:"),
+    ("Here is what differs from the address's usual pattern:", "No single feature is far from usual; these differ most:"),
+    ("The reasons, strongest first:", "The two largest differences from usual:"),
 ]
+# The second intro of each pair is used when no feature reaches the contributing level. A method that
+# scores the whole pattern (e.g. Isolation Forest) can still flag such a transaction, so these intros
+# never say whether it was flagged; the opener does.
 UNSCORED = [
     "This transaction is not scored: the address does not yet have enough earlier history to compare it with.",
     "Not scored yet. The address has too little earlier history to say what is usual for it.",

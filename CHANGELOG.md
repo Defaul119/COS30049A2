@@ -5,6 +5,22 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 23 October 2026
 
+- **Proof-check pass (user's request; 23 Oct 02:20-02:35).** Fixed: (1) the 152M model's greedy
+  decoding in `lm.eval_explain` used lm.chat's repetition penalty, which also counts the prompt's tokens
+  and so pushes the model away from copying the prompt's numbers; it is now 1.0 for explanations.
+  (2) Two DS7 phrasings said "neither is unusual enough to flag" when no single feature stands out, which
+  contradicts a flag from a pattern-level method; the intros are now neutral (a regression test fails on
+  the old wording). (3) `lm.qlora`'s ETA was wrong after a resume. Added: `lm.qlora --bench` (longest
+  batches first, so an out-of-memory error shows in minutes) and a retention loss on 200 held-out DS6
+  conversations (`chat_retention.jsonl`), evidence that DS7 fine-tuning did not degrade general chat.
+  Three notebook notes corrected: the baseline is chosen because regression fails the stability test
+  (0.61 < 0.7), not by a tie-break; regression is the exception to "bursts are hardest"; TxGPT's gap
+  buckets are fixed in lm/tx_tokens.py, not set from the quantiles.
+- **Training speed checked.** The software is near the practical limit (flash attention, fused AdamW,
+  bf16, TF32; ~49% MFU). The GPU is thermally throttled (about 1,870 of 2,130 MHz at 85 C), so better
+  cooling is the main lever. torch.compile is possible after all (triton-windows 3.3.1 matches torch
+  2.7.1), contrary to CLAUDE.md's "no Triton on Windows"; not tried, since testing it pauses pretraining.
+  The GPU queue after pretraining is about 13 h, so TxGPT waits for pretraining instead of pausing it.
 - **Figures and the EDA notebook.** `python -m explorer.cli figures` writes 17 figures to
   `reports/figures/` and their statistics to `reports/tables/eda_tests.csv`; `notebooks/01_eda.ipynb`
   calls the same functions. Findings that differ from the plan's hypotheses (plan §7 says to report
