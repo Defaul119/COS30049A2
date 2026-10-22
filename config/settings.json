@@ -153,6 +153,20 @@
     "flagAbsR": 3.5
   },
 
+  "txgpt": {
+    "variants": ["raw", "relative"],
+    "relativeMinScale": 0.5,
+    "_relativeMinScale": "floor on the spread (nats) of an address's earlier surprisals, as minScale does for the baseline (CR-05)",
+    "reasons": {
+      "GAP": "the timing was unusual for this address",
+      "DIR": "the direction was unusual for this address",
+      "AMT": "the amount was unusual for this address",
+      "NIN": "the transaction's shape (its inputs) was unusual for this address",
+      "NOUT": "the transaction's shape (its outputs) was unusual for this address",
+      "FEE": "the fee rate was unusual for this address"
+    }
+  },
+
   "outliers": {
     "isolationForest": { "n_estimators": [200, 500], "max_samples": [256, 1024, "auto"], "max_features": [1.0, 0.75] },
     "lof": { "n_neighbors": [10, 20, 35, 50] }

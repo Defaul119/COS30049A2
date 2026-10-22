@@ -13,8 +13,8 @@ Usage:
     python -m lm.tx_score --model runs/txgpt-m-s1/model_best.pt     # every DS1 transaction
     python -m lm.tx_score --model ... --plants                       # also the planted copies
 
-Writes data/processed/esplora/txgpt_scores.csv (and, with --plants,
-data/interim/injections/txgpt/<set>_<seed>.parquet).
+Writes data/processed/esplora/txgpt_scores.csv (and, with --plants, every row of every planted copy
+to data/interim/injections/txgpt/<set>_<seed>.parquet).
 """
 from __future__ import annotations
 
@@ -110,7 +110,7 @@ def main() -> None:
     p.add_argument("--meta", default="data/txgpt/meta.json")
     p.add_argument("--transactions", default="data/processed/esplora/transactions.csv")
     p.add_argument("--out", default="data/processed/esplora/txgpt_scores.csv")
-    p.add_argument("--plants", action="store_true", help="also score the evaluation rows of every planted copy")
+    p.add_argument("--plants", action="store_true", help="also score every planted copy")
     p.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = p.parse_args()
     check_vocabulary(Path(args.meta))
@@ -129,9 +129,11 @@ def main() -> None:
         out_dir.mkdir(parents=True, exist_ok=True)
         for path in sorted((interim / "refined").glob("*.parquet")):
             copies = pd.read_parquet(path)
-            part = score_frame(model, copies, device, "plant_id", only=copies["period"] == "eval")
+            # Every row, not just the evaluation period: the relative score compares a transaction
+            # with the same copy's earlier surprisals.
+            part = score_frame(model, copies, device, "plant_id")
             part.to_parquet(out_dir / path.name, index=False)
-            print(f"[tx_score] {path.name}: {len(part):,} evaluation rows of planted copies")
+            print(f"[tx_score] {path.name}: {len(part):,} rows of planted copies")
 
 
 if __name__ == "__main__":
