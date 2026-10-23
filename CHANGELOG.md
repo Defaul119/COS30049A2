@@ -5,6 +5,9 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 23 October 2026
 
+- **DS2 target 4,000 addresses** (was 5,000; user's decision, 23 Oct 09:00). Above the plan's 3,000
+  minimum; at the measured ~1.6 kept per minute it is reached about 18:00 on 24 Oct, before pretraining
+  ends, so the GPU never waits for DS2. The crawl stops itself at 4,000 and writes ds2.parquet.
 - **DS2 crawl crash and fix.** At about 07:50 mempool.space closed a connection without replying; the
   client retried only `URLError` and timeouts, so `http.client.RemoteDisconnected` escaped, and because
   `explorer.corpus` records only `EsploraError` as a failed visit, the whole crawl stopped (774 kept,

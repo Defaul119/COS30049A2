@@ -1,1 +1,3 @@
 2026-10-23 01:49:04 UTC [corpus] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2\python.exe -m explorer.cli corpus
+2026-10-23 02:02:46 UTC [corpus] Ctrl+C: the job stopped with exit code 130; not restarting
+2026-10-23 02:02:56 UTC [corpus] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2\python.exe -m explorer.cli corpus

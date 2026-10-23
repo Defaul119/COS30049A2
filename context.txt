@@ -32,9 +32,9 @@ RUNNING NOW (check with tasklist / logs)
   runs\text-150m\console.log. Step 1,875/7,630 at 08:35 23 Oct, val loss 3.56 (falling), ~11.4k tok/s,
   ends about 21:30 Sat 24 Oct. NOT supervised (it predates tools/supervise.py; it resumes with the same command).
 - DS2 crawl, SUPERVISED (window "DS2 CRAWL (supervised)"): python tools/supervise.py --name corpus --
-  python -m explorer.cli corpus (cpu env). Logs: reports\logs\corpus.log, supervise.log. 774 kept at 08:49 23 Oct.
-  Measured overnight: ~1.6 kept/min (01:44-07:47) -> 3,000 about 08:00 Sat 24, ~4,300 when pretraining ends
-  (Sat 21:30), ~4,550 when the 152M chat stage ends (~Sun 00:00), 5,000 about Sun 05:00.
+  python -m explorer.cli corpus (cpu env). Logs: reports\logs\corpus.log, supervise.log. TARGET 4,000 (user,
+  23 Oct 09:00); 801 kept at 09:03. ~1.6 kept/min -> 4,000 about 18:00 Sat 24 Oct, before pretraining ends.
+  At 4,000 it writes data/processed/corpus/ds2.parquet and exits 0, and the supervisor stops too.
   It crashed at ~07:50 on 23 Oct (uncaught http.client.RemoteDisconnected; fixed in explorer/esplora.py) and sat
   dead until 08:35, which is why it is now supervised. After any restart the first minutes are slow: the addresses
   that were mid-fetch (often large) are re-crawled first.
@@ -74,10 +74,8 @@ DONE (committed)
   resume; three notebook notes corrected (selection reasoning, burst claim, gap buckets).
 
 NEXT, IN ORDER
-1. DS2 stop point (recommended, user to confirm): stop the crawl when the 152M chat stage ends (~Sun 00:00,
-   ~4,550 kept) so the GPU never idles; waiting for 5,000 would leave it idle ~5 h. To stop: Ctrl+C in the
-   supervised window (the supervisor then stops too), run python -m explorer.cli corpus --target <kept> once so it
-   writes ds2.parquet; python -m lm.prepare_tx; then TxGPT S/M/L x seeds 1-3
+1. DS2 stops itself at 4,000 (about 18:00 Sat; check ds2.parquet and data/processed/corpus/manifest.json exist);
+   then python -m lm.prepare_tx (CPU, can run at once); then, after pretraining ends (GPU), TxGPT S/M/L x seeds 1-3
    (python -m lm.train --config configs/txgpt_m.json --seed 1); lm.tx_baselines; lm.tx_score --model <best> --plants;
    explorer.cli txgpt, scores, evaluate.
 2. Rebuild DS7 with DS2: python -m explorer.cli build-ds7. Add the DS2-vs-DS1 figure.
