@@ -89,7 +89,7 @@ NEXT, IN ORDER
    (python -m lm.train --config configs/txgpt_m.json --seed 1); lm.tx_baselines; lm.tx_score --model <best> --plants;
    explorer.cli txgpt, scores, evaluate.
 2. Rebuild DS7 with DS2: python -m explorer.cli build-ds7. Add the DS2-vs-DS1 figure.
-3. 152M chat stage (configs/text_150m_chat.json; build data/chat with lm.prepare_chat first, CPU), write
+3. 152M chat stage (configs/text_150m_chat.json; data/chat BUILT 23 Oct 09:36: 446,099 conversations, 270M tokens; the stage uses 100M), write
    configs/text_150m_explain.json (DS7 via lm.prepare_chat --source jsonl), explanation stage;
    lm.eval_explain --model text150m.
 4. Qwen: python -m lm.qlora --config configs/qwen3b_explain.json --bench, then without --bench;

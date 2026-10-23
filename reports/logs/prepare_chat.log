@@ -4,3 +4,14 @@
 [chat] downloading data/train-00001-of-00004.parquet ...
 Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
 [chat] 150,000 conversations, 89,864,505 training tokens
+[chat] 200,000 conversations, 119,855,408 training tokens
+[chat] downloading data/train-00002-of-00004.parquet ...
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+[chat] 250,000 conversations, 149,820,006 training tokens
+[chat] 300,000 conversations, 179,896,327 training tokens
+[chat] downloading data/train-00003-of-00004.parquet ...
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+[chat] 350,000 conversations, 209,848,582 training tokens
+[chat] 400,000 conversations, 239,817,692 training tokens
+[chat] 450,000 conversations, 269,849,045 training tokens
+[chat] done: 446,099 training and 4,485 validation conversations (270,193,550 training tokens); 183,182 cut to fit, 9,757 dropped as too long, 0 invalid
