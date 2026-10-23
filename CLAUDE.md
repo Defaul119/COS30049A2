@@ -85,11 +85,11 @@ and evaluation with accuracy, precision, recall, F1 and similar metrics. The bri
    **Added 22 Oct (tutor's OK confirmed, team approved, CR-06 amended):** a third, extra model,
    **Qwen2.5-3B-Instruct QLoRA-fine-tuned** once on DS7 mixed with 2,500 DS6 conversations (plan §9,
    `sec:assistant3b`; `lm/qlora.py`, `configs/qwen3b_explain.json`); it also serves as the chatbot.
-   Changed from Llama 3.2 3B on 23 Oct at the user's request (not gated, no HF token); the team must
-   be told, since it approved Llama.
+   Changed from Llama 3.2 3B on 23 Oct at the user's request (not gated, no HF token); accepted by
+   the team (23 Oct: the team delegated all open A2 decisions to Cao Tri Tran).
    **Roles (user, 23 Oct):** the 152M model only explains DS1 transactions; Qwen 3B is the general
    chatbot AND the second writer: `explorer.assistant.explain` tries 152M, then Qwen, then the template,
-   each answer passing the code guardrail (numbers, limitation line, wording). It is extra and doesn't replace the
+   each answer passing the code guardrail (numbers, limitation line, wording). The 3B model is extra and doesn't replace the
    from-scratch models, runs after the 152M model and TxGPT, uses the same DS7 splits, measures
    (`lm/eval_explain.py`) and guardrail (`explorer/assistant.py`), and ships adapters only. Licence:
    Qwen Research License (non-commercial; ship its text and a NOTICE line; "Built with Qwen").

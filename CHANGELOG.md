@@ -5,6 +5,12 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 23 October 2026
 
+- **Team decisions (23 Oct).** The team delegated every open A2 decision to Cao Tri Tran, who recorded:
+  (1) CR-03: the baseline stays at |z| >= 5 and the sanity-rule failure is reported as a finding about
+  behaviour change (`eval_sanity_addresses.csv`), not hidden by a cap; (2) the Assistant 3B change to
+  Qwen2.5-3B-Instruct and the model roles are accepted, closing the CR-06 amendment; (3) `explorerMethod`
+  is the robust-z baseline (`settings.json`), as the A1 selection rule recommends. Not delegable: the blind
+  reviewer check (reviewers must not have built the scoring) and the signed contribution form.
 - **CR-03 evidence: the sanity rule fails for every method, because a few addresses changed.**
   `reports/tables/eval_sanity_addresses.csv` (new, from `evaluate`) gives each method's flagged share per
   address and how the address's evaluation period differs from its fit period. One address is over the
@@ -67,7 +73,7 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
   License (non-commercial, research or evaluation use; derivatives must ship the licence text, a
   NOTICE line "Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) Alibaba
   Cloud. All Rights Reserved.", and "Built with Qwen" in the documentation). **The team approved
-  Llama specifically, so it must be told.** The base (not Instruct) model is used so that its two
+  Llama specifically, so it must be told.** (Accepted later on 23 Oct; see the team decisions above.) The base (not Instruct) model is used so that its two
   stages (DS6 chat, then DS7) mirror the 152M model's.
 - **Fine-tuning pipeline ready** (runs after pretraining and TxGPT): `explorer.cli build-ds7`
   (DS7 pairs, five phrasings, split by address; DS1 only until DS2 exists), `explorer/assistant.py`

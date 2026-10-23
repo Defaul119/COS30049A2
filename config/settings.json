@@ -161,8 +161,8 @@
     "tieMarginPoints": 5
   },
 
-  "explorerMethod": null,
-  "_explorerMethod": "the DS1 method the Explorer and predict.py use; set from models/selection.json when the team records the choice (plan §11.4)",
+  "explorerMethod": "baseline",
+  "_explorerMethod": "the DS1 method the Explorer and predict.py use (plan §11.4): the robust-z baseline, as models/selection.json recommends; recorded 23 Oct by Cao Tri Tran with the team's delegation",
 
   "txgpt": {
     "variants": ["raw", "relative"],

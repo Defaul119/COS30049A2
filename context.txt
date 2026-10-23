@@ -86,9 +86,10 @@ NEXT, IN ORDER
    python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best.
 5. Still to write: address profiles, README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text
    and NOTICE), report (LaTeX, 3,000 words). DS7 glossary pairs (data/processed/ds7/glossary.jsonl) are team-written.
-6. Team: CR-03 (evidence in eval_sanity_addresses.csv: 4 addresses changed after the cut, every method breaks the
-   rule on them; recommended option (a), see CHANGELOG 23 Oct), the Qwen switch, explorerMethod in settings.json, reviewer ratings, review of the
-   notebook's notes.
+6. DECIDED 23 Oct (the team delegated all open decisions to Cao Tri Tran): CR-03 option (a) (keep |z| >= 5,
+   report the behaviour-change finding); Qwen-Instruct switch and roles accepted; explorerMethod = baseline.
+   Still needs other people: the blind reviewer check (not anyone who built the scoring) and the signed
+   contribution form (anyone under 33% is scaled down; the A1 form gave two members 20%).
 
 RESULTS SO FAR (quote reports/tables/*.csv, never these)
 - DS4 temporal near chance (drift); held-out families: recall 1-3% except logistic regression, whose ~48% comes with a

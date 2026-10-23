@@ -1,0 +1,4 @@
+2026-10-23 09:13:19 INFO Step reviewer-sheet started: C:\Users\ADMIN\COS30049A2\explorer\cli.py reviewer-sheet
+2026-10-23 09:13:20 INFO Wrote C:\Users\ADMIN\COS30049A2\reports\reviewer\sheet.csv (40 rows: 20 flagged by baseline, 20 not) and the key C:\Users\ADMIN\COS30049A2\data\interim\reviewer\key.csv
+2026-10-23 09:13:20 INFO Each reviewer fills 'worth_a_look' with yes or no for every row, and returns the file
+2026-10-23 09:13:20 INFO Step reviewer-sheet finished in 1 s (exit 0)
