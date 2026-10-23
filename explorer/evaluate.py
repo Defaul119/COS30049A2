@@ -12,7 +12,8 @@ period, each at its own operating threshold:
                 the top 50 evaluation flags. The baseline and TxGPT do not fit anything on DS1,
                 so their stability is 1 by construction, and the table says so.
     agreement   pairwise Jaccard of the methods' flag sets on the real evaluation period
-    sanity      the largest share of any address's evaluation rows flagged (limit 20%)
+    sanity      the largest share of any address's evaluation rows flagged (limit 20%), and per address
+                which methods break it and how the address changed after the cut
     flag rate   the share of real evaluation transactions flagged
     ablation    the A1-as-written method against the refinements (CR-02, CR-04, CR-05)
 
@@ -22,7 +23,7 @@ settings.json -> evaluation.explainabilityOrder. The runner-up and the "flag if 
 combination are reported too. The choice is a recommendation: it becomes explorerMethod in
 settings.json only when the team records it.
 
-Writes reports/tables/eval_{injection,injection_by_seed,stability,agreement,sanity,ablation,
+Writes reports/tables/eval_{injection,injection_by_seed,stability,agreement,sanity,sanity_addresses,ablation,
 selection}.csv and models/selection.json.
 """
 from __future__ import annotations
@@ -46,7 +47,7 @@ from .regression import RegressionIntervalMethod, RegressionMethod, design, resi
 from .scores import saved_methods
 from .settings import SETTINGS
 from .snapshot import MANIFEST_PATH
-from .split import EVAL
+from .split import EVAL, FIT
 
 log = logging.getLogger(__name__)
 
@@ -157,6 +158,33 @@ def ablation(methods: dict[str, Method]) -> pd.DataFrame:
     return table
 
 
+def sanity_by_address(methods: dict[str, Method], features: pd.DataFrame) -> pd.DataFrame:
+    """Each method's flagged share per address (the sanity rule's own denominator: every evaluation row),
+    next to how the address's evaluation period differs from its fit period.
+
+    It shows whether a sanity failure belongs to a method's threshold or to an address whose behaviour
+    changed after the 70/30 cut: in the second case every method flags it, and no threshold fixes it.
+    """
+    ev, fit = features[features["period"] == EVAL], features[features["period"] == FIT]
+    limit = SETTINGS["sanity"]["maxFlaggedShare"]
+
+    def profile(rows: pd.DataFrame) -> pd.DataFrame:
+        g = rows.assign(abs_btc=rows["net_sats"].abs() / 1e8, is_in=rows["direction"] == "in").groupby("address")
+        return g.agg(median_gap_hours=("F3", "median"), median_abs_btc=("abs_btc", "median"), in_share=("is_in", "mean"))
+
+    change = profile(fit).join(profile(ev), lsuffix="_fit", rsuffix="_eval")
+    rows = []
+    for name, m in methods.items():
+        flagged = pd.Series(flags(m, ev), index=ev.index).groupby(ev["address"]).agg(["sum", "size"])
+        for address, r in flagged.iterrows():
+            rows.append({"method": name, "address": address, "eval_rows": int(r["size"]), "flagged": int(r["sum"]),
+                         "share": r["sum"] / r["size"], "over_limit": r["sum"] / r["size"] > limit})
+    table = pd.DataFrame(rows)
+    table["methods_over_limit"] = table.groupby("address")["over_limit"].transform("sum")
+    return table.merge(change, left_on="address", right_index=True, how="left").sort_values(
+        ["methods_over_limit", "address", "method"], ascending=[False, True, True])
+
+
 def select(summary: pd.DataFrame, stab: pd.DataFrame, sanity: pd.DataFrame) -> dict[str, Any]:
     """The A1 selection rule with the plan's explainability tie-break."""
     e = SETTINGS["evaluation"]
@@ -206,6 +234,7 @@ def run_evaluate() -> int:
     by_seed.to_csv(TABLES_DIR / "eval_injection_by_seed.csv", index=False)
     stab.to_csv(TABLES_DIR / "eval_stability.csv", index=False)
     sanity.to_csv(TABLES_DIR / "eval_sanity.csv", index=False)
+    sanity_by_address(methods, features).to_csv(TABLES_DIR / "eval_sanity_addresses.csv", index=False)
     agreement(methods, features).to_csv(TABLES_DIR / "eval_agreement.csv", index=False)
     ablation(methods).to_csv(TABLES_DIR / "eval_ablation.csv", index=False)
     table.to_csv(TABLES_DIR / "eval_selection.csv", index=False)

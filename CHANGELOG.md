@@ -5,6 +5,16 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 23 October 2026
 
+- **CR-03 evidence: the sanity rule fails for every method, because a few addresses changed.**
+  `reports/tables/eval_sanity_addresses.csv` (new, from `evaluate`) gives each method's flagged share per
+  address and how the address's evaluation period differs from its fit period. One address is over the
+  20% limit for all 7 methods and another for 6: one became about 4x busier after the 70/30 cut, one is an
+  almost perfectly regular daily receiver whose rare sends stand out, and one turned from mostly receiving
+  to mostly sending. Raising the baseline threshold cannot fix this. Options for the team: (a) keep
+  |z| >= 5 and report these addresses as a finding about behaviour change (recommended: it is what the
+  Explorer is for); (b) for A3, show a 'behaviour changed' notice once an address's flags cluster, instead
+  of flagging each transaction; (c) cap flags per address (meets the rule by construction; not recommended).
+  Re-running `evaluate` reproduced every existing table exactly.
 - **DS2 target 4,000 addresses** (was 5,000; user's decision, 23 Oct 09:00). Above the plan's 3,000
   minimum; at the measured ~1.6 kept per minute it is reached about 18:00 on 24 Oct, before pretraining
   ends, so the GPU never waits for DS2. The crawl stops itself at 4,000 and writes ds2.parquet.

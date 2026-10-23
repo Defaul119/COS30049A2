@@ -86,7 +86,8 @@ NEXT, IN ORDER
    python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best.
 5. Still to write: address profiles, README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text
    and NOTICE), report (LaTeX, 3,000 words). DS7 glossary pairs (data/processed/ds7/glossary.jsonl) are team-written.
-6. Team: CR-03 (baseline threshold), the Qwen switch, explorerMethod in settings.json, reviewer ratings, review of the
+6. Team: CR-03 (evidence in eval_sanity_addresses.csv: 4 addresses changed after the cut, every method breaks the
+   rule on them; recommended option (a), see CHANGELOG 23 Oct), the Qwen switch, explorerMethod in settings.json, reviewer ratings, review of the
    notebook's notes.
 
 RESULTS SO FAR (quote reports/tables/*.csv, never these)

@@ -23,6 +23,32 @@ def frames(rows: list[dict]) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
             t[["method"]].assign(flag_rate=0.02, max_address_share=0.1))
 
 
+class SanityByAddressTests(unittest.TestCase):
+    def test_counts_methods_over_the_limit_per_address_and_profiles_the_change(self):
+        class FlagsAll:  # flags every scorable row
+            threshold = 0.5
+
+            def score(self, frame):
+                return np.ones(len(frame))
+
+        class FlagsNone:
+            threshold = 0.5
+
+            def score(self, frame):
+                return np.zeros(len(frame))
+
+        rows = []
+        for address, gap_fit, gap_eval in (("a", 24.0, 2.0), ("b", 10.0, 10.0)):
+            rows += [{"address": address, "period": "fit", "F3": gap_fit, "net_sats": 100, "direction": "in", "scorable": True}] * 3
+            rows += [{"address": address, "period": "eval", "F3": gap_eval, "net_sats": -100, "direction": "out", "scorable": True}] * 2
+        table = evaluate.sanity_by_address({"all": FlagsAll(), "none": FlagsNone()}, pd.DataFrame(rows))
+        a = table[(table["address"] == "a") & (table["method"] == "all")].iloc[0]
+        self.assertEqual((a["eval_rows"], a["flagged"], a["share"], bool(a["over_limit"])), (2, 2, 1.0, True))
+        self.assertEqual(int(a["methods_over_limit"]), 1)  # only "all" breaks the limit for this address
+        self.assertEqual((a["median_gap_hours_fit"], a["median_gap_hours_eval"]), (24.0, 2.0))
+        self.assertEqual((a["in_share_fit"], a["in_share_eval"]), (1.0, 0.0))
+
+
 class SelectionTests(unittest.TestCase):
     def test_stable_methods_only_then_explainability_within_the_margin(self):
         summary, stab, sanity = frames([

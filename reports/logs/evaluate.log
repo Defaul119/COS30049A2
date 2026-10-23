@@ -9,3 +9,14 @@
 2026-10-23 00:40:33 INFO lof                  mean recall 0.320 (spike 0.08, burst 0.07, dormant 0.81), stability 0.79, flag rate 0.045, max address share 0.43
 2026-10-23 00:40:33 INFO Recommended method: baseline (runner-up kmeans). Record it as explorerMethod in settings.json to adopt it.
 2026-10-23 00:40:33 INFO Step evaluate finished in 129 s (exit 0)
+2026-10-23 09:04:56 INFO Step evaluate started: C:\Users\ADMIN\COS30049A2\explorer\cli.py evaluate
+2026-10-23 09:04:58 INFO Evaluating ['baseline', 'isolation_forest', 'lof', 'kmeans', 'dbscan', 'regression', 'regression_interval'] on 750 reporting plants
+2026-10-23 09:07:10 INFO regression           mean recall 0.673 (spike 0.88, burst 0.75, dormant 0.39), stability 0.61, flag rate 0.224, max address share 0.58
+2026-10-23 09:07:10 INFO baseline             mean recall 0.655 (spike 0.74, burst 0.38, dormant 0.84), stability 1.00, flag rate 0.104, max address share 0.45
+2026-10-23 09:07:10 INFO regression_interval  mean recall 0.473 (spike 0.73, burst 0.43, dormant 0.26), stability 0.46, flag rate 0.128, max address share 0.54
+2026-10-23 09:07:10 INFO kmeans               mean recall 0.446 (spike 0.62, burst 0.05, dormant 0.67), stability 1.00, flag rate 0.038, max address share 0.43
+2026-10-23 09:07:10 INFO isolation_forest     mean recall 0.429 (spike 0.60, burst 0.12, dormant 0.56), stability 0.88, flag rate 0.036, max address share 0.43
+2026-10-23 09:07:10 INFO dbscan               mean recall 0.406 (spike 0.38, burst 0.09, dormant 0.74), stability 0.90, flag rate 0.039, max address share 0.38
+2026-10-23 09:07:10 INFO lof                  mean recall 0.320 (spike 0.08, burst 0.07, dormant 0.81), stability 0.79, flag rate 0.045, max address share 0.43
+2026-10-23 09:07:10 INFO Recommended method: baseline (runner-up kmeans). Record it as explorerMethod in settings.json to adopt it.
+2026-10-23 09:07:10 INFO Step evaluate finished in 134 s (exit 0)
