@@ -1,4 +1,5 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 09:25 GMT+7)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 09:45 GMT+7)
+The 22-23 Oct session ended here (the user closed it). Start a new session by running python tools/status.py.
 =====================================================================================
 
 USER PREFERENCES
@@ -7,7 +8,7 @@ USER PREFERENCES
   its EXIT CODE before every commit. Push after each finished batch (the user asked, 23 Oct).
 - Do NOT update the tracker artifact (https://claude.ai/artifact/NFVrJdEAcT2iLotZTx2J5e) mid-task; only when the
   current tasks are finished or the user asks. Its db: meta/now {text,updated}, meta/log {entries[{time,text}]},
-  jobs/<id>, steps/sNN (s01-s37, s50-s56 used; s57+ for new). Writes need if_version.
+  jobs/<id>, steps/sNN (s01-s37, s50-s59 used; s60+ for new). Writes need if_version.
 - Keep replies short; answer the user's questions first. Since 23 Oct 02:20 the user wants a proof-checking pass:
   every claim checked against the data and the rubric before new features.
 - Shell: Git Bash heredocs mangle backslash escapes in Python source (\n became a real newline twice on 23 Oct).
@@ -39,11 +40,12 @@ RUNNING NOW (check with tasklist / logs)
   Live views for the user (PowerShell): Get-Content C:\Users\ADMIN\COS30049A2\runs\text-150m\console.log -Wait -Tail 5
   and Get-Content C:\Users\ADMIN\COS30049A2\reports\logs\supervise.log -Wait -Tail 3 (Ctrl+C stops only the view).
 - Pretraining 152M (window "PRETRAINING", PID 1552): python -m lm.train --config configs/text_150m_pretrain.json;
-  runs\text-150m\console.log. Step 1,875/7,630 at 08:35 23 Oct, val loss 3.56 (falling), ~11.4k tok/s,
-  ends about 21:30 Sat 24 Oct. NOT supervised (it predates tools/supervise.py; it resumes with the same command).
+  runs\text-150m\console.log. Step 2,046/7,630 at 09:41 23 Oct, loss 3.54 (falling), ~11.5k tok/s,
+  ends about 21:00 Sat 24 Oct. NOT supervised (it predates tools/supervise.py; it resumes with the same command).
 - DS2 crawl, SUPERVISED (window "DS2 CRAWL (supervised)"): python tools/supervise.py --name corpus --
   python -m explorer.cli corpus (cpu env). Logs: reports\logs\corpus.log, supervise.log. TARGET 4,000 (user,
-  23 Oct 09:00); 801 kept at 09:03. ~1.6 kept/min -> 4,000 about 18:00 Sat 24 Oct, before pretraining ends.
+  23 Oct 09:00); 913 kept at 09:41. 2.9 kept/min this morning, 1.6 overnight -> 4,000 between about 03:00 and
+  18:00 Sat 24 Oct, either way before pretraining ends.
   At 4,000 it writes data/processed/corpus/ds2.parquet and exits 0, and the supervisor stops too.
   It crashed at ~07:50 on 23 Oct (uncaught http.client.RemoteDisconnected; fixed in explorer/esplora.py) and sat
   dead until 08:35, which is why it is now supervised. After any restart the first minutes are slow: the addresses
@@ -108,5 +110,10 @@ RESULTS SO FAR (quote reports/tables/*.csv, never these)
 
 WAITING ON THE USER / TEAM
 - Copy _context/ from the Mac (not via the public repo). Windows Update paused 1 month (23 Oct); sleep/hibernate off.
-- Decide: GPU cooling/undervolt; whether to try torch.compile (pauses pretraining ~15 min).
-- Cam Dan Bui's DS1 manifest review + manual tx check. models/heist_best.joblib (263 MB) is git-ignored.
+- GPU power limit 90% (153 W) set by the user; still ~84 C and thermally throttled; torch.compile decided against.
+- Send reports/reviewer/sheet.csv + INSTRUCTIONS.md to two teammates who did not build the scoring; then
+  python -m explorer.cli reviewer-score --ratings ratings_<a>.csv ratings_<b>.csv.
+- Skim the glossary draft (tools/make_glossary.py); one manual DS1 transaction check on a block explorer (anyone).
+- Contribution form shares before signing. models/heist_best.joblib (263 MB) is git-ignored (packaging reminder).
+- Next for Claude when the user returns: README (A2 outline), then report content outline (no LaTeX), then the
+  proof-check of label check / reviewer scoring / predict outputs; raise packaging later.
