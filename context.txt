@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 09:00 GMT+7)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 09:25 GMT+7)
 =====================================================================================
 
 USER PREFERENCES
@@ -28,6 +28,9 @@ ENVIRONMENT
   A1 submission, notes) is still not on this PC (git-ignored; copy by USB/OneDrive, not the public repo).
 
 RUNNING NOW (check with tasklist / logs)
+- ONE-SCREEN STATUS: python tools/status.py [--watch 60] (crawl kept/target/rate/ETA, supervisor, pretraining, GPU).
+  Live views for the user (PowerShell): Get-Content C:\Users\ADMIN\COS30049A2\runs\text-150m\console.log -Wait -Tail 5
+  and Get-Content C:\Users\ADMIN\COS30049A2\reports\logs\supervise.log -Wait -Tail 3 (Ctrl+C stops only the view).
 - Pretraining 152M (window "PRETRAINING", PID 1552): python -m lm.train --config configs/text_150m_pretrain.json;
   runs\text-150m\console.log. Step 1,875/7,630 at 08:35 23 Oct, val loss 3.56 (falling), ~11.4k tok/s,
   ends about 21:30 Sat 24 Oct. NOT supervised (it predates tools/supervise.py; it resumes with the same command).
