@@ -70,3 +70,67 @@ Traceback (most recent call last):
   File "C:\Users\ADMIN\COS30049A2\explorer\esplora.py", line 106, in get_text
     raise EsploraError(err.code, url, detail) from err
 explorer.esplora.EsploraError: 429 for https://blockstream.info/api/block/000000000000000000016841a5eba76ec535c2330a8a85016c972c91e82f4a60/txs/25: {"error":"Too Many Requests","message":"Blockstream Explorer API NOTICE: Your request rate exceeds the current limit. Starting July 15 2025, monthly unauthenticated usage will be capped at 500,000 req
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 395, in <module>
+    except KeyboardInterrupt:
+                     ^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 385, in main
+    return parser
+               ^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 90, in cmd_corpus
+    clients = ClientPool(make_clients([SETTINGS["source"][key] for key in params["sources"]], params["workersPerSource"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 313, in run_corpus
+    visit = future.result()
+            ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 217, in crawl_candidate
+    _, pages = client.address_history(address, cap=params["maxTx"])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\esplora.py", line 113, in address_history
+    page = self.address_txs_chain(address, last_seen)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\esplora.py", line 99, in address_txs_chain
+    return self.get_json(f"/address/{address}/txs/chain{suffix}")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\esplora.py", line 78, in get_json
+    return json.loads(self.get_text(path))
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\esplora.py", line 162, in get_text
+    with urllib.request.urlopen(request, timeout=self.timeout_seconds) as resp:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 519, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 496, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 1404, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\urllib\request.py", line 1365, in do_open
+    r = h.getresponse()
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\http\client.py", line 1443, in getresponse
+    response.begin()
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\http\client.py", line 337, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\http\client.py", line 306, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response

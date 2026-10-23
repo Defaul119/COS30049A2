@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 02:35 GMT+7)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-23 09:00 GMT+7)
 =====================================================================================
 
 USER PREFERENCES
@@ -29,11 +29,17 @@ ENVIRONMENT
 
 RUNNING NOW (check with tasklist / logs)
 - Pretraining 152M (window "PRETRAINING", PID 1552): python -m lm.train --config configs/text_150m_pretrain.json;
-  runs\text-150m\console.log. Step ~900/7,630 at 02:20 23 Oct, ~11.4k tok/s, ends about 21:00 Sat 24 Oct.
-- DS2 crawl (window "DS2 CRAWL"): python -m explorer.cli corpus (cpu env); reports\logs\corpus.log. Target 5,000
-  (minimum 3,000). ~2 kept/min: 3,000 about midnight 23-24 Oct, 5,000 about Sat 24 Oct afternoon. 8 workers are no
-  faster than 4 (mempool.space's bandwidth per IP is the limit). mempool.space only; never probe Blockstream;
-  no paid Blockstream key (user's decision).
+  runs\text-150m\console.log. Step 1,875/7,630 at 08:35 23 Oct, val loss 3.56 (falling), ~11.4k tok/s,
+  ends about 21:30 Sat 24 Oct. NOT supervised (it predates tools/supervise.py; it resumes with the same command).
+- DS2 crawl, SUPERVISED (window "DS2 CRAWL (supervised)"): python tools/supervise.py --name corpus --
+  python -m explorer.cli corpus (cpu env). Logs: reports\logs\corpus.log, supervise.log. 774 kept at 08:49 23 Oct.
+  Measured overnight: ~1.6 kept/min (01:44-07:47) -> 3,000 about 08:00 Sat 24, ~4,300 when pretraining ends
+  (Sat 21:30), ~4,550 when the 152M chat stage ends (~Sun 00:00), 5,000 about Sun 05:00.
+  It crashed at ~07:50 on 23 Oct (uncaught http.client.RemoteDisconnected; fixed in explorer/esplora.py) and sat
+  dead until 08:35, which is why it is now supervised. After any restart the first minutes are slow: the addresses
+  that were mid-fetch (often large) are re-crawled first.
+  8 workers are no faster than 4 (mempool.space's bandwidth per IP is the limit). mempool.space only; never probe
+  Blockstream; no paid Blockstream key (user's decision).
 
 TRAINING SPEED (checked 23 Oct 02:20)
 - Software is near the practical limit: SDPA (flash) attention, fused AdamW, bf16 autocast, TF32, pinned memory;
@@ -61,13 +67,17 @@ DONE (committed)
   lm/qlora.py (Qwen2.5-3B-Instruct; --bench, --smoke, retention loss), configs/qwen3b_explain.json,
   lm/eval_explain.py. Qwen weights cached. DS7 is DS1-only (1,003 pairs) until DS2 exists.
 - Figures (17 PDFs, explorer/plots.py, `figures`), reports/tables/eda_tests.csv, notebooks/01_eda.ipynb.
+- 23 Oct morning: explorer/esplora.py retries dropped connections (RemoteDisconnected, IncompleteRead) instead of
+  crashing; tools/supervise.py restarts crashed long jobs (tests: test_esplora, test_supervise).
 - Proof-check fixes (23 Oct 02:20-02:35): 152M greedy decoding no longer applies the repetition penalty to the prompt
   (it would have hurt number faithfulness); DS7 fallback intros no longer contradict a flag; Qwen trainer ETA after
   resume; three notebook notes corrected (selection reasoning, burst claim, gap buckets).
 
 NEXT, IN ORDER
-1. When DS2 reaches 5,000 (or at least 3,000 when pretraining ends): Ctrl+C the crawl and run it once more so it
-   writes ds2.parquet; python -m lm.prepare_tx; then, once pretraining has finished, TxGPT S/M/L x seeds 1-3
+1. DS2 stop point (recommended, user to confirm): stop the crawl when the 152M chat stage ends (~Sun 00:00,
+   ~4,550 kept) so the GPU never idles; waiting for 5,000 would leave it idle ~5 h. To stop: Ctrl+C in the
+   supervised window (the supervisor then stops too), run python -m explorer.cli corpus --target <kept> once so it
+   writes ds2.parquet; python -m lm.prepare_tx; then TxGPT S/M/L x seeds 1-3
    (python -m lm.train --config configs/txgpt_m.json --seed 1); lm.tx_baselines; lm.tx_score --model <best> --plants;
    explorer.cli txgpt, scores, evaluate.
 2. Rebuild DS7 with DS2: python -m explorer.cli build-ds7. Add the DS2-vs-DS1 figure.

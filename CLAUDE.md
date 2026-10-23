@@ -204,6 +204,8 @@ Plan Appendix D lists every command in run order.
 - Write code like `explorer/esplora.py` and `lm/train.py`: module docstrings that say what the
   module does and which requirement it serves (e.g. "DR-02"), docstrings with units, and comments
   that explain *why*. Type hints; no dead code.
+- Long jobs that run unattended go under `python tools/supervise.py --name <job> -- <command>`, which
+  restarts them after a crash (every job here resumes from its own saved state).
 - Long jobs (pretraining, the DS2 crawl, Elliptic tuning) run in their own terminal so they
   survive the Claude session; check on them by reading their logs.
 - When the plan and reality disagree (a measured speed, a licence, a result), follow reality,

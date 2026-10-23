@@ -5,6 +5,13 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 23 October 2026
 
+- **DS2 crawl crash and fix.** At about 07:50 mempool.space closed a connection without replying; the
+  client retried only `URLError` and timeouts, so `http.client.RemoteDisconnected` escaped, and because
+  `explorer.corpus` records only `EsploraError` as a failed visit, the whole crawl stopped (774 kept,
+  nothing lost; about 45 minutes of crawling lost). `explorer/esplora.py` now retries `ConnectionError`
+  and `http.client.HTTPException` like a timeout (tests reproduce the drop). `tools/supervise.py` now
+  runs the crawl and restarts it after any crash (not after a finish or a Ctrl+C), so an unattended run
+  cannot stop for good. Measured overnight rate: about 1.6 kept addresses per minute.
 - **Proof-check pass (user's request; 23 Oct 02:20-02:35).** Fixed: (1) the 152M model's greedy
   decoding in `lm.eval_explain` used lm.chat's repetition penalty, which also counts the prompt's tokens
   and so pushes the model away from copying the prompt's numbers; it is now 1.0 for explanations.

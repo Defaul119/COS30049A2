@@ -15,6 +15,7 @@ API reference: https://github.com/Blockstream/esplora/blob/master/API.md
 from __future__ import annotations
 
 import gzip
+import http.client
 import json
 import logging
 import time
@@ -175,7 +176,11 @@ class EsploraClient(EsploraEndpoints):
                     self._back_off(attempt, err.headers.get("Retry-After"))
                     continue
                 raise EsploraError(err.code, url, detail) from err
-            except (urllib.error.URLError, TimeoutError) as err:
+            # urllib wraps errors while connecting in URLError, but not errors while reading the reply:
+            # a server that closes the connection without answering raises http.client.RemoteDisconnected
+            # (a ConnectionError), and a cut-off body raises http.client.IncompleteRead (an HTTPException).
+            # Both are transient network failures, retried like a timeout.
+            except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException) as err:
                 self._record(started)
                 self.stats.network_errors += 1
                 if attempt < self.max_retries:

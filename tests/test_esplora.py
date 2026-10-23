@@ -17,9 +17,17 @@ PAGE = [{"txid": "ab" * 32, "vin": [], "vout": []}] * 3
 
 class Handler(BaseHTTPRequestHandler):
     limited_calls = 0
+    dropped_calls = 0
 
     def do_GET(self):  # noqa: N802 - the http.server API name
         body = json.dumps(PAGE).encode()
+        if self.path == "/drop-always" or (self.path == "/drop-once" and Handler.dropped_calls < 1):
+            # Close without any reply: the client sees http.client.RemoteDisconnected, as from
+            # mempool.space on 23 Oct, which used to escape the retries and stop the DS2 crawl.
+            if self.path == "/drop-once":
+                Handler.dropped_calls += 1
+            self.close_connection = True
+            return
         if self.path == "/limited" and Handler.limited_calls < 1:
             Handler.limited_calls += 1
             self.send_response(429)
@@ -61,6 +69,17 @@ class TransportTests(unittest.TestCase):
         client = EsploraClient(self.base, pause_seconds=0.0, max_retries=2)
         self.assertEqual(client.get_json("/limited"), PAGE)
         self.assertEqual((client.stats.rate_limited, client.stats.retries), (1, 1))
+
+    def test_a_dropped_connection_is_retried(self):
+        client = EsploraClient(self.base, pause_seconds=0.0, max_retries=2)
+        self.assertEqual(client.get_json("/drop-once"), PAGE)
+        self.assertEqual((client.stats.network_errors, client.stats.retries), (1, 1))
+
+    def test_a_connection_that_keeps_dropping_becomes_an_esplora_error(self):
+        # An EsploraError is what explorer.corpus records as a fetch_error visit; anything else stops the crawl.
+        client = EsploraClient(self.base, pause_seconds=0.0, max_retries=1)
+        with self.assertRaises(EsploraError):
+            client.get_text("/drop-always")
 
     def test_errors_carry_the_status(self):
         client = EsploraClient("http://127.0.0.1:9", pause_seconds=0.0, max_retries=0, timeout_seconds=2)
