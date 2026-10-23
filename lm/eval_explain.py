@@ -126,10 +126,16 @@ def main() -> None:
     frame = pd.DataFrame(results)
     TABLES.mkdir(parents=True, exist_ok=True)
     frame.to_csv(TABLES / f"assistant_eval_{args.model}.csv", index=False)
-    summary = {"model": args.model, "prompts": len(frame), "number_faithfulness": frame["numbers_ok"].mean(),
-               "limitation_line": frame.loc[frame["kind"] == "flagged", "limitation_ok"].mean(),
-               "banned_word_share": 1 - frame["wording_ok"].mean(), "guardrail_pass": frame["passed"].mean(),
-               "feature_coverage": frame["coverage"].dropna().mean(), "rouge_l": frame["rouge_l"].mean(),
+    # Explanation measures apply to explanation prompts only: a glossary answer may rightly contain numbers
+    # that are not in its question (e.g. the MAD's 1.4826), so glossary rows get wording and ROUGE-L only.
+    expl, gloss = frame[frame["kind"] != "glossary"], frame[frame["kind"] == "glossary"]
+    summary = {"model": args.model, "prompts": len(expl), "number_faithfulness": expl["numbers_ok"].mean(),
+               "limitation_line": expl.loc[expl["kind"] == "flagged", "limitation_ok"].mean(),
+               "banned_word_share": 1 - expl["wording_ok"].mean(), "guardrail_pass": expl["passed"].mean(),
+               "feature_coverage": expl["coverage"].dropna().mean(), "rouge_l": expl["rouge_l"].mean(),
+               "glossary_prompts": len(gloss),
+               "glossary_banned_word_share": 1 - gloss["wording_ok"].mean() if len(gloss) else float("nan"),
+               "glossary_rouge_l": gloss["rouge_l"].mean() if len(gloss) else float("nan"),
                "seconds": round(time.time() - started, 1),
                "source": args.checkpoint or args.adapter or "explorer.explain.template_explanation"}
     path = TABLES / "assistant_eval.csv"

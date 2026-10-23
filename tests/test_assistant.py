@@ -80,6 +80,22 @@ class GuardrailTests(unittest.TestCase):
         self.assertAlmostEqual(assistant.rouge_l("a x c", "a b c"), 2 / 3)
         self.assertEqual(assistant.rouge_l("", "a"), 0.0)
 
+    def test_glossary_paraphrases_share_their_topic_split(self):
+        import json
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "glossary.jsonl"
+            rows = [{"topic": f"t{t}", "question": f"Question {q} on topic {t}?", "answer": "An answer."}
+                    for t in range(40) for q in range(3)]
+            path.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
+            pairs = list(ds7.glossary_pairs(path, SETTINGS["ds7"]))
+        by_topic: dict[str, set[str]] = {}
+        for r, p in zip(rows, pairs):
+            by_topic.setdefault(r["topic"], set()).add(p["split"])
+        self.assertTrue(all(len(splits) == 1 for splits in by_topic.values()))
+
     def test_split_is_decided_by_address(self):
         p = SETTINGS["ds7"]
         self.assertEqual({ds7.split_of("addr-1", p) for _ in range(3)}, {ds7.split_of("addr-1", p)})

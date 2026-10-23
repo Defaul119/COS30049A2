@@ -187,15 +187,20 @@ def pairs_from(source: str, predictor: Predictor, scores: pd.DataFrame, addresse
 
 
 def glossary_pairs(path: Path, params: dict[str, Any]) -> Iterator[dict[str, Any]]:
-    """Team-written questions and answers ({"question", "answer"} per line), split by question."""
+    """Glossary questions and answers ({"topic", "question", "answer"} per line), split by topic.
+
+    Several phrasings of one question share a topic, so splitting by topic keeps a paraphrase of a
+    training question out of the test set (the same reason explanation pairs are split by address).
+    """
     with open(path, encoding="utf-8") as fh:
         for line in fh:
             if line.strip():
                 q = json.loads(line)
                 if assistant.banned_words(q["answer"]):
                     raise ValueError(f"glossary answer uses a banned word: {q['question']!r}")
-                yield {"source": "glossary", "group": short_hash(q["question"], str(params["seed"])),
-                       "split": split_of(q["question"], params), "kind": "glossary", "phrasing": None,
+                topic = q.get("topic", q["question"])
+                yield {"source": "glossary", "group": short_hash(topic, str(params["seed"])),
+                       "split": split_of(topic, params), "kind": "glossary", "phrasing": None,
                        "template": q["answer"],
                        "messages": [{"role": "system", "content": assistant.SYSTEM_PROMPT},
                                     {"role": "user", "content": q["question"]},

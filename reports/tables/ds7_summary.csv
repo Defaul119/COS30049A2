@@ -2,9 +2,12 @@ split,source,kind,pairs,groups
 train,DS1,flagged,320,21
 train,DS1,not_flagged,538,22
 train,DS1,unscored,25,25
+train,glossary,glossary,150,57
 val,DS1,flagged,20,1
 val,DS1,not_flagged,19,1
 val,DS1,unscored,1,1
+val,glossary,glossary,5,2
 test,DS1,flagged,34,2
 test,DS1,not_flagged,44,2
 test,DS1,unscored,2,2
+test,glossary,glossary,5,2

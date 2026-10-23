@@ -5,6 +5,14 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 23 October 2026
 
+- **DS7 glossary drafted** (`tools/make_glossary.py` -> `data/processed/ds7/glossary.jsonl`): 160 question-answer
+  pairs on 61 topics, drafted by Claude at Cao Tri Tran's request (the team delegated it; the plan aimed for about
+  300 team-written pairs). Every number is read from settings.json and models/baseline.json when the script runs;
+  answers are checked for banned words and the limitation line. Marked 'draft for review'. DS7 now splits glossary
+  pairs by topic (paraphrases never cross splits), and lm.eval_explain scores glossary rows separately (wording,
+  ROUGE-L), since a correct glossary answer may contain numbers its question does not.
+- **torch.compile not tried** (decided 23 Oct): it could shorten pretraining, but the GPU queue already finishes
+  three days before M2 and DS2 is not ready earlier, so the gain does not move any deadline.
 - **Team decisions (23 Oct).** The team delegated every open A2 decision to Cao Tri Tran, who recorded:
   (1) CR-03: the baseline stays at |z| >= 5 and the sanity-rule failure is reported as a finding about
   behaviour change (`eval_sanity_addresses.csv`), not hidden by a cap; (2) the Assistant 3B change to

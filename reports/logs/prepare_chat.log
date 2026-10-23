@@ -1,0 +1,6 @@
+[chat] downloading data/train-00000-of-00004.parquet ...
+[chat] 50,000 conversations, 29,958,848 training tokens
+[chat] 100,000 conversations, 59,901,433 training tokens
+[chat] downloading data/train-00001-of-00004.parquet ...
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+[chat] 150,000 conversations, 89,864,505 training tokens

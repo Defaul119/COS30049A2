@@ -27,6 +27,13 @@ ENVIRONMENT
 - The A2 brief is in docs/brief/ (PDF + .txt); docs/a1/ holds the A1 LaTeX. The rest of _context/ (slides,
   A1 submission, notes) is still not on this PC (git-ignored; copy by USB/OneDrive, not the public repo).
 
+REMINDERS FOR CLAUDE (raise these with the user)
+- PACKAGING (user asked 23 Oct to be reminded later): DS4 final model is 263 MB (too big; pick a smaller one, e.g.
+  histGradientBoosting); DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text and NOTICE), SHA256SUMS;
+  download scripts + README note for data that cannot ship (Elliptic licence, DS5 4 GB); zip contents per brief.
+- Report: user wants only a content-structure outline for now (no LaTeX for the final report yet).
+- torch.compile: decided NOT to try (23 Oct): small gain, the GPU is not the deadline bottleneck, risk to a healthy run.
+
 RUNNING NOW (check with tasklist / logs)
 - ONE-SCREEN STATUS: python tools/status.py [--watch 60] (crawl kept/target/rate/ETA, supervisor, pretraining, GPU).
   Live views for the user (PowerShell): Get-Content C:\Users\ADMIN\COS30049A2\runs\text-150m\console.log -Wait -Tail 5
@@ -88,7 +95,7 @@ NEXT, IN ORDER
 4. Qwen: python -m lm.qlora --config configs/qwen3b_explain.json --bench, then without --bench;
    python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best.
 5. Still to write: address profiles, README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text
-   and NOTICE), report (LaTeX, 3,000 words). DS7 glossary pairs (data/processed/ds7/glossary.jsonl) are team-written.
+   and NOTICE), report (LaTeX, 3,000 words). DS7 glossary DRAFTED (160 pairs, tools/make_glossary.py; status 'draft for review': the user should skim it).
 6. DECIDED 23 Oct (the team delegated all open decisions to Cao Tri Tran): CR-03 option (a) (keep |z| >= 5,
    report the behaviour-change finding); Qwen-Instruct switch and roles accepted; explorerMethod = baseline.
    Still needs other people: the blind reviewer check (not anyone who built the scoring) and the signed
