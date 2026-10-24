@@ -1,0 +1,38 @@
+2026-10-24 18:15:32 INFO Step profiles started: C:\Users\ADMIN\COS30049A2\explorer\cli.py profiles
+2026-10-24 18:15:35 INFO Profiles: 25 DS1 and 4012 DS2 addresses
+2026-10-24 18:15:36 INFO Profiles k=3: silhouette 0.182, Davies-Bouldin 1.788
+2026-10-24 18:15:36 INFO Profiles k=4: silhouette 0.187, Davies-Bouldin 1.645
+2026-10-24 18:15:37 INFO Profiles k=5: silhouette 0.185, Davies-Bouldin 1.541
+2026-10-24 18:15:37 INFO Profiles k=6: silhouette 0.189, Davies-Bouldin 1.531
+2026-10-24 18:15:38 INFO Profiles k=7: silhouette 0.179, Davies-Bouldin 1.488
+2026-10-24 18:15:38 INFO Profiles k=8: silhouette 0.191, Davies-Bouldin 1.422
+2026-10-24 18:15:38 INFO Profile 0 (8 DS1, 323 DS2): steady
+2026-10-24 18:15:38 INFO Profile 1 (4 DS1, 750 DS2): typical on every feature
+2026-10-24 18:15:38 INFO Profile 2 (1 DS1, 533 DS2): mostly receives
+2026-10-24 18:15:38 INFO Profile 3 (1 DS1, 894 DS2): typical on every feature
+2026-10-24 18:15:38 INFO Profile 4 (1 DS1, 124 DS2): many transactions per day, steady
+2026-10-24 18:15:38 INFO Profile 5 (9 DS1, 852 DS2): typical on every feature
+2026-10-24 18:15:38 INFO Profile 6 (1 DS1, 175 DS2): irregular gaps
+2026-10-24 18:15:38 INFO Profile 7 (0 DS1, 361 DS2): large amounts, high fee rates
+2026-10-24 18:15:38 INFO Wrote profiles.csv, profiles_tuning.csv, profiles.csv, ds2_coverage.csv and models/profiles.joblib
+2026-10-24 18:15:38 INFO Step profiles finished in 6 s (exit 0)
+2026-10-24 18:15:52 INFO Step profiles started: C:\Users\ADMIN\COS30049A2\explorer\cli.py profiles
+2026-10-24 18:15:55 INFO Profiles: 25 DS1 and 4012 DS2 addresses
+2026-10-24 18:16:20 INFO Step profiles started: C:\Users\ADMIN\COS30049A2\explorer\cli.py profiles
+2026-10-24 18:16:23 INFO Profiles: 25 DS1 and 4012 DS2 addresses
+2026-10-24 18:16:23 INFO Profiles k=3: silhouette 0.182, Davies-Bouldin 1.788
+2026-10-24 18:16:24 INFO Profiles k=4: silhouette 0.187, Davies-Bouldin 1.645
+2026-10-24 18:16:24 INFO Profiles k=5: silhouette 0.185, Davies-Bouldin 1.541
+2026-10-24 18:16:25 INFO Profiles k=6: silhouette 0.189, Davies-Bouldin 1.531
+2026-10-24 18:16:25 INFO Profiles k=7: silhouette 0.179, Davies-Bouldin 1.488
+2026-10-24 18:16:26 INFO Profiles k=8: silhouette 0.191, Davies-Bouldin 1.422
+2026-10-24 18:16:26 INFO Profile 0 (8 DS1, 323 DS2): steady, long history, many outputs per transaction
+2026-10-24 18:16:26 INFO Profile 1 (4 DS1, 750 DS2): few outputs per transaction
+2026-10-24 18:16:26 INFO Profile 2 (1 DS1, 533 DS2): mostly receives, many outputs per transaction
+2026-10-24 18:16:26 INFO Profile 3 (1 DS1, 894 DS2): short history, bursty
+2026-10-24 18:16:26 INFO Profile 4 (1 DS1, 124 DS2): many transactions per day, steady, few outputs per transaction
+2026-10-24 18:16:26 INFO Profile 5 (9 DS1, 852 DS2): many outputs per transaction
+2026-10-24 18:16:26 INFO Profile 6 (1 DS1, 175 DS2): irregular gaps, long history
+2026-10-24 18:16:26 INFO Profile 7 (0 DS1, 361 DS2): high fee rates, large amounts, few outputs per transaction
+2026-10-24 18:16:26 INFO Wrote profiles.csv, profiles_tuning.csv, profiles.csv, ds2_coverage.csv and models/profiles.joblib
+2026-10-24 18:16:26 INFO Step profiles finished in 7 s (exit 0)

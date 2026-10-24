@@ -1,3 +1,18 @@
 2026-10-23 01:49:04 UTC [corpus] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2\python.exe -m explorer.cli corpus
 2026-10-23 02:02:46 UTC [corpus] Ctrl+C: the job stopped with exit code 130; not restarting
 2026-10-23 02:02:56 UTC [corpus] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2\python.exe -m explorer.cli corpus
+2026-10-24 09:36:04 UTC [corpus] CRASH: exit code 1 after 113588 s; restarting in 60 s
+2026-10-24 09:37:04 UTC [corpus] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2\python.exe -m explorer.cli corpus
+2026-10-24 09:37:10 UTC [corpus] CRASH: exit code 1 after 6 s; restarting in 60 s
+2026-10-24 09:38:10 UTC [corpus] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2\python.exe -m explorer.cli corpus
+2026-10-24 09:38:16 UTC [corpus] CRASH: exit code 1 after 6 s; restarting in 60 s
+2026-10-24 09:39:16 UTC [corpus] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2\python.exe -m explorer.cli corpus
+2026-10-24 09:39:21 UTC [corpus] exit code 1: 3 crashes within 120 s in a row; giving up
+2026-10-24 10:46:45 UTC [queue:prepare-tx] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.prepare_tx
+2026-10-24 10:47:00 UTC [queue:prepare-tx] exit code 0 after 16 s: finished; not restarting
+2026-10-24 10:47:00 UTC [queue:build-ds7] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m explorer.cli build-ds7
+2026-10-24 10:49:40 UTC [queue:build-ds7] exit code 0 after 160 s: finished; not restarting
+2026-10-24 10:49:40 UTC [queue:prepare-ds7-chat] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.prepare_chat --source jsonl --jsonl data/processed/ds7/train.jsonl --val-jsonl data/processed/ds7/val.jsonl --out data/ds7_chat
+2026-10-24 10:49:46 UTC [queue:prepare-ds7-chat] exit code 0 after 6 s: finished; not restarting
+2026-10-24 10:49:46 UTC [queue:eval-template] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.eval_explain --model template
+2026-10-24 10:49:47 UTC [queue:eval-template] exit code 0 after 1 s: finished; not restarting

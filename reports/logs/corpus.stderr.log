@@ -134,3 +134,75 @@ Traceback (most recent call last):
   File "C:\Users\ADMIN\miniforge3\envs\cos30049-a2\Lib\http\client.py", line 306, in _read_status
     raise RemoteDisconnected("Remote end closed connection without"
 http.client.RemoteDisconnected: Remote end closed connection without response
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 404, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 394, in main
+    code = args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 91, in cmd_corpus
+    return run_corpus(clients, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 330, in run_corpus
+    return write_outputs(visits, rows_path, interim_dir, out_dir, params, salt, ds1, tip, blocks, pool, excluded, order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 376, in write_outputs
+    h[key] += s[key]
+TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 404, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 394, in main
+    code = args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 91, in cmd_corpus
+    return run_corpus(clients, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 330, in run_corpus
+    return write_outputs(visits, rows_path, interim_dir, out_dir, params, salt, ds1, tip, blocks, pool, excluded, order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 376, in write_outputs
+    h[key] += s[key]
+TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 404, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 394, in main
+    code = args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 91, in cmd_corpus
+    return run_corpus(clients, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 330, in run_corpus
+    return write_outputs(visits, rows_path, interim_dir, out_dir, params, salt, ds1, tip, blocks, pool, excluded, order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 376, in write_outputs
+    h[key] += s[key]
+TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 404, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 394, in main
+    code = args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\cli.py", line 91, in cmd_corpus
+    return run_corpus(clients, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 330, in run_corpus
+    return write_outputs(visits, rows_path, interim_dir, out_dir, params, salt, ds1, tip, blocks, pool, excluded, order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\COS30049A2\explorer\corpus.py", line 376, in write_outputs
+    h[key] += s[key]
+TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'

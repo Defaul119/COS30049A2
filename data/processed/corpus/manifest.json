@@ -1,0 +1,157 @@
+{
+  "dataset": "DS2: Esplora crawl of address histories for TxGPT, compact rows with hashed ids",
+  "status": "complete; every check passed",
+  "built_utc": "2026-10-24T10:46:30+00:00",
+  "rule": {
+    "steps": [
+      "Read the tip height. Take 200 block heights spread evenly from tip - 52560 to tip - 100 (about the last 12 months).",
+      "From each block, take the output addresses of up to 4 pages of transactions; remove duplicates; remove every address in DS1's candidate pool (a superset of the DS1 addresses, so DS1 can never leak into TxGPT's training data).",
+      "Sort the pool, shuffle it with seed 30049, and visit candidates in that order.",
+      "Keep a candidate with 20-1000 confirmed transactions whose history passes every check. Stop once 4000 are kept (the minimum is 3000).",
+      "Worker threads finish in any order, so the last few kept addresses can differ between runs; the crawl may overshoot the target by up to the number of candidates in flight."
+    ],
+    "parameters": {
+      "seed": 30049,
+      "blockCount": 200,
+      "oldestBlockBack": 52560,
+      "newestBlockBack": 100,
+      "txPagesPerBlock": 4,
+      "minTx": 20,
+      "maxTx": 1000,
+      "targetAddresses": 4000,
+      "minimumAddresses": 3000
+    }
+  },
+  "privacy": "Addresses and txids appear only as salted SHA-256 prefixes. The salt (config/salt.txt) is not in the repository or the zip, so the ids cannot be linked back to addresses.",
+  "sources": {
+    "hosts": [
+      "https://blockstream.info/api + https://mempool.space/api",
+      "https://mempool.space/api"
+    ],
+    "requests": {
+      "https://blockstream.info/api + https://mempool.space/api": {
+        "requests": 1250,
+        "retries": 0,
+        "http_429": 0,
+        "http_5xx": 0,
+        "network_errors": 0
+      },
+      "https://mempool.space/api": {
+        "requests": 52744,
+        "retries": 825,
+        "http_429": 121,
+        "http_5xx": 0,
+        "network_errors": 810
+      }
+    },
+    "runs": 12,
+    "runs_without_error_counts": 1,
+    "pace": "at most one request start every 0.5 s per host, 8 workers per host"
+  },
+  "tip": 972617,
+  "blocks": {
+    "count": 200,
+    "heights": [
+      920057,
+      972517
+    ],
+    "time_utc": [
+      "2025-10-21T05:15:33+00:00",
+      "2026-10-21T18:30:40+00:00"
+    ]
+  },
+  "candidate_pool": {
+    "size": 49260,
+    "ds1_removed": 1533,
+    "visited": 9079,
+    "not_visited": 38648,
+    "by_script_type": {
+      "p2pkh": 10784,
+      "p2sh": 5100,
+      "v0_p2wpkh": 30024,
+      "v0_p2wsh": 1746,
+      "v1_p2tr": 1606
+    }
+  },
+  "visits": {
+    "reasons": {
+      "kept": "kept",
+      "too_few": "fewer confirmed transactions than the minimum",
+      "too_many": "more confirmed transactions than the maximum (busy services; a stated bias)",
+      "checks_failed": "fetched, but an automated check failed",
+      "fetch_error": "the API still returned an error after every retry"
+    },
+    "counts": {
+      "kept": 4012,
+      "too_few": 4422,
+      "too_many": 539,
+      "checks_failed": 0,
+      "fetch_error": 106
+    }
+  },
+  "totals": {
+    "addresses": 4012,
+    "rows": 898490,
+    "tx_per_address": {
+      "min": 20,
+      "median": 138.0,
+      "max": 997
+    },
+    "time_utc": [
+      "2015-11-08T01:47:51+00:00",
+      "2026-10-24T09:17:39+00:00"
+    ]
+  },
+  "columns": {
+    "addr_id": "first hex characters of SHA-256(salt + address); the salt is not shipped",
+    "txid_hash": "first hex characters of SHA-256(salt + txid); used only to remove duplicates",
+    "block_height": "confirmation height",
+    "block_time_utc": "block time, Unix seconds (UTC)",
+    "received_sats": "outputs paying the address, satoshis (explorer/amounts.py)",
+    "sent_sats": "inputs spent from the address, satoshis (explorer/amounts.py)",
+    "n_inputs": "inputs in the transaction",
+    "n_outputs": "outputs in the transaction",
+    "fee_sats": "transaction fee, satoshis",
+    "vsize_vb": "virtual size, vbytes = ceil(weight / 4)"
+  },
+  "checks": {
+    "all_passed": true,
+    "list": [
+      {
+        "name": "every kept address has rows",
+        "passed": true,
+        "detail": "4012 addresses with rows, 4012 kept"
+      },
+      {
+        "name": "row count equals tx_count for every address",
+        "passed": true,
+        "detail": "rows per addr_id against the visit's tx_count"
+      },
+      {
+        "name": "no duplicate txid_hash within an address",
+        "passed": true,
+        "detail": "(addr_id, txid_hash) pairs"
+      },
+      {
+        "name": "no DS1 address in DS2",
+        "passed": true,
+        "detail": "1533 pool addresses were in DS1's candidate pool and removed before the crawl"
+      },
+      {
+        "name": "no missing values",
+        "passed": true,
+        "detail": "0 missing cells"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "data/processed/corpus/ds2.parquet",
+      "bytes": 31948577,
+      "sha256": "26ba894acb16a95b8d6249ae4e20b69794d18f1ec16c828ffa44400ea825593d"
+    }
+  ],
+  "rebuild": [
+    "python -m explorer.cli corpus   # resumes; a fresh crawl needs data/interim/corpus/ removed and gives different addresses"
+  ]
+}
