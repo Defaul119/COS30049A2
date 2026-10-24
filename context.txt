@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-24 07:30 GMT+7)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-24 16:00 GMT+7)
 Start a new session by running python tools/status.py.
 =====================================================================================
 
@@ -13,6 +13,31 @@ USER PREFERENCES
   every claim checked against the data and the rubric before new features.
 - Shell: Git Bash heredocs mangle backslash escapes in Python source (\n became a real newline twice on 23 Oct).
   Write Python to a file with the Write tool, or use Edit, whenever the code contains backslashes.
+
+DIRECTION (user, 24 Oct 16:00) - read before planning any work
+- The tutor (Arthur Hoang) announced by Outlook that fine-tuning a public model is acceptable: training from
+  scratch is no longer an HD requirement (relaxes CR-06 decision 4; CHANGELOG 24 Oct). The user's goal is the best
+  working project when everything is put together, and what is most desirable academically.
+- So: NO more GPU time for the 152M model beyond the queue (no extra pretraining). Keep it: it is nearly done, and
+  it is the only language model that runs in the markers' CPU env (environment.yml has no transformers, peft or
+  bitsandbytes, so Qwen cannot run there).
+- Order the explanation writers by the measured DS7 results (guardrail pass rate, number faithfulness, human
+  check), not "from scratch first". Expected: GPU machine (A3 server) Qwen -> 152M -> template; CPU env 152M ->
+  template.
+- The marks left to win are integration, reproducibility and the report (core functionality 10, report 12,
+  README + comments + structure 6), not lower loss.
+- Integration gap (checked 24 Oct): explorer/predict.py still uses only template_explanation; the writer cascade
+  (explorer/assistant.explain) is not wired in. Wire it with writers loaded by what is available (GPU + adapter ->
+  Qwen; the 152M checkpoint; template always); use_assistant=False keeps the template-only default (plan risk 15).
+- Academic backbone of the report: time-safe splits, planted-transaction recall, the label check ("unusual" is not
+  "labelled illicit"), methods chosen by stated rules, every number from reports/tables. Plus one clean
+  152M-from-scratch vs Qwen-3B-QLoRA comparison on the same DS7 test and measures, framed as a trade-off (small,
+  runs anywhere vs better, needs a GPU), not "bigger wins".
+- Order: tonight the GPU queue (unattended) -> Sun-Tue the predict.py cascade, the two missing figures,
+  proof-checks, address profiles -> by Thu 29 Oct the writer order from DS7 results, results frozen (tag
+  results-v1) -> Fri-Sat 31 Oct README, DATA_CARD, MODEL_CARD, LICENSES, packaging -> from Mon 26 Oct in parallel
+  the report (outline first, as the user asked; data collection and processing is the biggest item, 5 marks) ->
+  Wed 4 Nov a teammate rebuilds everything from the README on a fresh clone, tag v1.0.
 
 ENVIRONMENT
 - Repo C:\Users\ADMIN\COS30049A2. Miniforge C:\Users\ADMIN\miniforge3; envs cos30049-a2 (CPU) and cos30049-a2-gpu
@@ -40,12 +65,12 @@ RUNNING NOW (check with tasklist / logs)
   Live views for the user (PowerShell): Get-Content C:\Users\ADMIN\COS30049A2\runs\text-150m\console.log -Wait -Tail 5
   and Get-Content C:\Users\ADMIN\COS30049A2\reports\logs\supervise.log -Wait -Tail 3 (Ctrl+C stops only the view).
 - Pretraining 152M (window "PRETRAINING", PID 1552): python -m lm.train --config configs/text_150m_pretrain.json;
-  runs\text-150m\console.log. Step 2,046/7,630 at 09:41 23 Oct, loss 3.54 (falling), ~11.5k tok/s,
-  ends about 21:00 Sat 24 Oct. NOT supervised (it predates tools/supervise.py; it resumes with the same command).
+  runs\text-150m\console.log. Step 6,897/7,630 at 15:50 24 Oct, validation loss 3.146 (falling ~0.005 per
+  200 steps; expected final ~3.13; Chinchilla's fit predicts 3.38 for this size and data), ~11.75k tok/s,
+  ends about 20:20 Sat 24 Oct. NOT supervised (it predates tools/supervise.py; it resumes with the same command).
 - DS2 crawl, SUPERVISED (window "DS2 CRAWL (supervised)"): python tools/supervise.py --name corpus --
   python -m explorer.cli corpus (cpu env). Logs: reports\logs\corpus.log, supervise.log. TARGET 4,000 (user,
-  23 Oct 09:00); 913 kept at 09:41. 2.9 kept/min this morning, 1.6 overnight -> 4,000 between about 03:00 and
-  18:00 Sat 24 Oct, either way before pretraining ends.
+  23 Oct 09:00); 3,874 kept at 15:50 24 Oct, ~1.7 kept/min -> 4,000 about 17:05 Sat 24 Oct.
   At 4,000 it writes data/processed/corpus/ds2.parquet and exits 0, and the supervisor stops too.
   It crashed at ~07:50 on 23 Oct (uncaught http.client.RemoteDisconnected; fixed in explorer/esplora.py) and sat
   dead until 08:35, which is why it is now supervised. After any restart the first minutes are slow: the addresses
@@ -86,6 +111,12 @@ DONE (committed)
   resume; three notebook notes corrected (selection reasoning, burst claim, gap buckets).
 
 NEXT, IN ORDER (pre-flight checked 24 Oct morning; see CHANGELOG 24 Oct for the fixes)
+QUEUED (24 Oct): A and B below run unattended as tools/run_queue.py --plan configs/queue_after_pretraining.json
+(window "GPU QUEUE", cos30049-a2-gpu): 25 steps; it waits for DS2's manifest and runs/text-150m/model.pt itself, and
+waits for the GPU to be free. State: reports/logs/queue_state_queue_after_pretraining.json; logs:
+reports/logs/queue/<step>.log and queue.log; tools/status.py shows it. Same command continues after a Ctrl+C or
+a power cut (finished steps are skipped; failed/skipped ones retried). A step that crashes 3 times fails, and
+only the steps that need it are skipped. Also re-runs the template eval on the new DS7 test split.
 A. CPU, as soon as DS2 stops itself at 4,000 (check ds2.parquet and data/processed/corpus/manifest.json exist):
    python -m lm.prepare_tx                        (~1 min; dry run on 2,866 addresses: 6.5M train tokens, 12% padding)
    python -m explorer.cli build-ds7               (~4 min; dry run: 10,160 pairs = 9,329 train / 446 val / 385 test)
@@ -121,5 +152,6 @@ WAITING ON THE USER / TEAM
   python -m explorer.cli reviewer-score --ratings ratings_<a>.csv ratings_<b>.csv.
 - Skim the glossary draft (tools/make_glossary.py); one manual DS1 transaction check on a block explorer (anyone).
 - Contribution form shares before signing. models/heist_best.joblib (263 MB) is git-ignored (packaging reminder).
-- Next for Claude when the user returns: README (A2 outline), then report content outline (no LaTeX), then the
-  proof-check of label check / reviewer scoring / predict outputs; raise packaging later.
+- Next for Claude when the user returns: follow DIRECTION (top): wire the writer cascade into predict.py, the two
+  missing figures, then README (A2 outline), report content outline (no LaTeX), the proof-check of label check /
+  reviewer scoring / predict outputs; raise packaging by Fri 30 Oct.

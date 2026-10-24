@@ -5,6 +5,20 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 24 October 2026
 
+**Fine-tuning a public model is acceptable (CR-06 decision 4 relaxed).** The tutor, Arthur Hoang, announced by
+Outlook that fine-tuning is acceptable, so training from scratch is no longer an HD requirement. The 152M model is
+kept (pretraining is nearly done, and it is the only language model that runs in the markers' CPU environment), but
+it gets no GPU time beyond the planned stages. The explanation writers will be ordered by their measured DS7
+results instead of "from scratch first"; the remaining effort goes to integration (`predict.py`), reproducibility
+and the report.
+
+**`tools/run_queue.py` (new) runs everything after pretraining unattended.** `configs/queue_after_pretraining.json`
+lists the 25 steps (DS2-dependent data builds, TxGPT's 9 runs and scoring, the DS1 evaluation, the 152M chat and
+explanation stages, Qwen, every explanation evaluation). Each step waits for the files it needs from outside the
+queue and for a free GPU, runs under `tools/supervise.py` (new `--max-restarts`, so one failing step cannot hold up
+the rest), and must leave its output files behind; finished steps are skipped on a restart. It also re-runs the
+template evaluation, since DS7's test split changes once DS2 is in. `tools/status.py` shows the queue.
+
 Pre-flight check of the next training stages (TxGPT, 152M chat and explanation, Qwen), before the GPU frees up.
 
 - **TxGPT read every planted transaction as "same block".** `explorer/inject.py` gives a planted row the previous

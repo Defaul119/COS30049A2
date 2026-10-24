@@ -87,6 +87,9 @@ and evaluation with accuracy, precision, recall, F1 and similar metrics. The bri
    `sec:assistant3b`; `lm/qlora.py`, `configs/qwen3b_explain.json`); it also serves as the chatbot.
    Changed from Llama 3.2 3B on 23 Oct at the user's request (not gated, no HF token); accepted by
    the team (23 Oct: the team delegated all open A2 decisions to Cao Tri Tran).
+   **Relaxed 24 Oct:** the tutor announced (Outlook) that fine-tuning a public model is acceptable, so
+   "from scratch" is no longer required; the 152M model stays (the only LM the CPU env can run) but gets no
+   more GPU time, and the writer order follows the measured DS7 results (context.txt, DIRECTION).
    **Roles (user, 23 Oct):** the 152M model only explains DS1 transactions; Qwen 3B is the general
    chatbot AND the second writer: `explorer.assistant.explain` tries 152M, then Qwen, then the template,
    each answer passing the code guardrail (numbers, limitation line, wording). The 3B model is extra and doesn't replace the

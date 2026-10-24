@@ -1,4 +1,4 @@
-"""One-screen status of the long jobs: the DS2 crawl, pretraining, the crawl's supervisor and the GPU.
+"""One-screen status of the long jobs: the DS2 crawl, pretraining, the crawl's supervisor, the queue and the GPU.
 
 Reads only files the jobs already write (and nvidia-smi, if present), so it never disturbs them.
 
@@ -13,7 +13,7 @@ import json
 import re
 import subprocess
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,6 +21,8 @@ VISITS = ROOT / "data" / "interim" / "corpus" / "visits.jsonl"
 CORPUS_LOG = ROOT / "reports" / "logs" / "corpus.log"
 SUPERVISE_LOG = ROOT / "reports" / "logs" / "supervise.log"
 TRAIN_LOG = ROOT / "runs" / "text-150m" / "console.log"
+QUEUE_LOGS = ROOT / "reports" / "logs" / "queue"
+QUEUE_STATE = ROOT / "reports" / "logs" / "queue_state_queue_after_pretraining.json"
 SETTINGS = ROOT / "config" / "settings.json"
 # The line each crawl run logs when it starts: "Resuming with N visited, K kept; target T".
 RESUMED = re.compile(r"^(\S+ \S+) INFO Resuming with \d+ visited, (\d+) kept")
@@ -81,6 +83,30 @@ def training() -> str:
     return text
 
 
+def queue() -> str:
+    """tools/run_queue.py: its last note, step counts, and the running step's latest output line."""
+    last = tail(QUEUE_LOGS / "queue.log")
+    if not last:
+        return "Queue: not started (python tools/run_queue.py --plan configs/queue_after_pretraining.json)"
+    text = f"Queue: {last[0]}"
+    state = json.loads(QUEUE_STATE.read_text(encoding="utf-8")) if QUEUE_STATE.exists() else {}
+    if state:
+        counts = {s: sum(v["status"] == s for v in state.values()) for s in ("done", "failed", "skipped")}
+        text += f"\n       {counts['done']} done, {counts['failed']} failed, {counts['skipped']} skipped"
+        running = [(name, v) for name, v in state.items() if v["status"] == "running"]
+        if running:
+            name, v = running[-1]
+            since = datetime.strptime(v["time"], "%Y-%m-%d %H:%M:%S UTC").replace(tzinfo=timezone.utc).astimezone()
+            text += f"; running {name} (step {v['position']}, since {since:%a %H:%M})"
+            line = tail(QUEUE_LOGS / f"{name}.log")
+            if line:
+                text += f"\n       {line[0][:160]}"
+        failed = [name for name, v in state.items() if v["status"] == "failed"]
+        if failed:
+            text += f"\n       FAILED: {', '.join(failed)} (reports/logs/queue/<name>.log)"
+    return text
+
+
 def gpu() -> str:
     try:
         out = subprocess.run(["nvidia-smi", "--query-gpu=temperature.gpu,clocks.sm,power.draw,utilization.gpu",
@@ -92,7 +118,7 @@ def gpu() -> str:
 
 def show() -> None:
     print(f"--- {datetime.now():%a %d %b %H:%M:%S} ---")
-    for part in (crawl(), supervisor(), training(), gpu()):
+    for part in (crawl(), supervisor(), training(), queue(), gpu()):
         print(part)
 
 

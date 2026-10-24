@@ -47,6 +47,14 @@ class SuperviseTests(unittest.TestCase):
             self.assertEqual(log.count("start:"), 3)
             self.assertIn("giving up", log)
 
+    def test_max_restarts_caps_slow_crashes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            # --min-runtime 0: no crash counts as quick, so only --max-restarts stops the loop.
+            code, log = supervise(Path(tmp), "import sys; sys.exit(2)", "--min-runtime", "0", "--max-restarts", "1")
+            self.assertEqual(code, 2)
+            self.assertEqual(log.count("start:"), 2)
+            self.assertIn("crashed after 1 restarts; giving up", log)
+
 
 if __name__ == "__main__":
     unittest.main()

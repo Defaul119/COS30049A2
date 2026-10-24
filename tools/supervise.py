@@ -9,7 +9,8 @@ What counts as a crash: any exit code except 0 (the job finished) and 130 (a del
 which explorer.cli returns). A Ctrl+C in the job's console reaches this supervisor too; it then
 waits for the job to stop cleanly and does not restart it. If the job crashes within
 `--min-runtime` seconds `--max-quick` times in a row (a bug at start-up, not a flaky network), the
-supervisor gives up instead of looping.
+supervisor gives up instead of looping. `--max-restarts` also caps slow crashes (tools/run_queue.py
+uses it, so one failing step cannot hold up the steps after it all night).
 
 Every start, exit and restart is appended to reports/logs/supervise.log.
 
@@ -43,6 +44,7 @@ def main() -> int:
     p.add_argument("--delay", type=float, default=60, help="seconds to wait before a restart")
     p.add_argument("--min-runtime", type=float, default=120, help="a run shorter than this counts as a quick crash")
     p.add_argument("--max-quick", type=int, default=3, help="give up after this many quick crashes in a row")
+    p.add_argument("--max-restarts", type=int, help="give up after this many restarts in all (default: never)")
     p.add_argument("--log", type=Path, default=LOG, help="where to append the start/exit/restart lines")
     p.add_argument("command", nargs=argparse.REMAINDER, help="the job, after --")
     args = p.parse_args()
@@ -50,7 +52,7 @@ def main() -> int:
     if not command:
         p.error("give the job's command after --")
 
-    quick = 0
+    quick, restarts = 0, 0
     while True:
         note(args.name, log=args.log, message=f"start: {' '.join(command)}")
         started = time.monotonic()
@@ -70,6 +72,10 @@ def main() -> int:
         if quick >= args.max_quick:
             note(args.name, log=args.log, message=f"exit code {code}: {quick} crashes within {args.min_runtime:.0f} s in a row; giving up")
             return code
+        if args.max_restarts is not None and restarts >= args.max_restarts:
+            note(args.name, log=args.log, message=f"exit code {code}: crashed after {restarts} restarts; giving up")
+            return code
+        restarts += 1
         note(args.name, log=args.log, message=f"CRASH: exit code {code} after {runtime:.0f} s; restarting in {args.delay:.0f} s")
         try:
             time.sleep(args.delay)
