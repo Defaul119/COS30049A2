@@ -369,11 +369,15 @@ def write_outputs(
     reasons = {r: sum(v["reason"] == r for v in visits.values()) for r in ["kept", *SKIP_REASONS]}
     runs = read_jsonl(interim_dir / "runs.jsonl")
     hosts: dict[str, dict[str, int]] = {}
+    partial_runs = 0
     for run in runs:
+        # The first run (22 Oct, an earlier client) recorded its requests but None for the other counts; those
+        # add nothing here, and the manifest says how many runs that was.
+        partial_runs += any(s.get(key) is None for s in run["hosts"].values() for key in s if key != "median_latency_ms")
         for host, s in run["hosts"].items():
             h = hosts.setdefault(host, {"requests": 0, "retries": 0, "http_429": 0, "http_5xx": 0, "network_errors": 0})
             for key in h:
-                h[key] += s[key]
+                h[key] += s.get(key) or 0
     enough = len(counts) >= params["minimumAddresses"]
     manifest = {
         "dataset": "DS2: Esplora crawl of address histories for TxGPT, compact rows with hashed ids",
@@ -401,6 +405,7 @@ def write_outputs(
         "privacy": "Addresses and txids appear only as salted SHA-256 prefixes. The salt (config/salt.txt) is "
                    "not in the repository or the zip, so the ids cannot be linked back to addresses.",
         "sources": {"hosts": list(hosts), "requests": hosts, "runs": len(runs),
+                    "runs_without_error_counts": partial_runs,
                     "pace": f"at most one request start every {SETTINGS['collection']['requestPauseSeconds']} s "
                             f"per host, {params['workersPerSource']} workers per host"},
         "tip": tip,

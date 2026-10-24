@@ -140,6 +140,19 @@ class CrawlTests(unittest.TestCase):
         self.assertEqual(sum(c.stats.requests for c in pool.clients), 0)
         pd.testing.assert_frame_equal(pd.read_parquet(self.dirs["out_dir"] / "ds2.parquet"), before)
 
+    def test_a_run_record_without_error_counts_still_gives_a_manifest(self):
+        # The real crawl's first run (22 Oct) recorded only its requests; the totals once crashed on its None counts.
+        self.dirs["interim_dir"].mkdir(parents=True)
+        early = {"started_utc": "x", "finished_utc": "y", "hosts": {"https://one.example/api": {
+            "requests": 5, "retries": None, "http_429": None, "http_5xx": None, "network_errors": None}}}
+        (self.dirs["interim_dir"] / "runs.jsonl").write_text(json.dumps(early) + "\n", encoding="utf-8")
+        code, pool = self.crawl(world())
+        self.assertEqual(code, 0)
+        sources = json.loads((self.dirs["out_dir"] / "manifest.json").read_text(encoding="utf-8"))["sources"]
+        self.assertEqual(sources["runs_without_error_counts"], 1)
+        self.assertEqual(sources["requests"]["https://one.example/api"]["requests"],
+                         5 + pool.clients[0].stats.requests)
+
 
 if __name__ == "__main__":
     unittest.main()
