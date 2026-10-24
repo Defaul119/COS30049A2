@@ -15,6 +15,13 @@ It is the most precise method but flags the fewest rows, so the baseline stays t
 significance tables and figures were re-run with TxGPT included. TxGPT is not in the sensitivity, walk-forward or
 DS2 checks: its scores are precomputed for DS1, and DS2 trained it.
 
+**The 152M Explorer Assistant finished its chat (DS6) and explanation (DS7) stages.** Final validation loss 1.441
+after the chat stage (1,526 steps) and 0.071 after the explanation stage (382 steps). On the DS7 test set (445
+scored prompts) its explanations keep every number in 99.8% of answers, always carry the limitation line, use no
+banned word, mention 99.2% of the flagged features and pass the guardrail 99.8% of the time (one answer falls back
+to the template); ROUGE-L against the template text is 0.683 (`assistant_eval.csv`). Its five glossary answers
+score ROUGE-L 0.085: as planned, it explains flags and Qwen 3B answers open questions.
+
 ## 24 October 2026
 
 **DS1 machine learning extended: calibrated ranges, a fused method, uncertainty, strength, time and DS2 (user,

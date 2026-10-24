@@ -132,8 +132,13 @@ RUNNING NOW (check with tasklist / logs)
 - PRETRAINING DONE 24 Oct 21:07: runs/text-150m/model.pt, 7,630 steps (2.0B tokens), final validation loss
   3.1305 (perplexity 22.9; Chinchilla's fit predicts 3.38 for this size and data).
 - Paused 22:11-22:34 24 Oct, resumed as PID 18336 (txgpt-l-s2 from step 1,601).
-- 25 Oct 00:18: 19 of 22 done; chat-152m (started 00:03) at step 104/1,526, 7.7k tok/s (below the 11.5k
-  measured earlier: the GPU is shared), ETA ~03:40, then explain-152m + eval-152m -> queue done ~04:30 Sun.
+- GPU QUEUE DONE 25 Oct 03:10: 22 of 22, 0 failed; the GPU is free. chat-152m 00:03-02:44 (1,526 steps, final
+  validation loss 1.441), explain-152m 02:44-03:04 (382 steps, 0.071), eval-152m 03:04-03:10 on the DS7 test
+  set (445 scored prompts): number faithfulness 0.998, guardrail pass 0.998 (1 of 445 falls back to the
+  template), limitation line 1.0, banned words 0, feature coverage 0.992, ROUGE-L vs the template 0.683; glossary
+  ROUGE-L 0.085 (5 prompts: the 152M model is weak at open questions, as planned: Qwen answers those).
+  Tables: assistant_eval.csv (template + text150m rows), assistant_eval_text150m.csv. models/assistant is NOT
+  updated yet: decide the writer order once the Kaggle Qwen row is in.
 - GPU QUEUE (window "GPU QUEUE", PID 18336 since 22:34; was 6564, restarted 21:21 WITHOUT Qwen steps, see KAGGLE): 22 steps, 5 done at
   21:22 (txgpt-s-s1 val 0.682); txgpt-m-s1 resumed from its Ctrl+C save. cmd window: conda activate
   cos30049-a2-gpu, set "PYTHONUTF8=1", python tools\run_queue.py --plan configs\queue_after_pretraining.json.

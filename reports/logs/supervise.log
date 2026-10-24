@@ -51,3 +51,8 @@
 2026-10-24 16:57:44 UTC [queue:evaluate] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m explorer.cli evaluate
 2026-10-24 17:03:11 UTC [queue:evaluate] exit code 0 after 327 s: finished; not restarting
 2026-10-24 17:03:11 UTC [queue:chat-152m] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/text_150m_chat.json
+2026-10-24 19:44:43 UTC [queue:chat-152m] exit code 0 after 9691 s: finished; not restarting
+2026-10-24 19:44:43 UTC [queue:explain-152m] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/text_150m_explain.json
+2026-10-24 20:04:20 UTC [queue:explain-152m] exit code 0 after 1177 s: finished; not restarting
+2026-10-24 20:04:20 UTC [queue:eval-152m] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.eval_explain --model text150m --checkpoint runs/text-150m-explain/model_best.pt
+2026-10-24 20:09:40 UTC [queue:eval-152m] exit code 0 after 320 s: finished; not restarting
