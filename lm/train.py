@@ -91,9 +91,16 @@ def to_device(t: torch.Tensor, device: torch.device) -> torch.Tensor:
 
 
 def save_atomic(obj: dict, path: Path) -> None:
-    """Write to a temporary file, then rename, so a crash mid-save never corrupts the old file."""
+    """Write to a temporary file, flush it to disk, then rename, so a crash mid-save never corrupts the old file.
+
+    The fsync matters for power cuts (24 Oct): without it the rename can reach the disk before the data does,
+    leaving a renamed file that is empty or zero-filled where the old checkpoint used to be.
+    """
     tmp = path.with_name(path.name + ".tmp")
-    torch.save(obj, tmp)
+    with open(tmp, "wb") as f:
+        torch.save(obj, f)
+        f.flush()
+        os.fsync(f.fileno())
     os.replace(tmp, path)
 
 

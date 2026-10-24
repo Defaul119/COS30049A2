@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-24 18:30 GMT+7)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-24 19:55 GMT+7)
 Start a new session by running python tools/status.py.
 =====================================================================================
 
@@ -65,16 +65,33 @@ REMINDERS FOR CLAUDE (raise these with the user)
 - Report: user wants only a content-structure outline for now (no LaTeX for the final report yet).
 - torch.compile: decided NOT to try (23 Oct): small gain, the GPU is not the deadline bottleneck, risk to a healthy run.
 
+INCIDENTS (user, 24 Oct: "put this in the context for it to be written on the report"; CHANGELOG 24 Oct has the
+full entry. Use in the report's reproducibility / robustness paragraph and the risk discussion.)
+- POWER CUT, Sat 24 Oct ~19:16 GMT+7: the PC was unplugged mid-pretraining (last console line 19:14:31 at step
+  7,447/7,630; rebooted 19:17). Lost: 28 optimizer steps (7,419 -> 7,447, 7.3M tokens, ~10 min of GPU time) plus
+  ~27 min idle before the restart. Nothing else lost: ckpt_last.pt (step 7,419, saved 19:05:57) and model_best.pt
+  (step 7,400) loaded with every tensor finite and the optimizer state present; all 85 files written since 17:30
+  (DS2 parquet 898,490 rows, DS7 splits, token files, tables, figures, code) parsed cleanly; git fsck clean;
+  queue state intact (4/25). Recovery = the same commands (resume design: atomic checkpoints, a queue that skips
+  finished steps). Hardening the same evening: fsync before every checkpoint rename (lm/train.py save_atomic,
+  tools/run_queue.py state), and the Qwen trainer's adapters are saved file-by-file atomically with the adapter
+  weights inside state.pt (lm/qlora.py save_adapter), because the Qwen run (~6 h tonight) used in-place saves.
+  Optional, user's call: BIOS "Restore on AC power loss" + auto-login would restart the PC, not the jobs; a UPS
+  is the real fix.
+
 RUNNING NOW (check with tasklist / logs)
 - ONE-SCREEN STATUS: python tools/status.py [--watch 60] (crawl kept/target/rate/ETA, supervisor, pretraining, GPU).
   Live views for the user (PowerShell): Get-Content C:\Users\ADMIN\COS30049A2\runs\text-150m\console.log -Wait -Tail 5
   and Get-Content C:\Users\ADMIN\COS30049A2\reports\logs\supervise.log -Wait -Tail 3 (Ctrl+C stops only the view).
-- Pretraining 152M (window "PRETRAINING", PID 1552): python -m lm.train --config configs/text_150m_pretrain.json;
-  runs\text-150m\console.log. Step 7,314/7,630 at 18:27 24 Oct (validation loss 3.146 at step 6,800; expected
-  final ~3.13; Chinchilla's fit predicts 3.38 for this size and data), ~11.5k tok/s, ends about 20:25-20:35
-  Sat 24 Oct. NOT supervised (it predates tools/supervise.py; it resumes with the same command).
-- GPU QUEUE (window "GPU QUEUE", PID 19992, restarted 18:06 with Qwen first): 4/25 done, waiting for
-  runs/text-150m/model.pt. Check ~20:45 that qwen-bench passed (reports/logs/queue/qwen-bench.log: tok/s, peak GB).
+- Pretraining 152M (window "PRETRAINING", PID 3832, restarted 19:43 after the power cut, see INCIDENTS):
+  cmd window: conda activate cos30049-a2-gpu, set "PYTHONUTF8=1",
+  python -m lm.train --config configs/text_150m_pretrain.json >> runs\text-150m\console.log 2>&1.
+  Step 7,437/7,630 at 19:50 24 Oct (best validation loss 3.133 at step 7,400; Chinchilla's fit predicts 3.38 for
+  this size and data), ~11.4k tok/s, ends about 21:05-21:10 Sat 24 Oct. NOT supervised (resumes with the same command).
+- GPU QUEUE (window "GPU QUEUE", PID 20312, restarted 19:43 after the power cut; Qwen first): 4/25 done, waiting
+  for runs/text-150m/model.pt. cmd window: conda activate cos30049-a2-gpu, set "PYTHONUTF8=1",
+  python tools\run_queue.py --plan configs\queue_after_pretraining.json. Check ~21:20 that qwen-bench passed
+  (reports/logs/queue/qwen-bench.log: tok/s, peak GB).
 - DS2 DONE 24 Oct 17:46: 4,012 addresses, 898,490 rows, every check passed (the final step had crashed at 16:36
   on the 22 Oct run's None error counts; fixed in 949692a). Queue steps A done 17:49: data/txgpt (9.06M train
   tokens, 3,611/201/200 addresses), DS7 10,160 pairs (9,149 train / 561 val / 450 test), data/ds7_chat (4.17M
@@ -137,7 +154,7 @@ A. CPU, as soon as DS2 stops itself at 4,000 (check ds2.parquet and data/process
    python -m explorer.cli build-ds7               (~4 min; dry run: 10,160 pairs = 9,329 train / 446 val / 385 test)
    python -m lm.prepare_chat --source jsonl --jsonl data/processed/ds7/train.jsonl --val-jsonl data/processed/ds7/val.jsonl --out data/ds7_chat
 B. GPU, after pretraining ends (~20:25 Sat), in this order (Qwen moved FIRST at 18:05 24 Oct, user's OK; queue
-   restarted as PID 19992 in a new "GPU QUEUE" window):
+   restarted as PID 19992 in a new "GPU QUEUE" window; PID 20312 since the 19:43 restart after the power cut):
    0. python -m lm.qlora --config configs/qwen3b_explain.json --bench, then without --bench (~6 h, an estimate:
       the bench gives the real speed); python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json
       --adapter runs/qwen3b-explain/adapter_best. If the bench fails, qwen-train/eval-qwen are skipped and the
@@ -174,7 +191,7 @@ WAITING ON THE USER / TEAM
   python -m explorer.cli reviewer-score --ratings ratings_<a>.csv ratings_<b>.csv.
 - Skim the glossary draft (tools/make_glossary.py); one manual DS1 transaction check on a block explorer (anyone).
 - Contribution form shares before signing. models/heist_best.joblib (263 MB) is git-ignored (packaging reminder).
-- Next for Claude: ~20:45 check qwen-bench (speed, memory) in the queue logs; then README (A2 outline), report
+- Next for Claude: ~21:20 check qwen-bench (speed, memory) in the queue logs; then README (A2 outline), report
   content outline (no LaTeX), the proof-check of label check / reviewer scoring / predict outputs; Sunday after
   the queue: read results (TxGPT size + plant recall; 152M vs Qwen on DS7 -> writerOrder), copy models into
   models/, run `figures`, commit DS2 + DS7 + results; raise packaging by Fri 30 Oct.

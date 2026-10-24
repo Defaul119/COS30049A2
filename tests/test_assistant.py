@@ -1,4 +1,4 @@
-"""Tests for the Assistant's guardrail, the DS7 phrasings, and the 3B model's reply masking (plan §9-10).
+"""Tests for the Assistant's guardrail, the DS7 phrasings, the 3B model's reply masking and adapter saves (plan §9-10).
 
 Run from the project root:  python -m pytest -q
 The masking test runs only where transformers is installed (the GPU environment) and the base
@@ -151,6 +151,31 @@ class QwenMaskTests(unittest.TestCase):
         self.assertLessEqual(len(ids), 200)
         self.assertIsNone(encode(tok, [{"role": "user", "content": "word " * 600},
                                        {"role": "assistant", "content": "x"}], 50))
+
+
+class SaveAdapterTests(unittest.TestCase):
+    def test_new_adapter_replaces_the_old_one_and_no_scratch_folder_is_left(self):
+        import tempfile
+        from pathlib import Path
+
+        from lm.qlora import save_adapter
+
+        class Stub:
+            """Writes what peft's save_pretrained writes, with a weights file that says which save it is."""
+            def __init__(self, version: str):
+                self.version = version
+
+            def save_pretrained(self, folder: Path) -> None:
+                folder.mkdir(parents=True)
+                (folder / "adapter_config.json").write_text("{}", encoding="utf-8")
+                (folder / "adapter_model.safetensors").write_text(self.version, encoding="utf-8")
+
+        with tempfile.TemporaryDirectory() as d:
+            target = Path(d) / "adapter"
+            save_adapter(Stub("one"), target)
+            save_adapter(Stub("two"), target)
+            self.assertEqual((target / "adapter_model.safetensors").read_text(encoding="utf-8"), "two")
+            self.assertEqual(sorted(p.name for p in Path(d).iterdir()), ["adapter"])
 
 
 class EvalGeneratorTests(unittest.TestCase):

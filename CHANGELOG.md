@@ -5,6 +5,23 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 24 October 2026
 
+**Power cut during pretraining; recovered with nothing lost but ten minutes of training.** At about 19:16 (GMT+7)
+the PC lost power with the 152M pretraining at step 7,447 of 7,630 (the last console line is at 19:14:31; the PC
+rebooted at 19:17). The resume design did its job: `ckpt_last.pt` (step 7,419, saved at 19:05:57, 30-minute
+interval) and `model_best.pt` (step 7,400, validation loss 3.133) both loaded with every tensor finite and the
+optimizer state intact, and the same command resumed at step 7,419 at 19:43. The cost was 28 optimizer steps
+(7.3M tokens, about 10 minutes of GPU time) plus 27 minutes with the GPU idle. Every file written since 17:30 (85
+files, among them DS2's 898,490 rows, the DS7 splits, the TxGPT and DS7 token files, the tables and the figures)
+was parsed back without error, `git fsck` found no corrupt objects, and the GPU queue's state (4 of 25 steps done)
+was intact, so the queue continued with the same command too. Two weaknesses were fixed the same evening, before
+the Qwen run: (1) a rename can reach the disk before the file's data does, so after a power cut an "atomic"
+checkpoint can still be empty; `lm.train.save_atomic` and the queue's state file now fsync before renaming;
+(2) `lm.qlora` overwrote its adapter folders in place and kept the adapter weights apart from `state.pt`, so a cut
+mid-save could have broken the resume of a 6-hour run. Adapters are now written to a scratch folder and moved over
+the old files one at a time (`save_adapter`), and `state.pt` carries its own copy of the adapter weights, so a
+resume always pairs the weights with the right step (checked with the CPU smoke run; new test in
+`tests/test_assistant.py`). A UPS would remove the risk; restoring power does not restart the jobs by itself.
+
 **Fine-tuning a public model is acceptable (CR-06 decision 4 relaxed).** The tutor, Arthur Hoang, announced by
 Outlook that fine-tuning is acceptable, so training from scratch is no longer an HD requirement. The 152M model is
 kept (pretraining is nearly done, and it is the only language model that runs in the markers' CPU environment), but

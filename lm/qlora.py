@@ -23,7 +23,7 @@ Usage (cos30049-a2-gpu environment):
 Files written to the run folder (out_dir):
     adapter/           latest LoRA adapter (resume point; or a later stage's init_adapter)
     adapter_best/      adapter with the lowest validation loss: the one to evaluate and ship
-    state.pt           optimizer, step and data order, for resuming
+    state.pt           adapter weights, optimizer, step and data order, for resuming
     log.jsonl          one line per step and per evaluation
     meta.json          base model and revision, data files with SHA-256, counts, speed and memory
 
@@ -37,7 +37,9 @@ import argparse
 import hashlib
 import json
 import math
+import os
 import random
+import shutil
 import time
 from pathlib import Path
 from typing import Any
@@ -242,6 +244,24 @@ def bench(model, optimizer, params: list, examples: list, cfg: dict[str, Any], p
     print("[bench] done; nothing saved. If peak memory is near the GPU's limit, lower micro_batch and raise grad_accum.")
 
 
+def save_adapter(model, path: Path) -> None:
+    """save_pretrained(path), but a crash or power cut mid-save leaves the previous adapter whole (24 Oct).
+
+    The adapter is written to a scratch folder and each file is flushed to disk, then moved over the old
+    one; each move is atomic. adapter_config.json is the same at every save, so a folder caught between
+    two moves is still a consistent adapter.
+    """
+    tmp = path.with_name(path.name + ".tmp")
+    shutil.rmtree(tmp, ignore_errors=True)
+    model.save_pretrained(tmp)
+    path.mkdir(parents=True, exist_ok=True)
+    for f in sorted(tmp.iterdir()):
+        with open(f, "r+b") as fh:  # Windows only flushes a file opened for writing
+            os.fsync(fh.fileno())
+        os.replace(f, path / f.name)
+    tmp.rmdir()
+
+
 def sha256(path: str) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
@@ -299,7 +319,10 @@ def main() -> None:
         from safetensors.torch import load_file
 
         state = torch.load(state_path, weights_only=False)
-        set_peft_model_state_dict(model, load_file(str(out / "adapter" / "adapter_model.safetensors")))
+        # state.pt carries its own copy of the adapter (one atomic file), so the weights always match the step;
+        # older state files without it fall back to the adapter folder.
+        set_peft_model_state_dict(model, state["adapter"] if "adapter" in state
+                                  else load_file(str(out / "adapter" / "adapter_model.safetensors")))
         optimizer.load_state_dict(state["optimizer"])
         step, epoch, cursor, best = state["step"], state["epoch"], state["cursor"], state["best"]
         rng.setstate(state["rng"])
@@ -307,10 +330,13 @@ def main() -> None:
         print(f"[qlora] resumed at step {step} (epoch {epoch}, batch {cursor}); best validation loss {best:.4f}", flush=True)
 
     def save(tag: str = "adapter") -> None:
-        model.save_pretrained(out / tag)
+        from peft import get_peft_model_state_dict
+
+        save_adapter(model, out / tag)
         if tag == "adapter":
-            save_atomic({"optimizer": optimizer.state_dict(), "step": step, "epoch": epoch, "cursor": cursor,
-                         "best": best, "rng": rng.getstate(), "epoch_batches": epoch_batches}, state_path)
+            save_atomic({"adapter": get_peft_model_state_dict(model), "optimizer": optimizer.state_dict(),
+                         "step": step, "epoch": epoch, "cursor": cursor, "best": best, "rng": rng.getstate(),
+                         "epoch_batches": epoch_batches}, state_path)
 
     meta = {"config": cfg, "smoke": args.smoke, "trainable_parameters": n_trainable, "train": train_stats,
             "val": val_stats, "retention": retention_stats,

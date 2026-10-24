@@ -136,7 +136,10 @@ def main() -> int:
         state[name] = {"status": status, "time": now(), "position": f"{names.index(name) + 1}/{len(names)}", **extra}
         state_path.parent.mkdir(parents=True, exist_ok=True)
         tmp = state_path.with_suffix(".tmp")
-        tmp.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+        with open(tmp, "w", encoding="utf-8") as f:
+            f.write(json.dumps(state, indent=2) + "\n")
+            f.flush()
+            os.fsync(f.fileno())  # on disk before the rename, so a power cut cannot leave an empty state file
         tmp.replace(state_path)
 
     if args.dry_run:
