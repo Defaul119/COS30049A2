@@ -75,7 +75,8 @@ class RunQueueTests(unittest.TestCase):
                                  "--state", str(Path(tempfile.gettempdir()) / "no-such-queue-state.json")],
                                 capture_output=True, text=True, timeout=60)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(len(result.stdout.splitlines()), 25)
+        steps = json.loads(plan.read_text(encoding="utf-8"))["steps"]
+        self.assertEqual(len(result.stdout.splitlines()), len(steps))  # one line per step
 
 
 if __name__ == "__main__":

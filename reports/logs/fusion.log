@@ -1,0 +1,43 @@
+2026-10-24 20:19:49 INFO Step fusion started: C:\Users\ADMIN\COS30049A2\explorer\cli.py fusion
+2026-10-24 20:19:52 INFO Flag budget: 0.1043, the flag rate of explorerMethod (baseline) on the real evaluation period
+2026-10-24 20:20:06 INFO baseline + regression: multipliers [np.float64(1.1), np.float64(3.0)] -> tuning mean recall 0.665 (spike 0.78, burst 0.42, dormant 0.79), flag rate 0.1043
+2026-10-24 20:20:22 INFO baseline + isolation_forest: multipliers [np.float64(1.0), np.float64(1.0)] -> tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043
+2026-10-24 20:20:36 INFO baseline + kmeans: multipliers [np.float64(1.0), np.float64(1.0)] -> tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043
+2026-10-24 20:20:52 INFO baseline + lof: multipliers [np.float64(1.0), np.float64(3.0)] -> tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043
+2026-10-24 20:21:08 INFO regression + isolation_forest: multipliers [np.float64(2.0), np.float64(1.0)] -> tuning mean recall 0.609 (spike 0.81, burst 0.47, dormant 0.54), flag rate 0.0912
+2026-10-24 20:21:08 INFO Chose baseline + regression with multipliers {'baseline': 1.1, 'regression': 3.0} -> models/fusion.joblib; wrote C:\Users\ADMIN\COS30049A2\reports\tables\tuning_fusion.csv
+2026-10-24 20:21:08 INFO Step fusion finished in 78 s (exit 0)
+2026-10-24 20:21:46 INFO Step fusion started: C:\Users\ADMIN\COS30049A2\explorer\cli.py fusion
+2026-10-24 20:21:49 INFO Flag budget: 0.1043, the flag rate of explorerMethod (baseline) on the real evaluation period
+2026-10-24 20:21:51 INFO Reference baseline alone: best within the budget 0.649 (multiplier 1.0, flag rate 0.1043)
+2026-10-24 20:21:53 INFO Reference regression alone: best within the budget 0.505 (multiplier 1.75, flag rate 0.0938)
+2026-10-24 20:21:56 INFO Reference isolation_forest alone: best within the budget 0.604 (multiplier 0.9, flag rate 0.0594)
+2026-10-24 20:22:18 INFO baseline + regression: multipliers [np.float64(1.1), np.float64(3.0)] -> tuning mean recall 0.665 (spike 0.78, burst 0.42, dormant 0.79), flag rate 0.1043
+2026-10-24 20:22:41 INFO baseline + isolation_forest: multipliers [np.float64(1.1), np.float64(0.9)] -> tuning mean recall 0.658 (spike 0.80, burst 0.32, dormant 0.85), flag rate 0.0978
+2026-10-24 20:23:16 INFO baseline + kmeans: multipliers [np.float64(1.0), np.float64(0.8)] -> tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043
+2026-10-24 20:23:48 INFO baseline + lof: multipliers [np.float64(1.0), np.float64(3.0)] -> tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043
+2026-10-24 20:24:23 INFO regression + isolation_forest: multipliers [np.float64(2.5), np.float64(0.9)] -> tuning mean recall 0.681 (spike 0.82, burst 0.43, dormant 0.79), flag rate 0.0864
+2026-10-24 20:24:24 INFO Chose regression + isolation_forest with multipliers {'regression': 2.5, 'isolation_forest': 0.9} -> models/fusion.joblib; wrote C:\Users\ADMIN\COS30049A2\reports\tables\tuning_fusion.csv
+2026-10-24 20:24:24 INFO Step fusion finished in 158 s (exit 0)
+2026-10-24 20:33:43 INFO Step fusion started: C:\Users\ADMIN\COS30049A2\explorer\cli.py fusion
+2026-10-24 20:33:45 INFO Flag budget: 0.1043, the flag rate of explorerMethod (baseline) on the real evaluation period
+2026-10-24 20:33:47 INFO Reference baseline alone: best within the budget 0.649 (multiplier 1.0, flag rate 0.1043)
+2026-10-24 20:33:50 INFO Reference regression alone: best within the budget 0.505 (multiplier 1.75, flag rate 0.0938)
+2026-10-24 20:33:55 INFO Reference isolation_forest alone: best within the budget 0.604 (multiplier 0.9, flag rate 0.0594)
+2026-10-24 20:36:36 INFO baseline + regression [1.1, 3.0]: tuning mean recall 0.665 (spike 0.78, burst 0.42, dormant 0.79), flag rate 0.1043, stability 0.89
+2026-10-24 20:38:29 INFO baseline + regression [1.3, 2.5]: tuning mean recall 0.664 (spike 0.78, burst 0.44, dormant 0.78), flag rate 0.1021, stability 0.81
+2026-10-24 20:40:22 INFO baseline + regression [1.2, 3.0]: tuning mean recall 0.653 (spike 0.78, burst 0.41, dormant 0.78), flag rate 0.1017, stability 0.88
+2026-10-24 20:41:31 INFO baseline + isolation_forest [1.1, 0.9]: tuning mean recall 0.658 (spike 0.80, burst 0.32, dormant 0.85), flag rate 0.0978, stability 1.00
+2026-10-24 20:42:05 INFO baseline + isolation_forest [1.2, 0.9]: tuning mean recall 0.653 (spike 0.80, burst 0.32, dormant 0.85), flag rate 0.0952, stability 1.00
+2026-10-24 20:42:34 INFO baseline + isolation_forest [1.0, 1.0]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-24 20:43:06 INFO baseline + kmeans [1.0, 0.8]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-24 20:43:08 INFO baseline + kmeans [1.0, 0.9]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-24 20:43:11 INFO baseline + kmeans [1.0, 1.0]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-24 20:43:52 INFO baseline + lof [1.0, 3.0]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-24 20:43:59 INFO baseline + lof [1.0, 4.0]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-24 20:44:05 INFO baseline + lof [1.0, 2.5]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-24 20:47:11 INFO regression + isolation_forest [2.5, 0.9]: tuning mean recall 0.681 (spike 0.82, burst 0.43, dormant 0.79), flag rate 0.0864, stability 0.61
+2026-10-24 20:49:37 INFO regression + isolation_forest [3.0, 0.9]: tuning mean recall 0.661 (spike 0.81, burst 0.38, dormant 0.79), flag rate 0.0803, stability 0.61
+2026-10-24 20:52:05 INFO regression + isolation_forest [4.0, 0.9]: tuning mean recall 0.636 (spike 0.79, burst 0.32, dormant 0.79), flag rate 0.0716, stability 0.59
+2026-10-24 20:52:05 INFO Chose baseline + regression with multipliers {'baseline': 1.1, 'regression': 3.0} (highest mean tuning recall within the flag budget among stable configurations (the explorerMethod's real evaluation flag rate is the budget; ties by PR-AUC; across settings.fusion.candidates)) -> models/fusion.joblib; wrote C:\Users\ADMIN\COS30049A2\reports\tables\tuning_fusion.csv
+2026-10-24 20:52:05 INFO Step fusion finished in 1103 s (exit 0)

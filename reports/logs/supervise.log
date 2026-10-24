@@ -16,3 +16,8 @@
 2026-10-24 10:49:46 UTC [queue:prepare-ds7-chat] exit code 0 after 6 s: finished; not restarting
 2026-10-24 10:49:46 UTC [queue:eval-template] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.eval_explain --model template
 2026-10-24 10:49:47 UTC [queue:eval-template] exit code 0 after 1 s: finished; not restarting
+2026-10-24 14:07:41 UTC [queue:txgpt-s-s1] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/txgpt_s.json --seed 1
+2026-10-24 14:14:03 UTC [queue:txgpt-s-s1] exit code 0 after 382 s: finished; not restarting
+2026-10-24 14:14:04 UTC [queue:txgpt-m-s1] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/txgpt_m.json --seed 1
+2026-10-24 14:21:34 UTC [queue:txgpt-m-s1] Ctrl+C: the job stopped with exit code 0; not restarting
+2026-10-24 14:21:51 UTC [queue:txgpt-m-s1] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/txgpt_m.json --seed 1

@@ -1,0 +1,4 @@
+2026-10-24 21:09:08 INFO Step ds2-check started: C:\Users\ADMIN\COS30049A2\explorer\cli.py ds2-check
+2026-10-24 21:10:56 INFO DS2: 2933 addresses meet DS1's main rule; 827291 transactions; periods {'fit': 549071, 'eval': 237705, 'history': 40515}
+2026-10-24 21:16:42 INFO seed 30049: 3000 plants on 1583 addresses
+2026-10-24 21:22:26 INFO seed 30050: 3000 plants on 1583 addresses

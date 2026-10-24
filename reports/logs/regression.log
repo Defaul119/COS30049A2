@@ -9,3 +9,14 @@
 2026-10-23 00:38:20 INFO gap: chose histGradientBoosting (validation MAE 0.2033); 90% range coverage 0.787
 2026-10-23 00:38:20 INFO Wrote tuning_regression.csv, regression_results.csv, models/regression.joblib and regression_interval.joblib
 2026-10-23 00:38:20 INFO Step regression finished in 48 s (exit 0)
+2026-10-24 20:16:09 INFO Step regression started: C:\Users\ADMIN\COS30049A2\explorer\cli.py regression
+2026-10-24 20:16:11 INFO size / ridge: best validation MAE 0.1513 with {'alpha': 0.001} (naive 0.1591)
+2026-10-24 20:16:25 INFO size / randomForest: best validation MAE 0.1498 with {'max_depth': 10, 'max_features': 1.0, 'min_samples_leaf': 20, 'n_estimators': 300} (naive 0.1591)
+2026-10-24 20:16:29 INFO size / histGradientBoosting: best validation MAE 0.1678 with {'l2_regularization': 1, 'learning_rate': 0.03, 'max_leaf_nodes': 63} (naive 0.1591)
+2026-10-24 20:16:35 INFO size: chose randomForest (validation MAE 0.1498); range coverage raw -> conformal: 90% 0.897 -> 0.897, 98% 0.973 -> 0.988
+2026-10-24 20:16:35 INFO gap / ridge: best validation MAE 0.3158 with {'alpha': 0.001} (naive 0.5169)
+2026-10-24 20:16:50 INFO gap / randomForest: best validation MAE 0.2067 with {'max_depth': 20, 'max_features': 1.0, 'min_samples_leaf': 5, 'n_estimators': 300} (naive 0.5169)
+2026-10-24 20:16:56 INFO gap / histGradientBoosting: best validation MAE 0.2033 with {'l2_regularization': 0, 'learning_rate': 0.1, 'max_leaf_nodes': 63} (naive 0.5169)
+2026-10-24 20:17:05 INFO gap: chose histGradientBoosting (validation MAE 0.2033); range coverage raw -> conformal: 90% 0.787 -> 0.894, 98% 0.894 -> 0.976
+2026-10-24 20:17:05 INFO Wrote tuning_regression.csv, regression_results.csv, models/regression.joblib and regression_interval.joblib
+2026-10-24 20:17:05 INFO Step regression finished in 56 s (exit 0)

@@ -1,0 +1,43 @@
+2026-10-24 21:00:00 INFO Step sensitivity started: C:\Users\ADMIN\COS30049A2\explorer\cli.py sensitivity
+2026-10-24 21:00:09 INFO spike 2x: 250 plants; baseline 0.17, isolation_forest 0.07, lof 0.04, kmeans 0.04, dbscan 0.08, regression 0.76, regression_interval 0.21, fusion 0.34
+2026-10-24 21:00:23 INFO spike 3x: 250 plants; baseline 0.36, isolation_forest 0.09, lof 0.07, kmeans 0.00, dbscan 0.12, regression 0.81, regression_interval 0.25, fusion 0.45
+2026-10-24 21:00:41 INFO spike 5x: 250 plants; baseline 0.63, isolation_forest 0.34, lof 0.11, kmeans 0.40, dbscan 0.21, regression 0.84, regression_interval 0.37, fusion 0.64
+2026-10-24 21:01:05 INFO spike 10x: 250 plants; baseline 0.74, isolation_forest 0.60, lof 0.08, kmeans 0.62, dbscan 0.38, regression 0.88, regression_interval 0.46, fusion 0.72
+2026-10-24 21:01:19 INFO spike 20x: 250 plants; baseline 0.81, isolation_forest 0.67, lof 0.08, kmeans 0.68, dbscan 0.46, regression 0.96, regression_interval 0.67, fusion 0.78
+2026-10-24 21:01:33 INFO spike 50x: 250 plants; baseline 0.92, isolation_forest 0.78, lof 0.61, kmeans 0.76, dbscan 0.71, regression 0.99, regression_interval 0.88, fusion 0.90
+2026-10-24 21:01:49 INFO burst 3 in 24 h: 250 plants; baseline 0.30, isolation_forest 0.07, lof 0.08, kmeans 0.04, dbscan 0.09, regression 0.71, regression_interval 0.16, fusion 0.38
+2026-10-24 21:02:04 INFO burst 5 in 24 h: 250 plants; baseline 0.31, isolation_forest 0.08, lof 0.08, kmeans 0.05, dbscan 0.08, regression 0.69, regression_interval 0.18, fusion 0.40
+2026-10-24 21:02:20 INFO burst 10 in 24 h: 250 plants; baseline 0.38, isolation_forest 0.12, lof 0.07, kmeans 0.05, dbscan 0.09, regression 0.75, regression_interval 0.28, fusion 0.49
+2026-10-24 21:02:37 INFO burst 20 in 24 h: 250 plants; baseline 0.42, isolation_forest 0.16, lof 0.10, kmeans 0.11, dbscan 0.14, regression 0.76, regression_interval 0.31, fusion 0.55
+2026-10-24 21:02:51 INFO dormant 7-14 days: 250 plants; baseline 0.69, isolation_forest 0.34, lof 0.56, kmeans 0.48, dbscan 0.52, regression 0.23, regression_interval 0.04, fusion 0.62
+2026-10-24 21:03:06 INFO dormant 14-30 days: 250 plants; baseline 0.79, isolation_forest 0.42, lof 0.64, kmeans 0.53, dbscan 0.58, regression 0.44, regression_interval 0.16, fusion 0.79
+2026-10-24 21:03:21 INFO dormant 30-60 days: 250 plants; baseline 0.83, isolation_forest 0.48, lof 0.74, kmeans 0.67, dbscan 0.67, regression 0.39, regression_interval 0.04, fusion 0.82
+2026-10-24 21:03:35 INFO dormant 60-120 days: 250 plants; baseline 0.84, isolation_forest 0.56, lof 0.81, kmeans 0.67, dbscan 0.74, regression 0.39, regression_interval 0.06, fusion 0.84
+2026-10-24 21:03:50 INFO dormant 120-240 days: 250 plants; baseline 0.84, isolation_forest 0.56, lof 0.81, kmeans 0.67, dbscan 0.74, regression 0.85, regression_interval 0.76, fusion 0.85
+2026-10-24 21:04:04 INFO dormant 240-480 days: 250 plants; baseline 0.84, isolation_forest 0.56, lof 0.82, kmeans 0.68, dbscan 0.78, regression 1.00, regression_interval 1.00, fusion 0.87
+2026-10-24 21:04:04 INFO Wrote C:\Users\ADMIN\COS30049A2\reports\tables\eval_sensitivity.csv
+2026-10-24 21:04:04 INFO check baseline spike at the default strength: 0.744 here, 0.744 in eval_injection.csv
+2026-10-24 21:04:04 INFO check isolation_forest spike at the default strength: 0.600 here, 0.600 in eval_injection.csv
+2026-10-24 21:04:04 INFO check lof spike at the default strength: 0.076 here, 0.076 in eval_injection.csv
+2026-10-24 21:04:04 INFO check kmeans spike at the default strength: 0.620 here, 0.620 in eval_injection.csv
+2026-10-24 21:04:04 INFO check dbscan spike at the default strength: 0.384 here, 0.384 in eval_injection.csv
+2026-10-24 21:04:04 INFO check regression spike at the default strength: 0.880 here, 0.880 in eval_injection.csv
+2026-10-24 21:04:04 INFO check regression_interval spike at the default strength: 0.460 here, 0.460 in eval_injection.csv
+2026-10-24 21:04:04 INFO check fusion spike at the default strength: 0.724 here, 0.724 in eval_injection.csv
+2026-10-24 21:04:04 INFO check baseline burst at the default strength: 0.381 here, 0.381 in eval_injection.csv
+2026-10-24 21:04:04 INFO check isolation_forest burst at the default strength: 0.122 here, 0.122 in eval_injection.csv
+2026-10-24 21:04:04 INFO check lof burst at the default strength: 0.072 here, 0.072 in eval_injection.csv
+2026-10-24 21:04:04 INFO check kmeans burst at the default strength: 0.046 here, 0.046 in eval_injection.csv
+2026-10-24 21:04:04 INFO check dbscan burst at the default strength: 0.093 here, 0.093 in eval_injection.csv
+2026-10-24 21:04:04 INFO check regression burst at the default strength: 0.752 here, 0.752 in eval_injection.csv
+2026-10-24 21:04:04 INFO check regression_interval burst at the default strength: 0.280 here, 0.280 in eval_injection.csv
+2026-10-24 21:04:04 INFO check fusion burst at the default strength: 0.493 here, 0.493 in eval_injection.csv
+2026-10-24 21:04:04 INFO check baseline dormant at the default strength: 0.840 here, 0.840 in eval_injection.csv
+2026-10-24 21:04:04 INFO check isolation_forest dormant at the default strength: 0.564 here, 0.564 in eval_injection.csv
+2026-10-24 21:04:04 INFO check lof dormant at the default strength: 0.812 here, 0.812 in eval_injection.csv
+2026-10-24 21:04:04 INFO check kmeans dormant at the default strength: 0.672 here, 0.672 in eval_injection.csv
+2026-10-24 21:04:04 INFO check dbscan dormant at the default strength: 0.740 here, 0.740 in eval_injection.csv
+2026-10-24 21:04:04 INFO check regression dormant at the default strength: 0.388 here, 0.388 in eval_injection.csv
+2026-10-24 21:04:04 INFO check regression_interval dormant at the default strength: 0.064 here, 0.064 in eval_injection.csv
+2026-10-24 21:04:04 INFO check fusion dormant at the default strength: 0.836 here, 0.836 in eval_injection.csv
+2026-10-24 21:04:04 INFO Step sensitivity finished in 244 s (exit 0)

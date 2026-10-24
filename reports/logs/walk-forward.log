@@ -1,0 +1,7 @@
+2026-10-24 21:04:05 INFO Step walk-forward started: C:\Users\ADMIN\COS30049A2\explorer\cli.py walk-forward
+2026-10-24 21:05:20 INFO fit fraction 0.50: 3793 fit rows, 3806 evaluation rows, 750 plants; regression 0.71, fusion 0.71, baseline 0.65, dbscan 0.45, kmeans 0.44, isolation_forest 0.42, lof 0.33, regression_interval 0.21
+2026-10-24 21:06:33 INFO fit fraction 0.60: 4548 fit rows, 3051 evaluation rows, 750 plants; regression 0.70, fusion 0.70, baseline 0.66, kmeans 0.42, dbscan 0.41, isolation_forest 0.39, lof 0.32, regression_interval 0.25
+2026-10-24 21:07:47 INFO fit fraction 0.70: 5308 fit rows, 2291 evaluation rows, 750 plants; fusion 0.68, regression 0.67, baseline 0.66, kmeans 0.45, isolation_forest 0.43, dbscan 0.41, lof 0.32, regression_interval 0.28
+2026-10-24 21:09:06 INFO fit fraction 0.80: 6071 fit rows, 1528 evaluation rows, 750 plants; regression 0.68, fusion 0.68, baseline 0.65, kmeans 0.42, isolation_forest 0.42, dbscan 0.40, lof 0.33, regression_interval 0.27
+2026-10-24 21:09:06 INFO Wrote C:\Users\ADMIN\COS30049A2\reports\tables\eval_walkforward.csv
+2026-10-24 21:09:06 INFO Step walk-forward finished in 302 s (exit 0)

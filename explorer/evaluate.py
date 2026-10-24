@@ -39,6 +39,7 @@ from sklearn.base import clone
 
 from .baseline import FEATURE_FILES, MODELS_DIR, TABLES_DIR, Baseline, load_copies
 from .clustering import DBSCANMethod, KMeansMethod
+from .fusion import FusionMethod
 from .methods import (
     Method, fit_rows, flags, jaccard, pattern_recalls, plant_metrics, real_metrics, stability, top_k,
 )
@@ -81,7 +82,12 @@ def refit(name: str, method: Method, rows: pd.DataFrame, seed: int) -> Method:
             y = targets(rows)[t]
             keep = y.notna()
             quantiles[t] = tuple(reseeded(m, seed).fit(design(rows[keep]), y[keep]) for m in pair)
-        return RegressionIntervalMethod(quantiles)
+        # The conformal margins are kept: a refit measures how much the ranges move, not a new calibration.
+        return RegressionIntervalMethod(quantiles, getattr(method, "margins", {}))
+    if isinstance(method, FusionMethod):
+        # Each fitted component is refitted (fixed ones stay); the tuned multipliers are part of the configuration.
+        parts = {n: m if n in FIXED else refit(n, m, rows, seed) for n, m in method.components.items()}
+        return FusionMethod(parts, method.multipliers)
     raise ValueError(f"no refit rule for {name}")
 
 
@@ -139,14 +145,15 @@ def ablation(methods: dict[str, Method]) -> pd.DataFrame:
     """Each method on the A1-as-written features vs the refined ones, on the reporting plants.
 
     Fitted methods are refitted with the chosen configuration on the as-written fit period;
-    regression and TxGPT have no as-written counterpart (A1 did not define them)."""
+    regression, TxGPT and the fusion (which contains a regression) have no as-written counterpart
+    (A1 did not define them)."""
     rows = []
     seed = SETTINGS["model"]["seed"]
     for variant in FEATURE_FILES:
         features = pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES[variant])
         copies = load_copies(variant, "reporting")
         for name, method in methods.items():
-            if name.startswith("regression") or name == "txgpt_method":
+            if name.startswith("regression") or name in ("txgpt_method", "fusion"):
                 continue
             m = method if (name == "baseline" or variant == "refined") else refit(name, method, fit_rows(features), seed)
             if name == "baseline" and variant == "as_written":

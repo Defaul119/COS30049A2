@@ -79,6 +79,25 @@ full entry. Use in the report's reproducibility / robustness paragraph and the r
   Optional, user's call: BIOS "Restore on AC power loss" + auto-login would restart the PC, not the jobs; a UPS
   is the real fix.
 
+DS1 ML EXTENSIONS (user, 24 Oct 20:10: "the rubric is more on ML ... best I can do and beyond"; ML first, LLM extra)
+- New steps (explorer.cli; all in `all`, settings.json sections of the same names; tests/test_extensions.py):
+  regression conformal ranges (CQR, regression.conformal) -> regression_results.csv (raw vs conformal coverage,
+  per-address min/median/max); fusion (explorer/fusion.py: two methods, one flag at the explorerMethod's flag
+  budget; tuning_fusion.csv + models/fusion.joblib; stability-gated like outliers.py) -> joins saved_methods,
+  scores, evaluate, explainabilityOrder (after regression), METHOD_NAMES, dark slate colour;
+  significance (address-level cluster bootstrap, eval_significance.csv, eval_plant_hits.csv);
+  sensitivity (recall vs plant strength, eval_sensitivity.csv; checks the default strength reproduces
+  eval_injection.csv); walk-forward (fit fractions 0.5-0.8, refit saved configs, eval_walkforward.csv);
+  ds2-check (frozen DS1 methods on the 2,933 DS2 histories meeting DS1's main rule, 1,000 plants per pattern per
+  reporting seed, eval_ds2.csv); 6 figures (eval_conformal, eval_fusion_frontier, eval_significance,
+  eval_sensitivity, eval_walkforward, eval_ds2_check).
+- Run order: regression -> fusion -> scores -> evaluate -> significance -> sensitivity -> walk-forward ->
+  ds2-check -> figures. Runner: scratchpad run_ds1_ext.ps1 (BelowNormal priority so training keeps the CPU;
+  CPU jobs at normal priority cut pretraining from 11.5k to 9.5k tok/s on 24 Oct).
+- AFTER THE GPU QUEUE's evaluate (TxGPT method added): re-run fusion (if txgpt_method should be a candidate),
+  significance and figures so TxGPT appears in the intervals; sensitivity / walk-forward / ds2-check exclude
+  TxGPT by design (PRECOMPUTED_ONLY; DS2 trained it).
+
 KAGGLE (user, 24 Oct 20:20: "pop that fine tune of the qwen onto Kaggle")
 - The Qwen 3B fine-tune moves to Kaggle: kaggle/qwen3b_explain.ipynb (pinned to commit ef3a158; clones the public
   repo, pip-installs the environment-gpu.yml pins, rebuilds the DS6 chat subset and asserts every data file's
@@ -86,28 +105,32 @@ KAGGLE (user, 24 Oct 20:20: "pop that fine tune of the qwen onto Kaggle")
   eval on DS7 test, writes kaggle_run.json). Settings: GPU T4 x2 (or P100), Internet on, Save & Run All (Commit).
   Resume across sessions: previous output as input + RESUME_FROM. T4/P100 lack native bf16 -> fp16 with loss
   scaling (lm.qlora.compute_dtype; meta.json records hardware + fp16_loss_scaling).
-- No Kaggle API token on this PC yet (C:\Users\ADMIN\.kaggle\kaggle.json absent; kaggle package not installed).
-  Either the user imports the notebook in the web UI, or creates a token and Claude pushes it:
-  pip install kaggle; set the username in kaggle/kernel-metadata.json; kaggle kernels push -p kaggle.
-- Bring home: output runs/qwen3b-explain/ -> runs/qwen3b-explain/, reports/tables/assistant_eval_qwen3b.csv ->
-  reports/tables/ (and merge its row into assistant_eval.csv). The local queue's Qwen steps (now LAST, the
-  fallback) then become no-ops: a run at its last step trains nothing and does not touch meta.json. If Kaggle is
-  running when the local queue reaches qwen-bench (~03:30 Sun), stop the queue before it duplicates the work.
+- Pushed with the Kaggle CLI (user tritran72): kernel-metadata.json in the repo keeps KAGGLE_USERNAME; the
+  push copy with the real id is in the scratchpad (kaggle_push). Push: kaggle kernels push -p <folder>
+  --accelerator NvidiaTeslaT4. Status/logs: kaggle kernels status|logs [-f] tritran72/cos30049a2-qwen3b-explain.
+- Bring home: kaggle kernels output tritran72/cos30049a2-qwen3b-explain -p <dir>; then runs/qwen3b-explain/ ->
+  runs/qwen3b-explain/, reports/tables/assistant_eval_qwen3b.csv -> reports/tables/, and merge its row from
+  assistant_eval_with_qwen3b.csv into assistant_eval.csv. The local queue no longer has Qwen steps.
 
 RUNNING NOW (check with tasklist / logs)
 - ONE-SCREEN STATUS: python tools/status.py [--watch 60] (crawl kept/target/rate/ETA, supervisor, pretraining, GPU).
   Live views for the user (PowerShell): Get-Content C:\Users\ADMIN\COS30049A2\runs\text-150m\console.log -Wait -Tail 5
   and Get-Content C:\Users\ADMIN\COS30049A2\reports\logs\supervise.log -Wait -Tail 3 (Ctrl+C stops only the view).
-- Pretraining 152M (window "PRETRAINING", PID 3832, restarted 19:43 after the power cut, see INCIDENTS):
-  cmd window: conda activate cos30049-a2-gpu, set "PYTHONUTF8=1",
-  python -m lm.train --config configs/text_150m_pretrain.json >> runs\text-150m\console.log 2>&1.
-  Step 7,437/7,630 at 19:50 24 Oct (best validation loss 3.133 at step 7,400; Chinchilla's fit predicts 3.38 for
-  this size and data), ~11.4k tok/s, ends about 21:05-21:10 Sat 24 Oct. NOT supervised (resumes with the same command).
-- GPU QUEUE (window "GPU QUEUE", PID 8388, restarted 20:04 with Qwen LAST, see KAGGLE): 4/25 done, waiting
-  for runs/text-150m/model.pt. cmd window: conda activate cos30049-a2-gpu, set "PYTHONUTF8=1",
-  python tools\run_queue.py --plan configs\queue_after_pretraining.json. Order now: TxGPT 9 runs -> select,
-  baselines, scoring, DS1 evaluate -> 152M chat, DS7 stage, eval -> Qwen bench/train/eval (fallback).
-- LIVE STATUS window (PowerShell, user asked 24 Oct): python tools\status.py --watch 30.
+- PRETRAINING DONE 24 Oct 21:07: runs/text-150m/model.pt, 7,630 steps (2.0B tokens), final validation loss
+  3.1305 (perplexity 22.9; Chinchilla's fit predicts 3.38 for this size and data).
+- GPU QUEUE (window "GPU QUEUE", PID 6564, restarted 21:21 WITHOUT Qwen steps, see KAGGLE): 22 steps, 5 done at
+  21:22 (txgpt-s-s1 val 0.682); txgpt-m-s1 resumed from its Ctrl+C save. cmd window: conda activate
+  cos30049-a2-gpu, set "PYTHONUTF8=1", python tools\run_queue.py --plan configs\queue_after_pretraining.json.
+  Order: TxGPT 9 runs (~6-15 min each) -> select, baselines, scoring, DS1 evaluate -> 152M chat, DS7 stage, eval.
+  Graceful stop: python -I <scratchpad>\send_ctrl_c.py <queue pid> (jobs save; the same command resumes).
+- KAGGLE QWEN RUN (version 2, started 21:08, T4 x2): https://www.kaggle.com/code/tritran72/cos30049a2-qwen3b-explain
+  (version 1 failed: no internet until the user verified a phone). Windows: "KAGGLE QWEN (live log)" =
+  kaggle kernels logs -f tritran72/cos30049a2-qwen3b-explain; LIVE STATUS shows its status.
+- LIVE STATUS window (PowerShell, user asked 24 Oct): python tools\status.py --watch 60 --kaggle
+  tritran72/cos30049a2-qwen3b-explain. Kaggle CLI 2.2.5 is in cos30049-a2-gpu; the token is in
+  C:\Users\ADMIN\.kaggle\access_token (never in the repo; user may rotate it after the run).
+- fp16 path verified on the 3060 (24 Oct 21:12): 3 real Qwen steps with fp16 forced, finite losses and grads,
+  scaler 65536 (no skipped steps), adapters and state saved.
 - DS2 DONE 24 Oct 17:46: 4,012 addresses, 898,490 rows, every check passed (the final step had crashed at 16:36
   on the 22 Oct run's None error counts; fixed in 949692a). Queue steps A done 17:49: data/txgpt (9.06M train
   tokens, 3,611/201/200 addresses), DS7 10,160 pairs (9,149 train / 561 val / 450 test), data/ds7_chat (4.17M

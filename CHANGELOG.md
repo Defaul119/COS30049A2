@@ -5,6 +5,56 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 24 October 2026
 
+**DS1 machine learning extended: calibrated ranges, a fused method, uncertainty, strength, time and DS2 (user,
+20:10: the marks weigh ML far above the language models).** Six new steps, each with a settings.json section, a
+table written by code and a figure; tests in `tests/test_extensions.py`.
+- *Conformal regression ranges* (`regression.conformal`): the HGB quantile ranges promised more than they
+  delivered (90% gap range: 0.787 coverage; 98%: 0.894). Split-conformal calibration (CQR) on the last 20% of each
+  address's fit period, still time-safe, gives 0.894 and 0.976 (size 98%: 0.973 -> 0.988), and the worst
+  address's coverage rises from 0.63 to 0.87 (gap 98%). The calibrated `regression_interval` now flags 3.5% of
+  real transactions and is the only method with no address over the 20% sanity limit; its planted recall is
+  low (0.268), which is what an honest 98% range buys. One address's amounts change after the cut and no range
+  covers it (0% at size 90%, raw or calibrated): reported per address in `regression_results.csv`.
+- *Score fusion* (`explorer/fusion.py`, step `fusion`): two methods, one flag, tuned on the tuning plants at the
+  explorerMethod's flag rate (equal flag budget, so recall cannot rise just by flagging more) and gated on
+  stability like outliers.py's grids. The first, ungated run chose regression + Isolation Forest (tuning recall
+  0.681 at an 8.6% flag rate), whose reporting stability, 0.61, then excluded it from selection; the gated rule
+  chose baseline (x1.1) + regression (x3.0): stability 0.89, reporting mean recall 0.684 against the baseline's
+  0.655 at the same 10.4% flag rate. Isolation Forest, K-Means and LOF add nothing to the baseline at their own
+  thresholds (their flags are a subset of its flags). `tuning_fusion.csv` also traces each single method's
+  recall-flag rate curve: above about 5% flagged the fused pairs dominate every single method.
+- *Significance* (step `significance`): address-level cluster bootstrap (2,000 draws; plants on one address are
+  not independent), paired across methods. Fusion vs baseline +0.029 (95% CI -0.001 to +0.055, p = 0.063);
+  regression vs baseline +0.018 (-0.073 to +0.114, p = 0.70); every other method is lower with p < 0.001. The
+  selection keeps the baseline: the fusion is within the 5-point tie margin and not significantly better, so
+  the explainability tie-break decides, now with the evidence that the gap is within the noise. The absolute
+  recalls are far less certain than the seed SD suggests (baseline 0.655, CI 0.546-0.753).
+- *Sensitivity* (step `sensitivity`): every pattern planted again at several strengths (reporting seeds; the
+  default strengths reproduce eval_injection.csv exactly, checked). The regression residual sees 2x spikes
+  (0.76) where the baseline needs about 10x (0.74); the baseline never sees bursts well (0.30-0.42 at 3-20
+  transactions) while the residual does (0.69-0.76); and the baseline sees dormancy from 14-30 days (0.79)
+  while the residual needs 120+ days. This is the mechanism behind the fusion's gain.
+- *Walk-forward* (step `walk-forward`): the split moved to 50, 60, 70 and 80% of each history, every method
+  refitted with its saved configuration (no re-tuning), plants re-drawn in each evaluation period. The ranking
+  holds at every cut-off (fusion, regression and baseline at 0.65-0.71 mean recall; K-Means, Isolation Forest
+  and DBSCAN 0.39-0.45; LOF 0.32-0.33; the calibrated range 0.21-0.28), the baseline is the steadiest
+  (0.650-0.658), and the regression residual breaks the sanity rule on 10-14 addresses at every cut-off, so its
+  failure is structural rather than an accident of the 70% cut. At 70% the refits reproduce eval_injection.csv.
+
+**The Qwen 3B fine-tune moves to Kaggle; the GPU queue runs it last, as the fallback (user, 20:20).** The marks
+weigh the machine-learning work far above the language models (the tutor called the latter an optional extra
+for HD), so the home GPU now trains TxGPT and the 152M stages first while a Kaggle GPU fine-tunes Qwen in
+parallel. `kaggle/qwen3b_explain.ipynb` clones the repository at a pinned commit, installs the pins of
+`environment-gpu.yml`, rebuilds the DS6 chat subset and asserts that all six data files are byte-identical to
+the local ones (checked on a fresh clone), then benchmarks, trains and evaluates; `kaggle_run.json` records
+the GPU and library versions for the report. Kaggle's T4 and P100 have no native bf16, so `lm.qlora` computes
+in fp16 with loss scaling on such GPUs (bf16 stays on the RTX 3060; `meta.json` records which), and
+`--max-hours` stops cleanly inside Kaggle's 12-hour sessions. `lm.train` and `lm.writers` now choose bf16 by
+compute capability too: `torch.cuda.is_bf16_supported()` answers yes on a T4 because it can emulate bf16,
+several times slower. If the Kaggle run arrives first, copying its run folder into `runs/qwen3b-explain/`
+turns the queue's Qwen steps into no-ops (a run already at its last step trains nothing and leaves its
+`meta.json` alone).
+
 **Power cut during pretraining; recovered with nothing lost but ten minutes of training.** At about 19:16 (GMT+7)
 the PC lost power with the 152M pretraining at step 7,447 of 7,630 (the last console line is at 19:14:31; the PC
 rebooted at 19:17). The resume design did its job: `ckpt_last.pt` (step 7,419, saved at 19:05:57, 30-minute

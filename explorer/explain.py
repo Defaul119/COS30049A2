@@ -33,6 +33,7 @@ METHOD_NAMES = {
     "dbscan": "DBSCAN noise",
     "regression": "Regression residual",
     "regression_interval": "Regression expected range",
+    "fusion": "Score fusion (two methods, one flag budget)",
     "txgpt_method": "TxGPT surprisal",
 }
 

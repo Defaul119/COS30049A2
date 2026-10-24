@@ -18,6 +18,15 @@ Unusualness: the standardised residual r = (y - y_hat) / s, with s = 1.4826 x th
 address's fit-period residuals (floored); score = max(|r_size|, |r_gap|), flagged at flagAbsR, the
 baseline's 3.5. A second variant flags anything outside the 98% quantile range.
 
+Quantile models promise a coverage they need not deliver (on DS1 the 90% gap range covered 79% of the
+evaluation rows), so with settings.json -> regression.conformal the ranges are calibrated by split
+conformal prediction (conformalised quantile regression, Romano, Patterson and Candes 2019): the
+quantile models are fitted on the first part of each address's fit period, their miss distances
+max(lo - y, y - hi) on its last part (the tuning validation rows, the most recent fit rows, so still
+time-safe) give a margin that widens or narrows the range until it covers the stated share there,
+and that margin is applied unchanged to the evaluation period. regression_results.csv reports both
+ranges' coverage, overall and per address.
+
 Writes reports/tables/tuning_regression.csv, regression_results.csv and models/regression.joblib
 (the residual method) and models/regression_interval.joblib (the range variant).
 """
@@ -117,18 +126,23 @@ class RegressionMethod:
 
 
 class RegressionIntervalMethod:
-    """Score = how far y lies outside the 98% quantile range, in range widths; flagged above 0."""
+    """Score = how far y lies outside the 98% quantile range, in range widths; flagged above 0.
+
+    `margins` (log10 units, per target) are the conformal calibration: the range is [lo - m, hi + m].
+    """
 
     threshold = 0.0
 
-    def __init__(self, quantiles: dict[str, tuple[Pipeline, Pipeline]]):
+    def __init__(self, quantiles: dict[str, tuple[Pipeline, Pipeline]], margins: dict[str, float] | None = None):
         self.quantiles = quantiles
+        self.margins = margins or {}
 
     def score(self, frame: pd.DataFrame) -> np.ndarray:
         x, ys = design(frame), targets(frame)
         worst = np.full(len(frame), -np.inf)
         for t, (lo_model, hi_model) in self.quantiles.items():
-            lo, hi = lo_model.predict(x), hi_model.predict(x)
+            m = getattr(self, "margins", {}).get(t, 0.0)  # models saved before calibration existed have none
+            lo, hi = lo_model.predict(x) - m, hi_model.predict(x) + m
             width = np.maximum(hi - lo, 1e-9)
             y = ys[t].to_numpy()
             outside = np.fmax((lo - y) / width, (y - hi) / width)
@@ -144,6 +158,25 @@ def residual_scales(model: Pipeline, rows: pd.DataFrame, y: pd.Series, floor: fl
     return scales.to_dict(), float(scales.median())
 
 
+def conformal_margin(lo: np.ndarray, hi: np.ndarray, y: np.ndarray, level: float) -> float:
+    """Split-conformal margin for a quantile range (CQR): the ceil((n + 1) * level)-th smallest miss distance
+    max(lo - y, y - hi) on calibration rows. Negative when the raw range is wider than it needs to be."""
+    miss = np.sort(np.fmax(lo - y, y - hi))
+    k = int(np.ceil((len(miss) + 1) * level))
+    return float(miss[min(k, len(miss)) - 1])
+
+
+def coverage_row(target: str, name: str, params: dict[str, Any], lo: np.ndarray, hi: np.ndarray, y: np.ndarray,
+                 addresses: pd.Series, level: float) -> dict[str, Any]:
+    """Coverage and mean width of one range on the evaluation rows, overall and across addresses."""
+    inside = pd.Series((y >= lo) & (y <= hi), index=addresses.index)
+    per_address = inside.groupby(addresses).mean()
+    return {"target": target, "model": name, "params": json.dumps(params), "nominal": level,
+            "coverage": float(inside.mean()), "mean_width": float(np.mean(hi - lo)),
+            "coverage_address_min": float(per_address.min()), "coverage_address_median": float(per_address.median()),
+            "coverage_address_max": float(per_address.max())}
+
+
 def metrics(y: np.ndarray, pred: np.ndarray, naive_pred: np.ndarray) -> dict[str, float]:
     mae = mean_absolute_error(y, pred)
     return {"mae": mae, "rmse": float(np.sqrt(mean_squared_error(y, pred))), "r2": r2_score(y, pred),
@@ -155,7 +188,7 @@ def run_regression() -> int:
     features = pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES["refined"])
     fit_all = fit_rows(features)
     ev = features[(features["period"] == EVAL) & features["scorable"]]
-    tuning_rows, results, final, quantiles, scales, default_scale = [], [], {}, {}, {}, {}
+    tuning_rows, results, final, quantiles, margins, scales, default_scale = [], [], {}, {}, {}, {}, {}
 
     for t in TARGETS:
         y_fit = targets(fit_all)[t]
@@ -191,15 +224,28 @@ def run_regression() -> int:
         scales[t], default_scale[t] = residual_scales(final[t], rows, y, r["residualFloor"])
 
         hgb = best["histGradientBoosting"][1]
-        q = {}
-        for qq in r["intervalQuantiles"] + r["flagQuantiles"]:
-            q[qq] = make_model("histGradientBoosting", {**hgb, "loss": "quantile", "quantile": qq}, seed).fit(design(rows), y)
-        lo, hi = (q[x].predict(design(ev_t)) for x in r["intervalQuantiles"])
-        results.append({"target": t, "model": f"quantile {r['intervalQuantiles']}", "params": json.dumps(hgb),
-                        "coverage": float(np.mean((y_ev >= lo) & (y_ev <= hi))), "mean_width": float(np.mean(hi - lo))})
-        quantiles[t] = (q[r["flagQuantiles"][0]], q[r["flagQuantiles"][1]])
-        log.info("%s: chose %s (validation MAE %.4f); 90%% range coverage %.3f", t, chosen, best[chosen][0],
-                 results[-1]["coverage"])
+
+        def quantile_pair(pair: list[float], train_rows: pd.DataFrame, train_y: pd.Series) -> tuple[Pipeline, Pipeline]:
+            return tuple(make_model("histGradientBoosting", {**hgb, "loss": "quantile", "quantile": qq}, seed)
+                         .fit(design(train_rows), train_y) for qq in pair)
+
+        x_ev, coverage = design(ev_t), {}
+        for pair in (r["intervalQuantiles"], r["flagQuantiles"]):
+            level = pair[1] - pair[0]
+            # Raw: fitted on the whole fit period. Conformal: fitted on its first part, calibrated on its last part.
+            raw, early = quantile_pair(pair, rows, y), quantile_pair(pair, tr, y[~is_val])
+            margin = conformal_margin(early[0].predict(design(va)), early[1].predict(design(va)), y[is_val].to_numpy(),
+                                      level)
+            results.append(coverage_row(t, f"quantile {pair}", hgb, raw[0].predict(x_ev), raw[1].predict(x_ev), y_ev,
+                                        ev_t["address"], level))
+            results.append({**coverage_row(t, f"quantile {pair} conformal", hgb, early[0].predict(x_ev) - margin,
+                                           early[1].predict(x_ev) + margin, y_ev, ev_t["address"], level),
+                            "margin": margin})
+            coverage[level] = (results[-2]["coverage"], results[-1]["coverage"])
+            if pair == r["flagQuantiles"]:
+                quantiles[t], margins[t] = (early, margin) if r["conformal"] else (raw, 0.0)
+        log.info("%s: chose %s (validation MAE %.4f); range coverage raw -> conformal: %s", t, chosen, best[chosen][0],
+                 ", ".join(f"{lv:.0%} {a:.3f} -> {b:.3f}" for lv, (a, b) in coverage.items()))
 
     TABLES_DIR.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(tuning_rows).to_csv(TABLES_DIR / "tuning_regression.csv", index=False)
@@ -209,8 +255,9 @@ def run_regression() -> int:
     joblib.dump({"method": method, "threshold": method.threshold, "inputs": INPUTS,
                  "chosen": {t: type(m.named_steps["model"]).__name__ for t, m in final.items()}},
                 MODELS_DIR / "regression.joblib", compress=3)
-    interval = RegressionIntervalMethod(quantiles)
+    interval = RegressionIntervalMethod(quantiles, margins)
     joblib.dump({"method": interval, "threshold": interval.threshold, "inputs": INPUTS,
-                 "quantiles": r["flagQuantiles"]}, MODELS_DIR / "regression_interval.joblib", compress=3)
+                 "quantiles": r["flagQuantiles"], "conformal": r["conformal"], "margins": margins},
+                MODELS_DIR / "regression_interval.joblib", compress=3)
     log.info("Wrote tuning_regression.csv, regression_results.csv, models/regression.joblib and regression_interval.joblib")
     return 0

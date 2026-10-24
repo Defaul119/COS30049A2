@@ -45,6 +45,7 @@ models/heist_best.joblib
 
 # Console copies of logs that are already written to reports/logs/<step>.log
 reports/logs/*.stdout.log
+reports/logs/ext_*.log
 
 # tools/run_queue.py: console copies of each step and its resume state (each job also writes its own log)
 reports/logs/queue/

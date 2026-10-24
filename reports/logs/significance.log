@@ -1,0 +1,12 @@
+2026-10-24 20:59:57 INFO Step significance started: C:\Users\ADMIN\COS30049A2\explorer\cli.py significance
+2026-10-24 20:59:59 INFO 750 plants on 25 addresses, 2000 address-level bootstrap draws, 95% intervals; reference baseline
+2026-10-24 20:59:59 INFO fusion               mean recall 0.684 [0.569, 0.781]; minus baseline +0.029 [-0.001, +0.055], p = 0.063
+2026-10-24 20:59:59 INFO regression           mean recall 0.673 [0.580, 0.760]; minus baseline +0.018 [-0.073, +0.114], p = 0.703
+2026-10-24 20:59:59 INFO baseline             mean recall 0.655 [0.546, 0.753]; minus baseline +0.000 [+0.000, +0.000], p = -
+2026-10-24 20:59:59 INFO kmeans               mean recall 0.446 [0.336, 0.546]; minus baseline -0.209 [-0.283, -0.150], p = 0.000
+2026-10-24 20:59:59 INFO isolation_forest     mean recall 0.429 [0.321, 0.534]; minus baseline -0.227 [-0.304, -0.156], p = 0.000
+2026-10-24 20:59:59 INFO dbscan               mean recall 0.406 [0.308, 0.492]; minus baseline -0.249 [-0.295, -0.204], p = 0.000
+2026-10-24 20:59:59 INFO lof                  mean recall 0.320 [0.257, 0.375]; minus baseline -0.335 [-0.402, -0.256], p = 0.000
+2026-10-24 20:59:59 INFO regression_interval  mean recall 0.268 [0.184, 0.358]; minus baseline -0.387 [-0.472, -0.301], p = 0.000
+2026-10-24 20:59:59 INFO Wrote C:\Users\ADMIN\COS30049A2\reports\tables\eval_significance.csv and C:\Users\ADMIN\COS30049A2\reports\tables\eval_plant_hits.csv
+2026-10-24 20:59:59 INFO Step significance finished in 2 s (exit 0)

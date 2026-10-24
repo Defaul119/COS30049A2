@@ -5,4 +5,5 @@ lof,0.7907950166005183,False
 kmeans,1.0,False
 dbscan,0.9021552859658669,False
 regression,0.6050855990943464,False
-regression_interval,0.4595830682832201,False
+regression_interval,0.5167566954340373,False
+fusion,0.890743844815247,False

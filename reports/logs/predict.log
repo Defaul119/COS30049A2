@@ -13,3 +13,5 @@
 2026-10-24 18:11:38 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict explain --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz --txid deadbeef
 2026-10-24 18:11:40 INFO Not in the snapshot: deadbeef is not a transaction of 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz in the snapshot
 2026-10-24 18:11:40 INFO Step predict finished in 2 s (exit 2)
+2026-10-24 20:37:41 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict what-if --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz --amount 5 --direction in --time 2026-10-01T12:00Z
+2026-10-24 20:37:43 INFO Step predict finished in 2 s (exit 0)

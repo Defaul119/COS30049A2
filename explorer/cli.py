@@ -20,7 +20,12 @@ Usage (from the repository root):
     python -m explorer.cli profiles               # DS1 + DS2 address profiles and DS2's coverage of DS1
     python -m explorer.cli regression             # naive, Ridge, random forest, gradient boosting, quantiles
     python -m explorer.cli txgpt                  # after lm.tx_score: choose raw or relative surprisal
+    python -m explorer.cli fusion                 # two complementary methods fused at the same flag budget
     python -m explorer.cli evaluate               # every DS1 check and the recommended method
+    python -m explorer.cli significance           # bootstrap intervals: which recall differences are real
+    python -m explorer.cli sensitivity            # recall against plant strength (spike size, burst size, dormancy)
+    python -m explorer.cli ds2-check              # the frozen DS1 methods on DS2's ~2,900 comparable histories
+    python -m explorer.cli walk-forward           # every method at several fit/evaluation cut-offs
     python -m explorer.cli predict address bc1q...  # or: predict what-if / explain / heist / elliptic
     python -m explorer.cli predict explain --address bc1q... --txid <txid> --assistant   # guarded Assistant text
     python -m explorer.cli all --offline          # every step above, in order, from the data on disk
@@ -147,6 +152,12 @@ def cmd_regression(args: argparse.Namespace) -> int:
     return run_regression()
 
 
+def cmd_fusion(args: argparse.Namespace) -> int:
+    from .fusion import run_fusion
+
+    return run_fusion()
+
+
 def cmd_txgpt(args: argparse.Namespace) -> int:
     from .txgpt import run_txgpt
 
@@ -157,6 +168,30 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
     from .evaluate import run_evaluate
 
     return run_evaluate()
+
+
+def cmd_walkforward(args: argparse.Namespace) -> int:
+    from .walkforward import run_walkforward
+
+    return run_walkforward()
+
+
+def cmd_ds2_check(args: argparse.Namespace) -> int:
+    from .ds2_check import run_ds2_check
+
+    return run_ds2_check()
+
+
+def cmd_sensitivity(args: argparse.Namespace) -> int:
+    from .sensitivity import run_sensitivity
+
+    return run_sensitivity()
+
+
+def cmd_significance(args: argparse.Namespace) -> int:
+    from .significance import run_significance
+
+    return run_significance()
 
 
 def cmd_predict(args: argparse.Namespace) -> int:
@@ -254,9 +289,11 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
     from .classify import run_classify_elliptic, run_classify_heist
     from .clustering import run_clustering
     from .corpus import OUT_DIR as CORPUS_DIR
+    from .ds2_check import run_ds2_check
     from .evaluate import run_evaluate
     from .external import EXTERNAL_DIR
     from .features import run_features
+    from .fusion import run_fusion
     from .inject import run_inject
     from .label_check import run_label_check
     from .labelled import run_process_elliptic, run_process_heist
@@ -264,9 +301,12 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
     from .profiles import run_profiles
     from .regression import run_regression
     from .scores import run_scores
+    from .sensitivity import run_sensitivity
+    from .significance import run_significance
     from .split import run_split
     from .transactions import run_transactions
     from .txgpt import SCORES_PATH as TXGPT_SCORES, run_txgpt
+    from .walkforward import run_walkforward
 
     steps: list[tuple[str, Callable[[], int]]] = [
         ("transactions", run_transactions),
@@ -287,7 +327,10 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
         steps.append(("txgpt", run_txgpt))
     else:
         log.info("Skipping txgpt: no %s yet (python -m lm.tx_score)", TXGPT_SCORES)
-    steps += [("scores", run_scores), ("evaluate", run_evaluate)]
+    steps += [("fusion", run_fusion), ("scores", run_scores), ("evaluate", run_evaluate),
+              ("significance", run_significance), ("sensitivity", run_sensitivity), ("walk-forward", run_walkforward)]
+    if (CORPUS_DIR / "ds2.parquet").exists():
+        steps.append(("ds2-check", run_ds2_check))
     if (EXTERNAL_DIR / "bitcoinheist" / "BitcoinHeistData.csv").exists():
         steps += [("process-external (DS4)", run_process_heist),
                   ("classify --dataset heist", lambda: run_classify_heist(["temporal", "random", "lofo"]))]
@@ -356,8 +399,18 @@ def build_parser() -> argparse.ArgumentParser:
     steps.add_parser("regression", help="DS1: expected size and gap, residual and range flags").set_defaults(
         func=cmd_regression)
     steps.add_parser("txgpt", help="DS1: TxGPT raw vs relative surprisal, threshold").set_defaults(func=cmd_txgpt)
+    steps.add_parser("fusion", help="DS1: two complementary methods fused at the explorerMethod's flag budget").set_defaults(
+        func=cmd_fusion)
     steps.add_parser("evaluate", help="DS1: injection, stability, agreement, sanity, ablation, selection").set_defaults(
         func=cmd_evaluate)
+    steps.add_parser("significance", help="DS1: address-level bootstrap intervals for recall and method differences"
+                     ).set_defaults(func=cmd_significance)
+    steps.add_parser("sensitivity", help="DS1: recall of every method against plant strength").set_defaults(
+        func=cmd_sensitivity)
+    steps.add_parser("ds2-check", help="DS2: the frozen DS1 methods on ~2,900 more address histories").set_defaults(
+        func=cmd_ds2_check)
+    steps.add_parser("walk-forward", help="DS1: every method at several fit/evaluation cut-offs").set_defaults(
+        func=cmd_walkforward)
     predict = steps.add_parser("predict", help="use the trained models: an address, a what-if, DS4 or DS3 rows")
     kinds = predict.add_subparsers(dest="kind", required=True)
     address = kinds.add_parser("address", help="timeline and every transaction's scores for a snapshot address")

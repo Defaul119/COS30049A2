@@ -5,13 +5,16 @@ Reads only files the jobs already write (and nvidia-smi, if present), so it neve
 Usage (from the repository root, any environment with Python 3.10+):
     python tools/status.py              # once
     python tools/status.py --watch 60   # refresh every 60 seconds; Ctrl+C stops only this view
+    python tools/status.py --watch 60 --kaggle tritran72/cos30049a2-qwen3b-explain   # plus the Kaggle run
 """
 from __future__ import annotations
 
 import argparse
 import json
 import re
+import shutil
 import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -62,7 +65,9 @@ def crawl() -> str:
             finish = datetime.fromtimestamp(time.time() + hours * 3600)
             text += (f"\n           ~{rate:.1f} kept/min since {t0:%H:%M} -> {target:,} in about {hours:.0f} h "
                      f"({finish:%a %H:%M})")
-    if idle > 15:
+    if kept >= target:
+        text += "\n           done: target reached"
+    elif idle > 15:
         text += "\n           WARNING: no visit for over 15 minutes; check the crawl window and supervise.log"
     return text
 
@@ -107,6 +112,28 @@ def queue() -> str:
     return text
 
 
+def kaggle_cli() -> str | None:
+    """The Kaggle CLI: on PATH, or in the GPU environment next to this interpreter's environments."""
+    found = shutil.which("kaggle")
+    if found:
+        return found
+    candidate = Path(sys.executable).parents[1] / "cos30049-a2-gpu" / "Scripts" / "kaggle.exe"
+    return str(candidate) if candidate.exists() else None
+
+
+def kaggle(kernel: str) -> str:
+    """The latest run of a Kaggle notebook (kaggle/qwen3b_explain.ipynb): its status, from the Kaggle API."""
+    cli = kaggle_cli()
+    if not cli:
+        return "Kaggle: CLI not found (pip install kaggle in cos30049-a2-gpu)"
+    try:
+        out = subprocess.run([cli, "kernels", "status", kernel], capture_output=True, text=True, timeout=30).stdout.strip()
+    except (OSError, subprocess.TimeoutExpired):
+        return "Kaggle: no answer from the API this time"
+    status = out.rsplit("status", 1)[-1].strip(' "').replace("KernelWorkerStatus.", "") if out else "unknown"
+    return f"Kaggle: {kernel} {status} (live log: kaggle kernels logs -f {kernel})"
+
+
 def gpu() -> str:
     try:
         out = subprocess.run(["nvidia-smi", "--query-gpu=temperature.gpu,clocks.sm,power.draw,utilization.gpu",
@@ -116,22 +143,25 @@ def gpu() -> str:
         return "GPU: nvidia-smi not available"
 
 
-def show() -> None:
+def show(kernel: str | None = None) -> None:
     print(f"--- {datetime.now():%a %d %b %H:%M:%S} ---")
     for part in (crawl(), supervisor(), training(), queue(), gpu()):
         print(part)
+    if kernel:
+        print(kaggle(kernel))
 
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--watch", type=float, metavar="SECONDS", help="refresh every SECONDS until Ctrl+C")
+    p.add_argument("--kaggle", metavar="OWNER/NOTEBOOK", help="also show the latest run of this Kaggle notebook")
     args = p.parse_args()
     if not args.watch:
-        show()
+        show(args.kaggle)
         return
     try:
         while True:
-            show()
+            show(args.kaggle)
             time.sleep(args.watch)
     except KeyboardInterrupt:
         pass

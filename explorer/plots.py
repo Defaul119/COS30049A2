@@ -46,7 +46,9 @@ CLASSIFY_DIR = PROJECT_ROOT / "data" / "interim" / "classify"
 # One fixed colour per method (validated categorical palette, light mode, in this order) and per
 # role. Text stays in ink colours; colour only marks identity.
 PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
-METHOD_COLOURS = dict(zip(SETTINGS["evaluation"]["explainabilityOrder"], PALETTE))
+FUSION_COLOUR = "#3d4b5c"  # dark slate: a combination of two methods, set apart from the eight single-method hues
+METHOD_COLOURS = {"fusion": FUSION_COLOUR,
+                  **dict(zip([m for m in SETTINGS["evaluation"]["explainabilityOrder"] if m != "fusion"], PALETTE))}
 MODEL_COLOURS = {"logistic": PALETTE[0], "knn": PALETTE[1], "randomForest": PALETTE[2], "histGradientBoosting": PALETTE[6]}
 MODEL_NAMES = {"logistic": "Logistic regression", "knn": "KNN", "randomForest": "Random forest",
                "histGradientBoosting": "Hist. gradient boosting"}
@@ -576,6 +578,213 @@ def fig_txgpt_sizes(runs: pd.DataFrame, sizes: pd.DataFrame) -> tuple[Figure, St
     return fig, s
 
 
+# -- DS1 extensions (24 Oct): calibration, fusion, uncertainty, strength, time, DS2 ------------------
+
+
+def method_order(names: Any) -> list[str]:
+    """Methods in the report's fixed order (explainabilityOrder), keeping only those present."""
+    present = set(names)
+    return [m for m in SETTINGS["evaluation"]["explainabilityOrder"] if m in present]
+
+
+def fig_conformal(results: pd.DataFrame) -> tuple[Figure, Stats]:
+    """Do the regression ranges cover what they claim? Raw quantile models against conformal calibration."""
+    q = results[results["model"].str.startswith("quantile")].copy()
+    q["kind"] = np.where(q["model"].str.endswith("conformal"), "conformal", "raw")
+    groups = list(dict.fromkeys(zip(q["target"], q["nominal"])))
+    fig, ax = plt.subplots(figsize=(6.4, 3.4))
+    for i, (target, nominal) in enumerate(groups):
+        ax.hlines(nominal, i - 0.32, i + 0.32, color=INK, linewidth=1.2, label="stated coverage" if i == 0 else None)
+        for dx, kind, colour, face in ((-0.12, "raw", PALETTE[1], "none"), (0.12, "conformal", PALETTE[0], PALETTE[0])):
+            r = q[(q["target"] == target) & (q["nominal"] == nominal) & (q["kind"] == kind)].iloc[0]
+            ax.scatter(i + dx, r["coverage"], s=46, marker="o", facecolors=face, edgecolors=colour, linewidths=1.6,
+                       zorder=3, label=("raw quantile models" if kind == "raw" else "conformal (CQR)") if i == 0 else None)
+    ax.set_xticks(range(len(groups)), [f"{t}\n{n:.0%} range" for t, n in groups])
+    ax.set(title="Regression ranges: coverage on the DS1 evaluation period", ylabel="Share of rows inside the range",
+           ylim=(min(0.7, float(q["coverage"].min()) - 0.03), 1.01))
+    ax.legend(fontsize=7, loc="lower right")
+    s = []
+    for r in q.itertuples():
+        s.append(stat("conformal", f"{r.target} {r.nominal:.0%} range, {r.kind}: coverage", round(float(r.coverage), 3),
+                      f"lowest address {r.coverage_address_min:.2f}; mean width {r.mean_width:.3f} log10 units"))
+    return fig, s
+
+
+def pareto(points: pd.DataFrame) -> pd.DataFrame:
+    """The upper-left envelope: configurations no other one beats on both recall (higher) and flag rate (lower)."""
+    ordered = points.sort_values(["flag_rate", "mean_recall"], ascending=[True, False])
+    keep, best = [], -np.inf
+    for idx, r in ordered.iterrows():
+        if r["mean_recall"] > best:
+            keep.append(idx)
+            best = r["mean_recall"]
+    return ordered.loc[keep]
+
+
+def fig_fusion_frontier(tuning: pd.DataFrame, chosen: dict[str, Any]) -> tuple[Figure, Stats]:
+    """Recall against flag rate (tuning plants): single methods, the motivating pair and the chosen pair."""
+    fig, ax = plt.subplots(figsize=(6.6, 4.0))
+    singles = tuning[tuning["components"] == 1]
+    for name, part in singles.groupby("pair"):
+        f = pareto(part)
+        ax.plot(f["flag_rate"], f["mean_recall"], color=METHOD_COLOURS.get(name, MUTED), marker="o", markersize=3,
+                linewidth=1.4, label=f"{METHOD_NAMES.get(name, name)} alone")
+    chosen_pair = " + ".join(chosen["components"])
+    for pair, style_ in ((chosen_pair, "-"), ("baseline + regression", "--")):
+        part = tuning[tuning["pair"] == pair]
+        if len(part) and (style_ == "-" or pair != chosen_pair):
+            f = pareto(part)
+            ax.plot(f["flag_rate"], f["mean_recall"], color=FUSION_COLOUR, linestyle=style_, marker="s", markersize=3,
+                    linewidth=1.6, label=f"fusion: {pair}")
+    ax.axvline(chosen["budget"], color=MUTED, linestyle=":", linewidth=1)
+    ax.annotate(f"flag budget ({chosen['budget_method']})", (chosen["budget"], 0.02), textcoords="offset points",
+                xytext=(4, 0), fontsize=7, color=MUTED, rotation=90, va="bottom")
+    ax.scatter([chosen["tuning"]["flag_rate"]], [chosen["tuning"]["mean_recall"]], s=130, facecolors="none",
+               edgecolors=PALETTE[1], linewidths=2, zorder=5, label="saved fusion")
+    ax.set(title="Recall at each flag rate: single methods and fused pairs (tuning plants)",
+           xlabel="Share of real evaluation transactions flagged", ylabel="Mean planted recall", ylim=(0, 1))
+    ax.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
+    ax.legend(fontsize=7, loc="lower right")
+    s = [stat("fusion", "saved pair", chosen_pair, f"multipliers {chosen['multipliers']}"),
+         stat("fusion", "tuning mean recall of the saved fusion", round(float(chosen["tuning"]["mean_recall"]), 3),
+              f"flag rate {chosen['tuning']['flag_rate']:.4f}, budget {chosen['budget']:.4f}")]
+    for name, part in singles.groupby("pair"):
+        within = part[part["flag_rate"] <= chosen["budget"]]
+        if len(within):
+            s.append(stat("fusion", f"{name} alone: best tuning mean recall within the budget",
+                          round(float(within["mean_recall"].max()), 3)))
+    return fig, s
+
+
+def fig_significance(sig: pd.DataFrame) -> tuple[Figure, Stats]:
+    """Mean planted recall with address-level bootstrap intervals, and each method's difference from the reference."""
+    order = sig.sort_values("mean_recall")["method"].tolist()
+    t = sig.set_index("method").loc[order]
+    reference = t["reference"].iloc[0]
+    margin = SETTINGS["evaluation"]["tieMarginPoints"] / 100
+    fig, (a, b) = plt.subplots(1, 2, figsize=(9, 3.6), sharey=True)
+    y = np.arange(len(order))
+    colours = [METHOD_COLOURS.get(m, MUTED) for m in order]
+    a.errorbar(t["mean_recall"], y, xerr=[t["mean_recall"] - t["mean_recall_ci_low"], t["mean_recall_ci_high"] - t["mean_recall"]],
+               fmt="none", ecolor=MUTED, elinewidth=1, capsize=2)
+    a.scatter(t["mean_recall"], y, c=colours, s=36, zorder=3)
+    a.set_yticks(y, [METHOD_NAMES.get(m, m) for m in order], fontsize=7)
+    a.set(title="Mean planted recall, 95% interval", xlabel="Mean recall (reporting plants)", xlim=(0, 1))
+    a.grid(axis="x", color=GRID)
+    b.axvspan(-margin, margin, color=GRID, alpha=0.7, label=f"selection tie margin (±{margin:.0%})")
+    b.axvline(0, color=INK, linewidth=0.8)
+    b.errorbar(t["diff_mean_recall"], y, xerr=[t["diff_mean_recall"] - t["diff_ci_low"], t["diff_ci_high"] - t["diff_mean_recall"]],
+               fmt="none", ecolor=MUTED, elinewidth=1, capsize=2)
+    b.scatter(t["diff_mean_recall"], y, c=colours, s=36, zorder=3)
+    b.set(title=f"Difference from {METHOD_NAMES.get(reference, reference)}", xlabel="Difference in mean recall")
+    b.grid(axis="x", color=GRID)
+    b.legend(fontsize=7, loc="lower left")
+    s = [stat("significance", f"{m}: mean recall", round(float(t.loc[m, "mean_recall"]), 3),
+              f"95% CI {t.loc[m, 'mean_recall_ci_low']:.3f}-{t.loc[m, 'mean_recall_ci_high']:.3f}; minus {reference} "
+              f"{t.loc[m, 'diff_mean_recall']:+.3f} ({t.loc[m, 'diff_ci_low']:+.3f} to {t.loc[m, 'diff_ci_high']:+.3f}), "
+              f"p {t.loc[m, 'p_value']:.3f}" if m != reference else "the reference")
+         for m in reversed(order)]
+    return fig, s
+
+
+def fig_sensitivity(sens: pd.DataFrame) -> tuple[Figure, Stats]:
+    """How strong must each pattern be before each method sees it? Recall against plant strength."""
+    panels = [("spike", "Spike: multiple of the usual amount", True), ("burst", "Burst: transactions in 24 hours", False),
+              ("dormant", "Dormancy: days of silence (geometric mid)", True)]
+    fig, axes = plt.subplots(1, 3, figsize=(10, 3.5), sharey=True)
+    target = SETTINGS["injection"]["recallTarget"]
+    for ax, (pattern, xlabel, log_x) in zip(axes, panels):
+        part = sens[sens["pattern"] == pattern]
+        for m in method_order(part["method"]):
+            line = part[part["method"] == m].sort_values("x")
+            ax.plot(line["x"], line["recall"], marker="o", markersize=3, linewidth=1.4, color=METHOD_COLOURS.get(m, MUTED),
+                    label=METHOD_NAMES.get(m, m))
+        default = part[part["default"]]["x"].iloc[0]
+        ax.axvline(default, color=MUTED, linestyle=":", linewidth=1)
+        ax.axhline(target, color=INK, linestyle="--", linewidth=0.8)
+        if log_x:
+            ax.set_xscale("log")
+            ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:g}"))
+        ax.set(title=pattern.capitalize(), xlabel=xlabel + (" (log)" if log_x else ""), ylim=(0, 1.02))
+    axes[0].set_ylabel("Recall (reporting seeds)")
+    axes[0].legend(fontsize=6.5, loc="upper left")
+    fig.suptitle("Recall against pattern strength (dotted: the reported strength; dashed: A1's 70% target)", fontsize=10)
+    s = []
+    for pattern, _, _ in panels:
+        part = sens[sens["pattern"] == pattern]
+        for m in method_order(part["method"]):
+            line = part[part["method"] == m].sort_values("x")
+            reached = line[line["recall"] >= target]
+            s.append(stat("sensitivity", f"{m}: weakest {pattern} reaching the 70% target",
+                          reached["strength"].iloc[0] if len(reached) else "none in the sweep",
+                          f"recall at the strongest: {line['recall'].iloc[-1]:.2f}"))
+    return fig, s
+
+
+def fig_walkforward(wf: pd.DataFrame) -> tuple[Figure, Stats]:
+    """Does the ranking depend on where the time split falls? Recall and flag rate at each cut-off."""
+    fig, (a, b) = plt.subplots(1, 2, figsize=(9, 3.4))
+    for m in method_order(wf["method"]):
+        line = wf[wf["method"] == m].sort_values("fit_fraction")
+        kw = {"color": METHOD_COLOURS.get(m, MUTED), "marker": "o", "markersize": 3, "linewidth": 1.4}
+        a.plot(line["fit_fraction"], line["mean_recall"], label=METHOD_NAMES.get(m, m), **kw)
+        b.plot(line["fit_fraction"], line["flag_rate"], **kw)
+    reported = SETTINGS["model"]["fitFraction"]
+    for ax in (a, b):
+        ax.axvline(reported, color=MUTED, linestyle=":", linewidth=1)
+        ax.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
+        ax.set_xlabel("Share of each history used for fitting (dotted: reported)")
+    a.set(title="Mean planted recall", ylabel="Mean recall", ylim=(0, 1))
+    b.set(title="Real transactions flagged", ylabel="Flag rate")
+    b.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
+    a.legend(fontsize=6.5, loc="lower left")
+    spread = wf.groupby("method")["mean_recall"].agg(lambda v: v.max() - v.min())
+    best = wf.loc[wf.groupby("fit_fraction")["mean_recall"].idxmax()]
+    s = [stat("walkforward", f"{m}: range of mean recall across cut-offs", round(float(spread[m]), 3))
+         for m in method_order(wf["method"])]
+    s += [stat("walkforward", f"best method at fit fraction {r.fit_fraction:.0%}", r.method, f"mean recall {r.mean_recall:.3f}")
+          for r in best.itertuples()]
+    return fig, s
+
+
+def fig_ds2_check(ds2: pd.DataFrame, ds1_sanity: pd.DataFrame, ds1_addresses: int) -> tuple[Figure, Stats]:
+    """Do DS1's results carry over to ~2,900 DS2 histories? Recall and the sanity rule, DS1 against DS2."""
+    order = ds2.sort_values("ds2_mean_recall")["method"].tolist()
+    t = ds2.set_index("method").loc[order]
+    sanity = ds1_sanity.set_index("method")
+    fig, (a, b) = plt.subplots(1, 2, figsize=(9, 3.6), sharey=True)
+    y = np.arange(len(order))
+    for ax, ds1_col, ds2_col, title, xlabel in (
+            (a, "ds1_mean_recall", "ds2_mean_recall", "Mean planted recall", "Mean recall"),
+            (b, None, "ds2_share_addresses_over_limit", "Addresses breaking the sanity rule", "Share of addresses")):
+        ds1_vals = (t[ds1_col] if ds1_col else
+                    pd.Series([sanity.loc[m, "addresses_over_limit"] / ds1_addresses if m in sanity.index else np.nan
+                               for m in order], index=order))
+        ax.hlines(y, np.fmin(ds1_vals, t[ds2_col]), np.fmax(ds1_vals, t[ds2_col]), color=GRID, linewidth=2.5)
+        ax.scatter(ds1_vals, y, s=36, facecolors="none", edgecolors=MUTED, linewidths=1.4, zorder=3, label="DS1 (25 addresses)")
+        ax.scatter(t[ds2_col], y, s=36, c=[METHOD_COLOURS.get(m, MUTED) for m in order], zorder=4,
+                   label=f"DS2 ({int(t['ds2_eval_rows'].iloc[0]):,} evaluation rows)")
+        if ds2_col == "ds2_mean_recall":
+            ax.errorbar(t[ds2_col], y, xerr=[t[ds2_col] - t["ds2_mean_recall_ci_low"], t["ds2_mean_recall_ci_high"] - t[ds2_col]],
+                        fmt="none", ecolor=MUTED, elinewidth=1, capsize=2, zorder=2)
+        ax.set(title=title, xlabel=xlabel, xlim=(0, 1))
+        ax.grid(axis="x", color=GRID)
+    a.set_yticks(y, [METHOD_NAMES.get(m, m) for m in order], fontsize=7)
+    b.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
+    a.legend(fontsize=7, loc="lower right")
+    fig.suptitle("The frozen DS1 methods on DS2 histories that meet DS1's address rule", fontsize=10)
+    s = [stat("ds2_check", f"{m}: DS2 mean recall", round(float(t.loc[m, "ds2_mean_recall"]), 3),
+              f"95% CI {t.loc[m, 'ds2_mean_recall_ci_low']:.3f}-{t.loc[m, 'ds2_mean_recall_ci_high']:.3f}; "
+              f"DS1 {t.loc[m, 'ds1_mean_recall']:.3f}; DS2 flag rate {t.loc[m, 'ds2_flag_rate']:.3f}")
+         for m in reversed(order)]
+    ranks = t[["ds1_mean_recall", "ds2_mean_recall"]].dropna()
+    if len(ranks) > 2:
+        rho = st.spearmanr(ranks["ds1_mean_recall"], ranks["ds2_mean_recall"]).statistic
+        s.append(stat("ds2_check", "Spearman correlation of method rankings, DS1 vs DS2", round(float(rho), 3),
+                      f"{len(ranks)} methods"))
+    return fig, s
+
+
 # -- building every figure ---------------------------------------------------------------------
 
 
@@ -649,6 +858,23 @@ def available() -> dict[str, Callable[[], tuple[Figure, Stats]]]:
         figs["eval_txgpt_sizes"] = lambda: fig_txgpt_sizes(table("txgpt_runs"), table("txgpt_sizes"))
     if (TABLES_DIR / "heist_lofo.csv").exists():
         figs["eval_heist_lofo"] = lambda: fig_heist_lofo(table("heist_lofo"), table("heist_results"))
+    if (TABLES_DIR / "regression_results.csv").exists() and "nominal" in table("regression_results"):
+        figs["eval_conformal"] = lambda: fig_conformal(table("regression_results"))
+    fusion_model = PROJECT_ROOT / "models" / "fusion.joblib"
+    if (TABLES_DIR / "tuning_fusion.csv").exists() and fusion_model.exists():
+        import joblib
+
+        figs["eval_fusion_frontier"] = lambda: fig_fusion_frontier(
+            table("tuning_fusion"), {k: v for k, v in joblib.load(fusion_model).items() if k != "method"})
+    if (TABLES_DIR / "eval_significance.csv").exists():
+        figs["eval_significance"] = lambda: fig_significance(table("eval_significance"))
+    if (TABLES_DIR / "eval_sensitivity.csv").exists():
+        figs["eval_sensitivity"] = lambda: fig_sensitivity(table("eval_sensitivity"))
+    if (TABLES_DIR / "eval_walkforward.csv").exists():
+        figs["eval_walkforward"] = lambda: fig_walkforward(table("eval_walkforward"))
+    if (TABLES_DIR / "eval_ds2.csv").exists() and (TABLES_DIR / "eval_sanity.csv").exists():
+        evaluated = int((table("split_ds1")["eval"] > 0).sum())
+        figs["eval_ds2_check"] = lambda: fig_ds2_check(table("eval_ds2"), table("eval_sanity"), evaluated)
     return figs
 
 
