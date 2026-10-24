@@ -12,8 +12,10 @@ so the time split does not apply):
     in_share          share of its transactions that receive more than they send
     median_log_size   median log10(1 + |net amount| in sats)
     gap_cv            coefficient of variation of the gaps between consecutive transactions
-    burstiness        Goh and Barabasi's (sd - mean) / (sd + mean) of the daily transaction counts:
-                      -1 perfectly regular, 0 random (Poisson-like), towards 1 bursty
+    burstiness        (sd - mean) / (sd + mean) of the daily transaction counts over the span, the form of
+                      Goh and Barabasi's index (which they apply to gaps): -1 the same count every day,
+                      towards 1 activity packed into a few days (on daily counts, unlike gaps, a Poisson
+                      process gives 0 only at about one transaction a day)
     mean_outputs      mean outputs per transaction
     history_tx        transactions in the history
     median_fee_rate   median fee rate of its transactions (sat/vB)

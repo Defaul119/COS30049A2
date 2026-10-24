@@ -372,7 +372,7 @@ def build_parser() -> argparse.ArgumentParser:
     explain.add_argument("--txid", required=True)
     for kind in (what_if, explain):
         kind.add_argument("--assistant", action="store_true",
-                            help="let the Assistant write it (settings -> assistant); the template if every answer fails a check")
+                          help="let the Assistant write it (settings -> assistant); the template if every answer fails a check")
     heist = kinds.add_parser("heist", help="BitcoinHeist: does an address-day resemble the labelled ransomware rows?")
     for name in ("length", "weight", "count", "looped", "neighbors", "income"):
         heist.add_argument(f"--{name}", type=float, required=True)
