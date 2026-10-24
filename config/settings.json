@@ -257,6 +257,20 @@
     "seed": 30049
   },
 
+  "profiles": {
+    "_about": "Address profiles of DS1 (main addresses) and DS2 (plan §9.4, S-7): 8 address-level features, standardised, K-Means by silhouette; the DS2-covers-DS1 check (plan §7). Uses clustering.kmeansNInit and silhouetteSample, and model.seed.",
+    "k": [3, 4, 5, 6, 7, 8],
+    "logFeatures": ["tx_per_day", "mean_outputs", "history_tx", "median_fee_rate"],
+    "_logFeatures": "compared on log10(1 + x): each spans orders of magnitude across addresses",
+    "minSpanDays": 1,
+    "_minSpanDays": "floor on a history's span when dividing by it, so an address active within one day has a finite rate",
+    "describeAbsZ": 0.75,
+    "describeMax": 3,
+    "_describeAbsZ": "a profile is named by its (at most describeMax) most distinctive features whose centroid is at least this many SDs from the mean; address-level centroids sit closer to the mean than DS1's transaction clusters, so clustering.describeAbsZ (1.0) left most profiles unnamed",
+    "coverageQuantiles": [0.01, 0.99],
+    "_coverageQuantiles": "DS2's range for the coverage check: the share of DS1 addresses inside it, per feature"
+  },
+
   "assistant": {
     "_about": "The guarded Explorer Assistant in explorer.predict (plan §10.3, §12.1): writers tried in writerOrder, each answer checked by explorer.assistant; writers this machine cannot run are skipped, and the template is always last. Paths are relative to the project root.",
     "writerOrder": ["qwen3b", "text150m"],

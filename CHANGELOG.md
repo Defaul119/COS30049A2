@@ -32,6 +32,16 @@ instant template text; the Assistant runs per transaction (`predict explain --ad
 The writer code moved to `lm/writers.py`, so the DS7 evaluation and the Explorer decode identically. The writer
 order is provisional (Qwen, then 152M) until the DS7 results.
 
+**Address profiles and DS2's coverage of DS1 (plan §9.4 S-7, §7; `python -m explorer.cli profiles`).** Eight
+address-level features for the 25 DS1 main addresses and the 4,012 DS2 addresses, K-Means over k = 3-8 by silhouette.
+The silhouette is flat and low (0.18-0.19 for every k; best k = 8, the top of the plan's grid), so the profiles
+divide a continuum rather than separate distinct types; the report says so and uses them descriptively. Profiles
+are named by their most distinctive features (`profiles.describeAbsZ` 0.75, not clustering's 1.0, which left
+three of eight unnamed). Coverage: every DS1 address lies inside DS2's 1-99% range on 6 of 8 features (92% on
+burstiness, 96% on outputs per transaction); DS1's median fee rate sits at DS2's 8th percentile, the one clear
+difference. New: `explorer/profiles.py`, `reports/tables/{profiles,profiles_tuning,ds2_coverage}.csv`,
+`reports/figures/eda_{ds2_coverage,profiles}.pdf`, `models/profiles.joblib`, `data/processed/profiles.csv`.
+
 **The DS2 crawl's final step crashed writing its manifest** (16:36): the first crawl run (22 Oct, an earlier client)
 recorded its request count but `None` for its error counts, and the totals added them. `ds2.parquet` had been written,
 the manifest had not. `explorer/corpus.py` now counts those as 0 and records how many runs had no error counts

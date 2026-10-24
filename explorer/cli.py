@@ -17,6 +17,7 @@ Usage (from the repository root):
     python -m explorer.cli baseline --sweep       # robust-z threshold sweep
     python -m explorer.cli outliers               # Isolation Forest and LOF
     python -m explorer.cli clustering             # K-Means and DBSCAN
+    python -m explorer.cli profiles               # DS1 + DS2 address profiles and DS2's coverage of DS1
     python -m explorer.cli regression             # naive, Ridge, random forest, gradient boosting, quantiles
     python -m explorer.cli txgpt                  # after lm.tx_score: choose raw or relative surprisal
     python -m explorer.cli evaluate               # every DS1 check and the recommended method
@@ -134,6 +135,12 @@ def cmd_clustering(args: argparse.Namespace) -> int:
     return run_clustering()
 
 
+def cmd_profiles(args: argparse.Namespace) -> int:
+    from .profiles import run_profiles
+
+    return run_profiles()
+
+
 def cmd_regression(args: argparse.Namespace) -> int:
     from .regression import run_regression
 
@@ -246,6 +253,7 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
     from .baseline import run_baseline_sweep
     from .classify import run_classify_elliptic, run_classify_heist
     from .clustering import run_clustering
+    from .corpus import OUT_DIR as CORPUS_DIR
     from .evaluate import run_evaluate
     from .external import EXTERNAL_DIR
     from .features import run_features
@@ -253,6 +261,7 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
     from .label_check import run_label_check
     from .labelled import run_process_elliptic, run_process_heist
     from .outliers import run_outliers
+    from .profiles import run_profiles
     from .regression import run_regression
     from .scores import run_scores
     from .split import run_split
@@ -270,6 +279,10 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
         ("clustering", run_clustering),
         ("regression", run_regression),
     ]
+    if (CORPUS_DIR / "ds2.parquet").exists():
+        steps.append(("profiles", run_profiles))
+    else:
+        log.info("Skipping profiles: no DS2 yet (python -m explorer.cli corpus)")
     if TXGPT_SCORES.exists():
         steps.append(("txgpt", run_txgpt))
     else:
@@ -338,6 +351,8 @@ def build_parser() -> argparse.ArgumentParser:
     baseline.set_defaults(func=cmd_baseline)
     steps.add_parser("outliers", help="DS1: Isolation Forest and LOF searches").set_defaults(func=cmd_outliers)
     steps.add_parser("clustering", help="DS1: K-Means and DBSCAN").set_defaults(func=cmd_clustering)
+    steps.add_parser("profiles", help="DS1 + DS2: address profiles (K-Means) and DS2's coverage of DS1").set_defaults(
+        func=cmd_profiles)
     steps.add_parser("regression", help="DS1: expected size and gap, residual and range flags").set_defaults(
         func=cmd_regression)
     steps.add_parser("txgpt", help="DS1: TxGPT raw vs relative surprisal, threshold").set_defaults(func=cmd_txgpt)

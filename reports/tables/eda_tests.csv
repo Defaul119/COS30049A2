@@ -31,6 +31,17 @@ pca,explained variance PC1+PC2,0.873,
 pca,share of transactions within |z| radius 2,0.605,the dense core
 flag_rate,overall share with |z| >= 3.5,0.139,
 flag_rate,addresses above the sanity limit,5,led to the threshold sweep (CR-03)
+ds2_coverage,tx_per_day: share of DS1 addresses inside DS2's central range,1.0,DS1 median at DS2's 67% percentile
+ds2_coverage,in_share: share of DS1 addresses inside DS2's central range,1.0,DS1 median at DS2's 60% percentile
+ds2_coverage,median_log_size: share of DS1 addresses inside DS2's central range,1.0,DS1 median at DS2's 78% percentile
+ds2_coverage,gap_cv: share of DS1 addresses inside DS2's central range,1.0,DS1 median at DS2's 56% percentile
+ds2_coverage,burstiness: share of DS1 addresses inside DS2's central range,0.92,DS1 median at DS2's 28% percentile
+ds2_coverage,mean_outputs: share of DS1 addresses inside DS2's central range,0.96,DS1 median at DS2's 80% percentile
+ds2_coverage,history_tx: share of DS1 addresses inside DS2's central range,1.0,DS1 median at DS2's 70% percentile
+ds2_coverage,median_fee_rate: share of DS1 addresses inside DS2's central range,1.0,DS1 median at DS2's 8% percentile
+profiles,chosen k (best silhouette),8,
+profiles,silhouette range over k,0.179-0.191,below 0.25: the profiles divide a continuum rather than separate distinct types
+profiles,profiles holding a DS1 address,7,
 elliptic_classes,"illicit share of labelled, training steps",0.1158,
 elliptic_classes,"illicit share of labelled, test steps",0.065,
 elliptic_classes,unknown share of all rows,0.771,

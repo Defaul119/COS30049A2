@@ -283,6 +283,62 @@ def fig_flag_rate(features: pd.DataFrame) -> tuple[Figure, Stats]:
     return fig, s
 
 
+def fig_ds2_coverage(profiles: pd.DataFrame, coverage: pd.DataFrame) -> tuple[Figure, Stats]:
+    """What kinds of addresses are in DS2, and does DS2 cover DS1's range? (TxGPT trains on DS2, scores DS1)"""
+    axes_of = {"tx_per_day": ("Transactions per day (log scale)", True), "in_share": ("Share of transactions received", False),
+               "median_log_size": ("Median |net| (log10 sats)", False), "gap_cv": ("Gap coefficient of variation (log scale)", True)}
+    names = list(axes_of)
+    pairs = [(a, b) for i, a in enumerate(names) for b in names[i + 1:]]
+    ds1, ds2 = profiles[profiles["dataset"] == "DS1"], profiles[profiles["dataset"] == "DS2"]
+    fig, axes = plt.subplots(2, 3, figsize=(9, 5.6))
+    for ax, (x, y) in zip(axes.ravel(), pairs):
+        ax.scatter(ds2[x], ds2[y], s=5, color="#c3c2b7", alpha=0.6, edgecolors="none", label=f"DS2 ({len(ds2):,} addresses)")
+        ax.scatter(ds1[x], ds1[y], s=30, marker="D", color=PALETTE[1], edgecolors="white", linewidths=0.8,
+                   label=f"DS1 ({len(ds1)} main addresses)")
+        ax.set(xlabel=axes_of[x][0], ylabel=axes_of[y][0])
+        ax.xaxis.label.set_size(7)
+        ax.yaxis.label.set_size(7)
+        if axes_of[x][1]:
+            ax.set_xscale("log")
+        if axes_of[y][1]:
+            ax.set_yscale("log")
+    axes[0, 0].legend(loc="lower left", fontsize=7, markerscale=1.2)
+    fig.suptitle("DS2's addresses span the behaviour of DS1's, so TxGPT trains on the kind of history it scores",
+                 fontsize=10, y=1.0)
+    fig.tight_layout()
+    snapshot_note(fig)
+    cov = coverage.set_index("feature")
+    s = [stat("ds2_coverage", f"{f}: share of DS1 addresses inside DS2's central range", round(float(cov.loc[f, "ds1_inside_share"]), 3),
+              f"DS1 median at DS2's {cov.loc[f, 'ds1_median_percentile_in_ds2']:.0%} percentile")
+         for f in cov.index]
+    return fig, s
+
+
+def fig_profiles(summary: pd.DataFrame, tuning: pd.DataFrame) -> tuple[Figure, Stats]:
+    """Address profiles (K-Means on 8 address-level features): each profile's standardised centroid."""
+    z_cols = [c for c in summary.columns if c.startswith("z_")]
+    labels = [f"{r.profile}: {r.description} ({r.ds1_addresses} DS1, {r.ds2_addresses:,} DS2)" for r in summary.itertuples()]
+    fig, ax = plt.subplots(figsize=(9, 0.42 * len(summary) + 1.6))
+    limit = float(np.ceil(np.abs(summary[z_cols].to_numpy()).max()))
+    im = ax.imshow(summary[z_cols], cmap=DIVERGING, vmin=-limit, vmax=limit, aspect="auto")
+    ax.set_xticks(range(len(z_cols)), [c[2:].replace("_", " ") for c in z_cols], rotation=30, ha="right", fontsize=7)
+    ax.set_yticks(range(len(labels)), labels, fontsize=7)
+    ax.grid(False)
+    for i in range(len(summary)):
+        for j, c in enumerate(z_cols):
+            v = summary[c].iloc[i]
+            ax.text(j, i, f"{v:.1f}", ha="center", va="center", fontsize=6.5, color="white" if abs(v) > 0.6 * limit else INK)
+    fig.colorbar(im, ax=ax, label="Centroid (SDs from the mean address)", shrink=0.8)
+    chosen = tuning[tuning["chosen"]].iloc[0]
+    ax.set_title(f"Address profiles of DS1 and DS2: K-Means, k = {int(chosen['k'])} by silhouette ({chosen['silhouette']:.2f})")
+    snapshot_note(fig)
+    s = [stat("profiles", "chosen k (best silhouette)", int(chosen["k"])),
+         stat("profiles", "silhouette range over k", f"{tuning['silhouette'].min():.3f}-{tuning['silhouette'].max():.3f}",
+              "below 0.25: the profiles divide a continuum rather than separate distinct types"),
+         stat("profiles", "profiles holding a DS1 address", int((summary["ds1_addresses"] > 0).sum()))]
+    return fig, s
+
+
 # -- DS3 and DS4 analyses ----------------------------------------------------------------------
 
 
@@ -543,6 +599,10 @@ def available() -> dict[str, Callable[[], tuple[Figure, Stats]]]:
             "eda_pca": lambda: fig_pca(features),
             "eda_flag_rate": lambda: fig_flag_rate(features),
         })
+    profiles_path = PROJECT_ROOT / "data" / "processed" / "profiles.csv"
+    if profiles_path.exists() and (TABLES_DIR / "ds2_coverage.csv").exists():
+        figs["eda_ds2_coverage"] = lambda: fig_ds2_coverage(pd.read_csv(profiles_path), table("ds2_coverage"))
+        figs["eda_profiles"] = lambda: fig_profiles(table("profiles"), table("profiles_tuning"))
     if (TABLES_DIR / "elliptic_steps.csv").exists():
         figs["eda_elliptic_classes"] = lambda: fig_elliptic_classes(table("elliptic_steps"))
     if (TABLES_DIR / "heist_years.csv").exists():

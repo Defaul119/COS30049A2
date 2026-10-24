@@ -143,8 +143,10 @@ B. GPU, after pretraining ends (~20:25 Sat), in this order (Qwen moved FIRST at 
    4. python -m lm.train --config configs/text_150m_explain.json   (NEW config; data/ds7_chat from step A)
       python -m lm.eval_explain --model text150m --checkpoint runs/text-150m-explain/model_best.pt
    Expected: Qwen ~20:25 -> ~03:30 Sun, TxGPT -> ~07:00, scoring/evaluate, 152M chat + DS7 -> ~10:30 Sun.
-   Still to add: the TxGPT validation-loss-vs-parameters figure (plan §9.1 appendix) and the DS2-vs-DS1 figure.
-5. Still to write: address profiles, README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text
+   Still to add: the TxGPT validation-loss-vs-parameters figure (plan §9.1 appendix). DONE 24 Oct 18:20: the
+   DS2-vs-DS1 figure and address profiles (S-7; explorer/profiles.py, `profiles` step, in `all`; CHANGELOG 24 Oct:
+   flat silhouette 0.18-0.19 -> profiles are descriptive; DS2 covers DS1 except fee rate).
+5. Still to write: README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text
    and NOTICE), report (LaTeX, 3,000 words). DS7 glossary DRAFTED (160 pairs, tools/make_glossary.py; status 'draft for review': the user should skim it).
 6. DECIDED 23 Oct (the team delegated all open decisions to Cao Tri Tran): CR-03 option (a) (keep |z| >= 5,
    report the behaviour-change finding); Qwen-Instruct switch and roles accepted; explorerMethod = baseline.
