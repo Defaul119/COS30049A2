@@ -69,10 +69,14 @@ def pick_device(name: str) -> torch.device:
 
 
 def precision(device: torch.device):
-    """bf16 on GPUs that support it (RTX 30xx and newer), fp16 on older ones (e.g. Kaggle's T4), fp32 on CPU."""
+    """bf16 on GPUs with native bf16 (RTX 30xx and newer), fp16 on older ones (e.g. Kaggle's T4), fp32 on CPU.
+
+    Compute capability, not torch.cuda.is_bf16_supported(), which recent PyTorch also answers yes on a T4
+    because it can emulate bf16 (several times slower).
+    """
     if device.type != "cuda":
         return None, contextlib.nullcontext()
-    dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
+    dtype = torch.bfloat16 if torch.cuda.get_device_capability(device)[0] >= 8 else torch.float16
     return dtype, torch.autocast(device_type="cuda", dtype=dtype)
 
 

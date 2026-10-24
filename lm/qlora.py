@@ -13,12 +13,15 @@ fits, as lm.prepare_chat does. The DS7 splits are the ones the 152M model uses.
 
 Like lm.train, a run resumes: Ctrl+C (or a crash) keeps the latest checkpoint, and the same command
 continues with the same data order and learning-rate schedule. The GPU must be free (pretraining
-and TxGPT have priority; plan §9 "When").
+and TxGPT have priority; plan §9 "When"). It also runs on Kaggle (kaggle/qwen3b_explain.ipynb): on GPUs
+without native bf16 (T4, P100) it computes in fp16 with loss scaling, and --max-hours stops it cleanly
+inside a session's time limit.
 
 Usage (cos30049-a2-gpu environment):
     python -m lm.qlora --config configs/qwen3b_explain.json
     python -m lm.qlora --config configs/qwen3b_explain.json --bench   # 5 steps on the longest batches: speed, memory
     python -m lm.qlora --config configs/qwen3b_explain.json --smoke   # tiny random model, CPU, a few steps
+    python -m lm.qlora --config configs/qwen3b_explain.json --max-hours 11   # stop and save after 11 h
 
 Files written to the run folder (out_dir):
     adapter/           latest LoRA adapter (resume point; or a later stage's init_adapter)
@@ -177,6 +180,15 @@ def load_tokenizer(cfg: dict[str, Any]):
     return tok
 
 
+def compute_dtype() -> torch.dtype:
+    """bf16 on GPUs with native bf16 (Ampere and newer, e.g. the RTX 3060), fp16 on older ones (Kaggle's T4, P100).
+
+    Compute capability, not torch.cuda.is_bf16_supported(): recent PyTorch reports bf16 as supported on a T4
+    because it can emulate it, which is several times slower.
+    """
+    return torch.bfloat16 if torch.cuda.get_device_capability()[0] >= 8 else torch.float16
+
+
 def load_model(cfg: dict[str, Any], smoke: bool):
     """The base model (4-bit on the GPU, or a tiny random one for --smoke) with trainable LoRA adapters."""
     from peft import LoraConfig, PeftModel, get_peft_model, prepare_model_for_kbit_training
@@ -190,10 +202,11 @@ def load_model(cfg: dict[str, Any], smoke: bool):
         torch.manual_seed(cfg["seed"])
         model = AutoModelForCausalLM.from_config(small)
     else:
+        dtype = compute_dtype()
         quant = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True,
-                                   bnb_4bit_compute_dtype=torch.bfloat16) if cfg["load_in_4bit"] else None
+                                   bnb_4bit_compute_dtype=dtype) if cfg["load_in_4bit"] else None
         model = AutoModelForCausalLM.from_pretrained(cfg["base_model"], revision=cfg["revision"],
-                                                     quantization_config=quant, torch_dtype=torch.bfloat16,
+                                                     quantization_config=quant, torch_dtype=dtype,
                                                      device_map={"": 0})
         # Gradient checkpointing trades about a third more compute for activations that fit in 12 GB.
         model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
@@ -218,8 +231,8 @@ def evaluate(model, examples: list, val_batches: list[list[int]], pad_id: int, d
     return total / max(count, 1)
 
 
-def bench(model, optimizer, params: list, examples: list, cfg: dict[str, Any], pad_id: int, device: torch.device,
-          steps: int) -> None:
+def bench(model, optimizer, scaler, params: list, examples: list, cfg: dict[str, Any], pad_id: int,
+          device: torch.device, steps: int) -> None:
     """Optimizer steps on the longest examples first, so an out-of-memory error shows in minutes, not hours.
 
     Prints tokens per second and peak GPU memory; nothing is saved. The longest batches are the worst
@@ -234,10 +247,12 @@ def bench(model, optimizer, params: list, examples: list, cfg: dict[str, Any], p
         optimizer.zero_grad(set_to_none=True)
         for idx in micro[s * cfg["grad_accum"]:(s + 1) * cfg["grad_accum"]]:
             batch = {k: v.to(device) for k, v in collate(examples, idx, pad_id).items()}
-            (model(**batch).loss / cfg["grad_accum"]).backward()
+            scaler.scale(model(**batch).loss / cfg["grad_accum"]).backward()
             tokens += int(batch["attention_mask"].sum())
+        scaler.unscale_(optimizer)
         torch.nn.utils.clip_grad_norm_(params, cfg["grad_clip"])
-        optimizer.step()
+        scaler.step(optimizer)
+        scaler.update()
         memory = torch.cuda.max_memory_allocated() / 2 ** 30 if device.type == "cuda" else 0.0
         print(f"[bench] step {s + 1}/{steps}: {tokens / (time.time() - started):,.0f} tok/s, peak memory {memory:.1f} GB",
               flush=True)
@@ -272,6 +287,9 @@ def main() -> None:
     p.add_argument("--smoke", action="store_true", help="tiny random model on the CPU for a few steps (tests the code path)")
     p.add_argument("--bench", type=int, nargs="?", const=5, metavar="STEPS",
                    help="run STEPS optimizer steps on the longest batches, print speed and peak memory, save nothing")
+    p.add_argument("--max-hours", type=float, metavar="H",
+                   help="stop cleanly (saving) after H hours of training; the same command resumes. For time-limited "
+                        "sessions such as Kaggle's 12-hour limit")
     args = p.parse_args()
     cfg = load_config(args.config)
     if args.smoke:
@@ -302,12 +320,17 @@ def main() -> None:
     model.train()
     params = [q for q in model.parameters() if q.requires_grad]
     optimizer = torch.optim.AdamW(params, lr=cfg["lr"], weight_decay=cfg["weight_decay"])
+    # fp16 needs loss scaling (small gradients underflow to zero); with bf16 or on the CPU the scaler does nothing.
+    fp16 = device.type == "cuda" and compute_dtype() == torch.float16
+    scaler = torch.amp.GradScaler("cuda", enabled=fp16)
     n_trainable = sum(q.numel() for q in params)
+    hardware = torch.cuda.get_device_name() if device.type == "cuda" else "cpu"
     print(f"[qlora] {cfg['base_model']} @ {cfg['revision']}: {n_trainable:,} trainable parameters; "
-          f"{max_steps} steps of {cfg['micro_batch']}x{cfg['grad_accum']} sequences", flush=True)
+          f"{max_steps} steps of {cfg['micro_batch']}x{cfg['grad_accum']} sequences; {hardware}, "
+          f"{'fp16 with loss scaling' if fp16 else 'bf16' if device.type == 'cuda' else 'fp32'}", flush=True)
 
     if args.bench:
-        bench(model, optimizer, params, train, cfg, tok.pad_token_id, device, args.bench)
+        bench(model, optimizer, scaler, params, train, cfg, tok.pad_token_id, device, args.bench)
         return
 
     # Resume: the adapter weights, optimizer, step and the epoch's batch order.
@@ -324,6 +347,8 @@ def main() -> None:
         set_peft_model_state_dict(model, state["adapter"] if "adapter" in state
                                   else load_file(str(out / "adapter" / "adapter_model.safetensors")))
         optimizer.load_state_dict(state["optimizer"])
+        if "scaler" in state:
+            scaler.load_state_dict(state["scaler"])
         step, epoch, cursor, best = state["step"], state["epoch"], state["cursor"], state["best"]
         rng.setstate(state["rng"])
         epoch_batches = state["epoch_batches"]
@@ -335,8 +360,8 @@ def main() -> None:
         save_adapter(model, out / tag)
         if tag == "adapter":
             save_atomic({"adapter": get_peft_model_state_dict(model), "optimizer": optimizer.state_dict(),
-                         "step": step, "epoch": epoch, "cursor": cursor, "best": best, "rng": rng.getstate(),
-                         "epoch_batches": epoch_batches}, state_path)
+                         "scaler": scaler.state_dict(), "step": step, "epoch": epoch, "cursor": cursor, "best": best,
+                         "rng": rng.getstate(), "epoch_batches": epoch_batches}, state_path)
 
     meta = {"config": cfg, "smoke": args.smoke, "trainable_parameters": n_trainable, "train": train_stats,
             "val": val_stats, "retention": retention_stats,
@@ -355,14 +380,16 @@ def main() -> None:
                 batch = {k: v.to(device) for k, v in collate(train, epoch_batches[cursor], tok.pad_token_id).items()}
                 cursor += 1
                 loss = model(**batch).loss / cfg["grad_accum"]
-                loss.backward()
+                scaler.scale(loss).backward()
                 loss_sum += loss.item()
                 tokens_seen += int(batch["attention_mask"].sum())
             lr = lr_at(step, cfg, max_steps)
             for group in optimizer.param_groups:
                 group["lr"] = lr
+            scaler.unscale_(optimizer)  # so the clipping threshold applies to the true gradients
             grad = float(torch.nn.utils.clip_grad_norm_(params, cfg["grad_clip"]))
-            optimizer.step()
+            scaler.step(optimizer)
+            scaler.update()
             step += 1
             elapsed = time.time() - started
             rate = tokens_seen / max(elapsed, 1e-9)
@@ -388,15 +415,25 @@ def main() -> None:
             if time.time() - last_ckpt > cfg["ckpt_every_minutes"] * 60:
                 save()
                 last_ckpt = time.time()
+            if args.max_hours and time.time() - started > args.max_hours * 3600 and step < max_steps:
+                print(f"[qlora] --max-hours {args.max_hours} reached at step {step}: saving; run the same command "
+                      "to resume", flush=True)
+                break
     except KeyboardInterrupt:
         print("[qlora] interrupted: saving; run the same command to resume", flush=True)
     finally:
-        save()
         log.close()
-        meta.update({"steps_done": step, "max_steps": max_steps, "best_val_loss": best, "tok_per_s": tokens_seen / max(time.time() - started, 1e-9),
-                     "peak_memory_gb": torch.cuda.max_memory_allocated() / 2 ** 30 if device.type == "cuda" else None})
-        (out / "meta.json").write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
-    print(f"[qlora] done at step {step}; best validation loss {best:.4f}; adapters in {out}", flush=True)
+        # A run that trained no step (e.g. a finished run started again, as the GPU queue does when the run
+        # folder was trained elsewhere) changes nothing, so it must not overwrite that run's record.
+        if step > first_step:
+            save()
+            meta.update({"steps_done": step, "max_steps": max_steps, "best_val_loss": best,
+                         "tok_per_s": tokens_seen / max(time.time() - started, 1e-9),
+                         "peak_memory_gb": torch.cuda.max_memory_allocated() / 2 ** 30 if device.type == "cuda" else None,
+                         "hardware": hardware, "fp16_loss_scaling": fp16})
+            (out / "meta.json").write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
+    print(f"[qlora] {'done' if step >= max_steps else 'stopped'} at step {step} of {max_steps}; "
+          f"best validation loss {best:.4f}; adapters in {out}", flush=True)
 
 
 if __name__ == "__main__":

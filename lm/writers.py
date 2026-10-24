@@ -37,14 +37,15 @@ def qwen_generator(config: str | Path, adapter: str | Path, max_new_tokens: int)
     from peft import PeftModel
     from transformers import AutoModelForCausalLM, BitsAndBytesConfig
 
-    from .qlora import load_config, load_tokenizer
+    from .qlora import compute_dtype, load_config, load_tokenizer
 
     cfg = load_config(str(config))
     tok = load_tokenizer(cfg)
+    dtype = compute_dtype()  # bf16 on the RTX 3060, fp16 on a Kaggle T4
     quant = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True,
-                               bnb_4bit_compute_dtype=torch.bfloat16)
+                               bnb_4bit_compute_dtype=dtype)
     base = AutoModelForCausalLM.from_pretrained(cfg["base_model"], revision=cfg["revision"], quantization_config=quant,
-                                                torch_dtype=torch.bfloat16, device_map={"": 0})
+                                                torch_dtype=dtype, device_map={"": 0})
     model = PeftModel.from_pretrained(base, str(adapter)).eval()
 
     @torch.no_grad()
