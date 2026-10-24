@@ -87,7 +87,10 @@ def txgpt_nll(model_path: Path, frame: pd.DataFrame, test_ids: list[str], device
     out = []
     frame = frame.sort_values(["addr_id", "block_time_utc", "txid_hash"], kind="stable")
     for addr in sorted(test_ids):
-        out.append(surprisal(model, frame[frame["addr_id"] == addr].to_dict("records"), device))
+        # The plain sequence NLL: the habit and Markov baselines also count every earlier row,
+        # same-block ones included, so all four methods condition on the same history.
+        rows = frame[frame["addr_id"] == addr].to_dict("records")
+        out.append(surprisal(model, rows, device, strictly_earlier=False))
     return np.concatenate(out)
 
 

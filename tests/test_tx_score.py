@@ -12,7 +12,7 @@ import torch
 
 from lm import tx_baselines, tx_score
 from lm.model import GPT, GPTConfig, pad_vocab
-from lm.tx_tokens import BOS, TOKENS_PER_TX, VOCAB_SIZE
+from lm.tx_tokens import BOS, TOKENS_PER_TX, VOCAB_SIZE, tx_tokens
 from tests.test_tx_tokens import tx
 
 
@@ -45,6 +45,19 @@ class ScoreTests(unittest.TestCase):
         np.testing.assert_allclose(after[:20], base[:20], rtol=1e-5)
         self.assertEqual(base.shape, (40, TOKENS_PER_TX))
         self.assertTrue((base > 0).all())
+
+    def test_same_block_transactions_are_not_each_others_history(self):
+        model, device = tiny_model(), torch.device("cpu")
+        rows = history(20)
+        sibling = dict(rows[10], received_sats=7)  # a second transaction in the same block as row 10
+        both = rows[:11] + [sibling] + rows[11:]
+        alone = tx_score.surprisal(model, rows[:10] + [sibling], device, [10])
+        np.testing.assert_allclose(tx_score.surprisal(model, both, device, [11]), alone, rtol=1e-5)
+        # Its gap is measured from the last strictly earlier transaction, not SAME_BLOCK.
+        self.assertEqual(tx_score.contexts(both, [11])[0][-TOKENS_PER_TX:], tx_tokens(sibling, rows[9]))
+        # The plain-sequence mode (lm.tx_baselines) does condition on the sibling.
+        self.assertEqual(tx_score.contexts(both, [11], strictly_earlier=False)[0][-TOKENS_PER_TX:],
+                         tx_tokens(sibling, rows[10]))
 
     def test_batching_does_not_change_scores(self):
         model, device = tiny_model(), torch.device("cpu")

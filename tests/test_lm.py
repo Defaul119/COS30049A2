@@ -2,6 +2,9 @@
 
     python -m unittest discover -s tests -v
 """
+import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -12,9 +15,9 @@ import torch
 from lm.data import WindowSampler, write_tokens
 from lm.generate import generate
 from lm.hub import iter_column
-from lm.prepare_chat import fit_conversation
+from lm.prepare_chat import fit_conversation, pack_windows
 from lm.model import GPT, GPTConfig, IGNORE_INDEX
-from lm.tokenizer import ASSISTANT, END, render_chat, token_id, train_tokenizer
+from lm.tokenizer import ASSISTANT, END, EOT, render_chat, token_id, train_tokenizer
 
 TINY = GPTConfig(vocab_size=97, seq_len=32, n_layer=2, n_head=2, d_model=32, mlp_hidden=64)
 
@@ -143,6 +146,43 @@ class ChatFormatTests(unittest.TestCase):
         self.assertEqual(ids[-1], token_id(self.tok, END))
         self.assertIsNone(fit_conversation(self.tok, msgs, 5))       # not even the first reply fits
         self.assertFalse(fit_conversation(self.tok, msgs, len(full))[2])
+
+    def test_packing_keeps_every_conversation_whole_inside_one_window(self):
+        rng = np.random.default_rng(0)
+        convs = [([i] * int(n), [1] * int(n)) for i, n in enumerate(rng.integers(5, 64, size=200))]
+        windows = pack_windows(convs, 64)
+        self.assertTrue(all(sum(len(c[0]) for c in w) <= 64 for w in windows))
+        self.assertEqual(sorted(c[0][0] for w in windows for c in w), list(range(200)))
+        lower_bound = -(-sum(len(c[0]) for c in convs) // 64)
+        self.assertLessEqual(len(windows), lower_bound * 1.1)  # little filler
+
+    def test_chat_files_hold_whole_conversations_and_a_separate_validation_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            self.tok.save(str(d / "tok.json"))
+            turn = "the weather is mild and sunny "
+            for name, n in (("train.jsonl", 30), ("val.jsonl", 3)):
+                with open(d / name, "w", encoding="utf-8") as fh:
+                    for i in range(n):
+                        msgs = [{"role": "user", "content": "hello there"},
+                                {"role": "assistant", "content": turn * (1 + i % 5)}]
+                        fh.write(json.dumps({"messages": msgs}) + "\n")
+            proc = subprocess.run([sys.executable, "-m", "lm.prepare_chat", "--source", "jsonl",
+                                   "--jsonl", str(d / "train.jsonl"), "--val-jsonl", str(d / "val.jsonl"),
+                                   "--tokenizer", str(d / "tok.json"), "--out", str(d / "out"), "--seq-len", "64"],
+                                  capture_output=True, text=True, cwd=Path(__file__).resolve().parent.parent)
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            meta = json.loads((d / "out" / "meta.json").read_text(encoding="utf-8"))
+            self.assertEqual(meta["conversations"], {"train": 30, "val": 3})
+            eot = token_id(self.tok, EOT)
+            for split in ("train", "val"):
+                sampler = WindowSampler(d / "out" / f"{split}.bin", 64, 0, d / "out" / f"{split}_mask.bin")
+                self.assertEqual(sampler.n_windows, meta["windows"][split])  # the last window is used too
+                x, y = sampler.batch(0, sampler.n_windows)
+                self.assertTrue((x[:, 0] == eot).all())  # every window starts a conversation
+                # Each reply's closing <|end|> (the only trained one) is a target exactly once: no
+                # conversation is lost or split.
+                self.assertEqual(int((y == token_id(self.tok, END)).sum()), meta["conversations"][split])
 
 
 class ParquetReaderTests(unittest.TestCase):

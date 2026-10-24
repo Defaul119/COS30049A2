@@ -4,14 +4,16 @@ Serves plan §10.1. A transaction's surprisal is s_i = -sum over its 6 fields of
 token before it), kept per field (nats). Each transaction is scored with as much earlier context as
 the window holds (up to 127 earlier transactions, with BOS when the history starts inside the
 window), exactly the contexts the model was trained on. The model is causal, so a transaction is
-scored only from what came before it: time-safe by construction.
+scored only from what came before it, and the context is cut at strictly earlier block times, so
+same-block transactions are never each other's history (DR-02).
 
 The vocabulary and bucket edges are checked against the training data's meta.json, so training and
 scoring always tokenise the same way.
 
 Usage:
-    python -m lm.tx_score --model runs/txgpt-m-s1/model_best.pt     # every DS1 transaction
-    python -m lm.tx_score --model ... --plants                       # also the planted copies
+    python -m lm.tx_score            # every DS1 transaction, with the model lm.tx_select exported
+    python -m lm.tx_score --plants   # also the planted copies
+    python -m lm.tx_score --model runs/txgpt-m-s1/model_best.pt --meta data/txgpt/meta.json   # one sweep run
 
 Writes data/processed/esplora/txgpt_scores.csv (and, with --plants, every row of every planted copy
 to data/interim/injections/txgpt/<set>_<seed>.parquet).
@@ -49,25 +51,38 @@ def check_vocabulary(meta_path: Path) -> None:
         raise SystemExit(f"Token definitions differ from {meta_path}: {differs}")
 
 
-def contexts(rows: list[dict[str, Any]], indices: list[int]) -> list[list[int]]:
-    """For each transaction index, the token window ending with that transaction's 6 tokens."""
+def contexts(rows: list[dict[str, Any]], indices: list[int], strictly_earlier: bool = True) -> list[list[int]]:
+    """For each transaction index, the token window ending with that transaction's 6 tokens.
+
+    With strictly_earlier (DR-02, used for every DS1 and planted score), the context holds only
+    transactions at strictly earlier block times: a same-block sibling is never history, and the
+    scored transaction's gap is measured from the last strictly earlier one, exactly as for the
+    first transaction of a block in training. Without it, the context is the plain sequence (every
+    row before i), the standard language-model NLL that lm.tx_baselines compares with its baselines.
+    """
     per_tx = [tx_tokens(r, rows[i - 1] if i else None) for i, r in enumerate(rows)]
+    times = [float(r["block_time_utc"]) for r in rows]
     out = []
     for i in indices:
-        start = max(0, i - CONTEXT_TX)
+        end = i
+        if strictly_earlier:
+            while end > 0 and times[end - 1] >= times[i]:
+                end -= 1
+        start = max(0, end - CONTEXT_TX)
         window = [BOS] if start == 0 else []
-        for j in range(start, i + 1):
+        for j in range(start, end):
             window += per_tx[j]
+        window += tx_tokens(rows[i], rows[end - 1] if end else None)
         out.append(window)
     return out
 
 
 @torch.no_grad()
 def surprisal(model: GPT, rows: list[dict[str, Any]], device: torch.device, indices: list[int] | None = None,
-              batch: int = 32) -> np.ndarray:
+              batch: int = 32, strictly_earlier: bool = True) -> np.ndarray:
     """(len(indices), 6) surprisal in nats for the chosen transactions of one time-ordered history."""
     indices = list(range(len(rows))) if indices is None else indices
-    windows = contexts(rows, indices)
+    windows = contexts(rows, indices, strictly_earlier)
     out = np.zeros((len(windows), TOKENS_PER_TX), dtype=np.float32)
     for b in range(0, len(windows), batch):
         chunk = windows[b:b + batch]
@@ -106,8 +121,8 @@ def score_frame(model: GPT, frame: pd.DataFrame, device: torch.device, group: st
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--model", required=True)
-    p.add_argument("--meta", default="data/txgpt/meta.json")
+    p.add_argument("--model", default="models/txgpt.pt")
+    p.add_argument("--meta", default="models/txgpt_meta.json")
     p.add_argument("--transactions", default="data/processed/esplora/transactions.csv")
     p.add_argument("--out", default="data/processed/esplora/txgpt_scores.csv")
     p.add_argument("--plants", action="store_true", help="also score every planted copy")

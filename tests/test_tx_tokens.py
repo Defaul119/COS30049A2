@@ -46,6 +46,11 @@ class BucketTests(unittest.TestCase):
         self.assertEqual(tokens[8], FIELD_OFFSETS["DIR"] + 1)   # out
         self.assertTrue(all(t < VOCAB_SIZE for t in tokens))
 
+    def test_planted_row_with_the_previous_height_gets_its_real_gap(self):
+        # explorer/inject.py gives a planted row the previous real row's height at a later time.
+        tokens = history_tokens([tx(0, 10, received=5000), tx(90 * 86400, 10, received=5000)])
+        self.assertEqual(tokens[7], FIELD_OFFSETS["GAP"] + gap_bucket(90 * 86400, False))
+
 
 class WindowTests(unittest.TestCase):
     seq_len = prepare_tx.SEQ_TX * TOKENS_PER_TX

@@ -60,10 +60,8 @@ def measure(answer: str, prompt: list[dict[str, str]], template: str) -> dict:
 def text150m_generator(checkpoint: str, max_new_tokens: int) -> Generate:
     from .chat import reply
     from .generate import load_model
-    from .tokenizer import load_tokenizer
 
-    model = load_model(checkpoint)
-    tok = load_tokenizer(str(Path(checkpoint).with_name("tokenizer.json")))
+    model, tok = load_model(checkpoint)  # the tokenizer is the tokenizer.json saved next to the weights
     # Greedy, and no repetition penalty: lm.chat's default penalty also counts the prompt's tokens, so it
     # would push the model away from copying the prompt's numbers, which a faithful explanation must do.
     return lambda messages: reply(model, tok, messages, max_new_tokens=max_new_tokens, temperature=0,

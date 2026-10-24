@@ -153,5 +153,25 @@ class QwenMaskTests(unittest.TestCase):
                                        {"role": "assistant", "content": "x"}], 50))
 
 
+class EvalGeneratorTests(unittest.TestCase):
+    def test_text150m_generator_answers_a_ds7_prompt(self):
+        import tempfile
+        from pathlib import Path
+
+        import torch
+
+        from lm.eval_explain import text150m_generator
+        from lm.model import GPT, GPTConfig
+        from lm.tokenizer import train_tokenizer
+
+        with tempfile.TemporaryDirectory() as d:
+            tok = train_tokenizer(["the amount was unusual for this address"] * 50, vocab_size=300)
+            tok.save(str(Path(d) / "tokenizer.json"))
+            cfg = GPTConfig(vocab_size=320, seq_len=1024, n_layer=1, n_head=2, d_model=32, mlp_hidden=64)
+            torch.save({"model": GPT(cfg).state_dict(), "model_config": cfg.to_dict()}, Path(d) / "model_best.pt")
+            answer = text150m_generator(str(Path(d) / "model_best.pt"), 5)(assistant.prompt_messages(tx()))
+        self.assertIsInstance(answer, str)
+
+
 if __name__ == "__main__":
     unittest.main()

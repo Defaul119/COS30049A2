@@ -82,7 +82,11 @@ def tx_tokens(row: dict[str, Any], prev: dict[str, Any] | None) -> list[int]:
     """
     net = int(row["received_sats"]) - int(row["sent_sats"])
     gap = None if prev is None else float(row["block_time_utc"]) - float(prev["block_time_utc"])
-    same_block = prev is not None and int(row["block_height"]) == int(prev["block_height"])
+    # Same height AND same time: real transactions in one block always share both, but a planted
+    # copy (explorer/inject.py) keeps the previous real row's height at a later time, and must get
+    # its real gap rather than SAME_BLOCK.
+    same_block = (prev is not None and int(row["block_height"]) == int(prev["block_height"])
+                  and float(row["block_time_utc"]) == float(prev["block_time_utc"]))
     buckets = {
         "GAP": gap_bucket(gap, same_block),
         "DIR": 0 if net > 0 else 1 if net < 0 else 2,

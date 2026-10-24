@@ -3,6 +3,38 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 24 October 2026
+
+Pre-flight check of the next training stages (TxGPT, 152M chat and explanation, Qwen), before the GPU frees up.
+
+- **TxGPT read every planted transaction as "same block".** `explorer/inject.py` gives a planted row the previous
+  real row's block height at a later time, and the tokenizer decided "same block" by height alone: all spike and
+  dormant plants and 445 of 500 burst plants (tuning seed 40000) got the SAME_BLOCK gap token instead of their real
+  gap, so TxGPT could not have seen a dormancy. Now "same block" needs the same height and the same time. Real data
+  is unchanged (in DS1 a shared height always means a shared time), so DS2's tokens, the baseline and every reported
+  number stay the same.
+- **TxGPT scoring now keeps same-block transactions out of each other's history (DR-02).** `lm.tx_score` cuts each
+  context at strictly earlier block times and measures the scored transaction's gap from the last strictly earlier
+  one; before, a second transaction in a block was scored with its sibling in view (3.6% of DS1 rows share a block).
+  `lm.tx_baselines` keeps the plain sequence NLL, as its count-based baselines also see every earlier row.
+- **`lm.tx_select` (new)**: the plan's size rule (lowest mean validation loss over 3 seeds), the runs and sizes tables
+  (`reports/tables/txgpt_runs.csv`, `txgpt_sizes.csv`) and the fp16 export `models/txgpt.pt` + `models/txgpt_meta.json`,
+  which `lm.tx_score` now uses by default. Nothing did these before.
+- **Chat data packs whole conversations into windows.** `lm.prepare_chat` wrote conversations back to back and the
+  trainer cuts fixed 1,024-token windows, so a conversation could straddle two windows and the second part's reply
+  was learned without its question. For DS7 that would teach the 152M model to write numbers it cannot see, against
+  the number-faithfulness guardrail. Conversations are now packed whole (best fit, longest first) and the remainder
+  of each window is filled with untrained `<|endoftext|>` tokens; `data/chat` is rebuilt with it (24 Oct). `--val-jsonl` makes the
+  explanation stage validate on DS7's own `val.jsonl` (the split Qwen uses), not every 100th training pair, and a
+  trailing filler token stops the last window of each file being skipped.
+- **`configs/text_150m_explain.json` (new)**: stage 3 as plan §9 states it (from the chat model; DS7, 3 passes;
+  lr 1e-4, warm-up 20; DS7 validation), with early stopping after 4 evaluations without improvement.
+- **152M fine-tunes use micro-batch 4, not 8.** The pretraining bench measured 11.7 GB of 12.9 at 8 (only 1.5%
+  faster than 4 at 7.0 GB); with the desktop also on the GPU, Windows would spill to system RAM and run several
+  times slower. Same batch per optimizer step (more accumulation); validation batches doubled to keep its size.
+- **`lm.eval_explain --model text150m` would have crashed**: it kept `load_model`'s (model, tokenizer) pair as the
+  model. Fixed, with a test.
+
 ## 23 October 2026
 
 - **DS7 glossary drafted** (`tools/make_glossary.py` -> `data/processed/ds7/glossary.jsonl`): 160 question-answer
