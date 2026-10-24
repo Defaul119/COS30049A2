@@ -68,6 +68,10 @@ RUNNING NOW (check with tasklist / logs)
   runs\text-150m\console.log. Step 6,897/7,630 at 15:50 24 Oct, validation loss 3.146 (falling ~0.005 per
   200 steps; expected final ~3.13; Chinchilla's fit predicts 3.38 for this size and data), ~11.75k tok/s,
   ends about 20:20 Sat 24 Oct. NOT supervised (it predates tools/supervise.py; it resumes with the same command).
+- DS2 DONE 24 Oct 17:46: 4,012 addresses, 898,490 rows, every check passed (the final step had crashed at 16:36
+  on the 22 Oct run's None error counts; fixed in 949692a). Queue steps A done 17:49: data/txgpt (9.06M train
+  tokens, 3,611/201/200 addresses), DS7 10,160 pairs (9,149 train / 561 val / 450 test), data/ds7_chat (4.17M
+  tokens, 4,074 windows, 20.8% filler), template eval on the new test split. History of the crawl below.
 - DS2 crawl, SUPERVISED (window "DS2 CRAWL (supervised)"): python tools/supervise.py --name corpus --
   python -m explorer.cli corpus (cpu env). Logs: reports\logs\corpus.log, supervise.log. TARGET 4,000 (user,
   23 Oct 09:00); 3,874 kept at 15:50 24 Oct, ~1.7 kept/min -> 4,000 about 17:05 Sat 24 Oct.
