@@ -101,8 +101,9 @@ DS1 ML EXTENSIONS (user, 24 Oct 20:10: "the rubric is more on ML ... best I can 
 - Run order: regression -> fusion -> scores -> evaluate -> significance -> sensitivity -> walk-forward ->
   ds2-check -> figures. Runner: scratchpad run_ds1_ext.ps1 (BelowNormal priority so training keeps the CPU;
   CPU jobs at normal priority cut pretraining from 11.5k to 9.5k tok/s on 24 Oct).
-- AFTER THE GPU QUEUE's evaluate (TxGPT method added): re-run fusion (if txgpt_method should be a candidate),
-  significance and figures so TxGPT appears in the intervals; sensitivity / walk-forward / ds2-check exclude
+- AFTER THE GPU QUEUE's evaluate (TxGPT method added): window "AFTER QUEUE EVALUATE" (started 22:07 24 Oct)
+  waits for it and re-runs significance + figures by itself; their tables/figures still need committing. Re-run
+  fusion only if txgpt_method should become a candidate; sensitivity / walk-forward / ds2-check exclude
   TxGPT by design (PRECOMPUTED_ONLY; DS2 trained it).
 
 KAGGLE (user, 24 Oct 20:20: "pop that fine tune of the qwen onto Kaggle")
