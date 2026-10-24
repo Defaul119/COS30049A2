@@ -8,7 +8,8 @@ USER PREFERENCES
   its EXIT CODE before every commit. Push after each finished batch (the user asked, 23 Oct).
 - Do NOT update the tracker artifact (https://claude.ai/artifact/NFVrJdEAcT2iLotZTx2J5e) mid-task; only when the
   current tasks are finished or the user asks. Its db: meta/now {text,updated}, meta/log {entries[{time,text}]},
-  jobs/<id>, steps/sNN (s01-s37, s50-s59 used; s60+ for new). Writes need if_version.
+  jobs/<id> (ds1, ds2, ds4, ds5, pretrain, queue), steps/sNN (s01-s37, s50-s65 used; s66+ for new). Writes need
+  if_version. Last updated 24 Oct 18:30 (all steps brought up to date).
 - Keep replies short; answer the user's questions first. Since 23 Oct 02:20 the user wants a proof-checking pass:
   every claim checked against the data and the rubric before new features.
 - Shell: Git Bash heredocs mangle backslash escapes in Python source (\n became a real newline twice on 23 Oct).
