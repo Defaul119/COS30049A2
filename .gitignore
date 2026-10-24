@@ -3,6 +3,8 @@ data/text/
 data/chat/
 data/ds7/
 data/qwen/
+data/txgpt/
+data/ds7_chat/
 data/raw/fineweb-edu/
 data/raw/smol-smoltalk/
 data/external/
@@ -43,3 +45,7 @@ models/heist_best.joblib
 
 # Console copies of logs that are already written to reports/logs/<step>.log
 reports/logs/*.stdout.log
+
+# tools/run_queue.py: console copies of each step and its resume state (each job also writes its own log)
+reports/logs/queue/
+reports/logs/queue_state_*.json
