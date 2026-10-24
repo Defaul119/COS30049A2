@@ -2,3 +2,22 @@
 2026-10-24 21:10:56 INFO DS2: 2933 addresses meet DS1's main rule; 827291 transactions; periods {'fit': 549071, 'eval': 237705, 'history': 40515}
 2026-10-24 21:16:42 INFO seed 30049: 3000 plants on 1583 addresses
 2026-10-24 21:22:26 INFO seed 30050: 3000 plants on 1583 addresses
+2026-10-24 21:28:11 INFO seed 30051: 3000 plants on 1583 addresses
+2026-10-24 21:34:01 INFO seed 30052: 3000 plants on 1613 addresses
+2026-10-24 21:51:09 INFO Step ds2-check started: C:\Users\ADMIN\COS30049A2\explorer\cli.py ds2-check
+2026-10-24 21:51:41 INFO DS2: 2933 addresses meet DS1's main rule; 827291 transactions; periods {'fit': 549071, 'eval': 237705, 'history': 40515}
+2026-10-24 21:52:40 INFO seed 30049: 3000 plants on 1583 addresses
+2026-10-24 21:53:32 INFO seed 30050: 3000 plants on 1583 addresses
+2026-10-24 21:54:20 INFO seed 30051: 3000 plants on 1583 addresses
+2026-10-24 21:55:08 INFO seed 30052: 3000 plants on 1613 addresses
+2026-10-24 21:55:56 INFO seed 30053: 3000 plants on 1582 addresses
+2026-10-24 21:56:18 INFO baseline             DS2 mean recall 0.494 [0.479, 0.508] (DS1 0.655); DS2 flag rate 0.075, 10% of addresses over the sanity limit
+2026-10-24 21:56:18 INFO fusion               DS2 mean recall 0.471 [0.456, 0.486] (DS1 0.684); DS2 flag rate 0.076, 10% of addresses over the sanity limit
+2026-10-24 21:56:18 INFO regression           DS2 mean recall 0.425 [0.412, 0.438] (DS1 0.673); DS2 flag rate 0.100, 15% of addresses over the sanity limit
+2026-10-24 21:56:18 INFO kmeans               DS2 mean recall 0.333 [0.320, 0.346] (DS1 0.446); DS2 flag rate 0.020, 2% of addresses over the sanity limit
+2026-10-24 21:56:18 INFO isolation_forest     DS2 mean recall 0.305 [0.293, 0.317] (DS1 0.429); DS2 flag rate 0.017, 2% of addresses over the sanity limit
+2026-10-24 21:56:18 INFO dbscan               DS2 mean recall 0.265 [0.253, 0.277] (DS1 0.406); DS2 flag rate 0.021, 2% of addresses over the sanity limit
+2026-10-24 21:56:18 INFO regression_interval  DS2 mean recall 0.193 [0.184, 0.202] (DS1 0.268); DS2 flag rate 0.070, 9% of addresses over the sanity limit
+2026-10-24 21:56:18 INFO lof                  DS2 mean recall 0.166 [0.156, 0.176] (DS1 0.320); DS2 flag rate 0.023, 2% of addresses over the sanity limit
+2026-10-24 21:56:18 INFO Wrote C:\Users\ADMIN\COS30049A2\reports\tables\eval_ds2.csv, eval_ds2_plant_hits.csv and split_ds2.csv
+2026-10-24 21:56:19 INFO Step ds2-check finished in 309 s (exit 0)

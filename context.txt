@@ -48,7 +48,10 @@ ENVIRONMENT
 - Repo C:\Users\ADMIN\COS30049A2. Miniforge C:\Users\ADMIN\miniforge3; envs cos30049-a2 (CPU) and cos30049-a2-gpu
   (CUDA; also transformers 4.52.4, peft 0.15.2, bitsandbytes 0.48.1, accelerate 1.7.0).
 - In cmd one-liners write `set "PYTHONUTF8=1"` (with quotes).
-- Long jobs run in their own cmd windows. Graceful stop: Ctrl+C in the window, or
+- Long jobs run in their own cmd windows (Start-Process cmd.exe /k ...). NEVER start one as a child of Claude's
+  tool shell (e.g. Start-Process powershell -RedirectStandardOutput ...): on 24 Oct ~21:35 a tool error recycled
+  that shell and killed the DS1 extension runner and its ds2-check mid-run (no crash or memory event logged).
+  Graceful stop: Ctrl+C in the window, or
   `python -I <scratchpad>\send_ctrl_c.py <pid>` (AttachConsole + GenerateConsoleCtrlEvent(0,0); ~15 lines;
   recreate if the scratchpad is gone). Every job resumes with the same command.
 - LaTeX: MiKTeX (user install) at %LOCALAPPDATA%\Programs\MiKTeX\miktex\bin\x64, packages auto-install.
@@ -91,6 +94,10 @@ DS1 ML EXTENSIONS (user, 24 Oct 20:10: "the rubric is more on ML ... best I can 
   ds2-check (frozen DS1 methods on the 2,933 DS2 histories meeting DS1's main rule, 1,000 plants per pattern per
   reporting seed, eval_ds2.csv); 6 figures (eval_conformal, eval_fusion_frontier, eval_significance,
   eval_sensitivity, eval_walkforward, eval_ds2_check).
+- RESULTS 24 Oct (CHANGELOG 24 Oct has the numbers): conformal fixes coverage (gap 90%: 0.787 -> 0.894); fusion
+  = baseline x1.1 + regression x3.0 (0.684 vs 0.655, p = 0.063, inside the tie margin -> baseline stays);
+  baseline CI 0.546-0.753; walk-forward ranking stable; DS2: baseline FIRST (0.494) ahead of fusion (0.471) and
+  regression (0.425), Spearman 0.905 DS1 vs DS2 -> the parameter-free baseline transfers best. All committed.
 - Run order: regression -> fusion -> scores -> evaluate -> significance -> sensitivity -> walk-forward ->
   ds2-check -> figures. Runner: scratchpad run_ds1_ext.ps1 (BelowNormal priority so training keeps the CPU;
   CPU jobs at normal priority cut pretraining from 11.5k to 9.5k tok/s on 24 Oct).

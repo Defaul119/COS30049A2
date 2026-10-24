@@ -138,12 +138,15 @@ def make_plants(transactions: pd.DataFrame, periods: pd.DataFrame, seed: int, se
     eval_counts = ev_all.groupby("address").size()
     qualifies = ev_all.groupby("address")["block_time_utc"].nunique() >= 2
     eval_counts = eval_counts[qualifies.reindex(eval_counts.index, fill_value=False)].sort_index()
+    # One pass to split the table by address: DS2 has ~830k rows, and filtering them once per plant was most of
+    # the time. (block_time_utc, txid) is unique per address, so each history sorts exactly as before.
+    by_address = dict(tuple(tx.groupby("address", sort=False)))
     plants = []
     for pattern in PATTERNS:
         chosen = rng.choice(eval_counts.index.to_numpy(), size=p["plantsPerPattern"],
                             p=(eval_counts / eval_counts.sum()).to_numpy())
         for k, address in enumerate(chosen):
-            h = tx[tx["address"] == address].sort_values(["block_time_utc", "txid"])
+            h = by_address[address].sort_values(["block_time_utc", "txid"])
             ev = h[h["period"] == EVAL]
             plant_id = f"{set_name}{seed}-{pattern}-{k:02d}"
             plants.append(Plant(plant_id, seed, pattern, address, PLANTERS[pattern](h[TX_COLUMNS], ev, plant_id, rng, p)))

@@ -40,6 +40,16 @@ table written by code and a figure; tests in `tests/test_extensions.py`.
   and DBSCAN 0.39-0.45; LOF 0.32-0.33; the calibrated range 0.21-0.28), the baseline is the steadiest
   (0.650-0.658), and the regression residual breaks the sanity rule on 10-14 addresses at every cut-off, so its
   failure is structural rather than an accident of the 70% cut. At 70% the refits reproduce eval_injection.csv.
+- *DS2 check* (step `ds2-check`): the frozen DS1 methods on the 2,933 DS2 histories that meet DS1's own
+  main-address rule (827,291 transactions; 15,000 plants over the five reporting seeds). Every method recalls
+  less than on DS1, so DS1's absolute recalls were optimistic for a broader population, but the ranking holds
+  (Spearman 0.905 across the 8 methods) with one telling swap: the baseline, which fits nothing, ranks FIRST on
+  DS2 (0.494, 95% CI 0.479-0.508; DS1 0.655), ahead of the fusion (0.471; DS1 0.684) and the regression residual
+  (0.425; DS1 0.673), whose models were fitted on 25 addresses. The parameter-free method transfers best: the
+  strongest evidence yet for the baseline as the Explorer's method. The sanity rule is milder on DS2 (10% of
+  addresses over the limit for the baseline, 16% on DS1), and the conformal margin calibrated on DS1 does not
+  carry over (DS2 flag rate 7.0% against 3.5%). `inject.make_plants` now splits the table by address once
+  (identical plants, checked against the committed specs; a DS2 seed went from about 6 minutes to under 1).
 
 **The Qwen 3B fine-tune moves to Kaggle; the GPU queue runs it last, as the fallback (user, 20:20).** The marks
 weigh the machine-learning work far above the language models (the tutor called the latter an optional extra

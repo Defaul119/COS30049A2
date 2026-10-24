@@ -21,3 +21,11 @@
 2026-10-24 14:14:04 UTC [queue:txgpt-m-s1] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/txgpt_m.json --seed 1
 2026-10-24 14:21:34 UTC [queue:txgpt-m-s1] Ctrl+C: the job stopped with exit code 0; not restarting
 2026-10-24 14:21:51 UTC [queue:txgpt-m-s1] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/txgpt_m.json --seed 1
+2026-10-24 14:24:55 UTC [queue:txgpt-m-s1] exit code 0 after 184 s: finished; not restarting
+2026-10-24 14:24:55 UTC [queue:txgpt-l-s1] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/txgpt_l.json --seed 1
+2026-10-24 14:46:14 UTC [queue:txgpt-l-s1] exit code 0 after 1279 s: finished; not restarting
+2026-10-24 14:46:15 UTC [queue:txgpt-s-s2] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/txgpt_s.json --seed 2
+2026-10-24 14:51:51 UTC [queue:txgpt-s-s2] exit code 0 after 336 s: finished; not restarting
+2026-10-24 14:51:51 UTC [queue:txgpt-m-s2] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/txgpt_m.json --seed 2
+2026-10-24 15:02:13 UTC [queue:txgpt-m-s2] exit code 0 after 622 s: finished; not restarting
+2026-10-24 15:02:13 UTC [queue:txgpt-l-s2] start: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\python.exe -m lm.train --config configs/txgpt_l.json --seed 2

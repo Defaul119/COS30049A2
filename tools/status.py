@@ -78,7 +78,11 @@ def supervisor() -> str:
 
 
 def training() -> str:
-    last = [line for line in tail(TRAIN_LOG, 5) if line.startswith("[train] step")]
+    lines = tail(TRAIN_LOG, 5)
+    finished = [line for line in lines if line.startswith("[train] finished")]
+    if finished:
+        return "Pretraining: " + finished[-1].replace("[train] ", "")
+    last = [line for line in lines if line.startswith("[train] step")]
     if not last:
         return "Pretraining: no step lines yet"
     idle = (time.time() - TRAIN_LOG.stat().st_mtime) / 60

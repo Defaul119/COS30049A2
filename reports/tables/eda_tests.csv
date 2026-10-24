@@ -55,13 +55,14 @@ heist_features,log1p_looped: rank-biserial effect (ransomware vs white),-0.037,M
 heist_features,log1p_neighbors: rank-biserial effect (ransomware vs white),-0.032,Mann-Whitney p=2.2e-21; |r|<0.1 is a negligible difference
 heist_features,log10_income: rank-biserial effect (ransomware vs white),-0.127,Mann-Whitney p=0.0e+00; |r|<0.1 is a negligible difference
 injection_recall,baseline mean recall,0.655,
-injection_recall,regression_interval mean recall,0.473,
+injection_recall,regression_interval mean recall,0.268,
 injection_recall,regression mean recall,0.673,
+injection_recall,fusion mean recall,0.684,
 injection_recall,kmeans mean recall,0.446,
 injection_recall,isolation_forest mean recall,0.429,
 injection_recall,dbscan mean recall,0.406,
 injection_recall,lof mean recall,0.32,
-agreement,median pairwise Jaccard,0.259,
+agreement,median pairwise Jaccard,0.286,
 agreement,most similar pair,isolation_forest-kmeans (0.81),
 label_check,elliptic_AF isolation_forest: PR-AUC / prevalence,0.565,"PR-AUC 0.0367, ROC-AUC 0.183"
 label_check,elliptic_AF lof: PR-AUC / prevalence,0.726,"PR-AUC 0.0472, ROC-AUC 0.369"
@@ -79,3 +80,69 @@ heist_lofo,histGradientBoosting: mean held-out-family recall,0.018,false-positiv
 heist_lofo,knn: mean held-out-family recall,0.027,false-positive rate on the random split's test set 0.033
 heist_lofo,logistic: mean held-out-family recall,0.479,false-positive rate on the random split's test set 0.492
 heist_lofo,randomForest: mean held-out-family recall,0.017,false-positive rate on the random split's test set 0.010
+conformal,"size 90% range, raw: coverage",0.897,lowest address 0.08; mean width 1.028 log10 units
+conformal,"size 90% range, conformal: coverage",0.897,lowest address 0.00; mean width 1.067 log10 units
+conformal,"size 98% range, raw: coverage",0.973,lowest address 0.65; mean width 2.132 log10 units
+conformal,"size 98% range, conformal: coverage",0.988,lowest address 0.89; mean width 2.570 log10 units
+conformal,"gap 90% range, raw: coverage",0.787,lowest address 0.50; mean width 0.705 log10 units
+conformal,"gap 90% range, conformal: coverage",0.894,lowest address 0.66; mean width 0.872 log10 units
+conformal,"gap 98% range, raw: coverage",0.894,lowest address 0.63; mean width 1.211 log10 units
+conformal,"gap 98% range, conformal: coverage",0.976,lowest address 0.87; mean width 1.497 log10 units
+fusion,saved pair,baseline + regression,"multipliers {'baseline': 1.1, 'regression': 3.0}"
+fusion,tuning mean recall of the saved fusion,0.665,"flag rate 0.1043, budget 0.1043"
+fusion,baseline alone: best tuning mean recall within the budget,0.649,
+fusion,isolation_forest alone: best tuning mean recall within the budget,0.604,
+fusion,regression alone: best tuning mean recall within the budget,0.505,
+significance,fusion: mean recall,0.684,"95% CI 0.569-0.781; minus baseline +0.029 (-0.001 to +0.055), p 0.063"
+significance,regression: mean recall,0.673,"95% CI 0.580-0.760; minus baseline +0.018 (-0.073 to +0.114), p 0.703"
+significance,baseline: mean recall,0.655,the reference
+significance,kmeans: mean recall,0.446,"95% CI 0.336-0.546; minus baseline -0.209 (-0.283 to -0.150), p 0.000"
+significance,isolation_forest: mean recall,0.429,"95% CI 0.321-0.534; minus baseline -0.227 (-0.304 to -0.156), p 0.000"
+significance,dbscan: mean recall,0.406,"95% CI 0.308-0.492; minus baseline -0.249 (-0.295 to -0.204), p 0.000"
+significance,lof: mean recall,0.32,"95% CI 0.257-0.375; minus baseline -0.335 (-0.402 to -0.256), p 0.000"
+significance,regression_interval: mean recall,0.268,"95% CI 0.184-0.358; minus baseline -0.387 (-0.472 to -0.301), p 0.000"
+sensitivity,baseline: weakest spike reaching the 70% target,10x,recall at the strongest: 0.92
+sensitivity,regression_interval: weakest spike reaching the 70% target,50x,recall at the strongest: 0.88
+sensitivity,regression: weakest spike reaching the 70% target,2x,recall at the strongest: 0.99
+sensitivity,fusion: weakest spike reaching the 70% target,10x,recall at the strongest: 0.90
+sensitivity,kmeans: weakest spike reaching the 70% target,50x,recall at the strongest: 0.76
+sensitivity,isolation_forest: weakest spike reaching the 70% target,50x,recall at the strongest: 0.78
+sensitivity,dbscan: weakest spike reaching the 70% target,50x,recall at the strongest: 0.71
+sensitivity,lof: weakest spike reaching the 70% target,none in the sweep,recall at the strongest: 0.61
+sensitivity,baseline: weakest burst reaching the 70% target,none in the sweep,recall at the strongest: 0.42
+sensitivity,regression_interval: weakest burst reaching the 70% target,none in the sweep,recall at the strongest: 0.31
+sensitivity,regression: weakest burst reaching the 70% target,3 in 24 h,recall at the strongest: 0.76
+sensitivity,fusion: weakest burst reaching the 70% target,none in the sweep,recall at the strongest: 0.55
+sensitivity,kmeans: weakest burst reaching the 70% target,none in the sweep,recall at the strongest: 0.11
+sensitivity,isolation_forest: weakest burst reaching the 70% target,none in the sweep,recall at the strongest: 0.16
+sensitivity,dbscan: weakest burst reaching the 70% target,none in the sweep,recall at the strongest: 0.14
+sensitivity,lof: weakest burst reaching the 70% target,none in the sweep,recall at the strongest: 0.10
+sensitivity,baseline: weakest dormant reaching the 70% target,14-30 days,recall at the strongest: 0.84
+sensitivity,regression_interval: weakest dormant reaching the 70% target,120-240 days,recall at the strongest: 1.00
+sensitivity,regression: weakest dormant reaching the 70% target,120-240 days,recall at the strongest: 1.00
+sensitivity,fusion: weakest dormant reaching the 70% target,14-30 days,recall at the strongest: 0.87
+sensitivity,kmeans: weakest dormant reaching the 70% target,none in the sweep,recall at the strongest: 0.68
+sensitivity,isolation_forest: weakest dormant reaching the 70% target,none in the sweep,recall at the strongest: 0.56
+sensitivity,dbscan: weakest dormant reaching the 70% target,60-120 days,recall at the strongest: 0.78
+sensitivity,lof: weakest dormant reaching the 70% target,30-60 days,recall at the strongest: 0.82
+walkforward,baseline: range of mean recall across cut-offs,0.008,
+walkforward,regression_interval: range of mean recall across cut-offs,0.067,
+walkforward,regression: range of mean recall across cut-offs,0.04,
+walkforward,fusion: range of mean recall across cut-offs,0.025,
+walkforward,kmeans: range of mean recall across cut-offs,0.029,
+walkforward,isolation_forest: range of mean recall across cut-offs,0.035,
+walkforward,dbscan: range of mean recall across cut-offs,0.041,
+walkforward,lof: range of mean recall across cut-offs,0.013,
+walkforward,best method at fit fraction 50%,regression,mean recall 0.713
+walkforward,best method at fit fraction 60%,regression,mean recall 0.705
+walkforward,best method at fit fraction 70%,fusion,mean recall 0.684
+walkforward,best method at fit fraction 80%,regression,mean recall 0.683
+ds2_check,baseline: DS2 mean recall,0.494,95% CI 0.479-0.508; DS1 0.655; DS2 flag rate 0.075
+ds2_check,fusion: DS2 mean recall,0.471,95% CI 0.456-0.486; DS1 0.684; DS2 flag rate 0.076
+ds2_check,regression: DS2 mean recall,0.425,95% CI 0.412-0.438; DS1 0.673; DS2 flag rate 0.100
+ds2_check,kmeans: DS2 mean recall,0.333,95% CI 0.320-0.346; DS1 0.446; DS2 flag rate 0.020
+ds2_check,isolation_forest: DS2 mean recall,0.305,95% CI 0.293-0.317; DS1 0.429; DS2 flag rate 0.017
+ds2_check,dbscan: DS2 mean recall,0.265,95% CI 0.253-0.277; DS1 0.406; DS2 flag rate 0.021
+ds2_check,regression_interval: DS2 mean recall,0.193,95% CI 0.184-0.202; DS1 0.268; DS2 flag rate 0.070
+ds2_check,lof: DS2 mean recall,0.166,95% CI 0.156-0.176; DS1 0.320; DS2 flag rate 0.023
+ds2_check,"Spearman correlation of method rankings, DS1 vs DS2",0.905,8 methods

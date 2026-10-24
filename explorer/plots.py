@@ -678,7 +678,7 @@ def fig_significance(sig: pd.DataFrame) -> tuple[Figure, Stats]:
     b.scatter(t["diff_mean_recall"], y, c=colours, s=36, zorder=3)
     b.set(title=f"Difference from {METHOD_NAMES.get(reference, reference)}", xlabel="Difference in mean recall")
     b.grid(axis="x", color=GRID)
-    b.legend(fontsize=7, loc="lower left")
+    b.legend(fontsize=7, loc="upper left")
     s = [stat("significance", f"{m}: mean recall", round(float(t.loc[m, "mean_recall"]), 3),
               f"95% CI {t.loc[m, 'mean_recall_ci_low']:.3f}-{t.loc[m, 'mean_recall_ci_high']:.3f}; minus {reference} "
               f"{t.loc[m, 'diff_mean_recall']:+.3f} ({t.loc[m, 'diff_ci_low']:+.3f} to {t.loc[m, 'diff_ci_high']:+.3f}), "
@@ -690,7 +690,7 @@ def fig_significance(sig: pd.DataFrame) -> tuple[Figure, Stats]:
 def fig_sensitivity(sens: pd.DataFrame) -> tuple[Figure, Stats]:
     """How strong must each pattern be before each method sees it? Recall against plant strength."""
     panels = [("spike", "Spike: multiple of the usual amount", True), ("burst", "Burst: transactions in 24 hours", False),
-              ("dormant", "Dormancy: days of silence (geometric mid)", True)]
+              ("dormant", "Dormancy: days silent (range mid)", True)]
     fig, axes = plt.subplots(1, 3, figsize=(10, 3.5), sharey=True)
     target = SETTINGS["injection"]["recallTarget"]
     for ax, (pattern, xlabel, log_x) in zip(axes, panels):
@@ -704,10 +704,13 @@ def fig_sensitivity(sens: pd.DataFrame) -> tuple[Figure, Stats]:
         ax.axhline(target, color=INK, linestyle="--", linewidth=0.8)
         if log_x:
             ax.set_xscale("log")
-            ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:g}"))
+            ticks = sorted(part["x"].unique())
+            ax.set_xticks(ticks, [f"{v:.0f}" for v in ticks])
+            ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
         ax.set(title=pattern.capitalize(), xlabel=xlabel + (" (log)" if log_x else ""), ylim=(0, 1.02))
     axes[0].set_ylabel("Recall (reporting seeds)")
-    axes[0].legend(fontsize=6.5, loc="upper left")
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncols=4, fontsize=7, bbox_to_anchor=(0.5, -0.1))
     fig.suptitle("Recall against pattern strength (dotted: the reported strength; dashed: A1's 70% target)", fontsize=10)
     s = []
     for pattern, _, _ in panels:
@@ -737,7 +740,8 @@ def fig_walkforward(wf: pd.DataFrame) -> tuple[Figure, Stats]:
     a.set(title="Mean planted recall", ylabel="Mean recall", ylim=(0, 1))
     b.set(title="Real transactions flagged", ylabel="Flag rate")
     b.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
-    a.legend(fontsize=6.5, loc="lower left")
+    handles, labels = a.get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncols=4, fontsize=7, bbox_to_anchor=(0.5, -0.12))
     spread = wf.groupby("method")["mean_recall"].agg(lambda v: v.max() - v.min())
     best = wf.loc[wf.groupby("fit_fraction")["mean_recall"].idxmax()]
     s = [stat("walkforward", f"{m}: range of mean recall across cut-offs", round(float(spread[m]), 3))
