@@ -1,0 +1,15 @@
+{
+  "id": "KAGGLE_USERNAME/cos30049a2-qwen3b-explain",
+  "title": "cos30049a2-qwen3b-explain",
+  "code_file": "qwen3b_explain.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

@@ -79,6 +79,21 @@ full entry. Use in the report's reproducibility / robustness paragraph and the r
   Optional, user's call: BIOS "Restore on AC power loss" + auto-login would restart the PC, not the jobs; a UPS
   is the real fix.
 
+KAGGLE (user, 24 Oct 20:20: "pop that fine tune of the qwen onto Kaggle")
+- The Qwen 3B fine-tune moves to Kaggle: kaggle/qwen3b_explain.ipynb (pinned to commit ef3a158; clones the public
+  repo, pip-installs the environment-gpu.yml pins, rebuilds the DS6 chat subset and asserts every data file's
+  SHA-256 equals the local copy (verified on a fresh clone 24 Oct: all 6 match), bench, train with --max-hours 11,
+  eval on DS7 test, writes kaggle_run.json). Settings: GPU T4 x2 (or P100), Internet on, Save & Run All (Commit).
+  Resume across sessions: previous output as input + RESUME_FROM. T4/P100 lack native bf16 -> fp16 with loss
+  scaling (lm.qlora.compute_dtype; meta.json records hardware + fp16_loss_scaling).
+- No Kaggle API token on this PC yet (C:\Users\ADMIN\.kaggle\kaggle.json absent; kaggle package not installed).
+  Either the user imports the notebook in the web UI, or creates a token and Claude pushes it:
+  pip install kaggle; set the username in kaggle/kernel-metadata.json; kaggle kernels push -p kaggle.
+- Bring home: output runs/qwen3b-explain/ -> runs/qwen3b-explain/, reports/tables/assistant_eval_qwen3b.csv ->
+  reports/tables/ (and merge its row into assistant_eval.csv). The local queue's Qwen steps (now LAST, the
+  fallback) then become no-ops: a run at its last step trains nothing and does not touch meta.json. If Kaggle is
+  running when the local queue reaches qwen-bench (~03:30 Sun), stop the queue before it duplicates the work.
+
 RUNNING NOW (check with tasklist / logs)
 - ONE-SCREEN STATUS: python tools/status.py [--watch 60] (crawl kept/target/rate/ETA, supervisor, pretraining, GPU).
   Live views for the user (PowerShell): Get-Content C:\Users\ADMIN\COS30049A2\runs\text-150m\console.log -Wait -Tail 5
@@ -88,10 +103,11 @@ RUNNING NOW (check with tasklist / logs)
   python -m lm.train --config configs/text_150m_pretrain.json >> runs\text-150m\console.log 2>&1.
   Step 7,437/7,630 at 19:50 24 Oct (best validation loss 3.133 at step 7,400; Chinchilla's fit predicts 3.38 for
   this size and data), ~11.4k tok/s, ends about 21:05-21:10 Sat 24 Oct. NOT supervised (resumes with the same command).
-- GPU QUEUE (window "GPU QUEUE", PID 20312, restarted 19:43 after the power cut; Qwen first): 4/25 done, waiting
+- GPU QUEUE (window "GPU QUEUE", PID 8388, restarted 20:04 with Qwen LAST, see KAGGLE): 4/25 done, waiting
   for runs/text-150m/model.pt. cmd window: conda activate cos30049-a2-gpu, set "PYTHONUTF8=1",
-  python tools\run_queue.py --plan configs\queue_after_pretraining.json. Check ~21:20 that qwen-bench passed
-  (reports/logs/queue/qwen-bench.log: tok/s, peak GB).
+  python tools\run_queue.py --plan configs\queue_after_pretraining.json. Order now: TxGPT 9 runs -> select,
+  baselines, scoring, DS1 evaluate -> 152M chat, DS7 stage, eval -> Qwen bench/train/eval (fallback).
+- LIVE STATUS window (PowerShell, user asked 24 Oct): python tools\status.py --watch 30.
 - DS2 DONE 24 Oct 17:46: 4,012 addresses, 898,490 rows, every check passed (the final step had crashed at 16:36
   on the 22 Oct run's None error counts; fixed in 949692a). Queue steps A done 17:49: data/txgpt (9.06M train
   tokens, 3,611/201/200 addresses), DS7 10,160 pairs (9,149 train / 561 val / 450 test), data/ds7_chat (4.17M
