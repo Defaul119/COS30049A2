@@ -552,6 +552,30 @@ def fig_heist_lofo(lofo: pd.DataFrame, results: pd.DataFrame) -> tuple[Figure, S
     return fig, s
 
 
+def fig_txgpt_sizes(runs: pd.DataFrame, sizes: pd.DataFrame) -> tuple[Figure, Stats]:
+    """TxGPT's size sweep (plan §9.1): best validation loss against parameters, 3 seeds per size."""
+    fig, ax = plt.subplots(figsize=(6, 3.6))
+    # Seeds drawn just left of their size (log axis), so the error bar does not hide them.
+    ax.scatter(runs["parameters"] * 0.88, runs["best_val_loss"], s=24, color=PALETTE[0], alpha=0.7, edgecolors="none",
+               label="one run (seed)", zorder=3)
+    ax.errorbar(sizes["parameters"], sizes["mean_val_loss"], yerr=sizes["std_val_loss"].fillna(0), color=INK,
+                linewidth=1.5, marker="o", markersize=5, capsize=3, label="mean and SD over seeds", zorder=4)
+    chosen = sizes[sizes["chosen"]].iloc[0]
+    ax.scatter([chosen["parameters"]], [chosen["mean_val_loss"]], s=140, facecolors="none", edgecolors=PALETTE[1],
+               linewidths=2, label="chosen: lowest mean validation loss", zorder=5)
+    for r in sizes.itertuples():
+        ax.annotate(f"{r.size.upper()}", (r.parameters, r.mean_val_loss), textcoords="offset points", xytext=(8, 6),
+                    fontsize=8, color=INK)
+    ax.set_xscale("log")
+    ax.set(title="TxGPT: validation loss by model size", xlabel="Parameters (log scale)",
+           ylabel="Best validation loss (nats per token)")
+    ax.legend(fontsize=7, loc="best")
+    s = [stat("txgpt_sizes", f"size {r.size}: mean best validation loss", round(float(r.mean_val_loss), 4),
+              f"{int(r.parameters):,} parameters; SD {r.std_val_loss:.4f} over {int(r.runs)} seeds") for r in sizes.itertuples()]
+    s.append(stat("txgpt_sizes", "chosen size", chosen["size"], "lowest mean validation loss (plan §9.1)"))
+    return fig, s
+
+
 # -- building every figure ---------------------------------------------------------------------
 
 
@@ -621,6 +645,8 @@ def available() -> dict[str, Callable[[], tuple[Figure, Stats]]]:
         figs["eval_pr_curves"] = lambda: fig_pr_curves(curves)
     if (TABLES_DIR / "elliptic_f1_by_step.csv").exists():
         figs["eval_elliptic_f1_by_step"] = lambda: fig_elliptic_f1_by_step(table("elliptic_f1_by_step"), table("elliptic_results"))
+    if (TABLES_DIR / "txgpt_runs.csv").exists():
+        figs["eval_txgpt_sizes"] = lambda: fig_txgpt_sizes(table("txgpt_runs"), table("txgpt_sizes"))
     if (TABLES_DIR / "heist_lofo.csv").exists():
         figs["eval_heist_lofo"] = lambda: fig_heist_lofo(table("heist_lofo"), table("heist_results"))
     return figs

@@ -25,6 +25,20 @@ class FigureTests(unittest.TestCase):
                 self.assertTrue(all({"figure", "statistic", "value", "note"} <= set(s) for s in stats))
             plt.close(fig)
 
+    def test_the_txgpt_size_figure_builds_from_tx_selects_tables(self):
+        # Its tables come from tonight's GPU runs, so build it from lm.tx_select's own functions on made-up runs.
+        import pandas as pd
+
+        from lm.tx_select import size_table
+
+        runs = pd.DataFrame({"size": ["s"] * 3 + ["m"] * 3 + ["l"] * 3, "seed": [1, 2, 3] * 3,
+                             "parameters": [1e6] * 3 + [4e6] * 3 + [1.6e7] * 3,
+                             "best_val_loss": [2.1, 2.2, 2.15, 1.9, 1.95, 1.92, 1.97, 2.0, 1.99]})
+        plots.style()
+        fig, stats = plots.fig_txgpt_sizes(runs, size_table(runs))
+        self.assertEqual(stats[-1]["value"], "m")
+        plt.close(fig)
+
     def test_each_method_has_one_fixed_colour(self):
         colours = list(plots.METHOD_COLOURS.values())
         self.assertEqual(len(colours), len(set(colours)))
