@@ -26,9 +26,12 @@ DIRECTION (user, 24 Oct 16:00) - read before planning any work
   template.
 - The marks left to win are integration, reproducibility and the report (core functionality 10, report 12,
   README + comments + structure 6), not lower loss.
-- Integration gap (checked 24 Oct): explorer/predict.py still uses only template_explanation; the writer cascade
-  (explorer/assistant.explain) is not wired in. Wire it with writers loaded by what is available (GPU + adapter ->
-  Qwen; the 152M checkpoint; template always); use_assistant=False keeps the template-only default (plan risk 15).
+- Integration gap: CLOSED 24 Oct 18:15. Predictor.explain(tx, use_assistant) runs the guarded cascade (writers from
+  settings -> assistant: writerOrder, paths; lm/writers.py shared with lm.eval_explain; writers this machine cannot
+  run are skipped with a reason); CLI: predict explain --address A --txid T [--assistant], what-if --assistant.
+  Default stays template-only (plan risk 26). STILL TO DO after the queue: copy the 152M explanation model to
+  models/assistant/model.pt (+ tokenizer.json; fp16 export, ~305 MB, too big for GitHub -> release asset + SHA-256)
+  and runs/qwen3b-explain/adapter_best to models/qwen3b_adapter/; set writerOrder from assistant_eval.csv.
 - Academic backbone of the report: time-safe splits, planted-transaction recall, the label check ("unusual" is not
   "labelled illicit"), methods chosen by stated rules, every number from reports/tables. Plus one clean
   152M-from-scratch vs Qwen-3B-QLoRA comparison on the same DS7 test and measures, framed as a trade-off (small,

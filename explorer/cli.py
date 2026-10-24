@@ -20,7 +20,8 @@ Usage (from the repository root):
     python -m explorer.cli regression             # naive, Ridge, random forest, gradient boosting, quantiles
     python -m explorer.cli txgpt                  # after lm.tx_score: choose raw or relative surprisal
     python -m explorer.cli evaluate               # every DS1 check and the recommended method
-    python -m explorer.cli predict address bc1q...  # or: predict what-if / heist / elliptic
+    python -m explorer.cli predict address bc1q...  # or: predict what-if / explain / heist / elliptic
+    python -m explorer.cli predict explain --address bc1q... --txid <txid> --assistant   # guarded Assistant text
     python -m explorer.cli all --offline          # every step above, in order, from the data on disk
     python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
@@ -164,6 +165,11 @@ def cmd_predict(args: argparse.Namespace) -> int:
             result = predictor.score_address(args.address)
         elif args.kind == "what-if":
             result = predictor.score_what_if(args.address, args.amount, args.direction, args.time)
+            if args.assistant:
+                guarded = predictor.explain(result, use_assistant=True)
+                result["explanation"], result["explanationSource"] = guarded["explanation"], guarded["source"]
+        elif args.kind == "explain":
+            result = predictor.explain(predictor.transaction(args.address, args.txid), use_assistant=args.assistant)
         elif args.kind == "heist":
             result = predictor.classify_heist(args.length, args.weight, args.count, args.looped, args.neighbors, args.income)
         else:
@@ -346,6 +352,12 @@ def build_parser() -> argparse.ArgumentParser:
     what_if.add_argument("--amount", type=float, required=True, help="BTC")
     what_if.add_argument("--direction", choices=["in", "out"], required=True)
     what_if.add_argument("--time", required=True, help="ISO 8601 UTC, e.g. 2026-10-01T12:00Z")
+    explain = kinds.add_parser("explain", help="one snapshot transaction's explanation: the template, or the guarded Assistant")
+    explain.add_argument("--address", required=True)
+    explain.add_argument("--txid", required=True)
+    for kind in (what_if, explain):
+        kind.add_argument("--assistant", action="store_true",
+                            help="let the Assistant write it (settings -> assistant); the template if every answer fails a check")
     heist = kinds.add_parser("heist", help="BitcoinHeist: does an address-day resemble the labelled ransomware rows?")
     for name in ("length", "weight", "count", "looped", "neighbors", "income"):
         heist.add_argument(f"--{name}", type=float, required=True)

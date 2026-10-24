@@ -23,6 +23,15 @@ CLAUDE.md's "runs after the 152M model and TxGPT": with fine-tuning allowed Qwen
 and it is the one job never run on this GPU, so its bench and first validation now happen while someone is awake.
 Nothing else changes; every step still runs tonight.
 
+**The guarded Assistant is wired into `predict.py`** (plan §12.1's `explain(tx_result, use_assistant=False)`, which
+had not been written). `Predictor.explain` tries the writers in `settings.json -> assistant.writerOrder` and shows the
+first answer that passes every guardrail check, else the template; a rejected answer is never returned, only the
+checks it failed. Writers this machine cannot run (no GPU or no `transformers` for Qwen in the markers' CPU
+environment; a model file not downloaded) are skipped with the reason. The address and what-if results keep the
+instant template text; the Assistant runs per transaction (`predict explain --address A --txid T --assistant`).
+The writer code moved to `lm/writers.py`, so the DS7 evaluation and the Explorer decode identically. The writer
+order is provisional (Qwen, then 152M) until the DS7 results.
+
 **The DS2 crawl's final step crashed writing its manifest** (16:36): the first crawl run (22 Oct, an earlier client)
 recorded its request count but `None` for its error counts, and the totals added them. `ds2.parquet` had been written,
 the manifest had not. `explorer/corpus.py` now counts those as 0 and records how many runs had no error counts

@@ -123,7 +123,7 @@ def explain(tx: dict[str, Any], writers: list[tuple[str, Generator]] | None = No
     """The explanation the Explorer shows: the first writer's answer that passes every check, else the template.
 
     `writers` is an ordered list of (name, generate), e.g. [("text150m", ...), ("qwen3b", ...)];
-    each generate maps chat messages to the model's reply. None or [] (the default, plan risk 15's
+    each generate maps chat messages to the model's reply. None or [] (the default, plan risk 26's
     `use_assistant=False`) always returns the template. `attempts` records every answer and its checks.
     """
     messages, facts = prompt_messages(tx), summary(tx)

@@ -13,6 +13,11 @@ Serves plan §12.1 and the brief's "use your model for prediction". Artefacts ar
                                   ransomware rows of BitcoinHeist
     classify_elliptic(rows)       the probability of Elliptic's own "illicit" class for feature rows
     txgpt_surprisal(address)      surprisal per transaction and per field
+    explain(tx, use_assistant)    one transaction's explanation: the template, or the first Assistant
+                                  answer that passes the guardrail (plan §10.3; settings -> assistant)
+
+score_address and score_what_if always carry the template explanation, which is instant; the Assistant
+runs only when one transaction's explanation is asked for, as the Explorer's detail panel does.
 
 Typed addresses outside the snapshot raise Unsupported, and addresses with too little history raise
 InsufficientHistory: A1's planned 404 and 422 responses.
@@ -20,7 +25,7 @@ InsufficientHistory: A1's planned 404 and 422 responses.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
@@ -28,6 +33,8 @@ import joblib
 import numpy as np
 import pandas as pd
 
+from .assistant import Generator
+from .assistant import explain as guarded_explanation
 from .baseline import MODELS_DIR, TABLES_DIR
 from .classify import INTERIM_DIR as CLASSIFY_DIR
 from .explain import FEATURE_DESCRIPTIONS, FEATURE_NAMES, METHOD_NAMES, SATS_PER_BTC, check_wording, template_explanation
@@ -35,7 +42,7 @@ from .features import FEATURE_IDS, FeatureConfig, build_features
 from .labelled import FEATURE_SETS, HEIST_DIR
 from .methods import Method, flags
 from .scores import SCORES_PATH, saved_methods
-from .settings import SETTINGS
+from .settings import PROJECT_ROOT, SETTINGS
 from .snapshot import MANIFEST_PATH
 
 # Methods that need a precomputed score for every transaction and so cannot score a new one yet.
@@ -70,6 +77,30 @@ def finite(value: Any) -> float | None:
     return None if np.isnan(value) else value
 
 
+def load_writers() -> tuple[list[tuple[str, Generator]], dict[str, str]]:
+    """The Assistant's writers this machine can run, in settings' writerOrder, and why any others were skipped.
+
+    The markers' CPU environment has no transformers, peft or bitsandbytes, so there Qwen is skipped
+    and the 152M model (or the template alone) writes.
+    """
+    from lm import writers  # torch is only needed once the Assistant is asked for
+
+    cfg = SETTINGS["assistant"]
+    files = {"text150m": [cfg["text150mCheckpoint"]],
+             "qwen3b": [cfg["qwenConfig"], f"{cfg['qwenAdapter']}/adapter_config.json"]}
+    loaded, skipped = [], {}
+    for name in cfg["writerOrder"]:
+        reason = writers.available(name, files[name], PROJECT_ROOT)
+        if reason:
+            skipped[name] = reason
+        elif name == "text150m":
+            loaded.append((name, writers.text150m_generator(PROJECT_ROOT / cfg["text150mCheckpoint"], cfg["maxNewTokens"])))
+        else:
+            loaded.append((name, writers.qwen_generator(PROJECT_ROOT / cfg["qwenConfig"], PROJECT_ROOT / cfg["qwenAdapter"],
+                                                        cfg["maxNewTokens"])))
+    return loaded, skipped
+
+
 @dataclass
 class Predictor:
     features: pd.DataFrame
@@ -78,6 +109,9 @@ class Predictor:
     methods: dict[str, Method]
     selected: str
     snapshot_date: str
+    # The Assistant's writers, loaded on the first explain(..., use_assistant=True); None until then.
+    writers: list[tuple[str, Generator]] | None = None
+    skipped_writers: dict[str, str] = field(default_factory=dict)
 
     @classmethod
     def load(cls) -> Predictor:
@@ -253,6 +287,30 @@ class Predictor:
         return [{"txId": int(t) if "txId" in rows else None, "probability": float(q),
                  "label": "illicit (Elliptic's class)" if q >= best["threshold"] else "licit (Elliptic's class)"}
                 for t, q in zip(rows.get("txId", [None] * len(p)), p)]
+
+    def transaction(self, address: str, txid: str) -> dict[str, Any]:
+        """One transaction's detail, as score_address gives it."""
+        for tx in self.score_address(address)["transactions"]:
+            if tx["txid"] == txid:
+                return tx
+        raise Unsupported(f"{txid} is not a transaction of {address} in the snapshot")
+
+    def explain(self, tx: dict[str, Any], use_assistant: bool = False) -> dict[str, Any]:
+        """The explanation for one transaction detail (from score_address, transaction or score_what_if).
+
+        Without use_assistant (the default, plan risk 26) it is the template. With it, each writer this
+        machine can run tries in turn and the first answer that passes every guardrail check is shown,
+        else the template. A rejected answer is never returned, only which checks it failed.
+        """
+        if use_assistant and self.writers is None:
+            self.writers, self.skipped_writers = load_writers()
+        result = guarded_explanation(tx, self.writers if use_assistant else [])
+        return {"txid": tx["txid"], "flagged": tx["flagged"], "explanation": result["text"], "source": result["source"],
+                "attempts": [{"source": a["source"],
+                              "failedChecks": [k for k, ok in a["checks"].items() if k != "passed" and not ok]}
+                             for a in result["attempts"]],
+                "skippedWriters": self.skipped_writers if use_assistant else {},
+                "limitation": SETTINGS["limitationLine"]}
 
     def txgpt_surprisal(self, address: str) -> list[dict[str, Any]]:
         self.history_of(address)

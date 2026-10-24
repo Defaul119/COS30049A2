@@ -29,15 +29,15 @@ import json
 import random
 import time
 from pathlib import Path
-from typing import Callable
 
 import pandas as pd
 
 from explorer import assistant
 
+from .writers import qwen_generator, text150m_generator
+
 ROOT = Path(__file__).resolve().parents[1]
 TABLES = ROOT / "reports" / "tables"
-Generate = Callable[[list[dict[str, str]]], str]
 
 
 def facts_of(messages: list[dict[str, str]]) -> dict:
@@ -55,41 +55,6 @@ def measure(answer: str, prompt: list[dict[str, str]], template: str) -> dict:
     out["rouge_l"] = assistant.rouge_l(answer, template)
     out["banned"] = ", ".join(assistant.banned_words(answer))
     return out
-
-
-def text150m_generator(checkpoint: str, max_new_tokens: int) -> Generate:
-    from .chat import reply
-    from .generate import load_model
-
-    model, tok = load_model(checkpoint)  # the tokenizer is the tokenizer.json saved next to the weights
-    # Greedy, and no repetition penalty: lm.chat's default penalty also counts the prompt's tokens, so it
-    # would push the model away from copying the prompt's numbers, which a faithful explanation must do.
-    return lambda messages: reply(model, tok, messages, max_new_tokens=max_new_tokens, temperature=0,
-                                  repetition_penalty=1.0)
-
-
-def qwen_generator(config: str, adapter: str, max_new_tokens: int) -> Generate:
-    import torch
-    from peft import PeftModel
-    from transformers import AutoModelForCausalLM, BitsAndBytesConfig
-
-    from .qlora import load_config, load_tokenizer
-
-    cfg = load_config(config)
-    tok = load_tokenizer(cfg)
-    quant = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True,
-                               bnb_4bit_compute_dtype=torch.bfloat16)
-    base = AutoModelForCausalLM.from_pretrained(cfg["base_model"], revision=cfg["revision"], quantization_config=quant,
-                                                torch_dtype=torch.bfloat16, device_map={"": 0})
-    model = PeftModel.from_pretrained(base, adapter).eval()
-
-    @torch.no_grad()
-    def generate(messages: list[dict[str, str]]) -> str:
-        ids = tok.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(model.device)
-        out = model.generate(ids, max_new_tokens=max_new_tokens, do_sample=False, pad_token_id=tok.pad_token_id)
-        return tok.decode(out[0, ids.shape[1]:], skip_special_tokens=True).strip()
-
-    return generate
 
 
 def main() -> None:

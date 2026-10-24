@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import unittest
+from unittest.mock import patch
 
 import pandas as pd
 
@@ -14,7 +15,7 @@ from explorer import explain
 from explorer.baseline import Baseline
 from explorer.features import FeatureConfig, build_features
 from explorer.methods import flags
-from explorer.predict import InsufficientHistory, Predictor, Unsupported, check_outputs
+from explorer.predict import InsufficientHistory, Predictor, Unsupported, check_outputs, load_writers
 from explorer.settings import SETTINGS
 from explorer.split import assign_periods
 from tests.test_inject import history
@@ -70,6 +71,40 @@ class PredictTests(unittest.TestCase):
         self.assertTrue(huge["flagged"])
         self.assertIsNone(huge["sourceUrl"])
         self.assertLessEqual(huge["comparison"][0]["txCount"], 61)  # nothing after the hypothetical's time
+
+
+class AssistantExplainTests(unittest.TestCase):
+    def setUp(self):
+        self.p = predictor()
+        self.tx = next(t for t in self.p.score_address("busy")["transactions"] if t["flagged"])
+
+    def test_without_the_assistant_it_is_the_template(self):
+        result = self.p.explain(self.tx)
+        self.assertEqual(result["source"], "template")
+        self.assertEqual(result["explanation"], self.tx["explanation"])
+        self.assertIsNone(self.p.writers)  # nothing is loaded unless the Assistant is asked for
+
+    def test_a_rejected_answer_is_never_shown_and_the_next_writer_is_tried(self):
+        self.p.writers = [("bad", lambda messages: "This looks fraudulent: 99999 BTC."),
+                          ("good", lambda messages: f"Worth a look. {SETTINGS['limitationLine']}")]
+        result = self.p.explain(self.tx, use_assistant=True)
+        self.assertEqual(result["source"], "good")
+        self.assertEqual(result["attempts"][0], {"source": "bad", "failedChecks": ["numbers_ok", "limitation_ok", "wording_ok"]})
+        check_outputs(result)  # the rejected text is not in the result, so the wording rule holds
+        self.assertNotIn("99999", json.dumps(result))
+
+    def test_every_answer_failing_falls_back_to_the_template(self):
+        self.p.writers = [("bad", lambda messages: "")]
+        result = self.p.explain(self.tx, use_assistant=True)
+        self.assertEqual((result["source"], result["explanation"]), ("template", self.tx["explanation"]))
+
+    def test_writers_this_machine_cannot_run_are_skipped_with_a_reason(self):
+        with patch.dict(SETTINGS["assistant"], {"text150mCheckpoint": "models/missing/model.pt",
+                                                "qwenAdapter": "models/missing_adapter"}):
+            writers, skipped = load_writers()
+        self.assertEqual(writers, [])
+        self.assertEqual(set(skipped), set(SETTINGS["assistant"]["writerOrder"]))
+        self.assertIn("models/missing/model.pt", skipped["text150m"])
 
 
 class ExplainTests(unittest.TestCase):

@@ -160,7 +160,7 @@ class EvalGeneratorTests(unittest.TestCase):
 
         import torch
 
-        from lm.eval_explain import text150m_generator
+        from lm.writers import text150m_generator
         from lm.model import GPT, GPTConfig
         from lm.tokenizer import train_tokenizer
 
