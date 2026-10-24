@@ -1,0 +1,5 @@
+2026-10-24 23:56:25 INFO Step txgpt started: C:\Users\ADMIN\COS30049A2\explorer\cli.py txgpt
+2026-10-24 23:57:34 INFO TxGPT raw: mean tuning recall 0.542 (spike 0.70, burst 0.17, dormant 0.75), flag rate 0.015
+2026-10-24 23:57:35 INFO TxGPT relative: mean tuning recall 0.480 (spike 0.60, burst 0.21, dormant 0.63), flag rate 0.015
+2026-10-24 23:57:37 INFO TxGPT: chose the raw score -> models/txgpt_method.joblib
+2026-10-24 23:57:37 INFO Step txgpt finished in 72 s (exit 0)

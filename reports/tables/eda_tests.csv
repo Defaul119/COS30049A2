@@ -62,7 +62,8 @@ injection_recall,kmeans mean recall,0.446,
 injection_recall,isolation_forest mean recall,0.429,
 injection_recall,dbscan mean recall,0.406,
 injection_recall,lof mean recall,0.32,
-agreement,median pairwise Jaccard,0.286,
+injection_recall,txgpt_method mean recall,0.547,
+agreement,median pairwise Jaccard,0.163,
 agreement,most similar pair,isolation_forest-kmeans (0.81),
 label_check,elliptic_AF isolation_forest: PR-AUC / prevalence,0.565,"PR-AUC 0.0367, ROC-AUC 0.183"
 label_check,elliptic_AF lof: PR-AUC / prevalence,0.726,"PR-AUC 0.0472, ROC-AUC 0.369"
@@ -76,6 +77,10 @@ label_check,heist_temporal dbscan: PR-AUC / prevalence,0.801,"PR-AUC 0.0040, ROC
 label_check,heist_temporal random_forest (supervised): PR-AUC / prevalence,10.475,"PR-AUC 0.0523, ROC-AUC 0.800"
 elliptic_f1_by_step,"best model (randomForest) mean F1, steps 35-42",0.9,
 elliptic_f1_by_step,"best model (randomForest) mean F1, steps 43-49",0.048,Weber et al. (2019) report the same collapse after a dark-market shutdown
+txgpt_sizes,size s: mean best validation loss,0.6752,"820,352 parameters; SD 0.0123 over 3 seeds"
+txgpt_sizes,size m: mean best validation loss,0.6766,"4,779,264 parameters; SD 0.0126 over 3 seeds"
+txgpt_sizes,size l: mean best validation loss,0.6775,"14,211,456 parameters; SD 0.0117 over 3 seeds"
+txgpt_sizes,chosen size,s,lowest mean validation loss (plan §9.1)
 heist_lofo,histGradientBoosting: mean held-out-family recall,0.018,false-positive rate on the random split's test set 0.015
 heist_lofo,knn: mean held-out-family recall,0.027,false-positive rate on the random split's test set 0.033
 heist_lofo,logistic: mean held-out-family recall,0.479,false-positive rate on the random split's test set 0.492
@@ -96,6 +101,7 @@ fusion,regression alone: best tuning mean recall within the budget,0.505,
 significance,fusion: mean recall,0.684,"95% CI 0.569-0.781; minus baseline +0.029 (-0.001 to +0.055), p 0.063"
 significance,regression: mean recall,0.673,"95% CI 0.580-0.760; minus baseline +0.018 (-0.073 to +0.114), p 0.703"
 significance,baseline: mean recall,0.655,the reference
+significance,txgpt_method: mean recall,0.547,"95% CI 0.442-0.638; minus baseline -0.108 (-0.270 to +0.048), p 0.177"
 significance,kmeans: mean recall,0.446,"95% CI 0.336-0.546; minus baseline -0.209 (-0.283 to -0.150), p 0.000"
 significance,isolation_forest: mean recall,0.429,"95% CI 0.321-0.534; minus baseline -0.227 (-0.304 to -0.156), p 0.000"
 significance,dbscan: mean recall,0.406,"95% CI 0.308-0.492; minus baseline -0.249 (-0.295 to -0.204), p 0.000"

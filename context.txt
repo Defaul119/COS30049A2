@@ -101,10 +101,15 @@ DS1 ML EXTENSIONS (user, 24 Oct 20:10: "the rubric is more on ML ... best I can 
 - Run order: regression -> fusion -> scores -> evaluate -> significance -> sensitivity -> walk-forward ->
   ds2-check -> figures. Runner: scratchpad run_ds1_ext.ps1 (BelowNormal priority so training keeps the CPU;
   CPU jobs at normal priority cut pretraining from 11.5k to 9.5k tok/s on 24 Oct).
-- AFTER THE GPU QUEUE's evaluate (TxGPT method added): window "AFTER QUEUE EVALUATE" (started 22:07 24 Oct)
-  waits for it and re-runs significance + figures by itself; their tables/figures still need committing. Re-run
-  fusion only if txgpt_method should become a candidate; sensitivity / walk-forward / ds2-check exclude
-  TxGPT by design (PRECOMPUTED_ONLY; DS2 trained it).
+- AFTER THE GPU QUEUE's evaluate (TxGPT method added): DONE 25 Oct 00:04 (window "AFTER QUEUE EVALUATE" re-ran
+  significance + figures, ALL DONE). NOT YET COMMITTED: models/txgpt*, txgpt tables/figure, the re-run
+  eval_* tables and figures (pytest + commit held back at 00:18 because free commit memory was 2.7 GB of 32.3
+  with training holding 10 GB; run them once memory frees). Re-run fusion only if txgpt_method should become a
+  candidate; sensitivity / walk-forward / ds2-check exclude TxGPT by design (PRECOMPUTED_ONLY; DS2 trained it).
+- TXGPT RESULTS (25 Oct 00:04): sizes tie on validation loss (S 0.675, M 0.677, L 0.677 mean of 3 seeds, std
+  0.012; txgpt_sizes.csv) -> S (0.8M parameters) kept. DS1: txgpt_method mean plant recall 0.547 [0.442, 0.638]
+  at a 1.5% flag rate (34 rows), best PR-AUC 0.333 (baseline 0.109) and precision lower bound 0.42 (baseline
+  0.13), stability 1.0; vs baseline -0.108, p = 0.18. Most precise, flags fewest; the baseline stays chosen.
 
 KAGGLE (user, 24 Oct 20:20: "pop that fine tune of the qwen onto Kaggle")
 - The Qwen 3B fine-tune moves to Kaggle: kaggle/qwen3b_explain.ipynb (pinned to commit ef3a158; clones the public
@@ -126,7 +131,9 @@ RUNNING NOW (check with tasklist / logs)
   and Get-Content C:\Users\ADMIN\COS30049A2\reports\logs\supervise.log -Wait -Tail 3 (Ctrl+C stops only the view).
 - PRETRAINING DONE 24 Oct 21:07: runs/text-150m/model.pt, 7,630 steps (2.0B tokens), final validation loss
   3.1305 (perplexity 22.9; Chinchilla's fit predicts 3.38 for this size and data).
-- Paused 22:11-22:34 24 Oct, resumed as PID 18336 (txgpt-l-s2 from step 1,601). Expected finish ~03:40 Sun.
+- Paused 22:11-22:34 24 Oct, resumed as PID 18336 (txgpt-l-s2 from step 1,601).
+- 25 Oct 00:18: 19 of 22 done; chat-152m (started 00:03) at step 104/1,526, 7.7k tok/s (below the 11.5k
+  measured earlier: the GPU is shared), ETA ~03:40, then explain-152m + eval-152m -> queue done ~04:30 Sun.
 - GPU QUEUE (window "GPU QUEUE", PID 18336 since 22:34; was 6564, restarted 21:21 WITHOUT Qwen steps, see KAGGLE): 22 steps, 5 done at
   21:22 (txgpt-s-s1 val 0.682); txgpt-m-s1 resumed from its Ctrl+C save. cmd window: conda activate
   cos30049-a2-gpu, set "PYTHONUTF8=1", python tools\run_queue.py --plan configs\queue_after_pretraining.json.

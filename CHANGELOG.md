@@ -3,6 +3,18 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 25 October 2026
+
+**TxGPT trained and evaluated.** The size sweep (three seeds per size) ties: mean validation loss S 0.675, M 0.677,
+L 0.677, each with a standard deviation of about 0.012 (`txgpt_sizes.csv`). With 9.06M training tokens a bigger
+model does not help, so the smallest (S, 0.8M parameters) is kept. On the DS1 reporting plants, `txgpt_method`
+reaches a mean recall of 0.547 (95% CI 0.442 to 0.638) while flagging only 1.5% of real transactions (34 rows),
+against the baseline's 0.655 at 10.4%; it has the best PR-AUC (0.333; baseline 0.109) and the best precision lower
+bound (0.42; baseline 0.13), and stability 1.0. The paired bootstrap gives -0.108 against the baseline (p = 0.18).
+It is the most precise method but flags the fewest rows, so the baseline stays the explorer's method; the
+significance tables and figures were re-run with TxGPT included. TxGPT is not in the sensitivity, walk-forward or
+DS2 checks: its scores are precomputed for DS1, and DS2 trained it.
+
 ## 24 October 2026
 
 **DS1 machine learning extended: calibrated ranges, a fused method, uncertainty, strength, time and DS2 (user,

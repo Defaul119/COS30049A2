@@ -1,0 +1,10 @@
+size,seed,parameters,best_val_loss,best_step,last_step,stopped_early,finished,path,chosen
+s,1,820352,0.6820685923099518,6200,6700,True,True,runs/txgpt-s-s1/model_best.pt,False
+s,2,820352,0.6825866997241974,5500,6000,True,True,runs/txgpt-s-s2/model_best.pt,False
+s,3,820352,0.6610403835773468,7377,7377,False,True,runs/txgpt-s-s3/model_best.pt,True
+m,1,4779264,0.683257645368576,3300,3800,True,True,runs/txgpt-m-s1/model_best.pt,False
+m,2,4779264,0.68445805311203,3200,3700,True,True,runs/txgpt-m-s2/model_best.pt,False
+m,3,4779264,0.6619779407978058,3400,3900,True,True,runs/txgpt-m-s3/model_best.pt,False
+l,1,14211456,0.6837186098098755,3300,3800,True,True,runs/txgpt-l-s1/model_best.pt,False
+l,2,14211456,0.6847627520561218,2800,3300,True,True,runs/txgpt-l-s2/model_best.pt,False
+l,3,14211456,0.6639177918434143,3200,3700,True,True,runs/txgpt-l-s3/model_best.pt,False
