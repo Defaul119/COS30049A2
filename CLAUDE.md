@@ -93,7 +93,7 @@ and evaluation with accuracy, precision, recall, F1 and similar metrics. The bri
    **Roles (user, 23 Oct):** the 152M model only explains DS1 transactions; Qwen 3B is the general
    chatbot AND the second writer: `explorer.assistant.explain` tries 152M, then Qwen, then the template,
    each answer passing the code guardrail (numbers, limitation line, wording). The 3B model is extra and doesn't replace the
-   from-scratch models, runs after the 152M model and TxGPT, uses the same DS7 splits, measures
+   from-scratch models, runs after the 152M model and TxGPT (relaxed 24 Oct: the queue runs Qwen first), uses the same DS7 splits, measures
    (`lm/eval_explain.py`) and guardrail (`explorer/assistant.py`), and ships adapters only. Licence:
    Qwen Research License (non-commercial; ship its text and a NOTICE line; "Built with Qwen").
 5. **One repository, two environments**: `environment.yml` (CPU, for markers) and

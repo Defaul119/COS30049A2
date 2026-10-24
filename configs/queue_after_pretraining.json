@@ -1,5 +1,5 @@
 {
-  "about": "Every job after the 152M pretraining, in run order (context.txt NEXT A and B). Run: python tools/run_queue.py --plan configs/queue_after_pretraining.json (cos30049-a2-gpu).",
+  "about": "Every job after the 152M pretraining, in run order (context.txt NEXT A and B). Qwen first (24 Oct): the most-used writer, and the one job never run on this GPU, so it starts while someone is awake. Run: python tools/run_queue.py --plan configs/queue_after_pretraining.json (cos30049-a2-gpu).",
   "steps": [
     {"name": "prepare-tx", "run": ["-m", "lm.prepare_tx"],
      "wait_for": ["data/processed/corpus/ds2.parquet", "data/processed/corpus/manifest.json"],
@@ -13,6 +13,16 @@
      "check": ["data/ds7_chat/meta.json"]},
     {"name": "eval-template", "after": ["build-ds7"], "run": ["-m", "lm.eval_explain", "--model", "template"],
      "check": ["reports/tables/assistant_eval_template.csv"]},
+
+    {"name": "qwen-bench", "after": ["build-ds7"], "gpu": true, "wait_for": ["runs/text-150m/model.pt"],
+     "run": ["-m", "lm.qlora", "--config", "configs/qwen3b_explain.json", "--bench"]},
+    {"name": "qwen-train", "after": ["build-ds7", "qwen-bench"], "gpu": true, "wait_for": ["runs/text-150m/model.pt"],
+     "run": ["-m", "lm.qlora", "--config", "configs/qwen3b_explain.json"],
+     "check": ["runs/qwen3b-explain/adapter_best/adapter_model.safetensors", "runs/qwen3b-explain/meta.json"]},
+    {"name": "eval-qwen", "after": ["qwen-train"], "gpu": true,
+     "run": ["-m", "lm.eval_explain", "--model", "qwen3b", "--config", "configs/qwen3b_explain.json",
+             "--adapter", "runs/qwen3b-explain/adapter_best"],
+     "check": ["reports/tables/assistant_eval_qwen3b.csv"]},
 
     {"name": "txgpt-s-s1", "after": ["prepare-tx"], "gpu": true, "wait_for": ["runs/text-150m/model.pt"],
      "run": ["-m", "lm.train", "--config", "configs/txgpt_s.json", "--seed", "1"], "check": ["runs/txgpt-s-s1/model.pt"]},
@@ -53,16 +63,6 @@
      "run": ["-m", "lm.train", "--config", "configs/text_150m_explain.json"], "check": ["runs/text-150m-explain/model.pt"]},
     {"name": "eval-152m", "after": ["explain-152m"], "gpu": true,
      "run": ["-m", "lm.eval_explain", "--model", "text150m", "--checkpoint", "runs/text-150m-explain/model_best.pt"],
-     "check": ["reports/tables/assistant_eval_text150m.csv"]},
-
-    {"name": "qwen-bench", "after": ["build-ds7"], "gpu": true,
-     "run": ["-m", "lm.qlora", "--config", "configs/qwen3b_explain.json", "--bench"]},
-    {"name": "qwen-train", "after": ["build-ds7", "qwen-bench"], "gpu": true,
-     "run": ["-m", "lm.qlora", "--config", "configs/qwen3b_explain.json"],
-     "check": ["runs/qwen3b-explain/adapter_best/adapter_model.safetensors", "runs/qwen3b-explain/meta.json"]},
-    {"name": "eval-qwen", "after": ["qwen-train"], "gpu": true,
-     "run": ["-m", "lm.eval_explain", "--model", "qwen3b", "--config", "configs/qwen3b_explain.json",
-             "--adapter", "runs/qwen3b-explain/adapter_best"],
-     "check": ["reports/tables/assistant_eval_qwen3b.csv"]}
+     "check": ["reports/tables/assistant_eval_text150m.csv"]}
   ]
 }

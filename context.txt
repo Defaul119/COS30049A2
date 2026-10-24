@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-24 16:00 GMT+7)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-24 18:10 GMT+7)
 Start a new session by running python tools/status.py.
 =====================================================================================
 
@@ -125,7 +125,12 @@ A. CPU, as soon as DS2 stops itself at 4,000 (check ds2.parquet and data/process
    python -m lm.prepare_tx                        (~1 min; dry run on 2,866 addresses: 6.5M train tokens, 12% padding)
    python -m explorer.cli build-ds7               (~4 min; dry run: 10,160 pairs = 9,329 train / 446 val / 385 test)
    python -m lm.prepare_chat --source jsonl --jsonl data/processed/ds7/train.jsonl --val-jsonl data/processed/ds7/val.jsonl --out data/ds7_chat
-B. GPU, after pretraining ends (~20:15 Sat), in this order:
+B. GPU, after pretraining ends (~20:25 Sat), in this order (Qwen moved FIRST at 18:05 24 Oct, user's OK; queue
+   restarted as PID 19992 in a new "GPU QUEUE" window):
+   0. python -m lm.qlora --config configs/qwen3b_explain.json --bench, then without --bench (~6 h, an estimate:
+      the bench gives the real speed); python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json
+      --adapter runs/qwen3b-explain/adapter_best. If the bench fails, qwen-train/eval-qwen are skipped and the
+      rest still runs.
    1. TxGPT, 9 runs: python -m lm.train --config configs/txgpt_{s,m,l}.json --seed {1,2,3}
    2. python -m lm.tx_select   (size rule -> reports/tables/txgpt_runs.csv, txgpt_sizes.csv; models/txgpt.pt)
       python -m lm.tx_baselines --model models/txgpt.pt
@@ -134,8 +139,7 @@ B. GPU, after pretraining ends (~20:15 Sat), in this order:
    3. python -m lm.train --config configs/text_150m_chat.json   (data/chat rebuilt 24 Oct with whole-conversation packing)
    4. python -m lm.train --config configs/text_150m_explain.json   (NEW config; data/ds7_chat from step A)
       python -m lm.eval_explain --model text150m --checkpoint runs/text-150m-explain/model_best.pt
-   5. python -m lm.qlora --config configs/qwen3b_explain.json --bench, then without --bench;
-      python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best
+   Expected: Qwen ~20:25 -> ~03:30 Sun, TxGPT -> ~07:00, scoring/evaluate, 152M chat + DS7 -> ~10:30 Sun.
    Still to add: the TxGPT validation-loss-vs-parameters figure (plan §9.1 appendix) and the DS2-vs-DS1 figure.
 5. Still to write: address profiles, README (A2 outline), DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text
    and NOTICE), report (LaTeX, 3,000 words). DS7 glossary DRAFTED (160 pairs, tools/make_glossary.py; status 'draft for review': the user should skim it).

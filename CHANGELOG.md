@@ -18,6 +18,16 @@ explanation stages, Qwen, every explanation evaluation). Each step waits for the
 queue and for a free GPU, runs under `tools/supervise.py` (new `--max-restarts`, so one failing step cannot hold up
 the rest), and must leave its output files behind; finished steps are skipped on a restart. It also re-runs the
 template evaluation, since DS7's test split changes once DS2 is in. `tools/status.py` shows the queue.
+At 18:05 the Qwen steps (bench, training, evaluation) were moved ahead of TxGPT and the 152M stages, against
+CLAUDE.md's "runs after the 152M model and TxGPT": with fine-tuning allowed Qwen is the main writer and the chatbot,
+and it is the one job never run on this GPU, so its bench and first validation now happen while someone is awake.
+Nothing else changes; every step still runs tonight.
+
+**The DS2 crawl's final step crashed writing its manifest** (16:36): the first crawl run (22 Oct, an earlier client)
+recorded its request count but `None` for its error counts, and the totals added them. `ds2.parquet` had been written,
+the manifest had not. `explorer/corpus.py` now counts those as 0 and records how many runs had no error counts
+(`runs_without_error_counts`, 1), with a test; the manifest was rebuilt without re-crawling (4,012 addresses, 898,490
+rows, every check passed).
 
 Pre-flight check of the next training stages (TxGPT, 152M chat and explanation, Qwen), before the GPU frees up.
 
