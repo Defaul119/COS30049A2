@@ -42,6 +42,10 @@ data/processed/elliptic/*
 # Large fitted models (rebuilt by their steps). heist_best.joblib is a 276 MB random forest, over
 # GitHub's 100 MB limit; the zip will carry a smaller final model or a link with SHA-256.
 models/heist_best.joblib
+# The two language-model writers (settings.json "assistant"): the 152M model (610 MB in fp32) and the Qwen 3B
+# adapter (114 MB) are also over the limit; their SHA-256 are in context.txt until they ship as release assets.
+models/assistant/
+models/qwen3b_adapter/
 
 # Console copies of logs that are already written to reports/logs/<step>.log
 reports/logs/*.stdout.log

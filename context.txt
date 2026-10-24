@@ -30,9 +30,17 @@ DIRECTION (user, 24 Oct 16:00) - read before planning any work
 - Integration gap: CLOSED 24 Oct 18:15. Predictor.explain(tx, use_assistant) runs the guarded cascade (writers from
   settings -> assistant: writerOrder, paths; lm/writers.py shared with lm.eval_explain; writers this machine cannot
   run are skipped with a reason); CLI: predict explain --address A --txid T [--assistant], what-if --assistant.
-  Default stays template-only (plan risk 26). STILL TO DO after the queue: copy the 152M explanation model to
-  models/assistant/model.pt (+ tokenizer.json; fp16 export, ~305 MB, too big for GitHub -> release asset + SHA-256)
-  and runs/qwen3b-explain/adapter_best to models/qwen3b_adapter/; set writerOrder from assistant_eval.csv.
+  Default stays template-only (plan risk 26). DONE 25 Oct 06:40: models/assistant/model.pt (= runs/text-150m-explain/
+  model_best.pt, fp32, 610 MB) + tokenizer.json, and models/qwen3b_adapter/ (= Kaggle adapter_best, 114 MB); both
+  git-ignored (over 100 MB). writerOrder [qwen3b, text150m] confirmed by assistant_eval.csv. Checked 06:43 on one
+  flagged tx (1Bbcsfxj..., b2afad6c...): CPU env -> text150m writes, qwen3b skipped (no transformers); GPU env ->
+  qwen3b writes in 39 s; both pass every guardrail check. SHA-256: model.pt 086b9d157343e735...
+  (086b9d157343e73578c5acff12f9f871104c01eed56692402e5a2499130684ab), tokenizer.json c8f4509cc0951d00426ae6bae99a34b8
+  639c2f20c8c32e05b9d0bce1cc3e5d45, adapter_model.safetensors e471b4afcffeaeaa274e46869431be2d2f0ee66175ed6f9ad64ba3d5
+  e8059941, adapter_config.json 42f7f6b1eb6711cd720994d046e06244d7a0b12cf90dd661319647b789fe6250.
+  STILL TO DO (user's call): fp16 export of the 152M model (~305 MB) and publishing both as GitHub release assets
+  (outward-facing, not done unasked). Minor: Qwen generation warns "attention mask is not set" (pad = eos);
+  harmless for one unpadded prompt, but lm/writers.py could pass attention_mask explicitly.
 - Academic backbone of the report: time-safe splits, planted-transaction recall, the label check ("unusual" is not
   "labelled illicit"), methods chosen by stated rules, every number from reports/tables. Plus one clean
   152M-from-scratch vs Qwen-3B-QLoRA comparison on the same DS7 test and measures, framed as a trade-off (small,
@@ -124,6 +132,13 @@ KAGGLE (user, 24 Oct 20:20: "pop that fine tune of the qwen onto Kaggle")
 - Bring home: kaggle kernels output tritran72/cos30049a2-qwen3b-explain -p <dir>; then runs/qwen3b-explain/ ->
   runs/qwen3b-explain/, reports/tables/assistant_eval_qwen3b.csv -> reports/tables/, and merge its row from
   assistant_eval_with_qwen3b.csv into assistant_eval.csv. The local queue no longer has Qwen steps.
+- KAGGLE RUN DONE 25 Oct 06:38 (version 2, T4, fp16 loss scaling): 1,446 of 1,446 steps (4.64M training tokens,
+  326 tok/s), best validation loss 0.0752 (final 0.0920), retention loss 0.754 on 200 DS6 conversations. DS7 test
+  (445 prompts, 5,106 s on the T4): number faithfulness 1.0, guardrail pass 1.0, limitation line 1.0, banned 0,
+  feature coverage 1.0, ROUGE-L 0.783; glossary ROUGE-L 0.103. Kaggle's own torch was 2.11.0+cu128 (the notebook pins
+  transformers/peft/bitsandbytes/accelerate, not torch; kaggle_run.json records it). Brought home 06:40: run
+  folder + Kaggle logs -> runs/qwen3b-explain/, assistant_eval_qwen3b.csv -> reports/tables/, its row merged into
+  assistant_eval.csv (same replace-by-model rule as lm.eval_explain).
 
 RUNNING NOW (check with tasklist / logs)
 - ONE-SCREEN STATUS: python tools/status.py [--watch 60] (crawl kept/target/rate/ETA, supervisor, pretraining, GPU).

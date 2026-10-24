@@ -310,7 +310,7 @@
   "assistant": {
     "_about": "The guarded Explorer Assistant in explorer.predict (plan §10.3, §12.1): writers tried in writerOrder, each answer checked by explorer.assistant; writers this machine cannot run are skipped, and the template is always last. Paths are relative to the project root.",
     "writerOrder": ["qwen3b", "text150m"],
-    "_writerOrder": "Provisional (context.txt DIRECTION, 24 Oct): set from the DS7 results in reports/tables/assistant_eval.csv before results-v1.",
+    "_writerOrder": "Confirmed by the DS7 test results (reports/tables/assistant_eval.csv, 25 Oct): qwen3b keeps every number and passes the guardrail on all 445 prompts (ROUGE-L 0.783); text150m on 99.8% (0.683) and follows it: it runs in the CPU environment, where Qwen (4-bit, CUDA only) cannot.",
     "text150mCheckpoint": "models/assistant/model.pt",
     "_text150mCheckpoint": "the explanation stage's model_best.pt, with its tokenizer.json in the same folder",
     "qwenConfig": "configs/qwen3b_explain.json",

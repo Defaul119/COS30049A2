@@ -1,3 +1,4 @@
 model,prompts,number_faithfulness,limitation_line,banned_word_share,guardrail_pass,feature_coverage,rouge_l,seconds,source,glossary_prompts,glossary_banned_word_share,glossary_rouge_l
 template,445,1.0,1.0,0.0,1.0,1.0,1.0,0.2,explorer.explain.template_explanation,5.0,0.0,1.0
-text150m,445,0.9977528089887641,1.0,0.0,0.9977528089887641,0.9916317991631799,0.6831222556782341,314.7,runs/text-150m-explain/model_best.pt,5.0,0.0,0.08494785212958093
+text150m,445,0.997752808988764,1.0,0.0,0.997752808988764,0.99163179916318,0.6831222556782341,314.7,runs/text-150m-explain/model_best.pt,5.0,0.0,0.0849478521295809
+qwen3b,445,1.0,1.0,0.0,1.0,1.0,0.7831707767395788,5105.9,/kaggle/working/runs/qwen3b-explain/adapter_best,5.0,0.0,0.1029611646533949

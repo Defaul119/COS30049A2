@@ -22,6 +22,16 @@ banned word, mention 99.2% of the flagged features and pass the guardrail 99.8% 
 to the template); ROUGE-L against the template text is 0.683 (`assistant_eval.csv`). Its five glossary answers
 score ROUGE-L 0.085: as planned, it explains flags and Qwen 3B answers open questions.
 
+**Qwen 3B fine-tuned on Kaggle (T4, fp16 with loss scaling) and evaluated on the same DS7 test set.** All 1,446 steps
+(4.64M training tokens, 326 tokens/s); best validation loss 0.0752. Loss on 200 held-out DS6 conversations fell from
+0.812 at step 100 to 0.754 at the end, so mixing DS6 into the training data kept its general chat. On the 445 test
+prompts it keeps every number, always carries the limitation line, uses no banned word, mentions every flagged
+feature and passes the guardrail every time; ROUGE-L 0.783 (152M model: 0.683), glossary ROUGE-L 0.103. The run
+used Kaggle's own PyTorch (2.11.0+cu128; the notebook pins transformers, peft, bitsandbytes and accelerate, and
+`kaggle_run.json` records every version). The result confirms the provisional writer order: Qwen first, then the
+152M model, which is also the writer in the CPU environment, where Qwen cannot run. Both writers now load from
+`models/` (git-ignored, over GitHub's 100 MB limit; SHA-256 in context.txt).
+
 ## 24 October 2026
 
 **DS1 machine learning extended: calibrated ranges, a fused method, uncertainty, strength, time and DS2 (user,
