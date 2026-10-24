@@ -126,6 +126,9 @@ RUNNING NOW (check with tasklist / logs)
   and Get-Content C:\Users\ADMIN\COS30049A2\reports\logs\supervise.log -Wait -Tail 3 (Ctrl+C stops only the view).
 - PRETRAINING DONE 24 Oct 21:07: runs/text-150m/model.pt, 7,630 steps (2.0B tokens), final validation loss
   3.1305 (perplexity 22.9; Chinchilla's fit predicts 3.38 for this size and data).
+- PAUSED 24 Oct 22:11 (user gaming): Ctrl+C at txgpt-l-s2 step 1,601 (saved); 9 of 22 steps done. Resume: in the
+  "GPU QUEUE" window press Up + Enter (or start the same command); finished steps are skipped. Each hour paused
+  moves the finish (was ~03:15) back an hour.
 - GPU QUEUE (window "GPU QUEUE", PID 6564, restarted 21:21 WITHOUT Qwen steps, see KAGGLE): 22 steps, 5 done at
   21:22 (txgpt-s-s1 val 0.682); txgpt-m-s1 resumed from its Ctrl+C save. cmd window: conda activate
   cos30049-a2-gpu, set "PYTHONUTF8=1", python tools\run_queue.py --plan configs\queue_after_pretraining.json.
