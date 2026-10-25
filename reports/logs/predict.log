@@ -19,3 +19,14 @@
 2026-10-25 06:42:21 INFO Step predict finished in 7 s (exit 0)
 2026-10-25 06:42:27 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict explain --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz --txid b2afad6cfb794fdc2de8879ff9f9cfff68933664b7c45048cd747bc5d622736b --assistant
 2026-10-25 06:43:05 INFO Step predict finished in 39 s (exit 0)
+2026-10-25 07:56:10 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz
+2026-10-25 07:56:12 INFO Step predict finished in 2 s (exit 0)
+2026-10-25 07:56:13 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict what-if --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz --amount 0.05 --direction out --time 2026-10-20T12:00Z
+2026-10-25 07:56:15 INFO Step predict finished in 3 s (exit 0)
+2026-10-25 07:56:16 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict heist --length 18 --weight 0.008 --count 1 --looped 0 --neighbors 2 --income 1.2e8
+2026-10-25 07:56:22 INFO Step predict finished in 6 s (exit 0)
+2026-10-25 07:57:16 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict explain --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz --txid b2afad6cfb794fdc2de8879ff9f9cfff68933664b7c45048cd747bc5d622736b
+2026-10-25 07:57:19 INFO Step predict finished in 2 s (exit 0)
+2026-10-25 07:57:19 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict address NOTANADDRESS
+2026-10-25 07:57:21 INFO Not in the snapshot: NOTANADDRESS is not in the snapshot; try one of ['1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz', '1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT', '1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku']
+2026-10-25 07:57:21 INFO Step predict finished in 2 s (exit 2)

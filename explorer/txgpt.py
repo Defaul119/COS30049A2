@@ -107,9 +107,20 @@ def load_lookup(features: pd.DataFrame) -> pd.DataFrame:
     return pd.concat(parts, ignore_index=True).drop(columns=["block_time_utc"], errors="ignore")
 
 
+def plant_scores_exist() -> bool:
+    """Whether lm.tx_score --plants has scored the planted copies (data/interim/ is not shipped)."""
+    return any((INTERIM_DIR / "txgpt").glob("*.parquet"))
+
+
 def run_txgpt() -> int:
     from .baseline import load_copies
 
+    if not plant_scores_exist():
+        # Without the planted copies' scores every plant would count as missed, and the step would
+        # replace the saved method with one tuned on nothing.
+        log.error("No planted-copy scores in %s: run python -m lm.tx_score --plants first (minutes on a GPU, "
+                  "about 2 h on a CPU). models/txgpt_method.joblib is left as it is.", INTERIM_DIR / "txgpt")
+        return 1
     features = pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES["refined"])
     copies = load_copies("refined", "tuning")
     lookup = load_lookup(features)

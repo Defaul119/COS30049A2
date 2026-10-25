@@ -1,177 +1,244 @@
-# COS30049 Assignment 2: language models trained from scratch
+# Bitcoin Address Activity Explorer: Assignment 2 (data and machine learning)
 
-Group HCMC_COS30049.1_4. This folder holds the two language models, both trained from random weights:
+COS30049 Computing Technology Innovation Project, group **HCMC_COS30049.1_4** (Swinburne, HCMC campus).
 
-1. **Text chatbot.** A 152M-parameter GPT-style transformer with its own 32,768-token BPE tokenizer.
-   It is pretrained on 2 billion tokens of educational web text (FineWeb-Edu), then fine-tuned on
-   conversations (smol-smoltalk) so it answers in a chat.
-2. **Transaction-sequence model** (next step, not built yet). The same transformer code, trained on
-   Bitcoin address histories, scoring how surprising each transaction is.
-
-Nothing here starts from an existing model: the tokenizer, the weights and every training step are ours.
-
-## What it needs
-
-Estimates for the training PC (i5-12600K, 16 GB RAM, RTX 3060 12 GB). Step 4's speed test gives the real
-training time.
-
-| Stage | Time | Download | Disk |
-|---|---|---|---|
-| Prepare pretraining data (2B tokens) | about 30–90 min, plus the download | about 6.5 GB | 4 GB of tokens; the 6.5 GB download can be deleted as it goes |
-| Pretrain | about 2.5–4 days nonstop | – | about 3 GB of checkpoints |
-| Prepare chat data | about 10–20 min, plus the download | about 0.9 GB | about 2 GB |
-| Chat fine-tune (100M tokens) | about 3–4 hours | – | about 3 GB |
-
-Keep about 20 GB free.
-
-## 1. Set up (once)
-
-Install [Miniconda](https://docs.anaconda.com/miniconda/), open **Anaconda Prompt**, and run:
+The Explorer ranks each transaction of a Bitcoin address by how **unusual** it is for that address's own
+past, and says why in plain words. This repository holds Assignment 2: the datasets, every model (clustering,
+regression, classification, outlier detection and two language models), their evaluation, and a prediction
+interface that Assignment 3's web app will call. It is an investigation aid, never a fraud detector:
+*unusual activity requires investigation; it does not indicate wrongdoing.*
 
 ```
-cd path\to\asm2
+config/settings.json   every threshold, window, seed and grid (no magic numbers in the code)
+explorer/              the pipeline: one module per step, all run through explorer/cli.py
+lm/                    the language models: TxGPT, the 152M text model, Qwen 3B fine-tuning, evaluation
+configs/               language-model training settings
+data/processed/        the processed datasets (DS1, DS2, DS7, DS10 and records for DS3/DS4)
+models/                the trained models the Explorer uses
+reports/               figures (PDF), tables (CSV, the source of every number in the report) and logs
+tests/                 unit tests (pytest)
+kaggle/                the notebook that fine-tuned Qwen 3B on Kaggle
+docs/                  the delivery plan, the brief, the report plan, the AI use log, LM_TRAINING.md
+CHANGELOG.md           every decision and measured result, newest first
+```
+
+## 1. What you need
+
+- Windows 10/11, macOS (Apple Silicon: M1 or later) or Linux, with
+  [Miniconda](https://docs.anaconda.com/miniconda/) and git.
+- About 5 GB of free disk and 8 GB of RAM. No GPU: an NVIDIA GPU is only needed to *retrain* the language
+  models (section 7).
+- Intel Macs: PyTorch stopped publishing Intel-Mac builds after version 2.2, so `torch==2.7.1` in
+  `environment.yml` will not install there. Use an Apple Silicon Mac, Windows or Linux.
+
+## 2. Set up (about 10 minutes, once)
+
+```
+git clone https://github.com/Defaul119/COS30049A2.git
+cd COS30049A2
+conda env create -f environment.yml
+conda activate cos30049-a2
+python -m pytest -q
+```
+
+Expected: `185 passed, 2 skipped` in under a minute. (The two skipped tests need the GPU environment.)
+Run every later command from the repository folder with `cos30049-a2` active. On Windows, run
+`set PYTHONUTF8=1` first in each new terminal (Command Prompt) so the logs print correctly; macOS and Linux
+need nothing.
+
+## 3. Quick check: predictions from the shipped models (2 minutes)
+
+The repository ships the processed data and the trained models, so prediction works straight after set-up.
+
+**An address's timeline and every transaction's scores** (DS1 snapshot addresses only):
+
+```
+python -m explorer.cli predict address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz
+```
+
+prints JSON with `snapshot`, `range`, `days` (214 days), `totals` and `transactions` (377). Its totals:
+
+```
+"totals": {"txCount": 377, "scoredCount": 367, "flaggedCount": 3, "flaggedDays": 3}
+```
+
+An address outside the snapshot exits with code 2 and suggests supported ones:
+`Not in the snapshot: NOTANADDRESS is not in the snapshot; try one of [...]`.
+
+**A hypothetical next transaction** (the "user input -> prediction" Assignment 3 needs):
+
+```
+python -m explorer.cli predict what-if --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz --amount 0.05 --direction out --time 2026-10-20T12:00Z
+```
+
+```
+"scored": true, "flagged": true, "score": 5.98, ...
+"features": [{"id": "F1", "name": "Size", "value": 0.05, "usual": 0.000525, "z": 5.88, "role": "flag"}, ...]
+```
+
+**One transaction's explanation:**
+
+```
+python -m explorer.cli predict explain --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz --txid b2afad6cfb794fdc2de8879ff9f9cfff68933664b7c45048cd747bc5d622736b
+```
+
+```
+"explanation": "Flagged by Robust z baseline (A1).\nWhat stands out compared with this address's own history:\n- Longer gap than usual: 5 days since the previous transaction, against a usual 1 hour.\nUnusual activity requires investigation; it does not indicate wrongdoing.",
+"source": "template"
+```
+
+Add `--assistant` to let a language model write it instead (section 8); without the language-model files the
+answer stays the template's, and `skippedWriters` says why.
+
+## 4. Rebuild every result from the shipped data (offline, about 1.5-2 hours on a laptop)
+
+```
+python -m explorer.cli all --offline
+python -m explorer.cli figures
+```
+
+`all` runs every step below in order, offline, and stops at the first failure. Each step writes its log to
+`reports/logs/<step>.log`. Afterwards, `git status reports/tables` shows which tables changed; with the same
+pinned versions they should match ours (see section 11 for tolerance). Times were measured on our PC (Intel
+i5-12600K, 16 threads); a laptop takes longer.
+
+| Step | Reads | Writes | Time |
+|---|---|---|---|
+| `transactions` | `data/processed/esplora/histories.json.gz` (DS1) | `transactions.csv`, `reports/tables/cleaning_ds1.csv` | 1 s |
+| `features` (and `--as-written`) | DS1 transactions | `features.csv`: F1-F8, robust z-scores, baseline flag | 2 s |
+| `split` | features | fit / evaluation periods, `split_ds1.csv` | 1 s |
+| `inject` | DS1 | planted transactions (tuning and reporting seeds) in `data/interim/` | 45 s |
+| `baseline` | DS1 + plants | robust-z threshold sweep, `models/baseline.json` | 3 s |
+| `outliers` | DS1 + plants | Isolation Forest and LOF searches and models | 3 min |
+| `clustering` | DS1 + plants | K-Means and DBSCAN | 15 s |
+| `regression` | DS1 + plants | Ridge, random forest, gradient boosting, conformal ranges | 1 min |
+| `profiles` | DS1 + DS2 | address profiles, DS2's coverage of DS1 | 10 s |
+| `fusion` | saved methods + plants | two methods fused at one flag budget | 18 min |
+| `scores` | every saved model | `data/processed/esplora/scores.csv` | 10 s |
+| `evaluate` | everything above | recall, stability, agreement, sanity, ablation, the selection | 5 min |
+| `significance` | plant hits | address-level bootstrap intervals | 15 s |
+| `sensitivity` | DS1 | recall against plant strength | 4 min |
+| `walk-forward` | DS1 | every method at four fit/evaluation cut-offs | 5 min |
+| `ds2-check` | `data/processed/corpus/ds2.parquet` | the frozen methods on 2,933 DS2 histories | 5 min |
+| `ds10-check` | `data/processed/ds10/transactions.csv` | every model, TxGPT included, on DS10 | 6 min (25-35 min on a CPU) |
+| `label-check` | DS3/DS4 if downloaded | unsupervised scores against the labels | skipped without them |
+| `figures` | `reports/tables/` | every figure in `reports/figures/` | 15 s |
+
+On a fresh copy three things are skipped, and the log says so:
+- `txgpt` (re-tuning the TxGPT method) needs the planted copies' TxGPT scores, made by
+  `python -m lm.tx_score --plants` (minutes on a GPU, about 2 hours on a CPU). Without them the saved
+  `models/txgpt_method.joblib`, which carries every score it needs, is used as it is.
+- DS3 (Elliptic) and DS4 (BitcoinHeist) processing and classification need their downloads (section 5).
+
+Any single step can be run alone: `python -m explorer.cli <step>` (for example `evaluate`).
+`python -m explorer.cli --help` lists them all.
+
+## 5. Getting the data again (optional, needs internet)
+
+New downloads give slightly different numbers, because the blockchain keeps growing.
+
+| Command | What it does | Notes |
+|---|---|---|
+| `python -m explorer.cli snapshot --refetch` | DS1: choose 25 + 3 addresses by the rule in `settings.json`, fetch and verify them, write the manifest | Blockstream's public API (about 700 requests an hour per IP), falling back to mempool.space; 30-60 min |
+| `python -m explorer.cli corpus` | DS2: crawl about 4,000 address histories (hashed IDs) | Hours; resumes where it stopped |
+| `python -m explorer.cli ds10` | DS10: refetch the teammate's 27 addresses and cross-check them with their CSV | About 12 min |
+| `python -m explorer.cli external --bitcoinheist` | DS4 from UCI (CC BY 4.0), then `process-external` and `classify --dataset heist` | Classification takes about 35 min |
+| `python -m explorer.cli external --elliptic` | DS3 from Kaggle (CC BY-NC-ND 4.0), then `process-external` and `classify --dataset elliptic` | Needs a Kaggle account: save its API token as `~/.kaggle/kaggle.json`, or download the zip by hand when the step says how |
+
+The classifiers' trained models stay out of the repository: Elliptic's licence allows no derivatives, and the
+BitcoinHeist model is 263 MB. So `predict heist` and `predict elliptic` work only after these steps.
+
+## 6. Training the models
+
+- **scikit-learn models** (baseline, Isolation Forest, LOF, K-Means, DBSCAN, regression, fusion, the DS3/DS4
+  classifiers) are trained by the steps in sections 4 and 5. Every grid, seed and threshold is in
+  `config/settings.json`; every search is in `reports/tables/tuning_*.csv`.
+- **Language models** need `environment-gpu.yml` and an NVIDIA GPU (section 7).
+
+## 7. Retraining the language models (GPU, optional)
+
+```
 conda env create -f environment-gpu.yml
 conda activate cos30049-a2-gpu
-python -c "import torch; print(torch.cuda.is_available(), torch.cuda.get_device_name(0))"
 ```
 
-The last line should print `True NVIDIA GeForce RTX 3060`. If it prints `False`, update the NVIDIA driver
-and try again.
+| Model | Commands | Time on our RTX 3060 |
+|---|---|---|
+| TxGPT (3 sizes x 3 seeds) | `python -m lm.prepare_tx`, then `python -m lm.train --config configs/txgpt_s.json --seed 1` (and `_m`, `_l`, seeds 1-3), `python -m lm.tx_select`, `python -m lm.tx_score --plants`, `python -m explorer.cli txgpt` | 6-30 min per run |
+| 152M text model | `docs/LM_TRAINING.md`: pretraining (2B tokens), chat stage, explanation stage (`configs/text_150m_explain.json`) | about 3 days in all |
+| Qwen 2.5 3B (QLoRA) | `kaggle/qwen3b_explain.ipynb` on a Kaggle T4, or locally `python -m lm.qlora --config configs/qwen3b_explain.json` | about 8 h on a Kaggle T4 |
+| Explanation evaluation | `python -m lm.eval_explain --model template`, `--model text150m --checkpoint models/assistant/model.pt`, `--model qwen3b --config configs/qwen3b_explain.json --adapter models/qwen3b_adapter` | 5 min (152M), 1.5 h (Qwen on a T4) |
 
-Run every later command from this folder, with the environment active.
+`tools/run_queue.py --plan configs/queue_after_pretraining.json` runs the whole GPU sequence unattended and
+resumes after an interruption.
 
-## 2. Check that everything works (about 2 minutes)
+## 8. Prediction
 
-```
-python -m unittest discover -s tests
-python -m lm.smoke
-```
-
-The unit tests should end with `OK`. The smoke test runs the whole pipeline on a tiny model with made-up
-data and should report `8/8 stages passed`. If anything fails, stop and fix it before the long run.
-
-## 3. Prepare the pretraining data
+From the command line (section 3 shows the outputs):
 
 ```
-python -m lm.prepare_text --delete-raw
+python -m explorer.cli predict address <address>
+python -m explorer.cli predict what-if --address <address> --amount 0.05 --direction out --time 2026-10-20T12:00Z [--assistant]
+python -m explorer.cli predict explain --address <address> --txid <txid> [--assistant]
+python -m explorer.cli predict heist --length 18 --weight 0.008 --count 1 --looped 0 --neighbors 2 --income 1.2e8   # after section 5
+python -m explorer.cli predict elliptic --rows <feature rows.csv>                                                   # after section 5
 ```
 
-This downloads FineWeb-Edu one 2.15 GB file at a time, trains the tokenizer on the first 100,000
-documents, and writes `data/text/train.bin` (2B tokens), `val.bin` (10M held-out tokens), `tokenizer.json`
-and `meta.json` (the dataset manifest). `--delete-raw` removes each downloaded file once it's tokenized.
+From Python (what Assignment 3's back end calls):
 
-If it stops (Ctrl+C, a dropped connection, a restart), run the same command again and it continues.
-
-## 4. Speed test, then pretrain
-
-```
-python -m lm.train --config configs/text_150m_pretrain.json --bench
+```python
+from explorer.predict import Predictor
+p = Predictor.load()
+timeline = p.score_address("1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz")
+guess = p.score_what_if("1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz", 0.05, "out", "2026-10-20T12:00Z")
+text = p.explain(guess, use_assistant=False)
 ```
 
-This tries several micro-batch sizes and prints the speed, GPU memory and total time for each, then
-recommends one. Put that number in `"micro_batch"` in `configs/text_150m_pretrain.json`. Then start
-training:
+**The Assistant (`--assistant`).** Explanations are written by the first writer in
+`settings.json -> assistant -> writerOrder` that passes the code guardrail (every number from the facts, the
+limitation line, no banned word), else by the template. The writers' files are over GitHub's 100 MB limit and
+are not in the repository: `models/assistant/` (the 152M model, runs in the CPU environment) and
+`models/qwen3b_adapter/` (Qwen 3B, needs the GPU environment). With neither present, the template writes.
 
-```
-python -m lm.train --config configs/text_150m_pretrain.json
-```
+## 9. Data
 
-Each line shows the step, the training loss, the learning rate, tokens per second, how efficiently the GPU
-is used (MFU), memory and the time remaining. Every 200 steps it prints the **validation loss** on text the
-model never trains on. It starts near 10.4 and should keep falling.
+| ID | Dataset | Source and licence | Used for |
+|---|---|---|---|
+| DS1 | Our snapshot: 25 + 3 addresses, 7,966 transactions | Blockstream Esplora API (public blockchain data) | Every unsupervised model and the evaluation |
+| DS2 | Our crawl: 4,012 address histories, hashed IDs | Esplora API (mempool.space) | TxGPT training, profiles, the DS2 check |
+| DS3 | Elliptic Data Set | Kaggle, CC BY-NC-ND 4.0 (not redistributed) | Classification |
+| DS4 | BitcoinHeist | UCI repository 526, CC BY 4.0 | Classification |
+| DS5 | FineWeb-Edu | Hugging Face, ODC-By 1.0 | 152M pretraining |
+| DS6 | smol-smoltalk | Hugging Face, Apache 2.0 | Chat fine-tuning |
+| DS7 | Our explanation pairs from DS1 and DS2 | Built by `explorer/ds7.py` | Teaching and testing the Assistant |
+| DS10 | A teammate's independent 27-address snapshot | Esplora API; refetched and cross-checked | Held-out test of every model |
 
-- **To stop:** press Ctrl+C once and wait. It saves a checkpoint, then exits.
-- **To continue,** after stopping, a crash or a power cut, run the same command. It resumes from the last
-  checkpoint (saved every 30 minutes), with the same data order and learning-rate schedule.
-- **Keep Windows awake:** Settings → System → Power → set sleep to *Never* while plugged in. Settings →
-  Windows Update → *Pause updates* for a week, so it doesn't restart mid-run.
-- **Try the model while it trains:** `python -m lm.generate --model runs/text-150m/model_best.pt --prompt "The water cycle is"`.
-  It continues the text. It won't follow instructions until step 5.
+Each processed folder carries a `manifest.json` (source, date, selection rule, checks, SHA-256). DS2 stores
+addresses only as salted hashes; the salt never leaves the build machine. Base model for the Assistant:
+Qwen2.5-3B-Instruct (Qwen Research License; built with Qwen).
 
-When it finishes, the weights are in `runs/text-150m/model.pt`.
-
-## 5. Chat fine-tuning
-
-```
-python -m lm.prepare_chat
-python -m lm.train --config configs/text_150m_chat.json
-```
-
-`prepare_chat` downloads smol-smoltalk (about 460,000 conversations) and writes them in our chat format
-with a mask, so the model only learns to write the assistant's replies. About half the conversations are
-longer than the model's 1,024-token window, so they're cut after the last reply that fits.
-`--extra my_chats.jsonl` adds your own conversations, one `{"messages": [{"role": ..., "content": ...}, ...]}`
-per line.
-
-## 6. Chat
-
-```
-python -m lm.chat --model runs/text-150m-chat/model.pt
-```
-
-Type a message and press Enter. `/reset` clears the conversation and `/quit` exits.
-
-Expect a small model: it writes fluent-looking English, stays roughly on topic, and is often wrong on facts.
-A 150M model trained on 2B tokens has seen about a thousandth of the data behind commercial chatbots.
-
-## Troubleshooting
+## 10. Troubleshooting
 
 | Problem | Fix |
 |---|---|
-| `out of memory` | Lower `micro_batch` to 4 or 2. It must divide 256 (`batch_tokens` / 1,024). The results don't change, only the speed. |
-| `UserWarning: ... not compiled with flash attention` | Harmless on Windows. PyTorch uses its memory-efficient attention instead. |
-| Download errors or `429 Too Many Requests` | Wait a few minutes and run the same command; downloads resume. |
-| Want to change settings mid-run | `lr`, `eval_every`, `micro_batch` and the checkpoint interval can change between runs. Changing the model shape or `batch_tokens` needs a new run (`--fresh`). |
-| Training says `diverged` | Lower `lr` in the config and run the same command; it resumes from the last good checkpoint. |
+| `conda: command not found` | Open a new terminal after installing Miniconda (on macOS run `conda init zsh` once). |
+| `conda env create` is slow or fails to solve | `conda install -n base conda-libmamba-solver` and retry, or create an empty Python 3.11 env and run `pip install` with the versions in `environment.yml`. |
+| `No matching distribution found for torch==2.7.1` | An Intel Mac (section 1) or a Python other than 3.11. |
+| Out of memory during `fusion`, `ds2-check` or `classify` | Lower `classification -> nJobs` in `config/settings.json` (for example to 2). |
+| `UnicodeEncodeError` on Windows | `set PYTHONUTF8=1` in that terminal. |
+| `external --elliptic` asks for a token | Save a Kaggle API token as `~/.kaggle/kaggle.json`, or download the zip by hand as the message says. |
+| `predict heist` or `predict elliptic` cannot find a model | Run section 5's commands for that dataset first. |
+| A step says `Stopping: <step> failed` | Read `reports/logs/<step>.log`, fix the cause, and run that step alone, then `all` again. |
 
-## How it works
+## 11. Reproducibility
 
-| File | What it does |
-|---|---|
-| `lm/model.py` | The transformer: 18 layers, width 768, 12 heads, rotary positions, SwiGLU, RMSNorm, tied embeddings |
-| `lm/tokenizer.py` | Trains our byte-level BPE tokenizer; the chat format and its training mask |
-| `lm/hub.py` | Downloads datasets from Hugging Face; lists every source and its licence |
-| `lm/prepare_text.py` | Builds the pretraining token files (resumable) |
-| `lm/prepare_chat.py` | Builds the chat fine-tuning files |
-| `lm/data.py` | Reads training windows from disk in a fixed, resumable shuffled order |
-| `lm/train.py` | Training: AdamW, warm-up and cosine schedule, bf16, gradient accumulation, checkpoints, speed test |
-| `lm/generate.py` | Loading a model and sampling text, with a key/value cache |
-| `lm/chat.py` | The chat loop; `reply()` is reusable by the Assignment 3 back end |
-| `lm/smoke.py` | The end-to-end check in step 2 |
-| `configs/` | Run settings: model size, tokens, batch, learning rate |
-| `tests/` | Unit tests |
+- Versions are pinned in `environment.yml`; every random choice takes its seed from `config/settings.json`.
+  Planted transactions use seeds 40000-40004 for tuning and 30049-30053 for the reported results.
+- Most tables reproduce exactly. Models that use several threads (gradient boosting, random forests) can
+  differ in the last decimal places across machines and operating systems; differences larger than
+  about 0.01 in a recall or a rate are worth reporting as a bug.
+- `CHANGELOG.md` records every decision and measured result; `docs/AI_USE_LOG.md` records how generative AI was
+  used, for the AI declaration the tutor asked for.
 
-**Model size:** 152.6M parameters. 18 layers × 7.08M each, plus a 25.2M embedding shared with the output
-layer.
-
-**Training recipe:**
-- Batches of 262,144 tokens, so 7,630 steps for 2B tokens.
-- AdamW (β 0.9/0.95, weight decay 0.1) with gradient clipping at 1.0.
-- Learning rate warms up over 500 steps to 6e-4, then follows a cosine decay to 6e-5.
-- bf16 mixed precision.
-
-## Data sources and licences
-
-| Dataset | Used for | Licence |
-|---|---|---|
-| FineWeb-Edu, 10B-token sample (HuggingFaceFW/fineweb-edu) | Pretraining (first ~2B tokens) | ODC-By 1.0 |
-| smol-smoltalk (HuggingFaceTB/smol-smoltalk) | Chat fine-tuning | Apache 2.0 |
-
-`data/text/meta.json` and `data/chat/meta.json` record exactly what was used, with counts and dates.
-
-References:
-- Penedo, G. et al. (2024) 'The FineWeb datasets: decanting the web for the finest text data at scale',
-  *Advances in Neural Information Processing Systems 37 (Datasets and Benchmarks Track)*.
-- Allal, L.B. et al. (2025) 'SmolLM2: when smol goes big — data-centric training of a small language
-  model', *arXiv preprint* arXiv:2502.02737.
-
-## Note for the Assignment 2 zip
-
-The brief asks for the processed data used by the final model. The token files (about 6 GB) are too large
-for a zip, so the plan is to submit:
-- the `meta.json` manifests;
-- the training logs (`runs/*/log.jsonl`);
-- a small sample of each token file;
-- these scripts, which rebuild everything.
-
-Confirm with the tutor that this is acceptable.
+**Reporting a problem:** send the command, the last 30 lines of `reports/logs/<step>.log`, your operating
+system and chip, and the output of `conda list --export > env.txt`.

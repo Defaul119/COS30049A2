@@ -321,7 +321,7 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
     from .significance import run_significance
     from .split import run_split
     from .transactions import run_transactions
-    from .txgpt import SCORES_PATH as TXGPT_SCORES, run_txgpt
+    from .txgpt import SCORES_PATH as TXGPT_SCORES, plant_scores_exist, run_txgpt
     from .walkforward import run_walkforward
 
     steps: list[tuple[str, Callable[[], int]]] = [
@@ -339,10 +339,12 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
         steps.append(("profiles", run_profiles))
     else:
         log.info("Skipping profiles: no DS2 yet (python -m explorer.cli corpus)")
-    if TXGPT_SCORES.exists():
+    if TXGPT_SCORES.exists() and plant_scores_exist():
         steps.append(("txgpt", run_txgpt))
     else:
-        log.info("Skipping txgpt: no %s yet (python -m lm.tx_score)", TXGPT_SCORES)
+        # A fresh copy has the saved method (models/txgpt_method.joblib, with every score it needs) but not
+        # the planted copies' scores, which only lm.tx_score --plants makes; later steps use the saved method.
+        log.info("Skipping txgpt: keeping models/txgpt_method.joblib (re-tuning needs python -m lm.tx_score --plants)")
     steps += [("fusion", run_fusion), ("scores", run_scores), ("evaluate", run_evaluate),
               ("significance", run_significance), ("sensitivity", run_sensitivity), ("walk-forward", run_walkforward)]
     if (CORPUS_DIR / "ds2.parquet").exists():
