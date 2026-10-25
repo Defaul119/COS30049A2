@@ -27,7 +27,10 @@ was then run frozen, as tuned on DS1, with the reporting seeds' plants (750) and
 - The Elliptic and BitcoinHeist classifiers cannot run on DS10: they need those datasets' own features.
 - The explanation writers on 291 DS10 prompts built as DS7's are (`data/processed/ds10/explain.jsonl`: 109 flagged,
   155 not flagged, 27 unscored): the 152M model passes the guardrail on all of them, keeps every number and
-  mentions every flagged feature (ROUGE-L 0.678; `assistant_eval_ds10.csv`). Qwen 3B's row follows.
+  mentions every flagged feature (ROUGE-L 0.678; `assistant_eval_ds10.csv`). Qwen 3B also passes on all 291,
+  keeps every number and mentions 99.8% of flagged features (ROUGE-L 0.793; 7.2 s per prompt on the RTX 3060).
+  An ad hoc check of comparison words against each feature's z sign, not yet in the guardrail, finds the same
+  slips as on DS7: Qwen 4 of 291 answers, the 152M model 1, the template none.
 `lm/eval_explain.py` gained `--tag`, so a second test set writes `assistant_eval_<model>_ds10.csv` and
 `assistant_eval_ds10.csv` and leaves the DS7 tables alone.
 

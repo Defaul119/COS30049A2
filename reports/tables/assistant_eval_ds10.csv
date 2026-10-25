@@ -1,3 +1,4 @@
 model,prompts,number_faithfulness,limitation_line,banned_word_share,guardrail_pass,feature_coverage,rouge_l,glossary_prompts,glossary_banned_word_share,glossary_rouge_l,seconds,source
 template,291,1.0,1.0,0.0,1.0,1.0,1.0,0,,,0.1,explorer.explain.template_explanation
 text150m,291,1.0,1.0,0.0,1.0,1.0,0.6783131269957967,0,,,245.3,models/assistant/model.pt
+qwen3b,291,1.0,1.0,0.0,1.0,0.9984567901234568,0.7926978785769497,0,,,2098.0,models/qwen3b_adapter

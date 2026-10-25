@@ -1,5 +1,6 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-25 08:00 GMT+7)
-Start a new session by running python tools/status.py.
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-25 08:15 GMT+7)
+Work from C:\Users\ADMIN\COS30049A2 (start Claude Code there). Start a new session by reading NEXT below;
+python tools/status.py shows any long job. Nothing is running as of 25 Oct 08:15.
 =====================================================================================
 
 USER PREFERENCES
@@ -164,7 +165,9 @@ DS10 (user, 25 Oct: "put it into testing of all models and mark down the results
   less so; TxGPT, trained on DS2's broad population, generalises best.
 - Assistant on DS10 (291 prompts: 109 flagged, 155 not flagged, 27 unscored; assistant_eval_ds10.csv):
   template 1.0 everywhere (control); 152M guardrail pass 1.0, numbers 1.0, coverage 1.0, ROUGE-L 0.678;
-  Qwen 3B was still running at the closing commit (about 8.5 s per prompt on the 3060, done ~08:20); its row goes into assistant_eval_ds10.csv in a follow-up commit.
+  Qwen 3B (done 08:13, 2,098 s on the 3060) guardrail pass 1.0, numbers 1.0, coverage 0.998, ROUGE-L 0.793.
+  Ad hoc direction check (scratchpad direction_check.py, matches lines by the feature's phrase; template 0):
+  Qwen 4 of 291 wrong comparison words (ds10-00032, -00033, -00036, -00212), 152M 1 (ds10-00153): same as DS7.
 - Classifiers (DS3/DS4) cannot run on DS10: they need those datasets' own features.
 
 NOTHING RUNNING (training phase closed 25 Oct 2026; every job below finished, and its results are committed)
@@ -228,6 +231,14 @@ DONE (committed)
   resume; three notebook notes corrected (selection reasoning, burst claim, gap buckets).
 
 NEXT, IN ORDER (25 Oct, training phase closed; the report plan is docs/REPORT_PLAN.md)
+0. NOW (user, 25 Oct ~08:00): the user is replicating the pipeline from README.md on two MacBooks (main: 14-inch
+   MacBook Pro, Apple M5, 16 GB) to find bugs: clone, conda env create -f environment.yml, pytest (expect 185
+   passed, 2 skipped), the README's quick predict check, then explorer.cli all --offline + figures and
+   `git status reports/tables`. Fix every problem they report in the README or the code; ask for the command,
+   the last 30 lines of reports/logs/<step>.log and `conda list --export`. README written 25 Oct (11c5966),
+   with a fresh-clone fix: the txgpt step runs only when lm.tx_score --plants output exists (else the saved
+   models/txgpt_method.joblib is kept; before the fix it would have been overwritten with a method that misses
+   every plant). Measured: TxGPT CPU scoring in ds10-check takes ~25 min (238,807 rows, 8 threads).
 1. DECIDE (user): add a direction check to the guardrail (explorer/assistant.check: a comparison word must agree
    with the feature's z sign) and re-score the saved DS7 and DS10 answers (no regeneration); fix the template's
    "Relative size" wording ("Large compared with the usual amount: 0.4x" when the usual is 0.3x, test-00272).
@@ -236,11 +247,12 @@ NEXT, IN ORDER (25 Oct, training phase closed; the report plan is docs/REPORT_PL
    (test-00127); all pass the current guardrail. Also: Qwen copies the template verbatim on 150 of 156 flagged
    prompts, which is why its pass rate is 100%.
 2. Check TxGPT S seed 3's validation loss (0.661 vs ~0.682 for seeds 1-2; txgpt_runs.csv) before freezing.
-3. Freeze results (M2): explorer.cli all --offline once, tests, tag results-v1 (plan: by Thu 29 Oct).
+3. Results tagged results-v1 on 25 Oct at the user's request (after Qwen's DS10 row). If NEXT 1 or 2 changes any
+   number, re-run, commit and tag results-v1.1; never move a pushed tag.
 4. Packaging: models/assistant (152M, fp32 610 MB; fp16 export ~305 MB planned) and models/qwen3b_adapter (114 MB)
    are git-ignored (over 100 MB); publish as GitHub release assets with SHA-256 only with the user's OK.
-5. Write: README (A2 outline), DATA_CARD.md (DS1-DS10), MODEL_CARD.md, LICENSES.md (+ Qwen licence text and NOTICE,
-   "Built with Qwen"); then the report (docs/REPORT_PLAN.md; LaTeX, <= 2,850 body words). The DS7 glossary
+5. Write: DATA_CARD.md (DS1-DS10), MODEL_CARD.md, LICENSES.md (+ Qwen licence text and NOTICE, "Built with Qwen")
+   (README.md DONE 25 Oct; the old LM guide is docs/LM_TRAINING.md); then the report (docs/REPORT_PLAN.md; LaTeX, <= 2,850 body words). The DS7 glossary
    draft (160 pairs, tools/make_glossary.py) awaits the user's skim.
 6. DECIDED 23 Oct (the team delegated all open decisions to Cao Tri Tran): CR-03 option (a) (keep |z| >= 5,
    report the behaviour-change finding); Qwen-Instruct switch and roles accepted; explorerMethod = baseline.
