@@ -190,6 +190,14 @@
     "plantsPerPattern": 1000
   },
 
+  "ds10": {
+    "_about": "explorer/ds10.py: a teammate's independent DS1-style snapshot (27 addresses, 23 Oct 2026), refetched and cross-checked, then every DS1 model tested on it frozen. Plants use settings -> injection exactly as DS1 (a population of DS1's size).",
+    "maxTxPerAddress": 2000,
+    "_maxTxPerAddress": "the refetch's cap, above the teammate's 600, so a history that grew since 23 Oct is still read back to its first transaction before the cut",
+    "explanations": {"maxPairsPerAddress": 12, "unscoredPerAddress": 1},
+    "_explanations": "the explanation set for the Assistant's writers, picked as DS7 picks (ds7.pick): up to half flagged by the explorer method, the rest unflagged, one unscored"
+  },
+
   "significance": {
     "_about": "explorer/significance.py: address-level bootstrap of the reporting plants (plants on one address are not independent).",
     "bootstrapResamples": 2000,

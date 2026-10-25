@@ -26,6 +26,8 @@ Usage (from the repository root):
     python -m explorer.cli sensitivity            # recall against plant strength (spike size, burst size, dormancy)
     python -m explorer.cli ds2-check              # the frozen DS1 methods on DS2's ~2,900 comparable histories
     python -m explorer.cli walk-forward           # every method at several fit/evaluation cut-offs
+    python -m explorer.cli ds10                   # DS10: refetch a teammate's 27-address snapshot, cross-check it
+    python -m explorer.cli ds10-check             # every DS1 model (TxGPT too) frozen on DS10
     python -m explorer.cli predict address bc1q...  # or: predict what-if / explain / heist / elliptic
     python -m explorer.cli predict explain --address bc1q... --txid <txid> --assistant   # guarded Assistant text
     python -m explorer.cli all --offline          # every step above, in order, from the data on disk
@@ -182,6 +184,19 @@ def cmd_ds2_check(args: argparse.Namespace) -> int:
     return run_ds2_check()
 
 
+def cmd_ds10(args: argparse.Namespace) -> int:
+    from .ds10 import run_ds10
+
+    primary, fallback = esplora_clients()
+    return run_ds10(FailoverClient([primary, fallback], SETTINGS["collection"]["failoverHoldSeconds"]))
+
+
+def cmd_ds10_check(args: argparse.Namespace) -> int:
+    from .ds10 import run_ds10_check
+
+    return run_ds10_check()
+
+
 def cmd_sensitivity(args: argparse.Namespace) -> int:
     from .sensitivity import run_sensitivity
 
@@ -290,6 +305,7 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
     from .clustering import run_clustering
     from .corpus import OUT_DIR as CORPUS_DIR
     from .ds2_check import run_ds2_check
+    from .ds10 import OUT_DIR as DS10_DIR, run_ds10_check
     from .evaluate import run_evaluate
     from .external import EXTERNAL_DIR
     from .features import run_features
@@ -331,6 +347,8 @@ def offline_steps() -> list[tuple[str, Callable[[], int]]]:
               ("significance", run_significance), ("sensitivity", run_sensitivity), ("walk-forward", run_walkforward)]
     if (CORPUS_DIR / "ds2.parquet").exists():
         steps.append(("ds2-check", run_ds2_check))
+    if (DS10_DIR / "transactions.csv").exists():
+        steps.append(("ds10-check", run_ds10_check))
     if (EXTERNAL_DIR / "bitcoinheist" / "BitcoinHeistData.csv").exists():
         steps += [("process-external (DS4)", run_process_heist),
                   ("classify --dataset heist", lambda: run_classify_heist(["temporal", "random", "lofo"]))]
@@ -411,6 +429,10 @@ def build_parser() -> argparse.ArgumentParser:
         func=cmd_ds2_check)
     steps.add_parser("walk-forward", help="DS1: every method at several fit/evaluation cut-offs").set_defaults(
         func=cmd_walkforward)
+    steps.add_parser("ds10", help="DS10: refetch a teammate's snapshot, cross-check it with their CSV").set_defaults(
+        func=cmd_ds10)
+    steps.add_parser("ds10-check", help="DS10: every DS1 model, TxGPT included, on the teammate's snapshot").set_defaults(
+        func=cmd_ds10_check)
     predict = steps.add_parser("predict", help="use the trained models: an address, a what-if, DS4 or DS3 rows")
     kinds = predict.add_subparsers(dest="kind", required=True)
     address = kinds.add_parser("address", help="timeline and every transaction's scores for a snapshot address")

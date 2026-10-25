@@ -73,6 +73,7 @@ and evaluation with accuracy, precision, recall, F1 and similar metrics. The bri
    | DS6 | smol-smoltalk (Apache 2.0) | Chat fine-tune |
    | DS7 | Explanation pairs built from our pipeline | Explanation fine-tune |
    | DS8 / DS9 | Elliptic++ actors / Ransomwhere (CC BY 4.0) | Optional (Could tier) |
+   | DS10 | A teammate's independent DS1-style Esplora snapshot (27 addresses; added 25 Oct, `explorer/ds10.py`) | Held-out test of every model, frozen |
 
 3. **Label-based metrics only where labels exist**: full metrics on DS3 and DS4 "against the
    dataset's labels"; recall (and precision as a lower bound) on transactions we plant in DS1;

@@ -13,6 +13,8 @@ runs/
 # DS1 raw API replies (about 0.4 GB; SHA-256 of each is in data/processed/esplora/manifest.json,
 # and the trimmed data/processed/esplora/histories.json.gz is what ships)
 data/raw/esplora/
+# DS10's raw replies, the same way (data/processed/ds10/histories.json.gz ships)
+data/raw/ds10/
 
 # DS4 processed rows (~2.9M rows; rebuilt in seconds by python -m explorer.cli process-external)
 data/processed/bitcoinheist/rows.parquet

@@ -1,0 +1,6 @@
+[eval] 50/291 (0 s)
+[eval] 100/291 (0 s)
+[eval] 150/291 (0 s)
+[eval] 200/291 (0 s)
+[eval] 250/291 (0 s)
+[eval] {'model': 'template', 'prompts': 291, 'number_faithfulness': np.float64(1.0), 'limitation_line': np.float64(1.0), 'banned_word_share': np.float64(0.0), 'guardrail_pass': np.float64(1.0), 'feature_coverage': np.float64(1.0), 'rouge_l': np.float64(1.0), 'glossary_prompts': 0, 'glossary_banned_word_share': nan, 'glossary_rouge_l': nan, 'seconds': 0.1, 'source': 'explorer.explain.template_explanation'}

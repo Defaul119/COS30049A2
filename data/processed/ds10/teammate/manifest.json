@@ -1,0 +1,61 @@
+{
+  "source": "Blockstream Esplora HTTP API",
+  "base_url": "https://blockstream.info/api",
+  "collected_utc": "2026-10-23 21:28:26",
+  "chain_tip_height_at_start": 972831,
+  "candidate_block_heights": [
+    972794,
+    972659,
+    972637,
+    972820,
+    972701,
+    972693
+  ],
+  "parameters": {
+    "out": "data",
+    "base_url": "https://blockstream.info/api",
+    "seed": 42,
+    "delay": 1.5,
+    "target": 24,
+    "short": 3,
+    "min_tx": 50,
+    "min_days": 90,
+    "cap": 600,
+    "short_min": 4,
+    "short_max": 9,
+    "blocks": 6,
+    "pages": 4,
+    "window": 200,
+    "budget": 800,
+    "max_requests": 550
+  },
+  "selection_rule": "(written down BEFORE collecting, to limit selection bias):\n  1. Draw random pages of transactions from a few random recent blocks and collect\n     every address that appears in their inputs and outputs (the candidate pool).\n  2. Order the pool: addresses seen in 2+ sampled transactions first (more likely to be\n     active, which saves scarce API requests), then the rest. Each group is shuffled\n     with a fixed random seed.\n  3. For each candidate, read its confirmed transaction count (1 request).\n       - \"normal\" addresses need >= MIN_TX confirmed transactions (default 50),\n         <= CAP (default 600, keeps retrieval inside the rate limit) and a\n         history spanning >= MIN_DAYS days (default 90).\n       - Normal addresses are split into three activity tiers (low / medium /\n         high) with equal quotas, so the sample is not only very busy addresses.\n       - \"short_history\" addresses have between SHORT_MIN and SHORT_MAX confirmed\n         transactions (default 4 to 9); they exist to test the insufficient-history state.\n  4. Stop when all quotas are filled or the request budget is used up.\n  The funnel (how many candidates passed each filter) is written to manifest.json.",
+  "tier_quotas": {
+    "low": 8,
+    "medium": 8,
+    "high": 8
+  },
+  "funnel": {
+    "pool_size": 1349,
+    "seen_in_2plus_txs": 28,
+    "addresses_checked": 144,
+    "too_few_or_gap": 63,
+    "too_many": 29,
+    "api_error": 2,
+    "tier_full": 16,
+    "failed_span": 4,
+    "accepted_normal": 24,
+    "accepted_short": 3
+  },
+  "requests_made": 463,
+  "fields": {
+    "received_btc": "sum of outputs paying the address",
+    "sent_btc": "sum of inputs spent from the address",
+    "net_btc": "received - sent; positive = in, negative = out",
+    "confirmed_utc": "block time, UTC"
+  },
+  "missing_values_and_exclusions": "Unconfirmed (mempool) transactions are never requested. Outputs without an address (e.g. OP_RETURN) are ignored.",
+  "terms_of_use": "Public API without authentication. Blockstream notice received during retrieval: unauthenticated usage capped at 500,000 requests/month and 700 requests/hour per IP. Record the date you checked.",
+  "limitations": "No fraud labels. Candidate pool is biased towards active addresses (often services such as exchanges). Addresses are public identifiers; no identity claims are made; very busy addresses are excluded, because the API refuses them, so the sample leans toward moderately active addresses.",
+  "reviewed_by": "Hoàng Lê Quang Anh"
+}

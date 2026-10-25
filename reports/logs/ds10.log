@@ -1,0 +1,10 @@
+2026-10-25 07:18:21 INFO Step ds10 started: C:\Users\ADMIN\COS30049A2\explorer\cli.py ds10
+2026-10-25 07:18:23 INFO DS10: 27 addresses ({'main': 24, 'short': 3}); shared with DS1 or its pool: 0, with DS2: 0
+2026-10-25 07:29:41 INFO parse every saved page: 5785 -> 5785 rows (0 removed)
+2026-10-25 07:29:41 INFO keep confirmed transactions: 5785 -> 5785 rows (0 removed)
+2026-10-25 07:29:41 INFO remove duplicate (address, txid) pairs: 5785 -> 5785 rows (0 removed)
+2026-10-25 07:29:41 INFO drop transactions that neither pay nor spend from the address: 5785 -> 5785 rows (0 removed)
+2026-10-25 07:29:41 INFO sort by address, block time and txid: 5785 -> 5785 rows (0 removed)
+2026-10-25 07:29:41 INFO Cross-check with the teammate's CSV: {'shared': 5785, 'only_ours': 0, 'only_theirs': 0, 'differs': 0}; 27 of 27 addresses agree exactly
+2026-10-25 07:29:41 INFO Wrote C:\Users\ADMIN\COS30049A2\data\processed\ds10\histories.json.gz, transactions.csv (5785 rows) and C:\Users\ADMIN\COS30049A2\reports\tables\ds10_crosscheck.csv
+2026-10-25 07:29:41 INFO Step ds10 finished in 679 s (exit 0)

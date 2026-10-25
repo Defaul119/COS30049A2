@@ -1,0 +1,42 @@
+2026-10-25 07:29:57 INFO Step ds10-check started: C:\Users\ADMIN\COS30049A2\explorer\cli.py ds10-check
+2026-10-25 07:30:00 INFO DS10: 27 addresses, 5785 transactions; periods {'fit': 3780, 'eval': 1646, 'history': 359}
+2026-10-25 07:30:02 INFO seed 30049: 150 plants on 24 addresses
+2026-10-25 07:30:04 INFO seed 30050: 150 plants on 24 addresses
+2026-10-25 07:30:05 INFO seed 30051: 150 plants on 24 addresses
+2026-10-25 07:30:06 INFO seed 30052: 150 plants on 23 addresses
+2026-10-25 07:30:08 INFO seed 30053: 150 plants on 22 addresses
+2026-10-25 07:33:34 INFO TxGPT: raw score, DS1 threshold 12.203, 238807 rows scored
+2026-10-25 07:33:35 INFO txgpt_method         DS10 mean recall 0.598 [0.534, 0.657] (DS1 0.547, DS2 -); flag rate 0.038, 4% of addresses over the sanity limit
+2026-10-25 07:33:35 INFO baseline             DS10 mean recall 0.431 [0.334, 0.528] (DS1 0.655, DS2 0.494); flag rate 0.036, 0% of addresses over the sanity limit
+2026-10-25 07:33:35 INFO fusion               DS10 mean recall 0.398 [0.311, 0.489] (DS1 0.684, DS2 0.471); flag rate 0.053, 4% of addresses over the sanity limit
+2026-10-25 07:33:35 INFO regression           DS10 mean recall 0.345 [0.248, 0.451] (DS1 0.673, DS2 0.425); flag rate 0.086, 11% of addresses over the sanity limit
+2026-10-25 07:33:35 INFO regression_interval  DS10 mean recall 0.158 [0.101, 0.230] (DS1 0.268, DS2 0.193); flag rate 0.103, 7% of addresses over the sanity limit
+2026-10-25 07:33:35 INFO kmeans               DS10 mean recall 0.157 [0.091, 0.239] (DS1 0.446, DS2 0.333); flag rate 0.005, 0% of addresses over the sanity limit
+2026-10-25 07:33:35 INFO isolation_forest     DS10 mean recall 0.151 [0.085, 0.226] (DS1 0.429, DS2 0.305); flag rate 0.004, 0% of addresses over the sanity limit
+2026-10-25 07:33:35 INFO lof                  DS10 mean recall 0.149 [0.074, 0.226] (DS1 0.320, DS2 0.166); flag rate 0.014, 0% of addresses over the sanity limit
+2026-10-25 07:33:35 INFO dbscan               DS10 mean recall 0.138 [0.070, 0.232] (DS1 0.406, DS2 0.265); flag rate 0.006, 0% of addresses over the sanity limit
+2026-10-25 07:33:36 INFO Wrote C:\Users\ADMIN\COS30049A2\reports\tables\eval_ds10.csv, eval_ds10_plant_hits.csv, split_ds10.csv and C:\Users\ADMIN\COS30049A2\data\processed\ds10\explain.jsonl (291 explanation prompts: {'not_flagged': 155, 'flagged': 109, 'unscored': 27})
+2026-10-25 07:33:36 INFO Step ds10-check finished in 218 s (exit 0)
+2026-10-25 07:38:26 INFO Step ds10-check started: C:\Users\ADMIN\COS30049A2\explorer\cli.py ds10-check
+2026-10-25 07:38:30 INFO DS10: 27 addresses, 5785 transactions; periods {'fit': 3780, 'eval': 1646, 'history': 359}
+2026-10-25 07:38:32 INFO seed 30049: 150 plants on 24 addresses
+2026-10-25 07:38:33 INFO seed 30050: 150 plants on 24 addresses
+2026-10-25 07:38:35 INFO seed 30051: 150 plants on 24 addresses
+2026-10-25 07:38:36 INFO seed 30052: 150 plants on 23 addresses
+2026-10-25 07:38:38 INFO seed 30053: 150 plants on 22 addresses
+2026-10-25 07:44:03 INFO TxGPT: raw score, DS1 threshold 12.203, 238807 rows scored
+2026-10-25 07:44:04 INFO Activity, DS1 vs DS10:
+source  main_addresses  median_gap_hours  median_window_count  window_count_iqr
+   DS1              25             23.07                  7.0               4.0
+  DS10              24             13.13                  5.5               6.0
+2026-10-25 07:44:04 INFO txgpt_method         DS10 mean recall 0.598 [0.534, 0.657] (DS1 0.547, DS2 -); flag rate 0.038, 4% of addresses over the sanity limit
+2026-10-25 07:44:04 INFO baseline             DS10 mean recall 0.431 [0.334, 0.528] (DS1 0.655, DS2 0.494); flag rate 0.036, 0% of addresses over the sanity limit
+2026-10-25 07:44:04 INFO fusion               DS10 mean recall 0.398 [0.311, 0.489] (DS1 0.684, DS2 0.471); flag rate 0.053, 4% of addresses over the sanity limit
+2026-10-25 07:44:04 INFO regression           DS10 mean recall 0.345 [0.248, 0.451] (DS1 0.673, DS2 0.425); flag rate 0.086, 11% of addresses over the sanity limit
+2026-10-25 07:44:04 INFO regression_interval  DS10 mean recall 0.158 [0.101, 0.230] (DS1 0.268, DS2 0.193); flag rate 0.103, 7% of addresses over the sanity limit
+2026-10-25 07:44:04 INFO kmeans               DS10 mean recall 0.157 [0.091, 0.239] (DS1 0.446, DS2 0.333); flag rate 0.005, 0% of addresses over the sanity limit
+2026-10-25 07:44:04 INFO isolation_forest     DS10 mean recall 0.151 [0.085, 0.226] (DS1 0.429, DS2 0.305); flag rate 0.004, 0% of addresses over the sanity limit
+2026-10-25 07:44:04 INFO lof                  DS10 mean recall 0.149 [0.074, 0.226] (DS1 0.320, DS2 0.166); flag rate 0.014, 0% of addresses over the sanity limit
+2026-10-25 07:44:04 INFO dbscan               DS10 mean recall 0.138 [0.070, 0.232] (DS1 0.406, DS2 0.265); flag rate 0.006, 0% of addresses over the sanity limit
+2026-10-25 07:44:05 INFO Wrote C:\Users\ADMIN\COS30049A2\reports\tables\eval_ds10.csv, eval_ds10_plant_hits.csv, split_ds10.csv and C:\Users\ADMIN\COS30049A2\data\processed\ds10\explain.jsonl (291 explanation prompts: {'not_flagged': 155, 'flagged': 109, 'unscored': 27})
+2026-10-25 07:44:05 INFO Step ds10-check finished in 339 s (exit 0)

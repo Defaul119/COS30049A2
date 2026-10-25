@@ -152,3 +152,14 @@ ds2_check,dbscan: DS2 mean recall,0.265,95% CI 0.253-0.277; DS1 0.406; DS2 flag 
 ds2_check,regression_interval: DS2 mean recall,0.193,95% CI 0.184-0.202; DS1 0.268; DS2 flag rate 0.070
 ds2_check,lof: DS2 mean recall,0.166,95% CI 0.156-0.176; DS1 0.320; DS2 flag rate 0.023
 ds2_check,"Spearman correlation of method rankings, DS1 vs DS2",0.905,8 methods
+ds10_check,txgpt_method: DS10 mean recall,0.598,95% CI 0.534-0.657; DS1 0.547; DS10 flag rate 0.038
+ds10_check,baseline: DS10 mean recall,0.431,95% CI 0.334-0.528; DS1 0.655; DS10 flag rate 0.036
+ds10_check,fusion: DS10 mean recall,0.398,95% CI 0.311-0.489; DS1 0.684; DS10 flag rate 0.053
+ds10_check,regression: DS10 mean recall,0.345,95% CI 0.248-0.451; DS1 0.673; DS10 flag rate 0.086
+ds10_check,regression_interval: DS10 mean recall,0.158,95% CI 0.101-0.230; DS1 0.268; DS10 flag rate 0.103
+ds10_check,kmeans: DS10 mean recall,0.157,95% CI 0.091-0.239; DS1 0.446; DS10 flag rate 0.005
+ds10_check,isolation_forest: DS10 mean recall,0.151,95% CI 0.085-0.226; DS1 0.429; DS10 flag rate 0.004
+ds10_check,lof: DS10 mean recall,0.149,95% CI 0.074-0.226; DS1 0.320; DS10 flag rate 0.014
+ds10_check,dbscan: DS10 mean recall,0.138,95% CI 0.070-0.232; DS1 0.406; DS10 flag rate 0.006
+ds10_check,"Spearman correlation of method rankings, DS1 vs DS10",0.667,9 methods
+ds10_check,"Spearman correlation of method rankings, DS2 vs DS10",0.81,8 methods

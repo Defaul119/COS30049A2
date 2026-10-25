@@ -1,0 +1,118 @@
+{
+  "dataset": "DS10: a teammate's independent DS1-style Esplora snapshot, rebuilt through explorer/snapshot.py",
+  "built_utc": "2026-10-25T00:29:41+00:00",
+  "teammate": {
+    "collected_utc": "2026-10-23 21:28:26",
+    "reviewed_by": "Hoàng Lê Quang Anh",
+    "selection_rule": "(written down BEFORE collecting, to limit selection bias):\n  1. Draw random pages of transactions from a few random recent blocks and collect\n     every address that appears in their inputs and outputs (the candidate pool).\n  2. Order the pool: addresses seen in 2+ sampled transactions first (more likely to be\n     active, which saves scarce API requests), then the rest. Each group is shuffled\n     with a fixed random seed.\n  3. For each candidate, read its confirmed transaction count (1 request).\n       - \"normal\" addresses need >= MIN_TX confirmed transactions (default 50),\n         <= CAP (default 600, keeps retrieval inside the rate limit) and a\n         history spanning >= MIN_DAYS days (default 90).\n       - Normal addresses are split into three activity tiers (low / medium /\n         high) with equal quotas, so the sample is not only very busy addresses.\n       - \"short_history\" addresses have between SHORT_MIN and SHORT_MAX confirmed\n         transactions (default 4 to 9); they exist to test the insufficient-history state.\n  4. Stop when all quotas are filled or the request budget is used up.\n  The funnel (how many candidates passed each filter) is written to manifest.json.",
+    "parameters": {
+      "out": "data",
+      "base_url": "https://blockstream.info/api",
+      "seed": 42,
+      "delay": 1.5,
+      "target": 24,
+      "short": 3,
+      "min_tx": 50,
+      "min_days": 90,
+      "cap": 600,
+      "short_min": 4,
+      "short_max": 9,
+      "blocks": 6,
+      "pages": 4,
+      "window": 200,
+      "budget": 800,
+      "max_requests": 550
+    },
+    "funnel": {
+      "pool_size": 1349,
+      "seen_in_2plus_txs": 28,
+      "addresses_checked": 144,
+      "too_few_or_gap": 63,
+      "too_many": 29,
+      "api_error": 2,
+      "tier_full": 16,
+      "failed_span": 4,
+      "accepted_normal": 24,
+      "accepted_short": 3
+    },
+    "files": [
+      {
+        "path": "teammate/address_summary.csv",
+        "sha256": "1eec1d65b3fd4a142a154e8f5f29728e89b787a0083ff23125a720159fa9e73c"
+      },
+      {
+        "path": "teammate/manifest.json",
+        "sha256": "2c2c9a81bcf3ae899a86bc6559f1a99ac8963b233bc8ba641bf489149e89a3ec"
+      },
+      {
+        "path": "teammate/README.md",
+        "sha256": "c7107224d79a4b83189e4a6e638d2c2d36220259c9288779eabae6fc51e44024"
+      },
+      {
+        "path": "teammate/transactions.csv",
+        "sha256": "c9d636e789c6604a50679f5c131b5807999bf28cb62e928654b920e2e78926bb"
+      }
+    ]
+  },
+  "cut_block_height": 972828,
+  "addresses": {
+    "main": 24,
+    "short": 3
+  },
+  "rows": 5785,
+  "shared_addresses": {
+    "ds1_or_its_candidate_pool": 0,
+    "ds2": 0
+  },
+  "checks_failed": [],
+  "crosscheck_with_teammate_csv": {
+    "shared": 5785,
+    "only_ours": 0,
+    "only_theirs": 0,
+    "differs": 0,
+    "addresses_agreeing": 27
+  },
+  "cleaning": [
+    {
+      "step": "parse every saved page",
+      "rows_before": 5785,
+      "removed": 0,
+      "rows_after": 5785,
+      "note": "27 addresses"
+    },
+    {
+      "step": "keep confirmed transactions",
+      "rows_before": 5785,
+      "removed": 0,
+      "rows_after": 5785,
+      "note": "the chain endpoint returns only confirmed ones; checked anyway"
+    },
+    {
+      "step": "remove duplicate (address, txid) pairs",
+      "rows_before": 5785,
+      "removed": 0,
+      "rows_after": 5785,
+      "note": "can occur at page boundaries if a block arrives mid-fetch"
+    },
+    {
+      "step": "drop transactions that neither pay nor spend from the address",
+      "rows_before": 5785,
+      "removed": 0,
+      "rows_after": 5785,
+      "note": "expected 0; a non-zero count is a data problem"
+    },
+    {
+      "step": "sort by address, block time and txid",
+      "rows_before": 5785,
+      "removed": 0,
+      "rows_after": 5785,
+      "note": "time order for the features"
+    }
+  ],
+  "files": [
+    {
+      "path": "histories.json.gz",
+      "sha256": "dfc1c4f91687b1d3a76db8f6d82ba90c442eb74fe044a0c1aabe6636e1bf953b"
+    }
+  ]
+}

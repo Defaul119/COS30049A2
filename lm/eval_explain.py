@@ -18,9 +18,11 @@ Usage:
     python -m lm.eval_explain --model template
     python -m lm.eval_explain --model text150m --checkpoint runs/text-150m-explain/model_best.pt
     python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best
+    python -m lm.eval_explain --model template --test data/processed/ds10/explain.jsonl --tag ds10   # another set
 
 Writes reports/tables/assistant_eval_<model>.csv (one row per test prompt, with the answer) and
-adds or replaces that model's row in reports/tables/assistant_eval.csv.
+adds or replaces that model's row in reports/tables/assistant_eval.csv. With --tag T both names end
+in _T, so a second test set (DS10, explorer/ds10.py) never overwrites the DS7 tables.
 """
 from __future__ import annotations
 
@@ -67,7 +69,9 @@ def main() -> None:
     p.add_argument("--n", type=int, default=500, help="test prompts, drawn with --seed (plan: about 500)")
     p.add_argument("--seed", type=int, default=30049)
     p.add_argument("--max-new-tokens", type=int, default=256)
+    p.add_argument("--tag", default="", help="suffix for the output tables (e.g. ds10)")
     args = p.parse_args()
+    suffix = f"_{args.tag}" if args.tag else ""
 
     rows = [json.loads(line) for line in open(args.test, encoding="utf-8") if line.strip()]
     rows = random.Random(args.seed).sample(rows, min(args.n, len(rows)))
@@ -88,7 +92,7 @@ def main() -> None:
 
     frame = pd.DataFrame(results)
     TABLES.mkdir(parents=True, exist_ok=True)
-    frame.to_csv(TABLES / f"assistant_eval_{args.model}.csv", index=False)
+    frame.to_csv(TABLES / f"assistant_eval_{args.model}{suffix}.csv", index=False)
     # Explanation measures apply to explanation prompts only: a glossary answer may rightly contain numbers
     # that are not in its question (e.g. the MAD's 1.4826), so glossary rows get wording and ROUGE-L only.
     expl, gloss = frame[frame["kind"] != "glossary"], frame[frame["kind"] == "glossary"]
@@ -101,7 +105,7 @@ def main() -> None:
                "glossary_rouge_l": gloss["rouge_l"].mean() if len(gloss) else float("nan"),
                "seconds": round(time.time() - started, 1),
                "source": args.checkpoint or args.adapter or "explorer.explain.template_explanation"}
-    path = TABLES / "assistant_eval.csv"
+    path = TABLES / f"assistant_eval{suffix}.csv"
     others = pd.read_csv(path).query("model != @args.model") if path.exists() else pd.DataFrame()
     table = pd.concat([others, pd.DataFrame([summary])], ignore_index=True)
     table.to_csv(path, index=False)

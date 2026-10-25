@@ -789,6 +789,51 @@ def fig_ds2_check(ds2: pd.DataFrame, ds1_sanity: pd.DataFrame, ds1_addresses: in
     return fig, s
 
 
+def fig_ds10_check(ds10: pd.DataFrame, ds1_sanity: pd.DataFrame, ds1_addresses: int) -> tuple[Figure, Stats]:
+    """Every model, frozen, on the teammate's independent snapshot (DS10): recall beside DS1 and DS2, and sanity."""
+    order = ds10.sort_values("ds10_mean_recall")["method"].tolist()
+    t = ds10.set_index("method").loc[order]
+    sanity = ds1_sanity.set_index("method")
+    fig, (a, b) = plt.subplots(1, 2, figsize=(9, 3.8), sharey=True)
+    y = np.arange(len(order))
+    a.scatter(t["ds1_mean_recall"], y, s=36, facecolors="none", edgecolors=MUTED, linewidths=1.4, zorder=3,
+              label="DS1 (25 addresses)")
+    if "ds2_mean_recall" in t:
+        a.scatter(t["ds2_mean_recall"], y, s=14, c=MUTED, marker="s", zorder=3, label="DS2 (2,933 addresses)")
+    a.errorbar(t["ds10_mean_recall"], y, xerr=[t["ds10_mean_recall"] - t["ds10_mean_recall_ci_low"],
+                                              t["ds10_mean_recall_ci_high"] - t["ds10_mean_recall"]],
+               fmt="none", ecolor=MUTED, elinewidth=1, capsize=2, zorder=2)
+    a.scatter(t["ds10_mean_recall"], y, s=40, c=[METHOD_COLOURS.get(m, MUTED) for m in order], zorder=4,
+              label=f"DS10 ({int(t['ds10_eval_rows'].iloc[0]):,} evaluation rows)")
+    a.set(title="Mean planted recall", xlabel="Mean recall", xlim=(0, 1))
+    ds1_share = pd.Series([sanity.loc[m, "addresses_over_limit"] / ds1_addresses if m in sanity.index else np.nan
+                           for m in order], index=order)
+    b.hlines(y, np.fmin(ds1_share, t["ds10_share_addresses_over_limit"]),
+             np.fmax(ds1_share, t["ds10_share_addresses_over_limit"]), color=GRID, linewidth=2.5)
+    b.scatter(ds1_share, y, s=36, facecolors="none", edgecolors=MUTED, linewidths=1.4, zorder=3)
+    b.scatter(t["ds10_share_addresses_over_limit"], y, s=40, c=[METHOD_COLOURS.get(m, MUTED) for m in order], zorder=4)
+    b.set(title="Addresses breaking the sanity rule", xlabel="Share of addresses", xlim=(0, 1))
+    b.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
+    for ax in (a, b):
+        ax.grid(axis="x", color=GRID)
+    a.set_yticks(y, [METHOD_NAMES.get(m, m) for m in order], fontsize=7)
+    a.legend(fontsize=7, loc="lower right")
+    fig.suptitle("Every model, frozen as tuned on DS1, on a teammate's independent snapshot (DS10)", fontsize=10)
+    s = [stat("ds10_check", f"{m}: DS10 mean recall", round(float(t.loc[m, "ds10_mean_recall"]), 3),
+              f"95% CI {t.loc[m, 'ds10_mean_recall_ci_low']:.3f}-{t.loc[m, 'ds10_mean_recall_ci_high']:.3f}; "
+              f"DS1 {t.loc[m, 'ds1_mean_recall']:.3f}; DS10 flag rate {t.loc[m, 'ds10_flag_rate']:.3f}")
+         for m in reversed(order)]
+    for other in ("ds1", "ds2"):
+        col = f"{other}_mean_recall"
+        if col in t:
+            ranks = t[[col, "ds10_mean_recall"]].dropna()
+            if len(ranks) > 2:
+                rho = st.spearmanr(ranks[col], ranks["ds10_mean_recall"]).statistic
+                s.append(stat("ds10_check", f"Spearman correlation of method rankings, {other.upper()} vs DS10",
+                              round(float(rho), 3), f"{len(ranks)} methods"))
+    return fig, s
+
+
 # -- building every figure ---------------------------------------------------------------------
 
 
@@ -879,6 +924,9 @@ def available() -> dict[str, Callable[[], tuple[Figure, Stats]]]:
     if (TABLES_DIR / "eval_ds2.csv").exists() and (TABLES_DIR / "eval_sanity.csv").exists():
         evaluated = int((table("split_ds1")["eval"] > 0).sum())
         figs["eval_ds2_check"] = lambda: fig_ds2_check(table("eval_ds2"), table("eval_sanity"), evaluated)
+    if (TABLES_DIR / "eval_ds10.csv").exists() and (TABLES_DIR / "eval_sanity.csv").exists():
+        evaluated = int((table("split_ds1")["eval"] > 0).sum())
+        figs["eval_ds10_check"] = lambda: fig_ds10_check(table("eval_ds10"), table("eval_sanity"), evaluated)
     return figs
 
 

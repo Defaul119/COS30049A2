@@ -5,6 +5,32 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 25 October 2026
 
+**DS10 added: a teammate's independent DS1-style snapshot, used as a held-out test of every model.** On 23 Oct
+Le Quang Anh Hoang collected 24 main and 3 short-history addresses (5,785 transactions) from Blockstream Esplora by
+DS1's rule, with their own seed and sampled blocks (`data/processed/ds10/teammate/`, unchanged). `explorer/ds10.py`
+(steps `ds10`, `ds10-check`; settings `ds10`) checks first that none of its addresses is in DS1, DS1's candidate
+pool or DS2 (none is, so no model has seen it, TxGPT included), then refetches the 27 histories with DS1's own
+client and checks. Cut at the teammate's last block (972,828), all 5,785 transactions match the teammate's CSV
+exactly (same block, received and sent; `ds10_crosscheck.csv`), and every DS1 history check passes. Every model
+was then run frozen, as tuned on DS1, with the reporting seeds' plants (750) and address-level bootstrap intervals
+(`eval_ds10.csv`, `eval_ds10_check.pdf`):
+- TxGPT, tested here for the first time on data it never saw, ranks first: mean recall 0.598 (95% CI 0.534 to
+  0.657), against 0.547 on DS1, at a 3.8% flag rate; it catches 93% of dormancy plants and 72% of spikes.
+- The baseline is second (0.431, CI 0.334 to 0.528; DS1 0.655, DS2 0.494) and again the only method with no
+  address over the sanity limit; the fusion (0.398) and regression (0.345, 3 addresses over the limit) follow;
+  the outlier and clustering methods fall to 0.14-0.16.
+- Every method finds planted bursts far less often than on DS1 (baseline 0.066 per transaction against 0.381).
+  DS10's addresses transact more often and less evenly (median gap 13.1 h against 23.1 h on DS1; the spread of
+  their 7-day counts, as an interquartile range, 6 against 4; `ds10_activity.csv`), so ten transactions in a day
+  stand out less. The method ranking still agrees with DS2's (Spearman 0.81 over 8 methods) and less with
+  DS1's (0.67 over 9), which suggests that DS1-tuned thresholds travel less well than the methods themselves.
+- The Elliptic and BitcoinHeist classifiers cannot run on DS10: they need those datasets' own features.
+- The explanation writers on 291 DS10 prompts built as DS7's are (`data/processed/ds10/explain.jsonl`: 109 flagged,
+  155 not flagged, 27 unscored): the 152M model passes the guardrail on all of them, keeps every number and
+  mentions every flagged feature (ROUGE-L 0.678; `assistant_eval_ds10.csv`). Qwen 3B's row follows.
+`lm/eval_explain.py` gained `--tag`, so a second test set writes `assistant_eval_<model>_ds10.csv` and
+`assistant_eval_ds10.csv` and leaves the DS7 tables alone.
+
 **TxGPT trained and evaluated.** The size sweep (three seeds per size) ties: mean validation loss S 0.675, M 0.677,
 L 0.677, each with a standard deviation of about 0.012 (`txgpt_sizes.csv`). With 9.06M training tokens a bigger
 model does not help, so the smallest (S, 0.8M parameters) is kept. On the DS1 reporting plants, `txgpt_method`
