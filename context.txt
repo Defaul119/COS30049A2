@@ -1,8 +1,16 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-26 ~19:00 GMT+7, on the PC)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-27 ~06:15 GMT+7, on the PC)
 Work from C:\Users\ADMIN\COS30049A2 (PC) or ~/Desktop/COS30049/COS30049A2 (Mac clone); git pull first on either.
 Nothing runs locally: every GPU step runs on Kaggle (user, 26 Oct: "do NOT use the local 3060 anymore"; only code
 edits, pytest and git on the PC). Kaggle jobs: kaggle kernels status <owner>/<slug> (ROUND 2 STATUS below).
 =====================================================================================
+
+MORNING 27 OCT (all pushed, tree clean, HEAD 3fa319a): statistics A/B/C done (CHANGELOG 27 Oct); README Mac
+fixes + pytest.ini; DATA_CARD.md / MODEL_CARD.md (tables: python tools/cards.py; rerun after any table changes);
+LICENSES.md, NOTICE, licenses/QWEN_RESEARCH_LICENSE.txt; tools/package.py --tag v1.0 [--with-models] (zip +
+SHA256SUMS); TxGPT selection on the full validation set (choice unchanged, S seed 3). STILL RUNNING:
+honglquanganh/cos30049a2-text150m-train session 1 (started 01:10, T4 x2; watcher bm1lzy50w) -> when it ends,
+check fp16/bench/gate, push session 2 with RESUME_FROM. TEAM: Canvas upload limit (decides --with-models), zip
+exclusions (CLAUDE.md, context.txt, docs/HANDOFF.md, docs/brief/), a licence for our own code.
 
 OVERNIGHT 26-27 OCT (user asleep; gave Claude full decision rights; ~20% of their Claude weekly limit left until
 27 Oct 12:00, so work lean). Checklist: docs/TODO.md. Done so far: showcase page (artifact HREXw8jomq4fTu838wyAYo,
