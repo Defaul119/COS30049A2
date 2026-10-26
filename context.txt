@@ -18,10 +18,15 @@ DIRECTION (user, 26 Oct) - supersedes the 24 Oct "no more GPU time for the 152M 
   needs a human read-through), the direction check and copy rate as metrics (NEXT 1 becomes part of round 2), and
   the adoption rule (plan section 3): a round-2 writer replaces round 1 only if guardrail and numbers are no
   lower, direction errors no more, and open-question key-fact accuracy is 10+ points higher.
-- Budget: about 125-135 Kaggle GPU hours with T4 x2 and data parallelism (lm/train.py is single-GPU today: code
-  C2); about 50 h on the user's account before the cut-off, so the three teammates' Kaggle accounts are needed.
-  Gate in session 1: total_tokens = min(5B, measured tok/s x hours left before Sun 1 Nov 23:59). Without DDP or
-  extra accounts the run is about 2.5B tokens. Last day round 2 can change anything: Tue 3 Nov (results-v1.1).
+- Budget: the full target needs about 125-135 Kaggle GPU hours with T4 x2 and data parallelism (lm/train.py is
+  single-GPU today: code C2). USER, 26 Oct: assume ONLY THE USER'S KAGGLE ACCOUNT (tritran72) until further notice;
+  the team is creating accounts and will send them later. One account = about 20 h left this week (check
+  Settings) + 30 h from Sat 31 Oct 07:00 GMT+7 = about 50 h. Priority 1: Qwen v2 this week (about 15 h training
+  + 2.5 h evaluation). Priority 2: 152M on the new week's quota, Sat 31 Oct - Sun 1 Nov 23:59 cut-off, about 23 h
+  = +1.1B tokens on T4 x2 (+0.6B on one T4; predicted loss drop 0.12 / 0.07 vs 0.27 for +4B), then chat and
+  explanation stages Mon 2 Nov. Teammate accounts, when they arrive, start the 152M chain earlier and extend it.
+  Gate in session 1: total_tokens = min(5B, measured tok/s x hours left). Last day round 2 can change anything:
+  Tue 3 Nov (results-v1.1).
 
 USER PREFERENCES
 - Finish A2 as fast as possible at the highest quality; ignore the plan's calendar dates, keep its content and rules.
@@ -285,13 +290,14 @@ DONE (committed)
 NEXT, IN ORDER (26 Oct; LM round 2 is docs/KAGGLE_LM_PLAN.md, the report plan is docs/REPORT_PLAN.md)
 0. DONE 26 Oct: the Mac replication (MAC REPLICATION above). Decide: the features.csv %.12g fix (results-v1.1)
    and the README fixes (1)-(7).
-0a. LM ROUND 2 (KAGGLE_LM_PLAN.md section 6): Mon 26 the user asks the three teammates for phone-verified Kaggle
-   accounts + quota and names the glossary reviewer; Tue 27 Claude writes C1-C9 (train.py --max-hours, DDP,
-   wsd schedule; prepare_text --continue-from; direction check + eval columns; DS7 v2; glossary 300 pairs; three
-   Kaggle notebooks), pytest, push; the user uploads dataset cos30049a2-text150m-base from the PC
-   (runs/text-150m/model.pt, data/text/{tokenizer.json, val.bin, meta.json, state.json}); Kaggle CPU notebook
-   builds the data. Wed 28 GPU session 1 (bench, fp16 check, gate) -> chain to Sun 1 Nov 23:59 cut-off; Qwen v2
-   Wed 28-Fri 30 on another account; Mon 2 Nov 152M chat + explanation stages + evals; Tue 3 Nov adoption rule,
+0a. LM ROUND 2, ONE ACCOUNT (KAGGLE_LM_PLAN.md section 6; the user continues on the PC): Mon 26 the user checks
+   the quota and names the glossary reviewer. Tue 27 QWEN SIDE FIRST: C5 Qwen config, C6 direction check + eval
+   columns, C7 DS7 v2, C8 glossary 300 pairs (human read-through), C9 Qwen notebook; pytest, push; Kaggle CPU
+   notebook builds DS7 v2, chat data and 2B DS5 continuation tokens. Wed 28-Thu 29 Qwen v2 training (about 15 h).
+   Wed 28-Thu 29 the 152M side: C1 --max-hours, C2 DDP, C3 wsd, C4 --continue-from, C9 152M notebook; the user
+   uploads cos30049a2-text150m-base from the PC (runs/text-150m/model.pt, data/text/{tokenizer.json, val.bin,
+   meta.json, state.json}). Fri 30 Qwen evaluation + 152M bench, fp16 check, gate. Sat 31 Oct 07:00-Sun 1 Nov
+   23:59 152M pretraining (about 23 h). Mon 2 Nov 152M chat + explanation stages + evals. Tue 3 Nov adoption rule,
    tables home, results-v1.1.
 1. PART OF ROUND 2 (was DECIDE, 25 Oct; C6): add a direction check to the guardrail
    (explorer/assistant.check: a comparison word must agree
@@ -326,8 +332,8 @@ RESULTS SO FAR (quote reports/tables/*.csv, never these)
   DS10: assistant_eval_ds10.csv.
 
 WAITING ON THE USER / TEAM
-- Round 2 (26 Oct): three teammates' Kaggle accounts (phone-verified; quota in Settings; does T4 x2 count as one
-  hour per hour?), the glossary reviewer, and handoff cover (about 07:30 and 19:00 GMT+7, Wed 28 Oct - Sun 1 Nov).
+- Round 2 (26 Oct): the user's quota (Settings; does T4 x2 count as one hour per hour?); the glossary reviewer;
+  the teammates' Kaggle accounts (being created; until then plan with the user's account only).
 - The features.csv %.12g fix and the README fixes (MAC REPLICATION). Rotating the Kaggle token (the round-2
   notebooks are pushed with the Kaggle CLI, so rotate before 27 Oct and update C:\Users\ADMIN\.kaggle). The
   release-asset OK (NEXT 4).

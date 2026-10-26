@@ -4,7 +4,8 @@ Written 26 Oct 2026 at the user's request: train the 152M model on **4-5B more t
 **another 12-20 GPU hours**, with every data-building, training and evaluation step on **Kaggle**, not on the
 home PC or the Mac, because the user is not happy with the language models' accuracy. Only code edits, `pytest`
 and git stay local. This reverses the 24 Oct direction ("no more GPU time for the 152M model"; context.txt).
-The results-v1 models stay the fallback until round 2 beats them by the rule in section 3.
+The results-v1 models stay the fallback until round 2 beats them by the rule in section 3. **Until the
+teammates send their Kaggle accounts, the plan uses the user's account only** (user, 26 Oct; section 2).
 
 ## 1. What "accuracy" means today (measured 26 Oct from the saved answers)
 
@@ -46,18 +47,30 @@ by the session-1 benchmark: one T4 about 7,500 tokens/s; T4 x2 with data paralle
 | 4.5B | 167 h, 16 sessions | 93 h, 9 sessions |
 | 5.0B | 185 h, 18 sessions | 103 h, 10 sessions |
 
-(Sessions = 11 h, of which about 10.5 h train.) **Total for round 2 with T4 x2 and 4.5B: about 125-135 GPU
+(Sessions = 11 h, of which about 10.5 h train.) **The full target (T4 x2, 4.5B) needs about 125-135 GPU
 hours**: pretraining 93 + session overhead 5 + 152M chat and explanation stages 3 + Qwen 12-20 + Qwen
 evaluation 2.5 + benchmarks and reruns about 10.
 
-**Quota available.** The user's account has about 20 h left this week (the 24-25 Oct Qwen run used about 10 h;
-check Settings), then 30 h from Sat 31 Oct. One account gives about 50 h before the cut-off, so **round 2 needs
-the other three members' Kaggle accounts** (each phone-verified, about 30 h each this week and next).
-With two accounts, or without DDP, the gate (section 6) cuts the 152M run to about 2.5B tokens.
+**Quota available: the user's account only (user, 26 Oct, until the teammates send theirs).** About 20 h are
+left this week (the 24-25 Oct Qwen run used about 10 h; check Settings), then 30 h from Sat 31 Oct 07:00 GMT+7:
+**about 50 h before the cut-off**, against 125-135 h for the full target. In priority order:
+
+| Quota | Use | Hours |
+|---|---|---|
+| This week (about 20 h) | **1. Qwen v2**: benchmark, about 15 h of training in 2 sessions, evaluation (DS7 v1 test, DS10, glossary test) | about 17.5 |
+| This week (left over) | 152M session 1: benchmark one T4 vs T4 x2 and the fp16 check; no training | about 1 |
+| From Sat 31 Oct (30 h) | **2. 152M continued pretraining**, Sat 31 Oct 07:00 to the Sun 1 Nov 23:59 cut-off, 2-3 sessions | about 23 |
+| From Sat 31 Oct | 152M chat stage (2.1 h on T4 x2, 3.7 h on one T4), explanation stage, evaluation | about 4-6 |
+
+On one account the 152M model gets **about +1.1B tokens on T4 x2 (+0.6B on one T4)**: a predicted
+validation-loss drop of about 0.12 (0.07), against 0.27 for +4B. Qwen goes first because its hours act on the
+measured weakness (open questions). If this week's quota turns out smaller, Qwen's second session moves to
+Sat 31 Oct and the 152M run shrinks. **Each teammate account that arrives** adds about 30 h a week. It lets the
+152M chain start earlier, in parallel with Qwen, and run longer, towards the 4-5B target. The gate (section 6)
+recomputes the token count from whatever quota exists.
 
 **Wall clock.** Pretraining is one chain of sessions (each resumes from the last checkpoint), so accounts take
-turns; it cannot be split in parallel. 9 sessions with handoffs take about 4.5 days. Qwen runs on a different
-account at the same time.
+turns; it cannot be split in parallel. On one account the chain runs Sat 31 Oct - Sun 1 Nov.
 
 ## 3. Rule to adopt a round-2 model (fixed now, before any result)
 
@@ -78,7 +91,7 @@ tokens; that is an expectation, not a target.
 
 | Data | Round 1 | Round 2 | How |
 |---|---|---|---|
-| DS5 FineWeb-Edu (152M pretraining) | 2.0B tokens (+10M validation) of the 10B-token sample | **+4-5B new tokens** from the same sample, no document repeated; same tokenizer; same `val.bin` | `prepare_text --continue-from data/text` (C4) in a Kaggle CPU notebook; 8-10 GB of uint16 |
+| DS5 FineWeb-Edu (152M pretraining) | 2.0B tokens (+10M validation) of the 10B-token sample | **target +4-5B new tokens** from the same sample, no document repeated; same tokenizer; same `val.bin`. Tokenize **2B now** (one account uses about 1.1B); the same command extends it if accounts arrive | `prepare_text --continue-from data/text` (C4) in a Kaggle CPU notebook; 4 GB of uint16 per 2B tokens |
 | DS6 smol-smoltalk, 152M chat stage | 100M tokens | unchanged | `prepare_chat` on Kaggle |
 | DS6 subset for Qwen (retention) | 2,500 conversations + 200 held out | **10,000** + the same 200 held out | `chat_subset --max-conversations 10000` |
 | DS7 explanation pairs | 10,160 (9,149 / 561 / 450) | **about 40,000** in `data/processed/ds7_v2/` (`targetPairs` 40,000, `maxPairsPerAddress` 15); the v1 test file stays the frozen test | `build-ds7 --out` (C7); split by address hash, so v1 test addresses stay test; the build asserts none is in v2 train or val |
@@ -109,14 +122,15 @@ the bf16 value (3.1305 +/- 0.01). The model was trained in bf16, and fp16 overfl
 
 | When | Step | Who / where |
 |---|---|---|
-| Mon 26 Oct | This plan. Ask the three teammates for phone-verified Kaggle accounts and their quota (Settings). Decide C6 and the glossary reviewer | user |
-| Tue 27 Oct | C1-C9, `pytest`, push. From the PC, upload a private Kaggle Dataset `cos30049a2-text150m-base`: `runs/text-150m/model.pt`, `data/text/{tokenizer.json, val.bin, meta.json, state.json}` (the one local step left: an upload). Share it with the teammates | Claude; user runs the upload |
-| Tue 27 Oct | CPU notebook: DS5 continuation tokens (dataset `cos30049a2-text-cont`), DS7 v2, chat data. CPU sessions do not use GPU quota | Kaggle CPU |
-| Wed 28 Oct, 08:00 | GPU session 1: benchmark one T4 vs T4 x2, fp16 check, then **the gate**: `total_tokens` = min(5B, measured tokens/s x GPU hours left before the cut-off), then train | Kaggle T4 x2 |
-| Wed 28 Oct - Sun 1 Nov | Pretraining chain: about 9 sessions, handoffs about 07:30 and 19:00. Each output becomes a new version of dataset `cos30049a2-text150m-cont`, attached as `RESUME_FROM` by the next session, on whichever account has quota. Set `decay_start_tokens` by Sat 31 Oct evening at the latest | user + teammates |
-| Wed 28 - Fri 30 Oct | Qwen v2 on a second account: benchmark, 2 sessions of up to 11 h (12-20 h in all), then evaluation on DS7 v1 test, DS10 and the glossary test | Kaggle T4 |
+| Mon 26 Oct | This plan. Check the account's GPU quota in Kaggle Settings. Ask the teammates for phone-verified Kaggle accounts (when they arrive, they extend the 152M run). Name the glossary reviewer | user |
+| Tue 27 Oct | **Qwen side first**: C5 (Qwen config), C6, C7, C8, C9 (Qwen notebook), `pytest`, push; the glossary read-through | Claude; reviewer |
+| Tue 27 Oct | CPU notebook: DS7 v2 and the chat data; DS5 continuation tokens, 2B now (dataset `cos30049a2-text-cont`). CPU sessions do not use GPU quota | Kaggle CPU |
+| Wed 28 - Thu 29 Oct | **Qwen v2**: benchmark, then about 15 h of training in 2 sessions (`MAX_HOURS` 11, then the rest) | user's account |
+| Wed 28 - Thu 29 Oct | 152M side: C1-C4, C9 (152M notebook), `pytest`, push. From the PC, upload a private Kaggle Dataset `cos30049a2-text150m-base`: `runs/text-150m/model.pt`, `data/text/{tokenizer.json, val.bin, meta.json, state.json}` (the one local step left: an upload) | Claude; user runs the upload |
+| Fri 30 Oct | Qwen v2 evaluation on DS7 v1 test, DS10 and the glossary test (about 2.5 h). 152M session 1: benchmark one T4 vs T4 x2, fp16 check, **the gate**: `total_tokens` = min(5B, measured tokens/s x GPU hours left before the cut-off); no training yet | user's account |
+| Sat 31 Oct 07:00 - Sun 1 Nov | **152M pretraining** on the new week's quota: about 23 h in 2-3 sessions. Each output becomes a new version of dataset `cos30049a2-text150m-cont`, attached as `RESUME_FROM` by the next session. The decay phase covers the last 15% of the tokens | user's account |
 | **Sun 1 Nov 23:59** | **Pretraining cut-off**: whatever the chain has reached, decayed, goes on | |
-| Mon 2 Nov | One session: 152M chat stage (DS6, 100M tokens), explanation stage (DS7 v2), evaluation on the same three tests | Kaggle T4 x2 |
+| Mon 2 Nov | One session: 152M chat stage (DS6, 100M tokens), explanation stage (DS7 v2), evaluation on the same three tests (4-6 h) | user's account |
 | Tue 3 Nov | Apply the rule (section 3), copy the tables into `reports/tables/`, models into `models/` (git-ignored; GitHub release assets only with the user's OK), CHANGELOG, tag `results-v1.1` if any number changed | Claude |
 | Wed 4 Nov | M4: a teammate rebuilds from the README on a fresh clone; code freeze | teammate |
 | Thu 5 - Sat 7 Nov | The report quotes the frozen tables; submit Sat 7 Nov | team |
@@ -128,8 +142,8 @@ row, written now from round 1 and updated on Tue 3 Nov only if section 3 adopts 
 
 | Risk | Effect | Response |
 |---|---|---|
-| Fewer than four Kaggle accounts, or less quota than 30 h | 152M run shorter | the gate sets the tokens; the WSD decay still ends the run cleanly |
-| No DDP speed-up on T4 x2 | about half the tokens | one T4 per session; the gate cuts to about 2.5B |
+| Only the user's account (the 26 Oct assumption), or less quota than expected | 152M about +1.1B tokens, or less | Qwen first; the gate sets the tokens; the WSD decay still ends the run cleanly; teammates' accounts extend it |
+| No DDP speed-up on T4 x2 | about half the tokens | one T4 per session; the gate halves the 152M run |
 | fp16 overflow with the bf16-trained checkpoint | NaN loss | the fp16 check catches it before training; fall back to a lower peak lr, then fp32 (slower) |
 | A session hits 12 h, or a handoff is missed | lost output, or idle hours | `--max-hours 11`; checkpoints every 30 min; two fixed handoff times a day |
 | Qwen overfits again | no gain | 4-5x data, 2 epochs at most, best adapter by validation loss |
