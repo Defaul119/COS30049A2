@@ -3,6 +3,29 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 26 October 2026
+
+**Language models, round 2, on Kaggle (user).** The user is not happy with the language models' accuracy, so the
+152M model gets 4-5B more pretraining tokens and Qwen 3B another 12-20 GPU hours, with every data, training and
+evaluation step on Kaggle (`docs/KAGGLE_LM_PLAN.md`). This reverses the 24 Oct decision to give the 152M model no
+more GPU time. The saved DS7 answers show where accuracy is lost: explanations keep every number in 99.8% (152M)
+and 100% (Qwen) of answers, but both models answer none of the 5 test glossary prompts correctly, and those cover
+only 2 topics. ROUGE-L against the template also understates correct paraphrases (152M: 0.683 against the
+template, 0.719 against each row's own reply). So round 2 first adds what it needs to measure: a held-out glossary
+test with key facts per topic, the direction check and a copy rate. It also fixes, before any result exists, the
+rule under which a round-2 model replaces round 1. The round-1 models (results-v1) stay the fallback.
+
+**A fresh clone rebuilt on a MacBook (Apple M5) reproduces every result except regression and fusion.**
+The README was followed exactly. Tests and the quick check match, and `all --offline` ran in 65 min. The baseline,
+Isolation Forest, LOF, K-Means, DBSCAN, regression_interval and TxGPT agree to 1e-4 on DS1, DS2 and DS10.
+Regression's DS1 mean recall moves from 0.673 to 0.659, fusion's from 0.684 to 0.675 (p against the baseline from
+0.063 to 0.325), and no conclusion changes. Cause: `features.csv` differs between the two CPUs at about 1e-13, and
+the gap model (histogram gradient boosting) turns that into a different model. Fitted on the PC's features, the
+Mac reproduces the committed model, and thread count makes no difference. Writing `features.csv` with 12
+significant digits makes both machines identical; not applied yet (it changes the committed numbers: results-v1.1).
+Set-up findings for the README (Anaconda's terms-of-service prompt, pytest collecting `_context/`, timings,
+line endings) are listed in context.txt.
+
 ## 25 October 2026
 
 **DS10 added: a teammate's independent DS1-style snapshot, used as a held-out test of every model.** On 23 Oct

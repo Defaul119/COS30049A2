@@ -1,7 +1,27 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-25 08:15 GMT+7)
-Work from C:\Users\ADMIN\COS30049A2 (start Claude Code there). Start a new session by reading NEXT below;
-python tools/status.py shows any long job. Nothing is running as of 25 Oct 08:15.
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-26 GMT+7, from the Mac)
+Work from C:\Users\ADMIN\COS30049A2 (PC) or ~/Desktop/COS30049/COS30049A2 (Mac clone, 26 Oct); git pull first on
+either. Start a new session by reading NEXT below; python tools/status.py shows any long job. Nothing runs locally
+from 26 Oct: all data building, training and evaluation moves to Kaggle (DIRECTION 26 Oct).
 =====================================================================================
+
+DIRECTION (user, 26 Oct) - supersedes the 24 Oct "no more GPU time for the 152M model"
+- The user is not happy with the language models' accuracy. Round 2: the 152M model gets 4-5B more pretraining
+  tokens and Qwen 3B another 12-20 GPU hours, with the datasets scaled to match. EVERYTHING from this point runs on
+  Kaggle, not locally (only code edits, pytest and git stay local). Full plan: docs/KAGGLE_LM_PLAN.md.
+- What the saved answers show (26 Oct, plan section 1): explanations are near the ceiling of today's measures
+  (numbers 99.8% / 100%, guardrail 99.8% / 100%; ROUGE-L vs the template understates correct paraphrases: 152M
+  0.683 vs template, 0.719 vs the row's own reply). The real weakness is OPEN QUESTIONS: both models answer 0 of 5
+  test glossary prompts correctly (only 2 topics; Qwen says the Explorer uses Isolation Forest, the 152M invents
+  "Robusta"). Qwen copies the template on 96% of flagged prompts and already overfits its data (best validation
+  loss 0.0752, final 0.0920), so its extra hours need more data, not more epochs.
+- Hence, before any GPU time: a held-out glossary test (about 300 pairs, 8+ test topics, key facts per topic;
+  needs a human read-through), the direction check and copy rate as metrics (NEXT 1 becomes part of round 2), and
+  the adoption rule (plan section 3): a round-2 writer replaces round 1 only if guardrail and numbers are no
+  lower, direction errors no more, and open-question key-fact accuracy is 10+ points higher.
+- Budget: about 125-135 Kaggle GPU hours with T4 x2 and data parallelism (lm/train.py is single-GPU today: code
+  C2); about 50 h on the user's account before the cut-off, so the three teammates' Kaggle accounts are needed.
+  Gate in session 1: total_tokens = min(5B, measured tok/s x hours left before Sun 1 Nov 23:59). Without DDP or
+  extra accounts the run is about 2.5B tokens. Last day round 2 can change anything: Tue 3 Nov (results-v1.1).
 
 USER PREFERENCES
 - Finish A2 as fast as possible at the highest quality; ignore the plan's calendar dates, keep its content and rules.
@@ -20,9 +40,9 @@ DIRECTION (user, 24 Oct 16:00) - read before planning any work
 - The tutor (Arthur Hoang) announced by Outlook that fine-tuning a public model is acceptable: training from
   scratch is no longer an HD requirement (relaxes CR-06 decision 4; CHANGELOG 24 Oct). The user's goal is the best
   working project when everything is put together, and what is most desirable academically.
-- So: NO more GPU time for the 152M model beyond the queue (no extra pretraining). Keep it: it is nearly done, and
-  it is the only language model that runs in the markers' CPU env (environment.yml has no transformers, peft or
-  bitsandbytes, so Qwen cannot run there).
+- [SUPERSEDED 26 Oct: round 2 trains it on Kaggle.] So: NO more GPU time for the 152M model beyond the queue.
+  Still true: it is the only language model that runs in the markers' CPU env (environment.yml has no
+  transformers, peft or bitsandbytes, so Qwen cannot run there).
 - Order the explanation writers by the measured DS7 results (guardrail pass rate, number faithfulness, human
   check), not "from scratch first". Expected: GPU machine (A3 server) Qwen -> 152M -> template; CPU env 152M ->
   template.
@@ -56,6 +76,10 @@ DIRECTION (user, 24 Oct 16:00) - read before planning any work
 ENVIRONMENT
 - Repo C:\Users\ADMIN\COS30049A2. Miniforge C:\Users\ADMIN\miniforge3; envs cos30049-a2 (CPU) and cos30049-a2-gpu
   (CUDA; also transformers 4.52.4, peft 0.15.2, bitsandbytes 0.48.1, accelerate 1.7.0).
+- Mac (14-inch MacBook Pro, Apple M5, 10 cores, 16 GB): clone ~/Desktop/COS30049/COS30049A2 (old asm2 deleted 26 Oct;
+  its git-ignored _context/ moved into the clone). Miniconda ~/miniconda3, not on PATH: use
+  ~/miniconda3/envs/cos30049-a2/bin/python. The defaults channel was removed from ~/miniconda3/.condarc rather than
+  accepting Anaconda's ToS. pytest there needs --ignore=_context (MAC REPLICATION, finding 2).
 - In cmd one-liners write `set "PYTHONUTF8=1"` (with quotes).
 - Long jobs run in their own cmd windows (Start-Process cmd.exe /k ...). NEVER start one as a child of Claude's
   tool shell (e.g. Start-Process powershell -RedirectStandardOutput ...): on 24 Oct ~21:35 a tool error recycled
@@ -170,6 +194,34 @@ DS10 (user, 25 Oct: "put it into testing of all models and mark down the results
   Qwen 4 of 291 wrong comparison words (ds10-00032, -00033, -00036, -00212), 152M 1 (ds10-00153): same as DS7.
 - Classifiers (DS3/DS4) cannot run on DS10: they need those datasets' own features.
 
+MAC REPLICATION (26 Oct; fresh clone at 5c07ebe, README sections 2-4 followed exactly; Mac's tree left dirty with
+the rebuilt outputs for inspection: git restore . resets it)
+- Set-up: Miniconda 26.9.4, conda env create 6.8 min; pytest 185 passed, 2 skipped (first run 2.5 min while
+  macOS scans the new libraries, then 19 s). Quick check (README 3): every output identical (totals 377 / 367 / 3 /
+  3, 214 days; what-if 5.98, F1 z 5.88; same template text; exit 2; --assistant falls back with skippedWriters).
+- all --offline 65 min (ds10-check 42 min of it, README says 25-35) + figures 11 s, every step exit 0. Template
+  eval DS7 (445) and DS10 (291): all 1.0, identical.
+- IDENTICAL (<= 1e-4): transactions, plants, baseline, IF, LOF, K-Means, DBSCAN, regression_interval, TxGPT, every
+  tuning table, on DS1, DS2 and DS10. DIFFERENT beyond README 11's 0.01 tolerance: regression and fusion only.
+  DS1 regression 0.673 -> 0.659 (dormant 0.388 -> 0.348); fusion 0.684 -> 0.675, p 0.063 -> 0.325, saved
+  multipliers 1.1/3.0 -> 1.3/2.5; DS2 fusion 0.471 -> 0.437, regression 0.425 -> 0.421; DS10 fusion 0.398 ->
+  0.306, regression 0.345 -> 0.343 (the two swap places). No conclusion changes (baseline chosen, fusion not
+  better, DS2 baseline first, DS10 TxGPT first).
+- CAUSE (proved): features.csv differs between Apple Silicon and the Intel PC at ~1e-13 (numpy last-bit rounding;
+  5,848 cells), and the gap model (HistGradientBoosting) amplifies it into a different model (predictions up to
+  0.232 apart, scales 0.86-1.25x). Not threads (1-16 threads give the same Mac model); the Mac fit on the PC's
+  features.csv matches the committed model. FIX (tested, NOT applied; user's call, needs a rerun + results-v1.1):
+  write features.csv with float_format="%.12g": both machines then give identical features and identical gap
+  models. Worth one sentence in the report's robustness paragraph either way.
+- README / code findings, not yet fixed: (1) fresh Miniconda refuses env create until Anaconda's ToS are accepted
+  (non-interactive: error; nodefaults in environment.yml does not help): suggest Miniforge or mention the prompt;
+  (2) no pytest config, so a full _context/ (A1 prototype tests) breaks collection with 28 errors: add pytest.ini
+  testpaths = tests; (3) "under a minute" holds after the first run; (4) ds10-check time; (5) eda_tests.csv loses
+  its 6 DS4 rows without the DS4 download, so git status reports/tables shows it; (6) data/processed files are
+  committed with CRLF (-text), so 16 rebuilt files show as modified on macOS/Linux (manifest hashes still match;
+  to_csv(lineterminator="\n") would fix it); (7) tracked reports/logs/*.log change on every run; numpy/Accelerate
+  "divide by zero encountered in matmul" warnings flood the logs on macOS (harmless).
+
 NOTHING RUNNING (training phase closed 25 Oct 2026; every job below finished, and its results are committed)
 - Status any time: python tools/status.py (crawl, supervisor, training, GPU; --kaggle OWNER/NOTEBOOK adds a Kaggle run).
 - PRETRAINING DONE 24 Oct 21:07: runs/text-150m/model.pt, 7,630 steps (2.0B tokens), final validation loss
@@ -230,16 +282,19 @@ DONE (committed)
   (it would have hurt number faithfulness); DS7 fallback intros no longer contradict a flag; Qwen trainer ETA after
   resume; three notebook notes corrected (selection reasoning, burst claim, gap buckets).
 
-NEXT, IN ORDER (25 Oct, training phase closed; the report plan is docs/REPORT_PLAN.md)
-0. NOW (user, 25 Oct ~08:00): the user is replicating the pipeline from README.md on two MacBooks (main: 14-inch
-   MacBook Pro, Apple M5, 16 GB) to find bugs: clone, conda env create -f environment.yml, pytest (expect 185
-   passed, 2 skipped), the README's quick predict check, then explorer.cli all --offline + figures and
-   `git status reports/tables`. Fix every problem they report in the README or the code; ask for the command,
-   the last 30 lines of reports/logs/<step>.log and `conda list --export`. README written 25 Oct (11c5966),
-   with a fresh-clone fix: the txgpt step runs only when lm.tx_score --plants output exists (else the saved
-   models/txgpt_method.joblib is kept; before the fix it would have been overwritten with a method that misses
-   every plant). Measured: TxGPT CPU scoring in ds10-check takes ~25 min (238,807 rows, 8 threads).
-1. DECIDE (user): add a direction check to the guardrail (explorer/assistant.check: a comparison word must agree
+NEXT, IN ORDER (26 Oct; LM round 2 is docs/KAGGLE_LM_PLAN.md, the report plan is docs/REPORT_PLAN.md)
+0. DONE 26 Oct: the Mac replication (MAC REPLICATION above). Decide: the features.csv %.12g fix (results-v1.1)
+   and the README fixes (1)-(7).
+0a. LM ROUND 2 (KAGGLE_LM_PLAN.md section 6): Mon 26 the user asks the three teammates for phone-verified Kaggle
+   accounts + quota and names the glossary reviewer; Tue 27 Claude writes C1-C9 (train.py --max-hours, DDP,
+   wsd schedule; prepare_text --continue-from; direction check + eval columns; DS7 v2; glossary 300 pairs; three
+   Kaggle notebooks), pytest, push; the user uploads dataset cos30049a2-text150m-base from the PC
+   (runs/text-150m/model.pt, data/text/{tokenizer.json, val.bin, meta.json, state.json}); Kaggle CPU notebook
+   builds the data. Wed 28 GPU session 1 (bench, fp16 check, gate) -> chain to Sun 1 Nov 23:59 cut-off; Qwen v2
+   Wed 28-Fri 30 on another account; Mon 2 Nov 152M chat + explanation stages + evals; Tue 3 Nov adoption rule,
+   tables home, results-v1.1.
+1. PART OF ROUND 2 (was DECIDE, 25 Oct; C6): add a direction check to the guardrail
+   (explorer/assistant.check: a comparison word must agree
    with the feature's z sign) and re-score the saved DS7 and DS10 answers (no regeneration); fix the template's
    "Relative size" wording ("Large compared with the usual amount: 0.4x" when the usual is 0.3x, test-00272).
    Found 25 Oct by an ad hoc check (not yet in any table): on the DS7 test set Qwen wrote a wrong comparison word
@@ -271,7 +326,11 @@ RESULTS SO FAR (quote reports/tables/*.csv, never these)
   DS10: assistant_eval_ds10.csv.
 
 WAITING ON THE USER / TEAM
-- The guardrail direction-check decision (NEXT 1). Rotating the Kaggle token. The release-asset OK (NEXT 4).
+- Round 2 (26 Oct): three teammates' Kaggle accounts (phone-verified; quota in Settings; does T4 x2 count as one
+  hour per hour?), the glossary reviewer, and handoff cover (about 07:30 and 19:00 GMT+7, Wed 28 Oct - Sun 1 Nov).
+- The features.csv %.12g fix and the README fixes (MAC REPLICATION). Rotating the Kaggle token (the round-2
+  notebooks are pushed with the Kaggle CLI, so rotate before 27 Oct and update C:\Users\ADMIN\.kaggle). The
+  release-asset OK (NEXT 4).
 - _context/ (git-ignored) partly restored 25 Oct from files the user put on E:: the A1 report
   (_context/a1_submission/HCMC_COS30049.1_4_Assignment1_Report.pdf, text in _context/text/a1_report.txt) and the
   brief as markdown (_context/brief_assignment2_instructions.md; same content as docs/brief/). The rest (slides,
