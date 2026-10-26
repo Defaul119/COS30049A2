@@ -866,6 +866,59 @@ def heist_curves() -> list[tuple[str, np.ndarray, np.ndarray]] | None:
     return out or None
 
 
+def fig_stats_methods(seeds: pd.DataFrame, summary: pd.DataFrame) -> tuple[Figure, Stats]:
+    """Each method's mean planted recall over many plant seeds (explorer/distribution.py), per data set."""
+    sets = [d for d in ("DS1", "DS2", "DS10") if d in set(seeds["dataset"])]
+    order = summary[summary["dataset"] == sets[0]].sort_values("mean")["method"].tolist()
+    fig, axes = plt.subplots(1, len(sets), figsize=(3.3 * len(sets), 3.8), sharey=True)
+    axes = np.atleast_1d(axes)
+    s = []
+    for ax, dataset in zip(axes, sets):
+        part = seeds[seeds["dataset"] == dataset]
+        data = [part.loc[part["method"] == m, "mean_recall"].to_numpy() for m in order]
+        box = ax.boxplot(data, vert=False, widths=0.55, patch_artist=True, showfliers=False,
+                         medianprops={"color": INK, "linewidth": 1})
+        for patch, m in zip(box["boxes"], order):
+            patch.set(facecolor=METHOD_COLOURS.get(m, MUTED), alpha=0.75, edgecolor=MUTED)
+        base = part.loc[part["method"] == "baseline", "mean_recall"].mean()
+        ax.axvline(base, color=INK, linewidth=0.8, linestyle="--")
+        n = part["seed"].nunique()
+        ax.set(title=f"{dataset}: {n} plant seeds", xlabel="Mean planted recall", xlim=(0, 1))
+        ax.grid(axis="x", color=GRID)
+        t = summary[summary["dataset"] == dataset].set_index("method")
+        s += [stat("stats_methods", f"{dataset} {m}: mean recall", round(float(t.at[m, "mean"]), 3),
+                   f"sd {t.at[m, 'sd']:.3f}, 95% of seeds {t.at[m, 'ci_low']:.3f}-{t.at[m, 'ci_high']:.3f}; beats the "
+                   f"baseline on {t.at[m, 'beats_baseline_share']:.0%} of seeds; mean rank {t.at[m, 'mean_rank']:.1f}")
+              for m in reversed(order) if m in t.index]
+    axes[0].set_yticks(np.arange(1, len(order) + 1), [METHOD_NAMES.get(m, m) for m in order], fontsize=7)
+    fig.suptitle("Planted-pattern recall over many seeds (dashed: the baseline's mean)", fontsize=9)
+    return fig, s
+
+
+def fig_stats_classifiers(summary: pd.DataFrame) -> tuple[Figure, Stats]:
+    """Classifier test F1: mean over training seeds, with a 95% bootstrap interval over test rows."""
+    schemes = summary["scheme"].unique().tolist()
+    fig, axes = plt.subplots(1, len(schemes), figsize=(3.3 * len(schemes), 2.9), sharey=True)
+    axes = np.atleast_1d(axes)
+    names = {"logistic": "Logistic regression", "knn": "k-nearest neighbours", "randomForest": "Random forest",
+             "histGradientBoosting": "Gradient boosting"}
+    s = []
+    for ax, scheme in zip(axes, schemes):
+        t = summary[summary["scheme"] == scheme].reset_index(drop=True)
+        y = np.arange(len(t))
+        ax.errorbar(t["f1_mean"], y, xerr=[(t["f1_mean"] - t["f1_ci_low"]).clip(lower=0),
+                                           (t["f1_ci_high"] - t["f1_mean"]).clip(lower=0)],
+                    fmt="o", color=INK, ecolor=MUTED, elinewidth=1, capsize=2, markersize=4)
+        ax.set_yticks(y, [names.get(m, m) for m in t["model"]], fontsize=7)
+        ax.set(title=scheme, xlabel="Test F1", xlim=(0, 1))
+        ax.grid(axis="x", color=GRID)
+        s += [stat("stats_classifiers", f"{scheme} {r.model}: F1", round(float(r.f1_mean), 3),
+                   f"seed sd {r.f1_seed_sd:.3f} ({r.seeds} seeds); bootstrap 95% CI {r.f1_ci_low:.3f}-{r.f1_ci_high:.3f}")
+              for r in t.itertuples()]
+    fig.suptitle("Classifiers: mean over training seeds, 95% bootstrap interval over test rows", fontsize=9, y=1.02)
+    return fig, s
+
+
 def available() -> dict[str, Callable[[], tuple[Figure, Stats]]]:
     """Every figure whose inputs exist, by file name (without .pdf), in report order."""
     figs: dict[str, Callable[[], tuple[Figure, Stats]]] = {}
@@ -927,6 +980,10 @@ def available() -> dict[str, Callable[[], tuple[Figure, Stats]]]:
     if (TABLES_DIR / "eval_ds10.csv").exists() and (TABLES_DIR / "eval_sanity.csv").exists():
         evaluated = int((table("split_ds1")["eval"] > 0).sum())
         figs["eval_ds10_check"] = lambda: fig_ds10_check(table("eval_ds10"), table("eval_sanity"), evaluated)
+    if (TABLES_DIR / "stats_methods_seeds.csv").exists():
+        figs["stats_methods"] = lambda: fig_stats_methods(table("stats_methods_seeds"), table("stats_methods_summary"))
+    if (TABLES_DIR / "stats_classifiers_summary.csv").exists():
+        figs["stats_classifiers"] = lambda: fig_stats_classifiers(table("stats_classifiers_summary"))
     return figs
 
 
