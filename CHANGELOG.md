@@ -48,6 +48,14 @@ means reproduce the reported numbers; for example, the Elliptic random forest ha
 +0.042, CI 0.031-0.053). On BitcoinHeist the temporal split stays near chance for every model (best F1 0.070) and the
 random split reaches 0.246. Seed spread is small everywhere (SD 0.013 at most), so the model ranking is not luck.
 
+**Data card, model card and licences.** `DATA_CARD.md` (every dataset's source, licence, collection, size, missing
+values, biases and users, then every shipped file with its rows, size and SHA-256 and every column with its type,
+missing count and meaning) and `MODEL_CARD.md` (every final model's purpose, data, parameters, limits and intended
+use). Their tables are written by `python tools/cards.py` from the files and `reports/tables/`, so no number is
+typed by hand; `tests/test_cards.py` fails if a column has no description. `LICENSES.md`, `NOTICE` and
+`licenses/QWEN_RESEARCH_LICENSE.txt` meet the Qwen licence's three conditions (licence text, attribution line,
+"Built with Qwen"). No licence is chosen for our own code yet (team decision).
+
 **README brought up to date (Mac replication findings 1-7, round 2).** Miniforge or the Miniconda terms-of-service
 step; `pytest.ini` (testpaths = tests) so a full `_context/` cannot break collection (still 210 passed, 3 skipped);
 test time about two minutes; ds10-check about 40 min on a laptop; which `git status` changes after a rebuild are

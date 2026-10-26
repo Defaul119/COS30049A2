@@ -22,7 +22,12 @@ kaggle/                the notebooks that trained and tested the language models
 tools/                 helpers: job status, the Kaggle notebook generator, the test-report PDF
 docs/                  the delivery plan, the brief, the report plan, the AI use log, LM_TRAINING.md
 CHANGELOG.md           every decision and measured result, newest first
+DATA_CARD.md           every dataset: source, licence, collection, biases, and every file and column
+MODEL_CARD.md          every final model: purpose, data, parameters, metrics, limits, intended use
+LICENSES.md, NOTICE   third-party licences (Qwen's text in licenses/)
 ```
+
+**Built with Qwen**: one of the Explorer Assistants is a fine-tuned Qwen2.5-3B-Instruct (see `NOTICE`).
 
 ## 1. What you need
 
@@ -244,8 +249,10 @@ the template writes.
 | Random tests | Ten randomized Assistant test sets (real, crawled, made-up, balanced, close calls, extremes) | Built by `explorer/random_test.py` from DS1, DS2 and DS10 | Testing the Assistant on prompts it never saw |
 
 Each processed folder carries a `manifest.json` (source, date, selection rule, checks, SHA-256). DS2 stores
-addresses only as salted hashes; the salt never leaves the build machine. Base model for the Assistant:
-Qwen2.5-3B-Instruct (Qwen Research License; built with Qwen).
+addresses only as salted hashes; the salt never leaves the build machine. `DATA_CARD.md` describes every
+dataset, file and column; `MODEL_CARD.md` every model and its metrics (both refreshed by `python tools/cards.py`);
+`LICENSES.md` every licence. Base model for the Assistant: Qwen2.5-3B-Instruct (Qwen Research License,
+non-commercial; Built with Qwen).
 
 ## 10. Troubleshooting
 

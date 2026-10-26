@@ -57,8 +57,10 @@ project up to this point"; full decision rights overnight). Due Sun 8 Nov 23:59;
 - [ ] TxGPT S seed 3 validation loss check before freezing.
 - [ ] Packaging: DS4 final model too big (263 MB) -> smaller final model; models/assistant + models/qwen3b_adapter
       as GitHub release assets (user's OK needed); fp16 export of the 152M model.
-- [ ] DATA_CARD.md (DS1-DS10, random test sets), MODEL_CARD.md, LICENSES.md (+ Qwen licence text, NOTICE,
-      "Built with Qwen"), SHA256SUMS.txt.
+- [x] DATA_CARD.md, MODEL_CARD.md (generated tables: `python tools/cards.py`), LICENSES.md, NOTICE, Qwen
+      licence text, "Built with Qwen" (27 Oct). [Claude]
+- [ ] SHA256SUMS.txt and the zip: `tools/package.py` (plan Appendix D), from the v1.0 tag. [Claude]
+- [ ] A licence for our own code (none chosen; LICENSES.md says ask the group). [team decides]
 
 ## Report (12 marks; <= 3,000 words, aim 2,850; Harvard, numbered)
 

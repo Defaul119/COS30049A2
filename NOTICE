@@ -1,0 +1,9 @@
+Bitcoin Address Activity Explorer
+COS30049 Assignment 2, group HCMC_COS30049.1_4 (Swinburne University of Technology, Ho Chi Minh City campus)
+
+Built with Qwen. The Explorer Assistant's adapters (models/qwen3b_adapter/ and models/qwen3b_adapter_v2/) were
+fine-tuned from Qwen2.5-3B-Instruct; the base model's weights are not distributed here.
+Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) Alibaba Cloud. All Rights Reserved.
+The agreement's full text is in licenses/QWEN_RESEARCH_LICENSE.txt.
+
+Third-party data and software, with their licences, are listed in LICENSES.md.
