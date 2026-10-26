@@ -1,0 +1,22 @@
+{
+  "name": "text-150m-cont",
+  "_about": "Round 2 (docs/KAGGLE_LM_PLAN.md, C5): continue the round-1 152M model on new FineWeb-Edu documents (lm.prepare_text --continue-from) on Kaggle. Same seed and eval_windows as round 1, so validation losses are on the same 160 windows. total_tokens and micro_batch are set by the notebook's benchmark and gate (kaggle/text150m_train); wsd lets total_tokens rise between sessions until the decay starts.",
+  "data_dir": "data/text_cont",
+  "out_dir": "runs/text-150m-cont",
+  "init_from": "runs/text-150m/model.pt",
+  "total_tokens": 2000000000,
+  "batch_tokens": 262144,
+  "micro_batch": 8,
+  "lr": 0.0003,
+  "min_lr": 0.00003,
+  "warmup_steps": 500,
+  "schedule": "wsd",
+  "decay_fraction": 0.15,
+  "weight_decay": 0.1,
+  "eval_every": 200,
+  "eval_batches": 40,
+  "eval_windows": 160,
+  "ckpt_every_minutes": 30,
+  "seed": 1337,
+  "peak_tflops": 65.0
+}
