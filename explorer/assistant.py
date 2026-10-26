@@ -13,9 +13,9 @@ before the Explorer shows it:
     verdict      the answer states the right result: flagged, not flagged or not scored (added 26 Oct:
                  "Not flagged" for a flagged transaction kept every number and passed the other checks)
 
-The evaluation also measures whether an answer names exactly the template's reasons (reasons_ok): an
-answer that leaves out or adds a feature is not wrong in a way the Explorer must block, but it is not
-fully correct either.
+The evaluation also measures whether an answer names exactly the template's reasons (reasons_ok), in
+the template's order (order_ok), with each number on its own feature's line (binding_ok): an answer
+that fails these is not wrong in a way the Explorer must block, but it is not fully correct either.
 
 The Explorer tries its writers in settings -> assistant -> writerOrder (Qwen 3B, then the 152M model,
 from the DS7 results of 25 Oct; writers a machine cannot run are skipped): the first answer that
@@ -169,6 +169,45 @@ def features_named(text: str, facts: dict[str, Any]) -> set[str]:
 def reasons_ok(answer: str, template: str, facts: dict[str, Any]) -> bool:
     """The answer names exactly the features the template explains with, no fewer and no more."""
     return features_named(answer, facts) == features_named(template, facts)
+
+
+def case_of(facts: dict[str, Any]) -> str:
+    """The kind of decision a prompt asks for: unscored; flagged or not; how many reasons, or nothing standing
+    out (then the two largest differences, which a writer must pick by |z| itself). Used to balance test sets and
+    to report results per case."""
+    if not facts.get("scored", True):
+        return "unscored"
+    reasons = sum(f["role"] in MENTIONED_ROLES for f in facts["features"])
+    verdict = "flagged" if facts["flagged"] else "not flagged"
+    return f"{verdict}, nothing stands out" if reasons == 0 else f"{verdict}, {reasons} reason{'s' if reasons > 1 else ''}"
+
+
+def features_in_order(text: str, facts: dict[str, Any]) -> list[str]:
+    """The features the text names, in the order of their first comparison phrase."""
+    text = without_reason(text, facts)
+    first = {name: min(text.find(p) for ps in signs.values() for p in ps if p in text)
+             for name, signs in DIRECTION_PHRASES.items() if any(p in text for ps in signs.values() for p in ps)}
+    return sorted(first, key=first.get)
+
+
+def order_ok(answer: str, template: str, facts: dict[str, Any]) -> bool:
+    """The answer gives its reasons in the template's order: strongest first."""
+    return features_in_order(answer, facts) == features_in_order(template, facts)
+
+
+def binding_ok(answer: str, facts: dict[str, Any]) -> bool:
+    """Every number on a reason's line belongs to that feature (its value or usual, or the burst window's days).
+
+    The number check only asks that a number appears somewhere in the prompt, so a value given under the wrong
+    feature ("0.5 BTC ... against a usual 2 days") would pass it; this check would not.
+    """
+    by_name = {f["feature"]: numbers_in(f"{f['value']} {f['usual']}") for f in facts.get("features", [])}
+    window = numbers_in(str(facts.get("burstWindowDays", "")))
+    for line in without_reason(answer, facts).splitlines():
+        named = [n for n, signs in DIRECTION_PHRASES.items() if any(p in line for ps in signs.values() for p in ps)]
+        if len(named) == 1 and named[0] in by_name and not numbers_in(line) <= by_name[named[0]] | window:
+            return False
+    return True
 
 
 def normalise(text: str) -> str:

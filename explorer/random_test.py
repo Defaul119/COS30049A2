@@ -18,6 +18,12 @@ writer, both models in both rounds, answers exactly the same prompts:
                       other than the baseline flagging independently of the features (flagged with nothing
                       standing out, or not flagged despite a flag-level feature), the instruction reworded and the
                       facts shuffled in some prompts. Its own seed, so real.jsonl and synthetic.jsonl stay as built.
+    balanced.jsonl    real prompts, balanced by case (user, 26 Oct: "a bit too high... could be data imbalance"):
+                      every transaction of DS10's unseen addresses and of DS2's test-split addresses explained,
+                      duplicates and prompts of the other test sets removed, then an equal number drawn from each
+                      case (assistant.case_of), so the easy cases cannot carry the rate. Built by its own step,
+                      `python -m explorer.cli build-balanced-test`, as it computes features for thousands of
+                      transactions.
 
 Each row carries the template (the ROUGE-L reference) and a reply in a random DS7 phrasing (rouge_own), and every
 reply passes the guardrail, as in DS7. Score a writer with
@@ -32,6 +38,8 @@ import math
 import random
 from pathlib import Path
 from typing import Any
+
+import pandas as pd
 
 from . import assistant
 from .baseline import MODELS_DIR
@@ -177,6 +185,79 @@ def write(path: Path, rows: list[dict[str, Any]], prefix: str) -> str:
         for n, r in enumerate(rows):
             fh.write(json.dumps({"id": f"{prefix}-{n:05d}", **r}, ensure_ascii=False) + "\n")
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def every_tx(features: pd.DataFrame, transactions: pd.DataFrame) -> list[dict[str, Any]]:
+    """The TransactionDetail of every transaction, as explorer.predict describes it for the selected method.
+
+    Only the selected method decides what a prompt says (its flag; the features' roles are the baseline's), so
+    only it is scored.
+    """
+    from .ds7 import score_frame
+    from .predict import Predictor
+    from .reviewer import selected_method
+    from .scores import saved_methods
+
+    name = selected_method()
+    methods = {name: saved_methods()[name]}
+    predictor = Predictor(features, transactions, score_frame(features, methods), methods, name, "")
+    scores = predictor.scores.set_index(["address", "txid"])
+    rows = predictor.features.reset_index(drop=True)
+    out = []
+    for _, row in rows.iterrows():
+        s = scores.loc[(row["address"], row["txid"])]
+        out.append(predictor.detail(row, {name: s[f"score_{name}"]}, {name: bool(s[f"flag_{name}"])}))
+    return out
+
+
+def run_build_balanced_test(out_dir: Path = OUT_DIR, n_jobs: int = SETTINGS["classification"]["nJobs"]) -> int:
+    """balanced.jsonl: real prompts from addresses no writer trained on, an equal number per case (settings
+    randomTest -> _balanced), and its entry in manifest.json."""
+    from .ds2_check import features_in_parallel
+    from .ds7 import DS2_PATH, ds2_transactions, split_of
+    from .ds10 import OUT_DIR as DS10_DIR
+    from .features import FeatureConfig
+
+    p = SETTINGS["randomTest"]
+    cfg = FeatureConfig.refined()
+    ids = sorted(pd.read_parquet(DS2_PATH, columns=["addr_id"])["addr_id"].unique())
+    test_ids = [a for a in ids if split_of(a, SETTINGS["ds7"]) == "test"]
+    sources = {"DS2 test split": ds2_transactions(DS2_PATH, test_ids),
+               "DS10": pd.read_csv(DS10_DIR / "transactions.csv")}
+    excluded = frozen_prompts(PROJECT_ROOT / SETTINGS["ds7v2"]["frozenTest"])
+    for path in (DS10_DIR / "explain.jsonl", out_dir / "real.jsonl"):
+        excluded |= frozen_prompts(path)
+    pool: dict[str, list[tuple[str, dict[str, Any]]]] = {}
+    seen: set[str] = set()
+    for source, tx in sources.items():
+        details = every_tx(features_in_parallel(tx, cfg, n_jobs), tx)
+        log.info("%s: %d addresses, %d transactions explained", source, tx["address"].nunique(), len(details))
+        for detail in details:
+            prompt = assistant.prompt_messages(detail)[1]["content"]
+            if prompt in seen or prompt in excluded:
+                continue
+            seen.add(prompt)
+            pool.setdefault(assistant.case_of(assistant.summary(detail)), []).append((source, detail))
+
+    rng = random.Random(p["balancedSeed"])
+    rows = []
+    for case in sorted(pool):
+        for source, detail in rng.sample(pool[case], min(p["balancedPerCase"], len(pool[case]))):
+            rows.append(record(detail, rng, source))
+    rng.shuffle(rows)
+    digest = write(out_dir / "balanced.jsonl", rows, "rbal")
+    counts = {case: {"unique_in_pool": len(pool[case]), "drawn": min(p["balancedPerCase"], len(pool[case]))}
+              for case in sorted(pool)}
+    manifest_path = out_dir / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["files"] = [f for f in manifest["files"] if not f["path"].endswith("balanced.jsonl")]
+    manifest["files"].append({"path": "data/processed/random_test/balanced.jsonl", "sha256": digest})
+    manifest["balanced"] = {"built_utc": utc_now(), "sources": {s: int(t["address"].nunique()) for s, t in sources.items()},
+                            "cases": counts}
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    log.info("Balanced test set: %d prompts; per case (unique in pool, drawn): %s", len(rows),
+             {c: (v["unique_in_pool"], v["drawn"]) for c, v in counts.items()})
+    return 0
 
 
 def run_build_random_test(ds7_v2_test: Path = DS7_V2_TEST, out_dir: Path = OUT_DIR) -> int:

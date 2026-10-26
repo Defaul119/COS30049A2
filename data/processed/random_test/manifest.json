@@ -94,6 +94,59 @@
     {
       "path": "data/processed/random_test/hard.jsonl",
       "sha256": "75ae3ec52fe3f602519737a771150cea4ce2799c7cbdc27f00095e8f0efe9a3d"
+    },
+    {
+      "path": "data/processed/random_test/balanced.jsonl",
+      "sha256": "6fc75de02e15cc2ddff4fb9120e3fc8a9e5ecec36fad65c9a94ff3b9981dad15"
     }
-  ]
+  ],
+  "balanced": {
+    "built_utc": "2026-10-26T14:43:51+00:00",
+    "sources": {
+      "DS2 test split": 173,
+      "DS10": 27
+    },
+    "cases": {
+      "flagged, 1 reason": {
+        "unique_in_pool": 1426,
+        "drawn": 100
+      },
+      "flagged, 2 reasons": {
+        "unique_in_pool": 817,
+        "drawn": 100
+      },
+      "flagged, 3 reasons": {
+        "unique_in_pool": 313,
+        "drawn": 100
+      },
+      "flagged, 4 reasons": {
+        "unique_in_pool": 95,
+        "drawn": 95
+      },
+      "not flagged, 1 reason": {
+        "unique_in_pool": 7986,
+        "drawn": 100
+      },
+      "not flagged, 2 reasons": {
+        "unique_in_pool": 2974,
+        "drawn": 100
+      },
+      "not flagged, 3 reasons": {
+        "unique_in_pool": 702,
+        "drawn": 100
+      },
+      "not flagged, 4 reasons": {
+        "unique_in_pool": 87,
+        "drawn": 87
+      },
+      "not flagged, nothing stands out": {
+        "unique_in_pool": 27139,
+        "drawn": 100
+      },
+      "unscored": {
+        "unique_in_pool": 1,
+        "drawn": 1
+      }
+    }
+  }
 }

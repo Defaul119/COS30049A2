@@ -5,6 +5,35 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 26 October 2026
 
+**Even stricter scoring, results by case, and a balanced real test set (user, ~22:00: "a bit too high... could be
+data imbalance").** The checks found three reasons the rates were high:
+- *Easy cases dominate.* Where features have reasons, the prompt labels their roles, so naming them is close to
+  copying (about 100%). The one real decision is "not flagged, nothing stands out": pick the two largest |z|. It is
+  37% of the DS7 test, and there both models score 80-82%.
+- *Duplicates.* Every unscored prompt is the same sentence: 38 of the DS7 test's 445 prompts are repeats, 31 of DS10's.
+- *Lenient checks.* Two are added to "fully correct": `order_ok` (reasons strongest first, as the template
+  promises) and `binding_ok` (each number on its own feature's line). `lm.eval_explain` also reports
+  `fully_correct_macro` (the mean over cases), `fully_correct_nothing_stands_out` and `fully_correct_unique`, and
+  writes `assistant_eval_by_case*.csv`.
+
+Round 1 re-scored, same answers:
+
+| Test | Model | Fully correct | Mean over cases | Nothing stands out | Order right |
+|---|---|---|---|---|---|
+| DS7 v1 test | 152M | 83.8% | 71.2% | 80.2% | 84.5% |
+| DS7 v1 test | Qwen | 91.2% | 90.0% | 80.8% | 91.5% |
+| DS10 | 152M | 81.4% | 71.2% | 78.4% | 82.1% |
+| DS10 | Qwen | 92.4% | 86.9% | 82.4% | 92.4% |
+
+Binding was 99.8-100%: neither model puts a number under the wrong feature.
+
+`build-balanced-test` (`random_test/balanced.jsonl`, seed 50002): every transaction of DS10's 27 addresses and
+DS2's 173 test-split addresses explained (46,513), de-duplicated and stripped of the other test sets' prompts, then
+up to 100 drawn per case: 883 prompts. The natural mix confirms the imbalance: 27,139 of the unique prompts are
+"nothing stands out", 87 are "not flagged, 4 reasons", and all unscored prompts collapse to 1. The data is cleaned
+and balanced in pandas, not KNIME (user's suggestion): a GUI workflow could not be rerun from the conda environment
+or reviewed in git, and the brief names pandas.
+
 **Stricter scoring and a hard randomized set (user, late evening: "that's high... try another randomized
 dataset").** The guardrail's 99% only checks surface rules, so:
 - *Verdict check, now in the guardrail* (`explorer.assistant.verdict_ok`): the answer must state the right result

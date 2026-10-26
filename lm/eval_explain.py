@@ -12,7 +12,11 @@ real behaviour:
     verdict_ok      the answer states the right result: flagged, not flagged or not scored
     passed          all five (the guardrail would show the answer, not the template)
     reasons_ok      the answer names exactly the template's features, no fewer and no more
-    correct         passed and reasons_ok: a fully correct explanation
+    order_ok        ... in the template's order (strongest first)
+    binding_ok      every number on a reason's line belongs to that line's feature
+    correct         passed, reasons_ok, order_ok and binding_ok: a fully correct explanation
+    case            the kind of decision: unscored; flagged or not; how many reasons, or nothing standing
+                    out (then the two largest differences, which the model must pick by |z| itself)
     coverage        share of flag-level and contributing features whose value the answer repeats
     rouge_l         ROUGE-L against the template answer
     rouge_own       ROUGE-L against the row's own reply (one of DS7's five phrasings), which does not
@@ -33,13 +37,20 @@ Usage:
     python -m lm.eval_explain --model qwen3b --rescore            # saved answers, current measures
     python -m lm.eval_explain --model qwen3b_v2 ... --adapter ...   # a round-2 writer gets its own rows
 
-Writes reports/tables/assistant_eval_<model>.csv (one row per test prompt, with the answer) and
-adds or replaces that model's row in reports/tables/assistant_eval.csv. With --tag T both names end
-in _T, so a second test set (DS10, explorer/ds10.py) never overwrites the DS7 tables.
+Writes reports/tables/assistant_eval_<model>.csv (one row per test prompt, with the answer), adds or
+replaces that model's row in reports/tables/assistant_eval.csv, and its rows in assistant_eval_by_case.csv
+(fully correct per case). With --tag T the names end in _T, so a second test set (DS10, explorer/ds10.py)
+never overwrites the DS7 tables.
+
+The headline rate weights every prompt equally, so the mix of a test set moves it: unscored prompts are
+one identical sentence and easy, and in the cases with reasons the prompt labels each feature's role. The
+summary therefore also gives the mean over cases (macro), the rate where nothing stands out (the one case
+in which the writer must rank features itself), and the rate over unique prompts (duplicates counted once).
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import random
 import time
@@ -64,6 +75,11 @@ def facts_of(messages: list[dict[str, str]]) -> dict:
     return json.loads(rest) if rest.lstrip().startswith("{") else {}
 
 
+def prompt_key(row: dict) -> str:
+    """A short fingerprint of the prompt, so identical prompts (e.g. every unscored one) are counted once."""
+    return hashlib.sha256(row["messages"][1]["content"].encode()).hexdigest()[:16]
+
+
 def measure(answer: str, row: dict) -> dict:
     """Every measure of one answer to one test row (its prompt, template, own reply and key facts)."""
     prompt, template = row["messages"][:-1], row["template"]
@@ -74,7 +90,10 @@ def measure(answer: str, row: dict) -> dict:
     out["rouge_l"] = assistant.rouge_l(answer, template)
     out["rouge_own"] = assistant.rouge_l(answer, row["messages"][-1]["content"])
     out["reasons_ok"] = assistant.reasons_ok(answer, template, facts)
-    out["correct"] = out["passed"] and out["reasons_ok"]
+    out["order_ok"] = assistant.order_ok(answer, template, facts)
+    out["binding_ok"] = assistant.binding_ok(answer, facts)
+    out["correct"] = out["passed"] and out["reasons_ok"] and out["order_ok"] and out["binding_ok"]
+    out["case"] = assistant.case_of(facts) if row["kind"] != "glossary" else "glossary"
     out["copy"] = answer.strip() == template.strip()
     out["key_facts"] = assistant.key_facts_found(answer, row.get("key_facts", []))
     out["banned"] = ", ".join(assistant.banned_words(answer))
@@ -91,13 +110,20 @@ def summarise(frame: pd.DataFrame, model: str) -> dict:
     flagged = expl[expl["kind"] == "flagged"]
     facts = gloss["key_facts"].dropna() if len(gloss) else pd.Series(dtype=float)
     nan = float("nan")
+    hard = expl[expl["case"].str.endswith("nothing stands out")]
+    unique = expl.drop_duplicates("prompt")
     return {"model": model, "prompts": len(expl), "number_faithfulness": expl["numbers_ok"].mean(),
             "limitation_line": flagged["limitation_ok"].mean(),
             "banned_word_share": 1 - expl["wording_ok"].mean(), "guardrail_pass": expl["passed"].mean(),
             "feature_coverage": expl["coverage"].dropna().mean(), "rouge_l": expl["rouge_l"].mean(),
             "direction_errors": int((~expl["direction_ok"]).sum()), "rouge_own": expl["rouge_own"].mean(),
             "copy_rate_flagged": flagged["copy"].mean(), "verdict_accuracy": expl["verdict_ok"].mean(),
-            "reasons_accuracy": expl["reasons_ok"].mean(), "fully_correct": expl["correct"].mean(),
+            "reasons_accuracy": expl["reasons_ok"].mean(), "order_accuracy": expl["order_ok"].mean(),
+            "binding_accuracy": expl["binding_ok"].mean(), "fully_correct": expl["correct"].mean(),
+            "fully_correct_macro": expl.groupby("case")["correct"].mean().mean(),
+            "fully_correct_nothing_stands_out": hard["correct"].mean() if len(hard) else nan,
+            "nothing_stands_out_prompts": len(hard), "unique_prompts": len(unique),
+            "fully_correct_unique": unique["correct"].mean(),
             "glossary_prompts": len(gloss),
             "glossary_banned_word_share": 1 - gloss["wording_ok"].mean() if len(gloss) else nan,
             "glossary_rouge_l": gloss["rouge_l"].mean() if len(gloss) else nan,
@@ -154,7 +180,8 @@ def main() -> None:
     for start in range(0, len(rows), size):
         chunk = rows[start:start + size]
         answers = answer(chunk)
-        results += [{"id": r["id"], "kind": r["kind"], "answer": a, **measure(a, r)} for r, a in zip(chunk, answers)]
+        results += [{"id": r["id"], "kind": r["kind"], "prompt": prompt_key(r), "answer": a, **measure(a, r)}
+                    for r, a in zip(chunk, answers)]
         if len(results) // 50 > (len(results) - len(chunk)) // 50:
             print(f"[eval] {len(results)}/{len(rows)} ({time.time() - started:.0f} s)", flush=True)
 
@@ -171,6 +198,12 @@ def main() -> None:
     others = previous.drop(index=args.model, errors="ignore").reset_index()
     table = pd.concat([others, pd.DataFrame([summary])], ignore_index=True)
     table.to_csv(path, index=False)
+    cases = (frame[frame["kind"] != "glossary"].groupby("case")["correct"].agg(prompts="size", fully_correct="mean")
+             .reset_index().assign(model=args.model))
+    case_path = TABLES / f"assistant_eval_by_case{suffix}.csv"
+    if case_path.exists():
+        cases = pd.concat([pd.read_csv(case_path).query("model != @args.model"), cases], ignore_index=True)
+    cases[["model", "case", "prompts", "fully_correct"]].to_csv(case_path, index=False)
     print(f"[eval] {summary}")
 
 

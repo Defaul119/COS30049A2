@@ -385,3 +385,51 @@ class VerdictAndReasonsTests(unittest.TestCase):
         self.assertTrue(any(v["reworded"] is not None for v in variants) and any(v["shuffled"] for v in variants))
         for r in rows:  # the evaluation reads the facts under any instruction wording
             self.assertEqual(facts_of(r["messages"][:-1]).get("scored", False), r["kind"] != "unscored")
+
+
+class StrictMeasureTests(unittest.TestCase):
+    """Order, number binding and cases (added 26 Oct, after the round-1 rates looked too high)."""
+
+    def test_order_and_binding_catch_swapped_reasons_and_numbers(self):
+        t = tx()
+        facts, good = assistant.summary(t), ds7.phrase(t, 0)
+        self.assertTrue(assistant.order_ok(good, good, facts) and assistant.binding_ok(good, facts))
+        lines = good.splitlines()
+        reasons = [i for i, line in enumerate(lines) if line.startswith("- ")]
+        swapped = lines[:]
+        swapped[reasons[0]], swapped[reasons[1]] = lines[reasons[1]], lines[reasons[0]]
+        self.assertFalse(assistant.order_ok("\n".join(swapped), good, facts))
+        self.assertTrue(assistant.reasons_ok("\n".join(swapped), good, facts))  # same features, wrong order
+        self.assertFalse(assistant.binding_ok(good.replace("0.5 BTC moved", "30 hours moved"), facts))
+
+    def test_case_of_names_the_decision(self):
+        self.assertEqual(assistant.case_of(assistant.summary(tx())), "flagged, 2 reasons")
+        quiet = tx(flagged=False)
+        for f in quiet["features"]:
+            f["role"] = "within-usual"
+        self.assertEqual(assistant.case_of(assistant.summary(quiet)), "not flagged, nothing stands out")
+        self.assertEqual(assistant.case_of(assistant.summary(tx(scored=False))), "unscored")
+
+    def test_balanced_set_has_at_most_n_per_case_and_no_other_test_prompt(self):
+        import json
+        import shutil
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+
+        from explorer import random_test
+        from lm.eval_explain import facts_of
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            for name in ("real.jsonl", "manifest.json"):
+                shutil.copy(random_test.OUT_DIR / name, tmp / name)
+            small = {**SETTINGS["randomTest"], "balancedPerCase": 3}
+            with mock.patch.dict(SETTINGS, {"randomTest": small}):
+                random_test.run_build_balanced_test(tmp, n_jobs=2)
+            rows = [json.loads(line) for line in open(tmp / "balanced.jsonl", encoding="utf-8")]
+        cases = [assistant.case_of(facts_of(r["messages"][:-1])) for r in rows]
+        self.assertTrue(all(cases.count(c) <= 3 for c in set(cases)) and len(set(cases)) >= 8)
+        others = (ds7.frozen_prompts(ds7.PROJECT_ROOT / SETTINGS["ds7v2"]["frozenTest"])
+                  | ds7.frozen_prompts(random_test.OUT_DIR / "real.jsonl"))
+        self.assertFalse({r["messages"][1]["content"] for r in rows} & others)

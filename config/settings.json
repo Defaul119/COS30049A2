@@ -339,7 +339,10 @@
     "hardBaselineShare": 0.4,
     "hardOtherFlagShare": 0.35,
     "rewordShare": 0.5,
-    "shuffleShare": 0.5
+    "shuffleShare": 0.5,
+    "_balanced": "balanced.jsonl: every transaction of DS10's 27 unseen addresses and of DS2's test-split addresses explained (no per-address cap), duplicates and prompts already in the v1 test or real.jsonl removed, then up to balancedPerCase drawn from each case (explorer.assistant.case_of), so the easy cases cannot dominate the rate",
+    "balancedSeed": 50002,
+    "balancedPerCase": 100
   },
 
   "profiles": {

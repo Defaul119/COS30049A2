@@ -1,0 +1,5 @@
+2026-10-26 21:43:37 INFO Step build-balanced-test started: C:\Users\ADMIN\COS30049A2\explorer\cli.py build-balanced-test
+2026-10-26 21:43:48 INFO DS2 test split: 173 addresses, 40728 transactions explained
+2026-10-26 21:43:50 INFO DS10: 27 addresses, 5785 transactions explained
+2026-10-26 21:43:51 INFO Balanced test set: 883 prompts; per case (unique in pool, drawn): {'flagged, 1 reason': (1426, 100), 'flagged, 2 reasons': (817, 100), 'flagged, 3 reasons': (313, 100), 'flagged, 4 reasons': (95, 95), 'not flagged, 1 reason': (7986, 100), 'not flagged, 2 reasons': (2974, 100), 'not flagged, 3 reasons': (702, 100), 'not flagged, 4 reasons': (87, 87), 'not flagged, nothing stands out': (27139, 100), 'unscored': (1, 1)}
+2026-10-26 21:43:51 INFO Step build-balanced-test finished in 13 s (exit 0)

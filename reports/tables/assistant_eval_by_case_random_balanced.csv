@@ -1,0 +1,11 @@
+model,case,prompts,fully_correct
+template,"flagged, 1 reason",100,1.0
+template,"flagged, 2 reasons",100,1.0
+template,"flagged, 3 reasons",100,1.0
+template,"flagged, 4 reasons",95,1.0
+template,"not flagged, 1 reason",100,1.0
+template,"not flagged, 2 reasons",100,1.0
+template,"not flagged, 3 reasons",100,1.0
+template,"not flagged, 4 reasons",87,1.0
+template,"not flagged, nothing stands out",100,1.0
+template,unscored,1,1.0

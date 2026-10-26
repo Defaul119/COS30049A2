@@ -1,0 +1,28 @@
+model,case,prompts,fully_correct
+template,"flagged, 1 reason",64,1.0
+template,"flagged, 2 reasons",58,1.0
+template,"flagged, 3 reasons",28,1.0
+template,"flagged, 4 reasons",6,1.0
+template,"not flagged, 1 reason",62,1.0
+template,"not flagged, 2 reasons",16,1.0
+template,"not flagged, 3 reasons",5,1.0
+template,"not flagged, nothing stands out",167,1.0
+template,unscored,39,1.0
+text150m,"flagged, 1 reason",64,1.0
+text150m,"flagged, 2 reasons",58,0.7758620689655172
+text150m,"flagged, 3 reasons",28,0.6071428571428571
+text150m,"flagged, 4 reasons",6,0.1666666666666666
+text150m,"not flagged, 1 reason",62,0.967741935483871
+text150m,"not flagged, 2 reasons",16,0.6875
+text150m,"not flagged, 3 reasons",5,0.4
+text150m,"not flagged, nothing stands out",167,0.8023952095808383
+text150m,unscored,39,1.0
+qwen3b,"flagged, 1 reason",64,1.0
+qwen3b,"flagged, 2 reasons",58,0.9827586206896551
+qwen3b,"flagged, 3 reasons",28,0.9642857142857143
+qwen3b,"flagged, 4 reasons",6,0.6666666666666666
+qwen3b,"not flagged, 1 reason",62,1.0
+qwen3b,"not flagged, 2 reasons",16,0.875
+qwen3b,"not flagged, 3 reasons",5,0.8
+qwen3b,"not flagged, nothing stands out",167,0.8083832335329342
+qwen3b,unscored,39,1.0
