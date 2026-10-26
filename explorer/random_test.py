@@ -86,9 +86,10 @@ def clipped(z: float) -> float:
     return max(-clip, min(clip, z))
 
 
-def synthetic_tx(rng: random.Random, flag_z: float) -> dict[str, Any]:
-    """One made-up TransactionDetail (the fields explorer.assistant and explorer.explain read)."""
-    p = SETTINGS["randomTest"]
+def synthetic_tx(rng: random.Random, flag_z: float, ranges: dict[str, Any] | None = None) -> dict[str, Any]:
+    """One made-up TransactionDetail (the fields explorer.assistant and explorer.explain read); `ranges` overrides
+    settings randomTest's ranges (the extreme set)."""
+    p = {**SETTINGS["randomTest"], **(ranges or {})}
     method = {"name": METHOD_NAMES["baseline"]}
     direction = rng.choice(("in", "out"))
     if rng.random() < p["unscoredShare"]:
@@ -156,9 +157,10 @@ REWORDED = [
 ]
 
 
-def hard_record(rng: random.Random, flag_z: float) -> dict[str, Any]:
-    """A synthetic transaction explained for a random method, maybe with a reworded instruction and shuffled facts."""
-    p = SETTINGS["randomTest"]
+def hard_record(rng: random.Random, flag_z: float, shares: dict[str, float] | None = None) -> dict[str, Any]:
+    """A synthetic transaction explained for a random method, maybe with a reworded instruction and shuffled facts;
+    `shares` overrides how often each happens (the maximal-shift set has every one)."""
+    p = {**SETTINGS["randomTest"], **(shares or {})}
     tx = synthetic_tx(rng, flag_z)
     method = "baseline" if rng.random() < p["hardBaselineShare"] else rng.choice(
         [m for m in METHOD_NAMES if m != "baseline"])

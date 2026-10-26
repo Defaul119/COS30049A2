@@ -167,8 +167,17 @@ def features_named(text: str, facts: dict[str, Any]) -> set[str]:
 
 
 def reasons_ok(answer: str, template: str, facts: dict[str, Any]) -> bool:
-    """The answer names exactly the features the template explains with, no fewer and no more."""
-    return features_named(answer, facts) == features_named(template, facts)
+    """The answer names exactly the features the template explains with, no fewer and no more.
+
+    A feature whose |z| shows the same as the template's choice (to the prompt's one decimal) is as good a pick:
+    when nothing stands out and the second and third largest differences tie in the prompt, either may be named.
+    """
+    named, wanted = features_named(answer, facts), features_named(template, facts)
+    if named == wanted:
+        return True
+    shown = {f["feature"]: abs(float(f["z"])) for f in facts.get("features", []) if f["z"] is not None}
+    return (all(n in shown for n in named | wanted)
+            and sorted(shown[n] for n in named) == sorted(shown[n] for n in wanted))
 
 
 def case_of(facts: dict[str, Any]) -> str:
@@ -191,8 +200,16 @@ def features_in_order(text: str, facts: dict[str, Any]) -> list[str]:
 
 
 def order_ok(answer: str, template: str, facts: dict[str, Any]) -> bool:
-    """The answer gives its reasons in the template's order: strongest first."""
-    return features_in_order(answer, facts) == features_in_order(template, facts)
+    """The answer gives its reasons in the template's order: strongest first.
+
+    The prompt shows z to one decimal, and the template orders by the unrounded value, so features that show the
+    same |z| may come in either order: the answer is judged on the |z| sequence the prompt lets it see.
+    """
+    shown = {f["feature"]: abs(float(f["z"])) for f in facts.get("features", []) if f["z"] is not None}
+    answer_order, template_order = features_in_order(answer, facts), features_in_order(template, facts)
+    if sorted(answer_order) != sorted(template_order):
+        return False
+    return [shown.get(n) for n in answer_order] == [shown.get(n) for n in template_order]
 
 
 def binding_ok(answer: str, facts: dict[str, Any]) -> bool:

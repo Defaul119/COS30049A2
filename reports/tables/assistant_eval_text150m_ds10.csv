@@ -98,7 +98,7 @@ The two largest differences from usual:
 ds10-00071,not_flagged,536b274c7f7738f0,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Larger amount than usual: 0.00162424 BTC moved, against a usual 0.00094106 BTC.
-- Busier week than usual: 27 transactions in the previous 7 days, against a usual 21.0 transactions.",True,True,True,True,True,True,True,,,0.5652173913043478,0.7999999999999999,False,False,True,False,"not flagged, nothing stands out",False,,
+- Busier week than usual: 27 transactions in the previous 7 days, against a usual 21.0 transactions.",True,True,True,True,True,True,True,,,0.5652173913043478,0.7999999999999999,True,False,True,False,"not flagged, nothing stands out",False,,
 ds10-00126,flagged,6df96362ebbfb327,"Robust z baseline (A1) flags this transaction.
 Compared with this address's own past:
 - Smaller amount than usual. 0.00004715 BTC moved, against a usual 0.00044041 BTC.
@@ -128,7 +128,7 @@ Unusual activity requires investigation; it does not indicate wrongdoing.",True,
 ds10-00217,not_flagged,3bfb43da9453c131,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Small compared with the usual amount: 0.8x the usual amount for this direction.
-- Shorter gap than usual: 4 hours since the previous transaction, against a usual 8 hours.",True,True,True,True,True,True,True,,,0.5869565217391305,0.5869565217391305,False,False,True,False,"not flagged, nothing stands out",False,,
+- Shorter gap than usual: 4 hours since the previous transaction, against a usual 8 hours.",True,True,True,True,True,True,True,,,0.5869565217391305,0.5869565217391305,True,False,True,False,"not flagged, nothing stands out",False,,
 ds10-00239,not_flagged,fee90a2f745b7720,"Robust z baseline (A1) does not flag this transaction.
 Compared with this address's own past:
 - Busier week than usual. 7 transactions in the previous 7 days, against a usual 2.0 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.7076923076923077,True,True,True,True,"not flagged, 1 reason",False,,
@@ -150,7 +150,7 @@ The two largest differences from usual:
 ds10-00080,not_flagged,4b0f79b4ca4209e6,"Robust z baseline (A1) does not mark this transaction as unusual.
 The reasons, strongest first:
 - Large compared with the usual amount: 1.9x the usual amount for this direction.
-- Larger amount than usual: 0.0017 BTC moved, against a usual 0.00091488 BTC.",True,True,True,True,True,True,True,,1.0,0.4470588235294118,0.4358974358974359,True,False,True,False,"not flagged, 2 reasons",False,,
+- Larger amount than usual: 0.0017 BTC moved, against a usual 0.00091488 BTC.",True,True,True,True,True,True,True,,1.0,0.4470588235294118,0.4358974358974359,True,True,True,True,"not flagged, 2 reasons",False,,
 ds10-00062,unscored,ed2df690cfd1307d,Not scored yet. The address has too little earlier history to say what is usual for it.,True,True,True,True,True,True,True,,,0.22857142857142856,0.17142857142857143,True,True,True,True,unscored,False,,
 ds10-00192,not_flagged,144902cbebd6d4de,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
@@ -232,7 +232,7 @@ ds10-00024,unscored,ed2df690cfd1307d,Not scored yet. The address has too little 
 ds10-00201,not_flagged,09561babde8858cc,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Shorter gap than usual: 12 hours since the previous transaction, against a usual 20 hours.
-- Large compared with the usual amount: 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.46153846153846156,0.3917525773195877,True,False,True,False,"not flagged, nothing stands out",False,,
+- Large compared with the usual amount: 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.46153846153846156,0.3917525773195877,True,True,True,True,"not flagged, nothing stands out",False,,
 ds10-00199,not_flagged,40155d86569eeac9,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Longer gap than usual: 3 days since the previous transaction, against a usual 14 hours.
@@ -284,7 +284,7 @@ Unusual activity requires investigation; it does not indicate wrongdoing.",True,
 ds10-00225,not_flagged,130ef09e3c0dca1f,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Quieter week than usual: 1 transaction in the previous 7 days, against a usual 4.0 transactions.
-- Shorter gap than usual: 2 hours since the previous transaction, against a usual 16 hours.",True,True,True,True,True,True,True,,,0.5957446808510639,0.6326530612244898,False,False,True,False,"not flagged, nothing stands out",False,,
+- Shorter gap than usual: 2 hours since the previous transaction, against a usual 16 hours.",True,True,True,True,True,True,True,,,0.5957446808510639,0.6326530612244898,True,False,True,False,"not flagged, nothing stands out",False,,
 ds10-00058,not_flagged,9e20e81aa0ccb80c,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Quieter week than usual: 3 transactions in the previous 7 days, against a usual 7.0 transactions.
@@ -348,7 +348,7 @@ ds10-00194,unscored,ed2df690cfd1307d,Not scored yet. The address has too little 
 ds10-00107,not_flagged,efd03490b4e863e5,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Smaller amount than usual: 0.00048244 BTC moved, against a usual 0.0006621 BTC.
-- Busier week than usual: 6 transactions in the previous 7 days, against a usual 5.0 transactions.",True,True,True,True,True,True,True,,,0.5777777777777778,0.6170212765957447,False,False,True,False,"not flagged, nothing stands out",False,,
+- Busier week than usual: 6 transactions in the previous 7 days, against a usual 5.0 transactions.",True,True,True,True,True,True,True,,,0.5777777777777778,0.6170212765957447,True,False,True,False,"not flagged, nothing stands out",False,,
 ds10-00154,not_flagged,95ac8004819daed7,"Robust z baseline (A1) does not flag this transaction.
 Compared with this address's own past:
 - Large compared with the usual amount. 2.9x the usual amount for this direction.
@@ -372,7 +372,7 @@ The two largest differences from usual:
 ds10-00264,not_flagged,d10344c6672c1dca,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Shorter gap than usual: 29 hours since the previous transaction, against a usual 33 hours.
-- Small compared with the usual amount: 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.46153846153846156,0.5263157894736842,True,False,True,False,"not flagged, nothing stands out",False,,
+- Small compared with the usual amount: 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.46153846153846156,0.5263157894736842,True,True,True,True,"not flagged, nothing stands out",False,,
 ds10-00174,not_flagged,196a5763b65a5811,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Busier week than usual: 5 transactions in the previous 7 days, against a usual 3.0 transactions.
@@ -489,7 +489,7 @@ ds10-00269,flagged,a2097f8ae946c8ff,"Robust z baseline (A1) flags this transacti
 Compared with this address's own past:
 - Larger amount than usual. 0.00226446 BTC moved, against a usual 0.00055294 BTC.
 - Large compared with the usual amount. 4.1x the usual amount for this direction.
-Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.58,0.5591397849462366,True,False,True,False,"flagged, 2 reasons",False,,
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.58,0.5591397849462366,True,True,True,True,"flagged, 2 reasons",False,,
 ds10-00110,unscored,ed2df690cfd1307d,Not scored yet. The address has too little earlier history to say what is usual for it.,True,True,True,True,True,True,True,,,0.22857142857142856,0.1111111111111111,True,True,True,True,unscored,False,,
 ds10-00139,flagged,e4840e9bb5235b68,"Robust z baseline (A1) flags this transaction.
 Compared with this address's own past:
@@ -546,7 +546,7 @@ Compared with this address's own past:
 ds10-00096,not_flagged,741e9abc9c43e61c,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Large compared with the usual amount: 1.0x the usual amount for this direction.
-- Busier week than usual: 7 transactions in the previous 7 days, against a usual 6.0 transactions.",True,True,True,True,True,True,True,,,0.5869565217391304,0.5869565217391304,False,False,True,False,"not flagged, nothing stands out",False,,
+- Busier week than usual: 7 transactions in the previous 7 days, against a usual 6.0 transactions.",True,True,True,True,True,True,True,,,0.5869565217391304,0.5869565217391304,True,False,True,False,"not flagged, nothing stands out",False,,
 ds10-00158,unscored,ed2df690cfd1307d,Not scored yet. The address has too little earlier history to say what is usual for it.,True,True,True,True,True,True,True,,,0.22857142857142856,1.0,True,True,True,True,unscored,False,,
 ds10-00161,flagged,adaf5347952a29c9,"Robust z baseline (A1) flags this transaction.
 Compared with this address's own past:
@@ -656,7 +656,7 @@ The reasons, strongest first:
 ds10-00105,not_flagged,a894b5778c678691,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Smaller amount than usual: 0.00008942 BTC moved, against a usual 0.00020037 BTC.
-- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.4705882352941176,0.40963855421686746,True,False,True,False,"not flagged, nothing stands out",False,,
+- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.4705882352941176,0.40963855421686746,True,True,True,True,"not flagged, nothing stands out",False,,
 ds10-00095,not_flagged,3d6186008165d008,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Busier week than usual: 7 transactions in the previous 7 days, against a usual 6.0 transactions.
@@ -684,7 +684,7 @@ The reasons, strongest first:
 ds10-00166,not_flagged,be2f1d6a5e96e2f5,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Quieter week than usual: 1 transaction in the previous 7 days, against a usual 6.0 transactions.
-- Shorter gap than usual: 5 hours since the previous transaction, against a usual 7 hours.",True,True,True,True,True,True,True,,,0.5263157894736842,0.5263157894736842,False,False,True,False,"not flagged, nothing stands out",False,,
+- Shorter gap than usual: 5 hours since the previous transaction, against a usual 7 hours.",True,True,True,True,True,True,True,,,0.5263157894736842,0.5263157894736842,True,False,True,False,"not flagged, nothing stands out",False,,
 ds10-00251,not_flagged,d207b555a5883833,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Longer gap than usual: 13 hours since the previous transaction, against a usual 8 hours.
@@ -964,7 +964,7 @@ The two largest differences from usual:
 ds10-00190,not_flagged,23d37210fcf3a922,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Smaller amount than usual: 0.0251516 BTC moved, against a usual 0.03227921 BTC.
-- Small compared with the usual amount: 0.8x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.4772727272727273,0.4042553191489362,False,False,True,False,"not flagged, nothing stands out",False,,
+- Small compared with the usual amount: 0.8x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.4772727272727273,0.4042553191489362,True,False,True,False,"not flagged, nothing stands out",False,,
 ds10-00079,flagged,11c584589b4af897,"Robust z baseline (A1) marks this transaction as unusual for its address.
 The reasons, strongest first:
 - Smaller amount than usual: 0.00002642 BTC moved, against a usual 0.00030962 BTC.
@@ -1066,7 +1066,7 @@ The two largest differences from usual:
 ds10-00083,not_flagged,78ef55004a4c294b,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Longer gap than usual: 17 hours since the previous transaction, against a usual 8 hours.
-- Smaller amount than usual: 0.00068 BTC moved, against a usual 0.000859 BTC.",True,True,True,True,True,True,True,,,0.5806451612903226,0.5494505494505495,False,False,True,False,"not flagged, nothing stands out",False,,
+- Smaller amount than usual: 0.00068 BTC moved, against a usual 0.000859 BTC.",True,True,True,True,True,True,True,,,0.5806451612903226,0.5494505494505495,True,False,True,False,"not flagged, nothing stands out",False,,
 ds10-00033,not_flagged,23231c75756727bf,"Robust z baseline (A1) does not mark this transaction as unusual.
 The two largest differences from usual:
 - Smaller amount than usual: 0.00000013 BTC moved, against a usual 0.00000019 BTC.
