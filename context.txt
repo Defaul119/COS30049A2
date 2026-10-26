@@ -14,6 +14,14 @@ honglquanganh/cos30049a2-text150m-train (--accelerator NvidiaTeslaT4); (2) hongl
 (CPU); (3) Qwen v2 done -> bring home (runs/qwen3b-explain-v2, tables), re-score its answers with --rescore (its
 notebook used the older measures), push tritran72/cos30049a2-assistant-random-eval (10 sets x 3 writers, ~3 h),
 bring that home, rerun tools/test_report.py, commit.
+STATISTICS CAMPAIGN (user, 27 Oct ~01:00: "a ridiculously reasonable amount of testing ... distribution math ...
+all ML and LLM ... mean accuracy"; the user said push everything when the overnight jobs are done): (A)
+explorer/distribution.py, Kaggle CPU tritran72/cos30049a2-distribution RUNNING (DS1/DS10 100 plant seeds, DS2 20,
+seeds from 70000) -> stats_methods_seeds/summary.csv; (B) explorer/classify_distribution.py, Kaggle CPU
+tritran72/cos30049a2-class-distribution RUNNING (10 seeds + 1,000-draw test bootstrap, DS3 AF temporal, DS4 temporal
+and random) -> stats_classifiers_*.csv; (C) after round 2: every writer on all 12 test sets with bootstrap CIs and
+paired tests, plus the 152M explanation stage retrained with 5 seeds. Bring A/B home when done; add a statistics
+section (tables + distribution figures) to tools/test_report.py.
 
 ROUND 2 STATUS (26 Oct evening; plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct has every change)
 - Accounts: tritran72 (user; ~/.kaggle/access_token) runs Qwen v2; honglquanganh (teammate Le Quang Anh Hoang, token
