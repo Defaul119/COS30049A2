@@ -433,3 +433,44 @@ class StrictMeasureTests(unittest.TestCase):
         others = (ds7.frozen_prompts(ds7.PROJECT_ROOT / SETTINGS["ds7v2"]["frozenTest"])
                   | ds7.frozen_prompts(random_test.OUT_DIR / "real.jsonl"))
         self.assertFalse({r["messages"][1]["content"] for r in rows} & others)
+
+
+class MoreTestSetsTests(unittest.TestCase):
+    """build-more-tests (27 Oct): close calls, and every set is fresh."""
+
+    def test_close_call_needs_two_listed_values_that_differ_by_less_than_the_margin(self):
+        def facts(*zs, role="contributing"):
+            return {"scored": True, "flagged": False,
+                    "features": [{"feature": n, "z": z, "role": role} for n, z in zip(("Size", "Burst", "Gap"), zs)]}
+        from explorer.random_test import close_call
+        self.assertTrue(close_call(facts("2.4", "2.2", "-0.1"), 0.3))
+        self.assertFalse(close_call(facts("3.4", "2.2", "-0.1"), 0.3))
+        self.assertFalse(close_call(facts("2.2", "-2.2"), 0.3))  # a tie the prompt cannot order is not a close call
+        self.assertTrue(close_call(facts("1.1", "-0.9", "0.2", role="within-usual"), 0.3))  # the pair when nothing stands out
+
+    def test_new_sets_repeat_no_earlier_test_prompt(self):
+        import json
+        import shutil
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+
+        from explorer import random_test
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            for name in ("real.jsonl", "balanced.jsonl", "manifest.json"):
+                shutil.copy(random_test.OUT_DIR / name, tmp / name)
+            small = {**SETTINGS["randomTest"], "perSourcePerCase": 2, "closePrompts": 5, "extremePrompts": 5,
+                     "maxShiftPrompts": 5}
+            with mock.patch.dict(SETTINGS, {"randomTest": small}):
+                random_test.run_build_more_tests(tmp, n_jobs=2)
+            new = {name: [json.loads(line) for line in open(tmp / f"{name}.jsonl", encoding="utf-8")]
+                   for name in ("crawl_ds1", "crawl_ds2", "crawl_ds10", "close_calls", "extreme", "max_shift")}
+            earlier = (ds7.frozen_prompts(ds7.PROJECT_ROOT / SETTINGS["ds7v2"]["frozenTest"])
+                       | ds7.frozen_prompts(tmp / "real.jsonl") | ds7.frozen_prompts(tmp / "balanced.jsonl"))
+        real_new = {r["messages"][1]["content"] for n in ("crawl_ds1", "crawl_ds2", "crawl_ds10", "close_calls")
+                    for r in new[n] if r["kind"] != "unscored"}
+        self.assertFalse(real_new & earlier)
+        self.assertTrue(all(r["variant"]["reworded"] is not None and r["variant"]["method"] != "baseline"
+                            for r in new["max_shift"]))

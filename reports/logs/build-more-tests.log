@@ -1,0 +1,11 @@
+2026-10-27 00:09:07 INFO Step build-more-tests started: C:\Users\ADMIN\COS30049A2\explorer\cli.py build-more-tests
+2026-10-27 00:09:21 INFO DS1 test split: 522 transactions explained
+2026-10-27 00:09:21 INFO DS2 test split: 40728 transactions explained
+2026-10-27 00:09:21 INFO DS10: 5785 transactions explained
+2026-10-27 00:09:22 INFO crawl_ds1: 174 prompts; {'flagged, 1 reason': 11, 'flagged, 2 reasons': 7, 'flagged, 3 reasons': 4, 'flagged, 4 reasons': 2, 'not flagged, 1 reason': 60, 'not flagged, 2 reasons': 26, 'not flagged, 3 reasons': 3, 'not flagged, nothing stands out': 60, 'unscored': 1}
+2026-10-27 00:09:22 INFO crawl_ds2: 421 prompts; {'flagged, 1 reason': 60, 'flagged, 2 reasons': 60, 'flagged, 3 reasons': 60, 'not flagged, 1 reason': 60, 'not flagged, 2 reasons': 60, 'not flagged, 3 reasons': 60, 'not flagged, nothing stands out': 60, 'unscored': 1}
+2026-10-27 00:09:22 INFO crawl_ds10: 334 prompts; {'flagged, 1 reason': 30, 'flagged, 2 reasons': 48, 'flagged, 3 reasons': 15, 'not flagged, 1 reason': 60, 'not flagged, 2 reasons': 60, 'not flagged, 3 reasons': 60, 'not flagged, nothing stands out': 60, 'unscored': 1}
+2026-10-27 00:09:22 INFO close_calls: 300 prompts; {'flagged, 3 reasons': 2, 'not flagged, 2 reasons': 17, 'not flagged, 3 reasons': 5, 'not flagged, nothing stands out': 276}
+2026-10-27 00:09:22 INFO extreme: 300 prompts; {'flagged, 1 reason': 16, 'flagged, 2 reasons': 44, 'flagged, 3 reasons': 33, 'flagged, 4 reasons': 5, 'not flagged, 1 reason': 61, 'not flagged, 2 reasons': 45, 'not flagged, 3 reasons': 7, 'not flagged, 4 reasons': 2, 'not flagged, nothing stands out': 64, 'unscored': 23}
+2026-10-27 00:09:22 INFO max_shift: 300 prompts; {'flagged, 1 reason': 24, 'flagged, 2 reasons': 21, 'flagged, 3 reasons': 17, 'flagged, 4 reasons': 4, 'flagged, nothing stands out': 18, 'not flagged, 1 reason': 50, 'not flagged, 2 reasons': 51, 'not flagged, 3 reasons': 37, 'not flagged, 4 reasons': 10, 'not flagged, nothing stands out': 40, 'unscored': 28}
+2026-10-27 00:09:22 INFO Step build-more-tests finished in 15 s (exit 0)

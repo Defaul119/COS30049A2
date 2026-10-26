@@ -262,6 +262,99 @@ def run_build_balanced_test(out_dir: Path = OUT_DIR, n_jobs: int = SETTINGS["cla
     return 0
 
 
+def crawled_details(n_jobs: int) -> dict[str, list[dict[str, Any]]]:
+    """Every transaction of the crawled addresses no writer trained on, explained: DS1's and DS2's test-split
+    addresses (DS7 splits by the same address hash in both rounds) and DS10."""
+    from .ds2_check import features_in_parallel
+    from .ds7 import DS2_PATH, ds2_transactions, split_of
+    from .ds10 import OUT_DIR as DS10_DIR
+    from .features import FeatureConfig
+    from .snapshot import MANIFEST_PATH
+
+    ds1_f = pd.read_csv(MANIFEST_PATH.parent / "features.csv")
+    ds1_t = pd.read_csv(MANIFEST_PATH.parent / "transactions.csv")
+    ds1_test = [a for a in ds1_f["address"].unique() if split_of(a, SETTINGS["ds7"]) == "test"]
+    ids = sorted(pd.read_parquet(DS2_PATH, columns=["addr_id"])["addr_id"].unique())
+    ds2_t = ds2_transactions(DS2_PATH, [a for a in ids if split_of(a, SETTINGS["ds7"]) == "test"])
+    ds10_t = pd.read_csv(DS10_DIR / "transactions.csv")
+    cfg = FeatureConfig.refined()
+    out = {"DS1 test split": every_tx(ds1_f[ds1_f["address"].isin(ds1_test)], ds1_t[ds1_t["address"].isin(ds1_test)]),
+           "DS2 test split": every_tx(features_in_parallel(ds2_t, cfg, n_jobs), ds2_t),
+           "DS10": every_tx(features_in_parallel(ds10_t, cfg, n_jobs), ds10_t)}
+    for source, details in out.items():
+        log.info("%s: %d transactions explained", source, len(details))
+    return out
+
+
+def close_call(facts: dict[str, Any], margin: float) -> bool:
+    """The prompt's listed |z| values (the reasons, or the three largest when nothing stands out) include two that
+    differ, but by less than `margin`: the order or the pair is hardest to get right from the prompt."""
+    if not facts.get("scored", True):
+        return False
+    scored = [f for f in facts["features"] if f["z"] is not None]
+    reasons = [f for f in scored if f["role"] in assistant.MENTIONED_ROLES]
+    values = sorted((abs(float(f["z"])) for f in (reasons or scored)), reverse=True)[: len(reasons) or 3]
+    return any(0 < a - b < margin for a, b in zip(values, values[1:]))
+
+
+def run_build_more_tests(out_dir: Path = OUT_DIR, n_jobs: int = SETTINGS["classification"]["nJobs"]) -> int:
+    """crawl_ds1/ds2/ds10.jsonl, close_calls.jsonl, extreme.jsonl and max_shift.jsonl (settings randomTest -> _more)."""
+    from .ds10 import OUT_DIR as DS10_DIR
+
+    p = SETTINGS["randomTest"]
+    rng, flag_z = random.Random(p["moreSeed"]), flag_abs_z()
+    used = frozen_prompts(PROJECT_ROOT / SETTINGS["ds7v2"]["frozenTest"])
+    for path in (DS10_DIR / "explain.jsonl", out_dir / "real.jsonl", out_dir / "balanced.jsonl"):
+        used |= frozen_prompts(path)
+    def prompt(detail: dict[str, Any]) -> str:
+        return assistant.prompt_messages(detail)[1]["content"]
+
+    pools: dict[str, dict[str, list[dict[str, Any]]]] = {}
+    for source, details in crawled_details(n_jobs).items():
+        seen: set[str] = set()
+        for d in details:
+            text = prompt(d)
+            if text in used or text in seen:
+                continue
+            seen.add(text)
+            pools.setdefault(source, {}).setdefault(assistant.case_of(assistant.summary(d)), []).append(d)
+
+    sets: dict[str, list[dict[str, Any]]] = {}
+    for source, name in (("DS1 test split", "crawl_ds1"), ("DS2 test split", "crawl_ds2"), ("DS10", "crawl_ds10")):
+        rows = []
+        for case in sorted(pools[source]):
+            for d in rng.sample(pools[source][case], min(p["perSourcePerCase"], len(pools[source][case]))):
+                rows.append(record(d, rng, source))
+                used.add(prompt(d))
+        rng.shuffle(rows)
+        sets[name] = rows
+    close = [(s, d) for s, cases in pools.items() for ds in cases.values() for d in ds
+             if prompt(d) not in used and close_call(assistant.summary(d), p["closeMargin"])]
+    sets["close_calls"] = [record(d, rng, s) for s, d in rng.sample(close, min(p["closePrompts"], len(close)))]
+    sets["extreme"] = [record(synthetic_tx(rng, flag_z, rng.choice(p["extremeRegimes"])), rng, "extreme")
+                       for _ in range(p["extremePrompts"])]
+    shift = {"hardBaselineShare": 0.0, "rewordShare": 1.0, "shuffleShare": 1.0}
+    sets["max_shift"] = [{**hard_record(rng, flag_z, shift), "source": "max_shift"} for _ in range(p["maxShiftPrompts"])]
+
+    manifest_path = out_dir / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    summary = {}
+    for name, rows in sets.items():
+        digest = write(out_dir / f"{name}.jsonl", rows, f"r{name.replace('_', '')}")
+        manifest["files"] = [f for f in manifest["files"] if not f["path"].endswith(f"/{name}.jsonl")]
+        manifest["files"].append({"path": f"data/processed/random_test/{name}.jsonl", "sha256": digest})
+        cases: dict[str, int] = {}
+        for r in rows:
+            c = assistant.case_of(json.loads(r["messages"][1]["content"].partition("\n")[2]))
+            cases[c] = cases.get(c, 0) + 1
+        summary[name] = {"prompts": len(rows), "cases": dict(sorted(cases.items()))}
+        log.info("%s: %d prompts; %s", name, len(rows), summary[name]["cases"])
+    manifest["more"] = {"built_utc": utc_now(), "close_candidates": len(close), "sets": summary,
+                        "pools": {s: {c: len(v) for c, v in sorted(cases.items())} for s, cases in pools.items()}}
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return 0
+
+
 def run_build_random_test(ds7_v2_test: Path = DS7_V2_TEST, out_dir: Path = OUT_DIR) -> int:
     p = SETTINGS["randomTest"]
     rng = random.Random(p["seed"])

@@ -297,6 +297,12 @@ def cmd_build_balanced_test(args: argparse.Namespace) -> int:
     return run_build_balanced_test()
 
 
+def cmd_build_more_tests(args: argparse.Namespace) -> int:
+    from .random_test import run_build_more_tests
+
+    return run_build_more_tests()
+
+
 def cmd_reviewer_sheet(args: argparse.Namespace) -> int:
     from .reviewer import run_reviewer_sheet
 
@@ -493,6 +499,8 @@ def build_parser() -> argparse.ArgumentParser:
     random_test.set_defaults(func=cmd_build_random_test)
     steps.add_parser("build-balanced-test", help="the Assistants' balanced real test set (DS10 and DS2's test split)"
                      ).set_defaults(func=cmd_build_balanced_test)
+    steps.add_parser("build-more-tests", help="per-source, close-call, extreme and maximal-shift Assistant test sets"
+                     ).set_defaults(func=cmd_build_more_tests)
     steps.add_parser("reviewer-sheet", help="DS1: the blind sheet for the reviewer check, and its key").set_defaults(
         func=cmd_reviewer_sheet)
     reviewer_score = steps.add_parser("reviewer-score", help="DS1: reviewers' ratings against the flags; Cohen's kappa")

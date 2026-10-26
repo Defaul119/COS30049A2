@@ -3,6 +3,33 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 27 October 2026 (overnight; the user gave Claude full decision rights)
+
+**Order and reasons checks made fair to rounding.** The prompt shows z to one decimal, and the template orders by
+the unrounded value. Two features can therefore show the same |z| in an order the model cannot know, and when nothing
+stands out the second and third largest can tie. `order_ok` and `reasons_ok` now accept any choice among features
+that show the same |z|. Most of the "wrong pair" misses were such ties.
+
+Round 1, re-scored:
+
+| Model | DS7 test, fully correct | DS10, fully correct | Reasons right | Order right |
+|---|---|---|---|---|
+| 152M | 87.0% | 83.2% | 97.8% (DS7) | 87.6% |
+| Qwen | 95.5% | 95.9% | 99.8% (DS7) | 95.7% |
+
+The 152M model's main weakness is the order of its reasons.
+
+**Six more randomized test sets** (`build-more-tests`, settings `randomTest` -> `_more`, seed 50003). None repeats
+a prompt of an earlier set, and the template control passes all of them:
+- `crawl_ds1`, `crawl_ds2`, `crawl_ds10`: one set per crawled source (174, 421 and 334 prompts), up to 60 per case.
+- `close_calls`: 300 real prompts whose listed |z| differ by under 0.3.
+- `extreme`: 300 synthetic, one extreme regime each (1-100 sat or ~1,000 BTC amounts; minute or multi-year gaps;
+  80-200 transactions a week).
+- `max_shift`: 300 prompts, every one reworded, shuffled and for a non-baseline method.
+
+**DS7 v2 rebuilt on the teammate's Kaggle account is byte-identical** to the build on the user's account (every data
+file's SHA-256 equal, from commits 44a63f8 and a2c0d43): the build is deterministic across machines and code versions.
+
 ## 26 October 2026
 
 **Even stricter scoring, results by case, and a balanced real test set (user, ~22:00: "a bit too high... could be

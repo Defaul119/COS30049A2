@@ -342,7 +342,21 @@
     "shuffleShare": 0.5,
     "_balanced": "balanced.jsonl: every transaction of DS10's 27 unseen addresses and of DS2's test-split addresses explained (no per-address cap), duplicates and prompts already in the v1 test or real.jsonl removed, then up to balancedPerCase drawn from each case (explorer.assistant.case_of), so the easy cases cannot dominate the rate",
     "balancedSeed": 50002,
-    "balancedPerCase": 100
+    "balancedPerCase": 100,
+    "_more": "build-more-tests (user, 27 Oct: 'even more randomized datasets'): one balanced set per crawled source (DS1's, DS2's test-split addresses, DS10) with up to perSourcePerCase per case; close calls (real prompts whose listed |z| values differ by less than closeMargin, so the order is hardest); extreme synthetic values (one regime per transaction); maximal shift (every prompt reworded, shuffled and for a method other than the baseline). None repeats a prompt of an earlier test set.",
+    "moreSeed": 50003,
+    "perSourcePerCase": 60,
+    "closeMargin": 0.3,
+    "closePrompts": 300,
+    "extremePrompts": 300,
+    "maxShiftPrompts": 300,
+    "extremeRegimes": [
+      {"usualSatsLog10": [0, 2]},
+      {"usualSatsLog10": [9.5, 11]},
+      {"usualGapHoursLog10": [-2, -1]},
+      {"usualGapHoursLog10": [3.5, 4.6]},
+      {"usualCount": [80, 200]}
+    ]
   },
 
   "profiles": {
