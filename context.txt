@@ -4,6 +4,17 @@ Nothing runs locally: every GPU step runs on Kaggle (user, 26 Oct: "do NOT use t
 edits, pytest and git on the PC). Kaggle jobs: kaggle kernels status <owner>/<slug> (ROUND 2 STATUS below).
 =====================================================================================
 
+OVERNIGHT 26-27 OCT (user asleep; gave Claude full decision rights; ~20% of their Claude weekly limit left until
+27 Oct 12:00, so work lean). Checklist: docs/TODO.md. Done so far: showcase page (artifact HREXw8jomq4fTu838wyAYo,
+private: the user shares it), tie-aware order/reasons checks (round 1 fully correct DS7 152M 87.0% / Qwen 95.5%),
+six more test sets (build-more-tests; 10 randomized sets in all, data/processed/random_test/), PDF report
+(python tools/test_report.py -> reports/assistant_tests.pdf; rerun after new results), teammate's DS7 v2 build
+byte-identical to the user's. Pending on events: (1) honglquanganh text150m-data done -> push
+honglquanganh/cos30049a2-text150m-train (--accelerator NvidiaTeslaT4); (2) honglquanganh text150m-stage-data running
+(CPU); (3) Qwen v2 done -> bring home (runs/qwen3b-explain-v2, tables), re-score its answers with --rescore (its
+notebook used the older measures), push tritran72/cos30049a2-assistant-random-eval (10 sets x 3 writers, ~3 h),
+bring that home, rerun tools/test_report.py, commit.
+
 ROUND 2 STATUS (26 Oct evening; plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct has every change)
 - Accounts: tritran72 (user; ~/.kaggle/access_token) runs Qwen v2; honglquanganh (teammate Le Quang Anh Hoang, token
   in C:\Users\ADMIN\.kaggle\accounts\honglquanganh.token, KAGGLE_API_TOKEN=$(cat ...)) runs the 152M chain.
