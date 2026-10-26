@@ -1,0 +1,19 @@
+{
+  "id": "KAGGLE_USERNAME/cos30049a2-text150m-train",
+  "title": "cos30049a2-text150m-train",
+  "code_file": "text150m_train.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [
+    "KAGGLE_USERNAME/cos30049a2-text150m-base"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [
+    "KAGGLE_USERNAME/cos30049a2-text150m-data"
+  ],
+  "model_sources": []
+}
