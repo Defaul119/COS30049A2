@@ -1,0 +1,80 @@
+2026-10-26 18:05:24 INFO Step class-distribution started: /tmp/COS30049A2/explorer/cli.py class-distribution
+2026-10-26 18:05:40 INFO Elliptic (temporal, all features) logistic seed 71000: F1 0.5182, PR-AUC 0.3647
+2026-10-26 18:06:48 INFO Elliptic (temporal, all features) knn seed 71000: F1 0.6502, PR-AUC 0.6592
+2026-10-26 18:07:06 INFO Elliptic (temporal, all features) randomForest seed 71000: F1 0.8176, PR-AUC 0.7918
+2026-10-26 18:07:23 INFO Elliptic (temporal, all features) randomForest seed 71001: F1 0.8161, PR-AUC 0.7923
+2026-10-26 18:07:41 INFO Elliptic (temporal, all features) randomForest seed 71002: F1 0.8174, PR-AUC 0.7932
+2026-10-26 18:07:59 INFO Elliptic (temporal, all features) randomForest seed 71003: F1 0.8151, PR-AUC 0.7942
+2026-10-26 18:08:16 INFO Elliptic (temporal, all features) randomForest seed 71004: F1 0.8121, PR-AUC 0.7942
+2026-10-26 18:08:34 INFO Elliptic (temporal, all features) randomForest seed 71005: F1 0.8151, PR-AUC 0.7959
+2026-10-26 18:08:52 INFO Elliptic (temporal, all features) randomForest seed 71006: F1 0.8153, PR-AUC 0.7914
+2026-10-26 18:09:10 INFO Elliptic (temporal, all features) randomForest seed 71007: F1 0.8159, PR-AUC 0.7951
+2026-10-26 18:09:27 INFO Elliptic (temporal, all features) randomForest seed 71008: F1 0.8115, PR-AUC 0.7932
+2026-10-26 18:09:45 INFO Elliptic (temporal, all features) randomForest seed 71009: F1 0.8132, PR-AUC 0.7947
+2026-10-26 18:09:49 INFO Elliptic (temporal, all features) histGradientBoosting seed 71000: F1 0.7762, PR-AUC 0.7998
+2026-10-26 18:09:52 INFO Elliptic (temporal, all features) histGradientBoosting seed 71001: F1 0.7380, PR-AUC 0.7961
+2026-10-26 18:09:55 INFO Elliptic (temporal, all features) histGradientBoosting seed 71002: F1 0.7519, PR-AUC 0.8003
+2026-10-26 18:10:00 INFO Elliptic (temporal, all features) histGradientBoosting seed 71003: F1 0.7585, PR-AUC 0.7993
+2026-10-26 18:10:03 INFO Elliptic (temporal, all features) histGradientBoosting seed 71004: F1 0.7718, PR-AUC 0.8004
+2026-10-26 18:10:07 INFO Elliptic (temporal, all features) histGradientBoosting seed 71005: F1 0.7419, PR-AUC 0.7999
+2026-10-26 18:10:10 INFO Elliptic (temporal, all features) histGradientBoosting seed 71006: F1 0.7737, PR-AUC 0.8014
+2026-10-26 18:10:14 INFO Elliptic (temporal, all features) histGradientBoosting seed 71007: F1 0.7587, PR-AUC 0.8008
+2026-10-26 18:10:17 INFO Elliptic (temporal, all features) histGradientBoosting seed 71008: F1 0.7527, PR-AUC 0.8031
+2026-10-26 18:10:21 INFO Elliptic (temporal, all features) histGradientBoosting seed 71009: F1 0.7571, PR-AUC 0.8004
+2026-10-26 18:10:35 INFO BitcoinHeist (temporal) logistic seed 71000: F1 0.0116, PR-AUC 0.0050
+2026-10-26 18:11:55 INFO BitcoinHeist (temporal) knn seed 71000: F1 0.0209, PR-AUC 0.0246
+2026-10-26 18:13:58 INFO BitcoinHeist (temporal) randomForest seed 71000: F1 0.0713, PR-AUC 0.0525
+2026-10-26 18:16:04 INFO BitcoinHeist (temporal) randomForest seed 71001: F1 0.0703, PR-AUC 0.0529
+2026-10-26 18:18:09 INFO BitcoinHeist (temporal) randomForest seed 71002: F1 0.0699, PR-AUC 0.0525
+2026-10-26 18:20:23 INFO BitcoinHeist (temporal) randomForest seed 71003: F1 0.0702, PR-AUC 0.0525
+2026-10-26 18:22:28 INFO BitcoinHeist (temporal) randomForest seed 71004: F1 0.0701, PR-AUC 0.0505
+2026-10-26 18:24:37 INFO BitcoinHeist (temporal) randomForest seed 71005: F1 0.0701, PR-AUC 0.0509
+2026-10-26 18:26:45 INFO BitcoinHeist (temporal) randomForest seed 71006: F1 0.0705, PR-AUC 0.0510
+2026-10-26 18:28:49 INFO BitcoinHeist (temporal) randomForest seed 71007: F1 0.0704, PR-AUC 0.0516
+2026-10-26 18:30:50 INFO BitcoinHeist (temporal) randomForest seed 71008: F1 0.0704, PR-AUC 0.0515
+2026-10-26 18:32:48 INFO BitcoinHeist (temporal) randomForest seed 71009: F1 0.0700, PR-AUC 0.0512
+2026-10-26 18:32:57 INFO BitcoinHeist (temporal) histGradientBoosting seed 71000: F1 0.0236, PR-AUC 0.0459
+2026-10-26 18:33:07 INFO BitcoinHeist (temporal) histGradientBoosting seed 71001: F1 0.0238, PR-AUC 0.0307
+2026-10-26 18:33:16 INFO BitcoinHeist (temporal) histGradientBoosting seed 71002: F1 0.0242, PR-AUC 0.0458
+2026-10-26 18:33:26 INFO BitcoinHeist (temporal) histGradientBoosting seed 71003: F1 0.0230, PR-AUC 0.0394
+2026-10-26 18:33:35 INFO BitcoinHeist (temporal) histGradientBoosting seed 71004: F1 0.0232, PR-AUC 0.0306
+2026-10-26 18:33:45 INFO BitcoinHeist (temporal) histGradientBoosting seed 71005: F1 0.0232, PR-AUC 0.0452
+2026-10-26 18:33:54 INFO BitcoinHeist (temporal) histGradientBoosting seed 71006: F1 0.0230, PR-AUC 0.0334
+2026-10-26 18:34:04 INFO BitcoinHeist (temporal) histGradientBoosting seed 71007: F1 0.0234, PR-AUC 0.0281
+2026-10-26 18:34:13 INFO BitcoinHeist (temporal) histGradientBoosting seed 71008: F1 0.0239, PR-AUC 0.0293
+2026-10-26 18:34:23 INFO BitcoinHeist (temporal) histGradientBoosting seed 71009: F1 0.0244, PR-AUC 0.0412
+2026-10-26 18:47:07 INFO BitcoinHeist (random) logistic seed 71000: F1 0.0385, PR-AUC 0.0174
+2026-10-26 18:48:07 INFO BitcoinHeist (random) knn seed 71000: F1 0.1429, PR-AUC 0.0709
+2026-10-26 18:48:54 INFO BitcoinHeist (random) randomForest seed 71000: F1 0.2467, PR-AUC 0.1773
+2026-10-26 18:49:42 INFO BitcoinHeist (random) randomForest seed 71001: F1 0.2451, PR-AUC 0.1781
+2026-10-26 18:50:31 INFO BitcoinHeist (random) randomForest seed 71002: F1 0.2455, PR-AUC 0.1768
+2026-10-26 18:51:18 INFO BitcoinHeist (random) randomForest seed 71003: F1 0.2433, PR-AUC 0.1763
+2026-10-26 18:52:06 INFO BitcoinHeist (random) randomForest seed 71004: F1 0.2479, PR-AUC 0.1780
+2026-10-26 18:52:54 INFO BitcoinHeist (random) randomForest seed 71005: F1 0.2465, PR-AUC 0.1771
+2026-10-26 18:53:42 INFO BitcoinHeist (random) randomForest seed 71006: F1 0.2466, PR-AUC 0.1777
+2026-10-26 18:54:29 INFO BitcoinHeist (random) randomForest seed 71007: F1 0.2457, PR-AUC 0.1770
+2026-10-26 18:55:17 INFO BitcoinHeist (random) randomForest seed 71008: F1 0.2451, PR-AUC 0.1771
+2026-10-26 18:56:04 INFO BitcoinHeist (random) randomForest seed 71009: F1 0.2457, PR-AUC 0.1779
+2026-10-26 18:56:14 INFO BitcoinHeist (random) histGradientBoosting seed 71000: F1 0.2327, PR-AUC 0.1669
+2026-10-26 18:56:23 INFO BitcoinHeist (random) histGradientBoosting seed 71001: F1 0.2214, PR-AUC 0.1481
+2026-10-26 18:56:33 INFO BitcoinHeist (random) histGradientBoosting seed 71002: F1 0.2144, PR-AUC 0.1383
+2026-10-26 18:56:43 INFO BitcoinHeist (random) histGradientBoosting seed 71003: F1 0.2162, PR-AUC 0.1314
+2026-10-26 18:56:53 INFO BitcoinHeist (random) histGradientBoosting seed 71004: F1 0.2146, PR-AUC 0.1340
+2026-10-26 18:57:03 INFO BitcoinHeist (random) histGradientBoosting seed 71005: F1 0.2177, PR-AUC 0.1400
+2026-10-26 18:57:12 INFO BitcoinHeist (random) histGradientBoosting seed 71006: F1 0.2110, PR-AUC 0.1339
+2026-10-26 18:57:22 INFO BitcoinHeist (random) histGradientBoosting seed 71007: F1 0.2090, PR-AUC 0.1296
+2026-10-26 18:57:32 INFO BitcoinHeist (random) histGradientBoosting seed 71008: F1 0.2304, PR-AUC 0.1631
+2026-10-26 18:57:42 INFO BitcoinHeist (random) histGradientBoosting seed 71009: F1 0.2123, PR-AUC 0.1282
+2026-10-26 19:08:46 INFO Elliptic (temporal, all features)    logistic               F1 0.518 (seed sd 0.000) [0.491, 0.544]
+2026-10-26 19:08:46 INFO Elliptic (temporal, all features)    knn                    F1 0.650 (seed sd 0.000) [0.627, 0.672]
+2026-10-26 19:08:46 INFO Elliptic (temporal, all features)    randomForest           F1 0.815 (seed sd 0.002) [0.796, 0.835]
+2026-10-26 19:08:46 INFO Elliptic (temporal, all features)    histGradientBoosting   F1 0.758 (seed sd 0.013) [0.755, 0.795]
+2026-10-26 19:08:46 INFO BitcoinHeist (temporal)              logistic               F1 0.012 (seed sd 0.000) [0.011, 0.012]
+2026-10-26 19:08:46 INFO BitcoinHeist (temporal)              knn                    F1 0.021 (seed sd 0.000) [0.020, 0.022]
+2026-10-26 19:08:46 INFO BitcoinHeist (temporal)              randomForest           F1 0.070 (seed sd 0.000) [0.068, 0.075]
+2026-10-26 19:08:46 INFO BitcoinHeist (temporal)              histGradientBoosting   F1 0.024 (seed sd 0.000) [0.023, 0.024]
+2026-10-26 19:08:46 INFO BitcoinHeist (random)                logistic               F1 0.039 (seed sd 0.000) [0.037, 0.039]
+2026-10-26 19:08:46 INFO BitcoinHeist (random)                knn                    F1 0.143 (seed sd 0.000) [0.137, 0.148]
+2026-10-26 19:08:46 INFO BitcoinHeist (random)                randomForest           F1 0.246 (seed sd 0.001) [0.238, 0.256]
+2026-10-26 19:08:46 INFO BitcoinHeist (random)                histGradientBoosting   F1 0.218 (seed sd 0.008) [0.224, 0.241]
+2026-10-26 19:08:46 INFO Step class-distribution finished in 3802 s (exit 0)

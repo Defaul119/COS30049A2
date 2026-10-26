@@ -5,6 +5,13 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 27 October 2026 (overnight; the user gave Claude full decision rights)
 
+**Statistics campaign B: classifiers over 10 training seeds and a 1,000-draw test bootstrap**
+(`explorer/classify_distribution.py`, Kaggle CPU, 63 min; `stats_classifiers_{seeds,summary,paired}.csv`). The seed
+means reproduce the reported numbers; for example, the Elliptic random forest has F1 0.815, seed SD 0.002, 95% CI
+0.796-0.835. On Elliptic the forest beats every other model on all 1,000 paired resamples (over gradient boosting:
++0.042, CI 0.031-0.053). On BitcoinHeist the temporal split stays near chance for every model (best F1 0.070) and the
+random split reaches 0.246. Seed spread is small everywhere (SD 0.013 at most), so the model ranking is not luck.
+
 **Order and reasons checks made fair to rounding.** The prompt shows z to one decimal, and the template orders by
 the unrounded value. Two features can therefore show the same |z| in an order the model cannot know, and when nothing
 stands out the second and third largest can tie. `order_ok` and `reasons_ok` now accept any choice among features
