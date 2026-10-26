@@ -296,3 +296,53 @@ class DS7V2BuildTests(unittest.TestCase):
         # "Who writes the explanations?" is one of the frozen v1 test set's glossary prompts.
         with self.assertRaises(ValueError):
             self.build([{"topic": "assistant", "question": "Who writes the explanations?", "answer": "A.", "split": "train"}])
+
+
+class RandomTestSetTests(unittest.TestCase):
+    """explorer/random_test.py: synthetic transactions agree with themselves, and real prompts avoid the frozen test."""
+
+    def test_synthetic_values_usuals_and_z_agree_and_stay_in_bounds(self):
+        import math
+        import random
+
+        from explorer import random_test
+
+        p, rng, flag_z = SETTINGS["randomTest"], random.Random(1), random_test.flag_abs_z()
+        scale = {"F1": lambda v: math.log10(1 + v * 1e8), "F2": float, "F3": lambda v: math.log10(1 + v),
+                 "F4": lambda v: math.log10(max(v, 0.001))}
+        for _ in range(300):
+            tx = random_test.synthetic_tx(rng, flag_z)
+            for f in tx["features"]:
+                self.assertEqual(f["role"], random_test.role(f["z"], flag_z))
+                if f["z"] is not None and abs(f["z"]) > 0.01:
+                    self.assertEqual(f["z"] > 0, scale[f["id"]](f["value"]) > scale[f["id"]](f["usual"]), f)
+            values = {f["id"]: f["value"] for f in tx["features"]}
+            if values:
+                self.assertLessEqual(values["F1"], 10 ** p["maxSatsLog10"] / 1e8)
+                self.assertLessEqual(values["F3"], p["maxGapHours"])
+                self.assertLessEqual(values["F2"], p["maxCount"])
+            self.assertEqual(tx["flagged"], any(f["role"] == "flag" for f in tx["features"]))
+            random_test.record(tx, rng, "synthetic")  # raises if the reply fails the guardrail
+
+    def test_real_prompts_come_from_the_pool_and_never_from_the_frozen_test(self):
+        import json
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+
+        from explorer import random_test
+
+        frozen = ds7.frozen_prompts(ds7.PROJECT_ROOT / SETTINGS["ds7v2"]["frozenTest"])
+        v1_test = [json.loads(line) for line in open(ds7.PROJECT_ROOT / SETTINGS["ds7v2"]["frozenTest"], encoding="utf-8")]
+        v1_val = [json.loads(line) for line in open(ds7.OUT_DIR / "val.jsonl", encoding="utf-8")]
+        pool = [{**r, "template": r["messages"][-1]["content"]} for r in v1_val[:40]] + v1_test[:20]
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            (tmp / "pool.jsonl").write_text("".join(json.dumps(r) + "\n" for r in pool), encoding="utf-8")
+            small = {**SETTINGS["randomTest"], "realPrompts": 30, "syntheticPrompts": 10}
+            with mock.patch.dict(SETTINGS, {"randomTest": small}):
+                random_test.run_build_random_test(tmp / "pool.jsonl", tmp / "out")
+            real = [json.loads(line) for line in open(tmp / "out" / "real.jsonl", encoding="utf-8")]
+            synthetic = (tmp / "out" / "synthetic.jsonl").read_text(encoding="utf-8").splitlines()
+        self.assertEqual((len(real), len(synthetic)), (30, 10))
+        self.assertFalse({r["messages"][1]["content"] for r in real if r["kind"] != "unscored"} & frozen)

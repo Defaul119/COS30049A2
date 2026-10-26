@@ -37,6 +37,7 @@ Usage (from the repository root):
     python -m explorer.cli figures                # every report figure (PDF) and reports/tables/eda_tests.csv
     python -m explorer.cli build-ds7              # DS7 explanation pairs, split by source address
     python -m explorer.cli build-ds7 --out data/processed/ds7_v2 --settings ds7v2   # round 2's larger DS7
+    python -m explorer.cli build-random-test      # the Assistants' randomized test set (needs DS7 v2's test split)
     python -m explorer.cli label-check            # unsupervised scores against DS3/DS4 labels
     python -m explorer.cli reviewer-sheet         # 40 shuffled rows for the blind reviewer check
     python -m explorer.cli reviewer-score --ratings ratings_mkn.csv ratings_cdb.csv
@@ -283,6 +284,12 @@ def cmd_build_ds7(args: argparse.Namespace) -> int:
     return run_build_ds7(Path(args.out).resolve() if args.out else OUT_DIR, settings_key=args.settings)
 
 
+def cmd_build_random_test(args: argparse.Namespace) -> int:
+    from .random_test import DS7_V2_TEST, run_build_random_test
+
+    return run_build_random_test(Path(args.ds7_v2_test).resolve() if args.ds7_v2_test else DS7_V2_TEST)
+
+
 def cmd_reviewer_sheet(args: argparse.Namespace) -> int:
     from .reviewer import run_reviewer_sheet
 
@@ -473,6 +480,10 @@ def build_parser() -> argparse.ArgumentParser:
     build_ds7.add_argument("--out", help="output folder (default data/processed/ds7, round 1's frozen set)")
     build_ds7.add_argument("--settings", default="ds7", help="settings.json section: ds7 (round 1) or ds7v2 (round 2)")
     build_ds7.set_defaults(func=cmd_build_ds7)
+    random_test = steps.add_parser("build-random-test",
+                                   help="the Assistants' randomized test set: real held-out and synthetic prompts")
+    random_test.add_argument("--ds7-v2-test", help="DS7 v2's test.jsonl (default data/processed/ds7_v2/test.jsonl)")
+    random_test.set_defaults(func=cmd_build_random_test)
     steps.add_parser("reviewer-sheet", help="DS1: the blind sheet for the reviewer check, and its key").set_defaults(
         func=cmd_reviewer_sheet)
     reviewer_score = steps.add_parser("reviewer-score", help="DS1: reviewers' ratings against the flags; Cohen's kappa")

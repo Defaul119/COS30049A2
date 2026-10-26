@@ -1,0 +1,6 @@
+2026-10-26 21:24:05 INFO Step build-random-test started: C:\Users\ADMIN\COS30049A2\explorer\cli.py build-random-test
+2026-10-26 21:24:12 INFO Randomized test set: 500 real prompts (from 1401 eligible) and 500 synthetic: {'real': {'flagged': 122, 'not_flagged': 345, 'unscored': 33}, 'synthetic': {'flagged': 193, 'not_flagged': 273, 'unscored': 34}}
+2026-10-26 21:24:12 INFO Step build-random-test finished in 7 s (exit 0)
+2026-10-26 21:24:43 INFO Step build-random-test started: C:\Users\ADMIN\COS30049A2\explorer\cli.py build-random-test
+2026-10-26 21:24:44 INFO Randomized test set: 500 real prompts (from 1401 eligible) and 500 synthetic: {'real': {'flagged': 122, 'not_flagged': 345, 'unscored': 33}, 'synthetic': {'flagged': 187, 'not_flagged': 279, 'unscored': 34}}
+2026-10-26 21:24:44 INFO Step build-random-test finished in 2 s (exit 0)

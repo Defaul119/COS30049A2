@@ -11,6 +11,7 @@ account's name in a copy that is pushed (`kaggle kernels push -p <copy>`, run fr
     text150m_train      T4x2  fp16 check, benchmark, gate, continued pretraining chain  (the teammate's account)
     text150m_stage_data CPU   DS6 and DS7 v2 tokenized for the 152M stages               (with the 152M chain)
     text150m_stages     T4x2  chat and explanation stages, then every 152M evaluation    (with the 152M chain)
+    assistant_random_eval T4x2  Qwen rounds 1-2 and 152M round 1 on the randomized test set (the user's account)
 
 The 152M notebooks run on whichever account holds cos30049a2-text150m-base and the chain's outputs: a private
 notebook's output cannot be read from another account (26 Oct: the teammate's account needs phone verification
@@ -575,11 +576,15 @@ for cfg, out in STAGES:
 # Every evaluation the adoption rule needs, one queue per GPU; each test set writes its own tables.
 V2 = EXPLAIN / "model_best.pt"
 GLOSSARY = STAGE / "glossary_test.jsonl"
+RANDOM = SRC / "data" / "processed" / "random_test"
 EVALS = [("text150m_v2", V2, SRC / "data" / "processed" / "ds7" / "test.jsonl", ""),
+         ("text150m_v2", V2, RANDOM / "real.jsonl", "random_real"),
          ("text150m_v2", V2, SRC / "data" / "processed" / "ds10" / "explain.jsonl", "ds10"),
          ("text150m_v2", V2, GLOSSARY, "glossary"),
-         ("text150m", base / "text150m_explain_v1.pt", GLOSSARY, "glossary")]
-QUEUES = [[EVALS[0]], EVALS[1:]] if GPUS > 1 else [EVALS]
+         ("text150m", base / "text150m_explain_v1.pt", GLOSSARY, "glossary"),
+         ("text150m_v2", V2, RANDOM / "synthetic.jsonl", "random_synthetic")]
+# A test set's evaluations stay in one queue: they write one summary table.
+QUEUES = [EVALS[:2], EVALS[2:]] if GPUS > 1 else [EVALS]
 
 
 def run_queue(gpu, queue):
@@ -608,6 +613,75 @@ if (EXPLAIN / "model.pt").exists():
 ]
 
 
+RANDOM_EVAL_NB = [
+    ("markdown", r'''
+# COS30049 A2 - The randomized test set: both Explorer Assistants, both rounds (T4 x2)
+
+Scores Qwen 3B (round 2 and round 1) and the 152M model (round 1) on the randomized test set
+(`data/processed/random_test/`, `explorer/random_test.py`): 500 real prompts drawn from DS7 v2's held-out addresses
+and 500 synthetic transactions no writer has seen. The template's own rows were scored when the set was built; the
+152M model's round 2 is scored by `cos30049a2-text150m-stages`. One GPU takes the real prompts, the other the
+synthetic ones, so each summary table has one writer process.
+
+**Settings:** Accelerator **GPU T4 x2**, **Internet on**. **Inputs:** this account's notebooks
+`cos30049a2-qwen3b-explain-v2` (round 2's adapter) and `cos30049a2-qwen3b-explain` (round 1's), and dataset
+`cos30049a2-text150m-base` (the 152M round-1 writer). Then **Save Version -> Save & Run All (Commit)**; about an hour.
+'''),
+    ("code", f'''
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code and the test set this run uses; recorded in kaggle_run.json
+PINS = ["transformers==4.52.4", "peft==0.15.2", "bitsandbytes==0.48.1", "accelerate==1.7.0", "tokenizers==0.21.1"]
+EVAL_BATCH = 16       # prompts Qwen answers together
+'''),
+    ("code", SETUP + r'''
+if shutil.which("nvidia-smi") is None:
+    raise SystemExit("No GPU in this session: Settings panel -> Accelerator -> GPU T4 x2 (needs a verified phone).")
+GPUS = len(subprocess.run(["nvidia-smi", "-L"], capture_output=True, text=True).stdout.strip().splitlines())
+''' + CLONE + FIND),
+    ("code", r'''
+base = check_base()
+V2_ADAPTER = find_input("runs/qwen3b-explain-v2/adapter_best/adapter_config.json").parent
+V1_ADAPTER = find_input("runs/qwen3b-explain/adapter_best/adapter_config.json").parent
+RANDOM = SRC / "data" / "processed" / "random_test"
+manifest = json.loads((RANDOM / "manifest.json").read_text(encoding="utf-8"))
+for f in manifest["files"]:
+    assert sha256(SRC / f["path"]) == f["sha256"], f"{f['path']} differs from its manifest"
+WRITERS = [("qwen3b_v2", ["--config", str(SRC / "configs" / "qwen3b_explain_v2.json"), "--adapter", str(V2_ADAPTER),
+                          "--batch-size", str(EVAL_BATCH)]),
+           ("qwen3b", ["--config", str(SRC / "configs" / "qwen3b_explain.json"), "--adapter", str(V1_ADAPTER),
+                       "--batch-size", str(EVAL_BATCH)]),
+           ("text150m", ["--checkpoint", str(base / "text150m_explain_v1.pt")])]
+QUEUES = [[(w, a, "real") for w, a in WRITERS], [(w, a, "synthetic") for w, a in WRITERS]]
+if GPUS == 1:
+    QUEUES = [QUEUES[0] + QUEUES[1]]
+
+
+def run_queue(gpu, queue):
+    for model, args, part in queue:
+        sh(sys.executable, "-m", "lm.eval_explain", "--model", model, *args, "--test", str(RANDOM / f"{part}.jsonl"),
+           "--tag", f"random_{part}", log=f"eval-{model}-random_{part}.log",
+           env=dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu)))
+
+
+threads = [threading.Thread(target=run_queue, args=(gpu, q)) for gpu, q in enumerate(QUEUES)]
+for t in threads:
+    t.start()
+for t in threads:
+    t.join()
+tables = WORK / "reports" / "tables"
+tables.mkdir(parents=True, exist_ok=True)
+for f in (SRC / "reports" / "tables").glob("assistant_eval*random*.csv"):
+    shutil.copy(f, tables)
+(WORK / "kaggle_run.json").write_text(json.dumps({
+    "commit": COMMIT, "gpus": GPUS, "python": sys.version.split()[0], "session_hours": round((time.time() - T0) / 3600, 2),
+    "packages": {p: version(p) for p in ("torch", "transformers", "peft", "bitsandbytes", "tokenizers")},
+}, indent=2), encoding="utf-8")
+for p in sorted(tables.iterdir()):
+    print(p.name)
+'''),
+]
+
+
 def metadata(slug, code_file, gpu, kernel_sources, dataset_sources=()):
     return {"id": f"KAGGLE_USERNAME/{slug}", "title": slug, "code_file": code_file, "language": "python",
             "kernel_type": "notebook", "is_private": True, "enable_gpu": gpu, "enable_tpu": False,
@@ -626,7 +700,9 @@ for folder, slug, cells, gpu, sources, datasets in [
         ("text150m_stage_data", "cos30049a2-text150m-stage-data", STAGE_DATA_NB, False,
          ["KAGGLE_USERNAME/cos30049a2-qwen-data"], BASE),
         ("text150m_stages", "cos30049a2-text150m-stages", STAGES_NB, True,
-         ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data", "KAGGLE_USERNAME/cos30049a2-text150m-train"], BASE)]:
+         ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data", "KAGGLE_USERNAME/cos30049a2-text150m-train"], BASE),
+        ("assistant_random_eval", "cos30049a2-assistant-random-eval", RANDOM_EVAL_NB, True,
+         ["KAGGLE_USERNAME/cos30049a2-qwen3b-explain-v2", "KAGGLE_USERNAME/cos30049a2-qwen3b-explain"], BASE)]:
     out = REPO_DIR / "kaggle" / folder
     out.mkdir(parents=True, exist_ok=True)
     (out / f"{folder}.ipynb").write_text(json.dumps(nb(cells), indent=1, ensure_ascii=False) + "\n", encoding="utf-8")

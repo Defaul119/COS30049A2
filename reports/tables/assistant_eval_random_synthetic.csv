@@ -1,0 +1,2 @@
+model,prompts,number_faithfulness,limitation_line,banned_word_share,guardrail_pass,feature_coverage,rouge_l,direction_errors,rouge_own,copy_rate_flagged,glossary_prompts,glossary_banned_word_share,glossary_rouge_l,glossary_key_facts,glossary_correct,seconds,source
+template,500.0,1.0,1.0,0.0,1.0,1.0,1.0,0.0,0.8034005948882048,1.0,0.0,,,,,0.5,explorer.explain.template_explanation

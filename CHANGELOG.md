@@ -5,6 +5,19 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 26 October 2026
 
+**A randomized test set for both Assistants (user's request, evening).** `python -m explorer.cli build-random-test`
+(`explorer/random_test.py`, settings `randomTest`, seed 50000) writes `data/processed/random_test/`. It is
+built once and frozen, so all four writers (152M and Qwen, rounds 1 and 2) answer the same prompts:
+- `real.jsonl`: 500 prompts drawn from DS7 v2's test split (1,401 eligible). Both rounds split by the same address
+  hash, so neither trained on these addresses, and no prompt of the frozen v1 test set is included.
+- `synthetic.jsonl`: 500 made-up transactions. Each feature's z is drawn from a mixture (within usual,
+  contributing, flag-level, near 0, either sign), and its value follows from z, a drawn usual value and spread on
+  the feature's own scale, capped at 1,000 BTC, 5 years and 500 transactions a week. Roles and the flag follow
+  explorer.predict. 5% have no size comparison and 9% are unscored.
+
+The template control passes everything on both. The writers are scored on Kaggle: Qwen rounds 1-2 and the 152M
+round 1 by `kaggle/assistant_random_eval`, the 152M round 2 by `kaggle/text150m_stages`.
+
 **Glossary fact-checked by Claude instead of a team read-through (user's request, evening).** Every one of the 65
 answers was checked against the code, `config/settings.json` and the result tables. Fifty-nine were accurate.
 Six were corrected:

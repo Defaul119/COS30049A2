@@ -1,0 +1,2070 @@
+id,kind,answer,numbers_ok,limitation_ok,wording_ok,direction_ok,nonempty,passed,wrong_direction,coverage,rouge_l,rouge_own,copy,key_facts,banned
+rsyn-00131,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: under an hour since the previous transaction, against a usual under an hour.
+- Quieter week than usual: 12 transactions in the previous 7 days, against a usual 12.1 transactions.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00258,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 2 transactions in the previous 7 days, against a usual 24.0 transactions.
+- Lower ratio to the usual amount than usual: 0.036x the usual amount for this direction, against a usual 1.1x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00400,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Smaller amount than usual: 0.00016444 BTC moved, against a usual 0.00071661 BTC.
+- Lower ratio to the usual amount than usual: 0.2x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,,1.0,0.76,True,,
+rsyn-00032,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 5 days since the previous transaction, against a usual 42 hours.
+- Higher ratio to the usual amount than usual: 1.7x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,,1.0,0.7692307692307692,True,,
+rsyn-00285,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 26.1x the usual amount for this direction, against a usual 0.4x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7472527472527473,True,,
+rsyn-00266,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.0x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.676056338028169,True,,
+rsyn-00042,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.79887854 BTC moved, against a usual 0.09006045 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7012987012987014,True,,
+rsyn-00442,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 39 transactions in the previous 7 days, against a usual 24.7 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00197,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 6.3 transactions.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00145,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 11 days since the previous transaction, against a usual 13 hours.",True,True,True,True,True,True,,1.0,1.0,0.7719298245614036,True,,
+rsyn-00319,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.7x.
+- Smaller amount than usual: 0.00000003 BTC moved, against a usual 0.00028224 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8785046728971964,True,,
+rsyn-00351,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.04355786 BTC moved, against a usual 0.01108399 BTC.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00244,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 32.0x the usual amount for this direction, against a usual 0.9x.
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 25 days.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 14.3 transactions.
+- Larger amount than usual: 179.36081987 BTC moved, against a usual 5.60243853 BTC.",True,True,True,True,True,True,,1.0,1.0,0.9171974522292994,True,,
+rsyn-00124,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000188 BTC moved, against a usual 0.00013658 BTC.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 11 days.",True,True,True,True,True,True,,1.0,1.0,0.8470588235294118,True,,
+rsyn-00101,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 26 transactions in the previous 7 days, against a usual 5.7 transactions.
+- Longer gap than usual: 34 hours since the previous transaction, against a usual 2 hours.
+- Higher ratio to the usual amount than usual: 1.7x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,0.8085106382978724,True,,
+rsyn-00216,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 13 transactions in the previous 7 days, against a usual 16.0 transactions.
+- Higher ratio to the usual amount than usual: 2.2x the usual amount for this direction, against a usual 1.5x.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00441,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.1x the usual amount for this direction, against a usual 0.1x.
+- Longer gap than usual: 36 hours since the previous transaction, against a usual 12 hours.",True,True,True,True,True,True,,1.0,1.0,0.7961165048543688,True,,
+rsyn-00355,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 24 transactions in the previous 7 days, against a usual 20.9 transactions.
+- Lower ratio to the usual amount than usual: 1.0x the usual amount for this direction, against a usual 1.5x.",True,True,True,True,True,True,,,1.0,0.7999999999999999,True,,
+rsyn-00451,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000031 BTC moved, against a usual 0.00225788 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 1.7x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00206,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 2 transactions in the previous 7 days, against a usual 13.3 transactions.
+- Smaller amount than usual: 0.00009594 BTC moved, against a usual 0.001226 BTC.
+- Lower ratio to the usual amount than usual: 0.078x the usual amount for this direction, against a usual 1.6x.",True,True,True,True,True,True,,1.0,1.0,0.896,True,,
+rsyn-00118,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00012652 BTC moved, against a usual 0.00081096 BTC.
+- Busier week than usual: 18 transactions in the previous 7 days, against a usual 7.9 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7472527472527473,True,,
+rsyn-00271,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 1.1x the usual amount for this direction, against a usual 0.2x.
+- Quieter week than usual: 19 transactions in the previous 7 days, against a usual 20.2 transactions.",True,True,True,True,True,True,,,1.0,0.7777777777777778,True,,
+rsyn-00180,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 191.74340935 BTC moved, against a usual 3.30074794 BTC.
+- Higher ratio to the usual amount than usual: 58.1x the usual amount for this direction, against a usual 0.5x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8392857142857144,True,,
+rsyn-00378,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 238.9x the usual amount for this direction, against a usual 1.5x.
+- Longer gap than usual: 5 days since the previous transaction, against a usual 8 hours.
+- Larger amount than usual: 60.04393493 BTC moved, against a usual 0.25131078 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00248,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 17 hours since the previous transaction, against a usual 13 days.",True,True,True,True,True,True,,1.0,1.0,0.7719298245614036,True,,
+rsyn-00473,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00725973 BTC moved, against a usual 1.81136269 BTC.
+- Lower ratio to the usual amount than usual: 0.004x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.8571428571428572,True,,
+rsyn-00469,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 1.3x the usual amount for this direction, against a usual 0.1x.
+- Busier week than usual: 21 transactions in the previous 7 days, against a usual 15.8 transactions.",True,True,True,True,True,True,,,1.0,0.7777777777777778,True,,
+rsyn-00354,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 9.5x the usual amount for this direction, against a usual 0.9x.",True,True,True,True,True,True,,1.0,1.0,0.732394366197183,True,,
+rsyn-00304,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.3x the usual amount for this direction, against a usual 1.4x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8395061728395061,True,,
+rsyn-00453,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Smaller amount than usual: 0.00445883 BTC moved, against a usual 0.01655892 BTC.
+- Longer gap than usual: 3 hours since the previous transaction, against a usual under an hour.",True,True,True,True,True,True,,,1.0,0.7391304347826088,True,,
+rsyn-00187,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 8 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00388,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.22857142857142856,True,,
+rsyn-00302,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 25 hours since the previous transaction, against a usual 34 days.",True,True,True,True,True,True,,1.0,1.0,0.634920634920635,True,,
+rsyn-00086,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 4.8x the usual amount for this direction, against a usual 0.5x.
+- Busier week than usual: 32 transactions in the previous 7 days, against a usual 28.2 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00203,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 3.0x the usual amount for this direction, against a usual 0.3x.
+- Larger amount than usual: 0.00081941 BTC moved, against a usual 0.00027509 BTC.",True,True,True,True,True,True,,,1.0,0.7551020408163265,True,,
+rsyn-00452,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 35153.7x the usual amount for this direction, against a usual 0.1x.
+- Larger amount than usual: 1.78713076 BTC moved, against a usual 0.00005084 BTC.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 39.4 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.863013698630137,True,,
+rsyn-00113,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 3.8x the usual amount for this direction, against a usual 0.2x.
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 13.7 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00489,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 2.8x the usual amount for this direction, against a usual 0.6x.",True,True,True,True,True,True,,1.0,1.0,0.732394366197183,True,,
+rsyn-00119,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 36 transactions in the previous 7 days, against a usual 10.4 transactions.
+- Higher ratio to the usual amount than usual: 1.2x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,0.7706422018348623,True,,
+rsyn-00318,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.7x.
+- Smaller amount than usual: 0.00000008 BTC moved, against a usual 0.00016714 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8785046728971964,True,,
+rsyn-00219,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 50 transactions in the previous 7 days, against a usual 14.8 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7228915662650603,True,,
+rsyn-00215,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 2 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7948717948717949,True,,
+rsyn-00344,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 12 days since the previous transaction, against a usual 6 days.
+- Higher ratio to the usual amount than usual: 1.5x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,,1.0,0.7735849056603773,True,,
+rsyn-00141,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.0012711 BTC moved, against a usual 0.00620467 BTC.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 4 hours.",True,True,True,True,True,True,,1.0,1.0,0.7692307692307693,True,,
+rsyn-00308,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 68 transactions in the previous 7 days, against a usual 31.9 transactions.
+- Higher ratio to the usual amount than usual: 1.8x the usual amount for this direction, against a usual 0.2x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8130081300813008,True,,
+rsyn-00117,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 66 transactions in the previous 7 days, against a usual 21.3 transactions.
+- Higher ratio to the usual amount than usual: 5.5x the usual amount for this direction, against a usual 0.5x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8130081300813008,True,,
+rsyn-00071,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.009x the usual amount for this direction, against a usual 0.2x.
+- Smaller amount than usual: 0.0000812 BTC moved, against a usual 0.00923508 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7863247863247863,True,,
+rsyn-00126,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 898.3x the usual amount for this direction, against a usual 1.2x.
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 2 hours.
+- Larger amount than usual: 137.81542295 BTC moved, against a usual 0.15342617 BTC.
+- Busier week than usual: 10 transactions in the previous 7 days, against a usual 2.6 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9248554913294798,True,,
+rsyn-00424,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 1.0x the usual amount for this direction, against a usual 0.1x.
+- Quieter week than usual: 4 transactions in the previous 7 days, against a usual 5.5 transactions.",True,True,True,True,True,True,,,1.0,0.7735849056603775,True,,
+rsyn-00000,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 243 days since the previous transaction, against a usual under an hour.",True,True,True,True,True,True,,1.0,1.0,0.7796610169491526,True,,
+rsyn-00352,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 24.5x the usual amount for this direction, against a usual 1.0x.
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 17.2 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7706422018348623,True,,
+rsyn-00043,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00380,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 23 hours.
+- Lower ratio to the usual amount than usual: 0.1x the usual amount for this direction, against a usual 0.5x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7967479674796747,True,,
+rsyn-00231,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 193.18176775 BTC moved, against a usual 1.49609826 BTC.
+- Quieter week than usual: 27 transactions in the previous 7 days, against a usual 38.8 transactions.
+- Higher ratio to the usual amount than usual: 129.1x the usual amount for this direction, against a usual 1.1x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00082,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Shorter gap than usual: 8 days since the previous transaction, against a usual 16 days.
+- Busier week than usual: 3 transactions in the previous 7 days, against a usual 1.6 transactions.",True,True,True,True,True,True,,,1.0,0.7551020408163265,True,,
+rsyn-00256,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 16.0 transactions.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00217,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 29 days.",True,True,True,True,True,True,,1.0,1.0,0.634920634920635,True,,
+rsyn-00316,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.27007679 BTC moved, against a usual 0.0079615 BTC.
+- Higher ratio to the usual amount than usual: 33.9x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.7524752475247524,True,,
+rsyn-00239,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 829 days since the previous transaction, against a usual 5 hours.
+- Quieter week than usual: 4 transactions in the previous 7 days, against a usual 16.4 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8785046728971964,True,,
+rsyn-00479,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 10 transactions in the previous 7 days, against a usual 2.2 transactions.
+- Longer gap than usual: 54 days since the previous transaction, against a usual 3 hours.",True,True,True,True,True,True,,1.0,1.0,0.8571428571428572,True,,
+rsyn-00087,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 2 hours.
+- Higher ratio to the usual amount than usual: 2.1x the usual amount for this direction, against a usual 0.7x.",True,True,True,True,True,True,,,1.0,0.7735849056603775,True,,
+rsyn-00274,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 4 days since the previous transaction, against a usual under an hour.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00476,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 41 transactions in the previous 7 days, against a usual 36.7 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00161,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 41 days.",True,True,True,True,True,True,,1.0,1.0,0.634920634920635,True,,
+rsyn-00486,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Smaller amount than usual: 0.00499576 BTC moved, against a usual 0.02962693 BTC.
+- Busier week than usual: 34 transactions in the previous 7 days, against a usual 31.7 transactions.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00384,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 196.5x the usual amount for this direction, against a usual 0.1x.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 5.08948274 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8392857142857144,True,,
+rsyn-00078,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.00347657 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.2x.
+- Shorter gap than usual: 5 hours since the previous transaction, against a usual 27 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8187919463087249,True,,
+rsyn-00171,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.5405405405405405,True,,
+rsyn-00033,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.3x.
+- Busier week than usual: 58 transactions in the previous 7 days, against a usual 35.5 transactions.
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.00850513 BTC.
+- Longer gap than usual: 71 days since the previous transaction, against a usual 26 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8415300546448087,True,,
+rsyn-00307,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 0.0084821 BTC.
+- Higher ratio to the usual amount than usual: 117895.3x the usual amount for this direction, against a usual 1.6x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00089,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 28 days.",True,True,True,True,True,True,,1.0,1.0,0.6666666666666666,True,,
+rsyn-00335,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.14950198 BTC moved, against a usual 6.79449236 BTC.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 11 hours.
+- Lower ratio to the usual amount than usual: 0.022x the usual amount for this direction, against a usual 1.1x.",True,True,True,True,True,True,,1.0,1.0,0.8244274809160306,True,,
+rsyn-00293,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000059 BTC moved, against a usual 0.00004711 BTC.
+- Busier week than usual: 16 transactions in the previous 7 days, against a usual 9.0 transactions.
+- Longer gap than usual: 808 days since the previous transaction, against a usual 8 days.
+- Lower ratio to the usual amount than usual: 0.013x the usual amount for this direction, against a usual 0.5x.",True,True,True,True,True,True,,1.0,1.0,0.9171974522292994,True,,
+rsyn-00488,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.11764705882352941,True,,
+rsyn-00392,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 6 days since the previous transaction, against a usual 3 days.
+- Larger amount than usual: 0.00010156 BTC moved, against a usual 0.00006891 BTC.",True,True,True,True,True,True,,,1.0,0.7333333333333334,True,,
+rsyn-00173,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 2 days since the previous transaction, against a usual 13 days.",True,True,True,True,True,True,,1.0,1.0,0.6984126984126984,True,,
+rsyn-00325,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.00001389 BTC.
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 0.7x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8785046728971964,True,,
+rsyn-00425,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 161.5x the usual amount for this direction, against a usual 0.4x.
+- Busier week than usual: 7 transactions in the previous 7 days, against a usual 2.3 transactions.
+- Larger amount than usual: 177.82859291 BTC moved, against a usual 1.10086383 BTC.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 28 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9257142857142856,True,,
+rsyn-00290,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 8 hours.
+- Quieter week than usual: 28 transactions in the previous 7 days, against a usual 31.4 transactions.",True,True,True,True,True,True,,,1.0,0.7647058823529411,True,,
+rsyn-00422,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 17 days.
+- Higher ratio to the usual amount than usual: 10.6x the usual amount for this direction, against a usual 0.5x.
+- Quieter week than usual: 12 transactions in the previous 7 days, against a usual 21.5 transactions.",True,True,True,True,True,True,,1.0,1.0,0.8345323741007195,True,,
+rsyn-00112,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.2x the usual amount for this direction, against a usual 0.2x.
+- Quieter week than usual: 19 transactions in the previous 7 days, against a usual 36.3 transactions.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00090,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 84 transactions in the previous 7 days, against a usual 24.4 transactions.
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 6 days.
+- Higher ratio to the usual amount than usual: 4.2x the usual amount for this direction, against a usual 0.4x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8684210526315789,True,,
+rsyn-00048,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.22857142857142856,True,,
+rsyn-00403,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 6.6x the usual amount for this direction, against a usual 0.2x.
+- Larger amount than usual: 0.0748356 BTC moved, against a usual 0.0113329 BTC.",True,True,True,True,True,True,,1.0,1.0,0.8571428571428572,True,,
+rsyn-00399,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 4 transactions in the previous 7 days, against a usual 10.0 transactions.
+- Longer gap than usual: 17 days since the previous transaction, against a usual 17 hours.",True,True,True,True,True,True,,1.0,1.0,0.7628865979381444,True,,
+rsyn-00286,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 1.2x.
+- Smaller amount than usual: 0.00003625 BTC moved, against a usual 1.11097933 BTC.
+- Busier week than usual: 54 transactions in the previous 7 days, against a usual 36.2 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.863013698630137,True,,
+rsyn-00144,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 5 days.
+- Smaller amount than usual: 0.00000144 BTC moved, against a usual 0.0003252 BTC.
+- Lower ratio to the usual amount than usual: 0.004x the usual amount for this direction, against a usual 0.4x.",True,True,True,True,True,True,,1.0,1.0,0.896,True,,
+rsyn-00006,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 27146119.5x the usual amount for this direction, against a usual 1.4x.
+- Larger amount than usual: 457.51226292 BTC moved, against a usual 0.00001685 BTC.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 2 days.
+- Busier week than usual: 57 transactions in the previous 7 days, against a usual 23.8 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8743169398907105,True,,
+rsyn-00257,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.5405405405405405,True,,
+rsyn-00002,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.5405405405405405,True,,
+rsyn-00235,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 39 hours since the previous transaction, against a usual 2 hours.
+- Higher ratio to the usual amount than usual: 1.2x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,0.7766990291262137,True,,
+rsyn-00433,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Shorter gap than usual: 2 days since the previous transaction, against a usual 18 days.
+- Busier week than usual: 9 transactions in the previous 7 days, against a usual 7.3 transactions.",True,True,True,True,True,True,,,1.0,0.8478260869565217,True,,
+rsyn-00232,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.01211504 BTC moved, against a usual 0.05916618 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7450980392156864,True,,
+rsyn-00058,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 14 transactions in the previous 7 days, against a usual 24.5 transactions.
+- Higher ratio to the usual amount than usual: 4.3x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.7999999999999999,True,,
+rsyn-00267,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 34.9x the usual amount for this direction, against a usual 0.7x.",True,True,True,True,True,True,,1.0,1.0,0.676056338028169,True,,
+rsyn-00079,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 25 hours since the previous transaction, against a usual 9 hours.",True,True,True,True,True,True,,1.0,1.0,0.6567164179104478,True,,
+rsyn-00412,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 13 days since the previous transaction, against a usual 8 hours.",True,True,True,True,True,True,,1.0,1.0,0.6567164179104478,True,,
+rsyn-00454,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 2.0x the usual amount for this direction, against a usual 0.1x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8139534883720929,True,,
+rsyn-00225,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 327.1x the usual amount for this direction, against a usual 1.7x.
+- Larger amount than usual: 84.76024549 BTC moved, against a usual 0.25910968 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00179,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 35.3 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8266666666666665,True,,
+rsyn-00407,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 28.0x the usual amount for this direction, against a usual 0.2x.
+- Larger amount than usual: 1.26588766 BTC moved, against a usual 0.04516236 BTC.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 15.8 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9078014184397162,True,,
+rsyn-00432,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 36 transactions in the previous 7 days, against a usual 37.5 transactions.
+- Higher ratio to the usual amount than usual: 1.1x the usual amount for this direction, against a usual 0.8x.",True,True,True,True,True,True,,,1.0,0.7735849056603775,True,,
+rsyn-00105,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.075x the usual amount for this direction, against a usual 0.2x.
+- Smaller amount than usual: 0.00000496 BTC moved, against a usual 0.00006645 BTC.",True,True,True,True,True,True,,1.0,1.0,0.8571428571428572,True,,
+rsyn-00096,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual under an hour.
+- Higher ratio to the usual amount than usual: 3.0x the usual amount for this direction, against a usual 0.2x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00277,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 2.2x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,0.6933333333333334,True,,
+rsyn-00477,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00001595 BTC moved, against a usual 0.00033768 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7450980392156864,True,,
+rsyn-00414,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 48 transactions in the previous 7 days, against a usual 23.1 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00457,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 7.2x the usual amount for this direction, against a usual 1.6x.
+- Larger amount than usual: 0.02984935 BTC moved, against a usual 0.00414067 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7628865979381444,True,,
+rsyn-00298,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 4 days.",True,True,True,True,True,True,,1.0,1.0,0.6567164179104478,True,,
+rsyn-00104,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 14 hours.
+- Busier week than usual: 31 transactions in the previous 7 days, against a usual 16.6 transactions.
+- Lower ratio to the usual amount than usual: 0.047x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.8345323741007195,True,,
+rsyn-00389,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 3 days.
+- Higher ratio to the usual amount than usual: 1.4x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,0.7706422018348623,True,,
+rsyn-00458,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 4 transactions in the previous 7 days, against a usual 23.6 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6461538461538462,True,,
+rsyn-00455,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 8 hours since the previous transaction, against a usual 9 days.",True,True,True,True,True,True,,1.0,1.0,0.7719298245614036,True,,
+rsyn-00201,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 36 days since the previous transaction, against a usual 5 days.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00470,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 7.6 transactions.
+- Lower ratio to the usual amount than usual: 0.5x the usual amount for this direction, against a usual 1.3x.
+- Longer gap than usual: 14 hours since the previous transaction, against a usual 4 hours.
+- Smaller amount than usual: 0.00025627 BTC moved, against a usual 0.00051048 BTC.",True,True,True,True,True,True,,1.0,1.0,0.8263473053892215,True,,
+rsyn-00023,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.00082639 BTC moved, against a usual 0.00021592 BTC.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 11.9 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7472527472527473,True,,
+rsyn-00022,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 103 transactions in the previous 7 days, against a usual 29.4 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 12 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00142,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 1.1x.
+- Smaller amount than usual: 0.00000393 BTC moved, against a usual 0.0027505 BTC.
+- Longer gap than usual: 32 days since the previous transaction, against a usual 3 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8187919463087249,True,,
+rsyn-00348,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 204.7x the usual amount for this direction, against a usual 0.2x.
+- Larger amount than usual: 0.00450807 BTC moved, against a usual 0.00002202 BTC.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 12.9 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8211920529801325,True,,
+rsyn-00468,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 36 transactions in the previous 7 days, against a usual 27.4 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 9 hours.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00134,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1627.3x the usual amount for this direction, against a usual 1.9x.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 0.61452466 BTC.
+- Busier week than usual: 24 transactions in the previous 7 days, against a usual 14.7 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00133,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.3x the usual amount for this direction, against a usual 0.1x.
+- Longer gap than usual: 141 days since the previous transaction, against a usual 3 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.847457627118644,True,,
+rsyn-00247,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 30 transactions in the previous 7 days, against a usual 31.7 transactions.
+- Longer gap than usual: 7 hours since the previous transaction, against a usual 3 hours.",True,True,True,True,True,True,,,1.0,0.7551020408163265,True,,
+rsyn-00005,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 451.1x the usual amount for this direction, against a usual 0.8x.
+- Larger amount than usual: 2.71356955 BTC moved, against a usual 0.00601569 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8785046728971964,True,,
+rsyn-00467,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.5405405405405405,True,,
+rsyn-00081,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.2x the usual amount for this direction, against a usual 0.2x.
+- Quieter week than usual: 26 transactions in the previous 7 days, against a usual 38.3 transactions.",True,True,True,True,True,True,,1.0,1.0,0.8686868686868686,True,,
+rsyn-00230,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.00028035 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.2x.
+- Busier week than usual: 34 transactions in the previous 7 days, against a usual 26.4 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 23 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9257142857142856,True,,
+rsyn-00346,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 256 days since the previous transaction, against a usual 6 days.",True,True,True,True,True,True,,1.0,1.0,0.6567164179104478,True,,
+rsyn-00121,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.011x the usual amount for this direction, against a usual 0.3x.
+- Smaller amount than usual: 0.00006314 BTC moved, against a usual 0.00597796 BTC.
+- Quieter week than usual: 25 transactions in the previous 7 days, against a usual 31.7 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9078014184397162,True,,
+rsyn-00485,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 38 transactions in the previous 7 days, against a usual 32.9 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6666666666666666,True,,
+rsyn-00437,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.021x the usual amount for this direction, against a usual 1.7x.
+- Smaller amount than usual: 0.00581899 BTC moved, against a usual 0.27849604 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7628865979381444,True,,
+rsyn-00120,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 108 transactions in the previous 7 days, against a usual 21.3 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 25 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7899159663865546,True,,
+rsyn-00138,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 104 transactions in the previous 7 days, against a usual 23.9 transactions.
+- Higher ratio to the usual amount than usual: 5.9x the usual amount for this direction, against a usual 0.1x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8130081300813008,True,,
+rsyn-00365,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 2.4x the usual amount for this direction, against a usual 0.2x.
+- Quieter week than usual: 24 transactions in the previous 7 days, against a usual 28.1 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7999999999999999,True,,
+rsyn-00016,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.025x the usual amount for this direction, against a usual 1.6x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00343,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 21.9x the usual amount for this direction, against a usual 0.3x.
+- Larger amount than usual: 0.00227293 BTC moved, against a usual 0.00010359 BTC.
+- Longer gap than usual: 438 days since the previous transaction, against a usual 2 days.
+- Busier week than usual: 43 transactions in the previous 7 days, against a usual 31.6 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8729281767955802,True,,
+rsyn-00213,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 7 days since the previous transaction, against a usual 2 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7228915662650603,True,,
+rsyn-00364,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 16.2x the usual amount for this direction, against a usual 0.5x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00360,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Lower ratio to the usual amount than usual: 0.6x the usual amount for this direction, against a usual 1.7x.
+- Smaller amount than usual: 0.00179588 BTC moved, against a usual 0.00310739 BTC.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00130,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.18912006 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.5x.
+- Quieter week than usual: 10 transactions in the previous 7 days, against a usual 18.1 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00268,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 41 transactions in the previous 7 days, against a usual 31.2 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6666666666666666,True,,
+rsyn-00402,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.009x the usual amount for this direction, against a usual 0.9x.
+- Smaller amount than usual: 0.00000021 BTC moved, against a usual 0.00002346 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7628865979381444,True,,
+rsyn-00448,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 2.1x the usual amount for this direction, against a usual 0.1x.
+- Busier week than usual: 37 transactions in the previous 7 days, against a usual 27.3 transactions.
+- Longer gap than usual: 11 days since the previous transaction, against a usual 3 days.",True,True,True,True,True,True,,1.0,1.0,0.832116788321168,True,,
+rsyn-00338,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 24 transactions in the previous 7 days, against a usual 35.1 transactions.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 0.8076832 BTC.
+- Higher ratio to the usual amount than usual: 1238.1x the usual amount for this direction, against a usual 1.3x.",True,True,True,True,True,True,,1.0,1.0,0.8244274809160306,True,,
+rsyn-00305,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000047 BTC moved, against a usual 0.09590932 BTC.
+- Busier week than usual: 42 transactions in the previous 7 days, against a usual 17.2 transactions.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.6x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.863013698630137,True,,
+rsyn-00212,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 190 days since the previous transaction, against a usual 8 hours.",True,True,True,True,True,True,,1.0,1.0,0.7719298245614036,True,,
+rsyn-00097,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 0.8x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.732394366197183,True,,
+rsyn-00374,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 18.3 transactions.
+- Larger amount than usual: 0.0092819 BTC moved, against a usual 0.00065598 BTC.
+- Higher ratio to the usual amount than usual: 14.1x the usual amount for this direction, against a usual 1.6x.",True,True,True,True,True,True,,1.0,1.0,0.8244274809160306,True,,
+rsyn-00238,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.5x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,0.732394366197183,True,,
+rsyn-00336,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 55 transactions in the previous 7 days, against a usual 26.5 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6666666666666666,True,,
+rsyn-00221,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 22 transactions in the previous 7 days, against a usual 9.4 transactions.
+- Lower ratio to the usual amount than usual: 0.007x the usual amount for this direction, against a usual 0.4x.
+- Smaller amount than usual: 0.00002542 BTC moved, against a usual 0.00381953 BTC.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00278,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 1.0x.
+- Smaller amount than usual: 0.00011151 BTC moved, against a usual 2.03520446 BTC.
+- Longer gap than usual: 3 days since the previous transaction, against a usual 6 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8187919463087249,True,,
+rsyn-00010,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 6 hours.",True,True,True,True,True,True,,1.0,1.0,0.6666666666666666,True,,
+rsyn-00283,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 4 transactions in the previous 7 days, against a usual 8.3 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6461538461538462,True,,
+rsyn-00299,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 34.3 transactions.
+- Smaller amount than usual: 0.00807585 BTC moved, against a usual 0.05903664 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00110,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 47 days since the previous transaction, against a usual 5 days.
+- Lower ratio to the usual amount than usual: 0.6x the usual amount for this direction, against a usual 1.7x.
+- Quieter week than usual: 9 transactions in the previous 7 days, against a usual 18.4 transactions.",True,True,True,True,True,True,,1.0,1.0,0.832116788321168,True,,
+rsyn-00397,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 0.2x.
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.00001601 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00014,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 13 transactions in the previous 7 days, against a usual 35.3 transactions.
+- Higher ratio to the usual amount than usual: 0.9x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.7999999999999999,True,,
+rsyn-00409,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 6 days since the previous transaction, against a usual 34 days.",True,True,True,True,True,True,,1.0,1.0,0.7719298245614036,True,,
+rsyn-00208,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.5405405405405405,True,,
+rsyn-00444,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 2.5 transactions.
+- Shorter gap than usual: 12 days since the previous transaction, against a usual 35 days.",True,True,True,True,True,True,,,1.0,0.76,True,,
+rsyn-00282,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 45 transactions in the previous 7 days, against a usual 28.7 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00339,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 2.1x the usual amount for this direction, against a usual 0.3x.
+- Shorter gap than usual: 14 hours since the previous transaction, against a usual 22 hours.",True,True,True,True,True,True,,,1.0,0.7735849056603773,True,,
+rsyn-00192,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.11764705882352941,True,,
+rsyn-00015,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.11764705882352941,True,,
+rsyn-00391,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 13 hours since the previous transaction, against a usual 2 hours.
+- Higher ratio to the usual amount than usual: 0.6x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00390,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 6.33547064 BTC moved, against a usual 0.00182611 BTC.
+- Higher ratio to the usual amount than usual: 3469.4x the usual amount for this direction, against a usual 0.4x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00020,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 23 transactions in the previous 7 days, against a usual 1.6 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7228915662650603,True,,
+rsyn-00269,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 40 hours since the previous transaction, against a usual 4 hours.
+- Quieter week than usual: 11 transactions in the previous 7 days, against a usual 15.3 transactions.",True,True,True,True,True,True,,,1.0,0.76,True,,
+rsyn-00008,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.3333333333333333,True,,
+rsyn-00350,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 41 transactions in the previous 7 days, against a usual 37.3 transactions.
+- Larger amount than usual: 0.02668028 BTC moved, against a usual 0.01133078 BTC.",True,True,True,True,True,True,,,1.0,0.7692307692307692,True,,
+rsyn-00359,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 5 transactions in the previous 7 days, against a usual 8.9 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,,,1.0,0.787878787878788,True,,
+rsyn-00165,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 430.1x the usual amount for this direction, against a usual 0.2x.
+- Shorter gap than usual: 2 hours since the previous transaction, against a usual 3 days.
+- Larger amount than usual: 602.60988334 BTC moved, against a usual 1.40103223 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00480,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00017435 BTC moved, against a usual 8.19047437 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 1.5x.
+- Longer gap than usual: 12 days since the previous transaction, against a usual 7 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.861111111111111,True,,
+rsyn-00320,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00021,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 30.4 transactions.
+- Smaller amount than usual: 0.00020199 BTC moved, against a usual 0.03946631 BTC.
+- Lower ratio to the usual amount than usual: 0.005x the usual amount for this direction, against a usual 0.2x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8211920529801325,True,,
+rsyn-00051,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 2 days.
+- Quieter week than usual: 18 transactions in the previous 7 days, against a usual 24.2 transactions.
+- Smaller amount than usual: 0.00000221 BTC moved, against a usual 0.00012855 BTC.
+- Lower ratio to the usual amount than usual: 0.017x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,0.8284023668639053,True,,
+rsyn-00233,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 9206302.6x the usual amount for this direction, against a usual 0.3x.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 0.00010862 BTC.
+- Busier week than usual: 17 transactions in the previous 7 days, against a usual 6.1 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8456375838926175,True,,
+rsyn-00440,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 0.8x the usual amount for this direction, against a usual 0.3x.
+- Busier week than usual: 36 transactions in the previous 7 days, against a usual 35.0 transactions.",True,True,True,True,True,True,,,1.0,0.7999999999999999,True,,
+rsyn-00018,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 2 hours.
+- Quieter week than usual: 8 transactions in the previous 7 days, against a usual 10.5 transactions.",True,True,True,True,True,True,,,1.0,0.7647058823529411,True,,
+rsyn-00313,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 20 transactions in the previous 7 days, against a usual 26.0 transactions.
+- Smaller amount than usual: 0.00009216 BTC moved, against a usual 0.0003638 BTC.",True,True,True,True,True,True,,,1.0,0.7391304347826088,True,,
+rsyn-00295,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 12.1 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7796610169491526,True,,
+rsyn-00431,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 8 days.
+- Smaller amount than usual: 0.00203963 BTC moved, against a usual 0.00381147 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7747747747747747,True,,
+rsyn-00063,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.3x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,0.7999999999999999,True,,
+rsyn-00315,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 30 transactions in the previous 7 days, against a usual 21.7 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6666666666666666,True,,
+rsyn-00073,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 37 hours since the previous transaction, against a usual 7 hours.
+- Higher ratio to the usual amount than usual: 1.3x the usual amount for this direction, against a usual 0.4x.",True,True,True,True,True,True,,,1.0,0.8571428571428572,True,,
+rsyn-00036,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 9.0x the usual amount for this direction, against a usual 0.1x.
+- Larger amount than usual: 0.05207487 BTC moved, against a usual 0.00578161 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00027,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 543 days since the previous transaction, against a usual 14 days.",True,True,True,True,True,True,,1.0,1.0,0.634920634920635,True,,
+rsyn-00252,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 410.9x the usual amount for this direction, against a usual 0.4x.
+- Busier week than usual: 22 transactions in the previous 7 days, against a usual 13.9 transactions.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 2.43375983 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.863013698630137,True,,
+rsyn-00465,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 39 days since the previous transaction, against a usual 2 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7228915662650603,True,,
+rsyn-00434,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 4 hours since the previous transaction, against a usual 9 days.",True,True,True,True,True,True,,1.0,1.0,0.634920634920635,True,,
+rsyn-00245,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Smaller amount than usual: 0.00000493 BTC moved, against a usual 0.00002179 BTC.
+- Busier week than usual: 37 transactions in the previous 7 days, against a usual 35.2 transactions.",True,True,True,True,True,True,,,1.0,0.7446808510638298,True,,
+rsyn-00394,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 51.92216756 BTC moved, against a usual 0.04219799 BTC.
+- Higher ratio to the usual amount than usual: 1230.4x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.7524752475247524,True,,
+rsyn-00324,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 7 transactions in the previous 7 days, against a usual 9.7 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual under an hour.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00209,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.4x the usual amount for this direction, against a usual 1.8x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00069,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.3333333333333333,True,,
+rsyn-00083,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.100x the usual amount for this direction, against a usual 1.2x.
+- Longer gap than usual: 41 days since the previous transaction, against a usual 40 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7967479674796747,True,,
+rsyn-00497,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 1.9x the usual amount for this direction, against a usual 0.4x.
+- Larger amount than usual: 0.89865844 BTC moved, against a usual 0.47918288 BTC.",True,True,True,True,True,True,,,1.0,0.76,True,,
+rsyn-00264,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00186,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.5405405405405405,True,,
+rsyn-00375,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 2.8x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,0.732394366197183,True,,
+rsyn-00276,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 32 transactions in the previous 7 days, against a usual 12.8 transactions.
+- Smaller amount than usual: 0.00020861 BTC moved, against a usual 0.00062492 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7692307692307693,True,,
+rsyn-00175,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 33 hours.
+- Higher ratio to the usual amount than usual: 0.6x the usual amount for this direction, against a usual 0.2x.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 19.1 transactions.
+- Smaller amount than usual: 0.00002751 BTC moved, against a usual 0.00004578 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8743169398907105,True,,
+rsyn-00481,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Shorter gap than usual: 29 hours since the previous transaction, against a usual 2 days.
+- Quieter week than usual: 19 transactions in the previous 7 days, against a usual 19.3 transactions.",True,True,True,True,True,True,,,1.0,0.76,True,,
+rsyn-00423,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 7 days since the previous transaction, against a usual 4 hours.
+- Larger amount than usual: 0.25339937 BTC moved, against a usual 0.10394781 BTC.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 5.5 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00398,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 16 transactions in the previous 7 days, against a usual 17.6 transactions.
+- Smaller amount than usual: 0.0036834 BTC moved, against a usual 0.00795531 BTC.",True,True,True,True,True,True,,,1.0,0.7692307692307692,True,,
+rsyn-00035,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 0.6x the usual amount for this direction, against a usual 0.1x.
+- Quieter week than usual: 10 transactions in the previous 7 days, against a usual 14.2 transactions.",True,True,True,True,True,True,,,1.0,0.7999999999999999,True,,
+rsyn-00157,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 0.0207402 BTC.
+- Longer gap than usual: 91 days since the previous transaction, against a usual 27 hours.
+- Higher ratio to the usual amount than usual: 48215.5x the usual amount for this direction, against a usual 0.1x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8435374149659863,True,,
+rsyn-00312,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 18 transactions in the previous 7 days, against a usual 32.7 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6666666666666666,True,,
+rsyn-00291,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 12 days.",True,True,True,True,True,True,,1.0,1.0,0.7796610169491526,True,,
+rsyn-00202,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 8 hours since the previous transaction, against a usual 23 days.
+- Higher ratio to the usual amount than usual: 8.5x the usual amount for this direction, against a usual 0.8x.
+- Larger amount than usual: 0.15377432 BTC moved, against a usual 0.0180854 BTC.",True,True,True,True,True,True,,1.0,1.0,0.8217054263565892,True,,
+rsyn-00001,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 12 transactions in the previous 7 days, against a usual 23.5 transactions.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00472,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 5430.3x the usual amount for this direction, against a usual 0.5x.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 0.18415132 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00483,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 21.7 transactions.
+- Shorter gap than usual: 7 hours since the previous transaction, against a usual 35 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8785046728971964,True,,
+rsyn-00475,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.006x the usual amount for this direction, against a usual 0.9x.
+- Quieter week than usual: 17 transactions in the previous 7 days, against a usual 32.1 transactions.
+- Smaller amount than usual: 0.00019975 BTC moved, against a usual 0.03238338 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8211920529801325,True,,
+rsyn-00196,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 16.8 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00172,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Smaller amount than usual: 0.00001337 BTC moved, against a usual 0.00002461 BTC.
+- Busier week than usual: 22 transactions in the previous 7 days, against a usual 20.2 transactions.",True,True,True,True,True,True,,,1.0,0.7692307692307692,True,,
+rsyn-00151,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 6.63254115 BTC moved, against a usual 0.0074992 BTC.
+- Higher ratio to the usual amount than usual: 884.4x the usual amount for this direction, against a usual 0.7x.
+- Quieter week than usual: 26 transactions in the previous 7 days, against a usual 35.1 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.863013698630137,True,,
+rsyn-00195,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 38 transactions in the previous 7 days, against a usual 1.7 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8266666666666665,True,,
+rsyn-00009,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 23 transactions in the previous 7 days, against a usual 4.9 transactions.
+- Smaller amount than usual: 0.00031025 BTC moved, against a usual 0.29320511 BTC.
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 0.2x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00428,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 15 transactions in the previous 7 days, against a usual 31.7 transactions.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00163,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000032 BTC moved, against a usual 0.00107501 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.5x.
+- Quieter week than usual: 18 transactions in the previous 7 days, against a usual 37.2 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8211920529801325,True,,
+rsyn-00368,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00200688 BTC moved, against a usual 0.00326566 BTC.",True,True,True,True,True,True,,1.0,1.0,0.5964912280701754,True,,
+rsyn-00169,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.035x the usual amount for this direction, against a usual 0.7x.
+- Smaller amount than usual: 0.00163346 BTC moved, against a usual 0.0471218 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7835051546391752,True,,
+rsyn-00249,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.21816785 BTC moved, against a usual 0.00010662 BTC.
+- Higher ratio to the usual amount than usual: 2046.2x the usual amount for this direction, against a usual 1.7x.
+- Shorter gap than usual: 10 hours since the previous transaction, against a usual 10 days.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 9.1 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8415300546448087,True,,
+rsyn-00030,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 1.3x.
+- Smaller amount than usual: 0.0001887 BTC moved, against a usual 3.30265099 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00347,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 10 hours since the previous transaction, against a usual 19 days.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00443,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 34 hours since the previous transaction, against a usual 4 hours.",True,True,True,True,True,True,,1.0,1.0,0.634920634920635,True,,
+rsyn-00328,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00003159 BTC moved, against a usual 1.15650407 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.4x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00385,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 18.5 transactions.
+- Higher ratio to the usual amount than usual: 214.5x the usual amount for this direction, against a usual 0.2x.
+- Larger amount than usual: 817.36571837 BTC moved, against a usual 3.80993049 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00140,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 3 hours since the previous transaction, against a usual 3 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7228915662650603,True,,
+rsyn-00204,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual under an hour.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00259,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 101.6496239 BTC moved, against a usual 0.00558984 BTC.
+- Higher ratio to the usual amount than usual: 18184.7x the usual amount for this direction, against a usual 0.7x.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 3 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9078014184397162,True,,
+rsyn-00159,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.1x the usual amount for this direction, against a usual 0.3x.
+- Smaller amount than usual: 0.00005975 BTC moved, against a usual 0.00045366 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7524752475247524,True,,
+rsyn-00013,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.4x the usual amount for this direction, against a usual 1.9x.
+- Quieter week than usual: 11 transactions in the previous 7 days, against a usual 20.8 transactions.",True,True,True,True,True,True,,1.0,1.0,0.780952380952381,True,,
+rsyn-00136,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 21 transactions in the previous 7 days, against a usual 9.4 transactions.
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 30 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8785046728971964,True,,
+rsyn-00340,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00349,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 9 days since the previous transaction, against a usual 4 days.
+- Busier week than usual: 6 transactions in the previous 7 days, against a usual 3.2 transactions.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00228,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 4 days.
+- Lower ratio to the usual amount than usual: 0.5x the usual amount for this direction, against a usual 1.5x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00435,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 171.2x the usual amount for this direction, against a usual 0.4x.
+- Larger amount than usual: 0.00171832 BTC moved, against a usual 0.00001004 BTC.
+- Longer gap than usual: 2 days since the previous transaction, against a usual 2 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.861111111111111,True,,
+rsyn-00167,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 4.7x the usual amount for this direction, against a usual 0.3x.
+- Shorter gap than usual: 1 hour since the previous transaction, against a usual 34 hours.",True,True,True,True,True,True,,1.0,1.0,0.8659793814432989,True,,
+rsyn-00093,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Larger amount than usual: 0.27810271 BTC moved, against a usual 0.07859318 BTC.
+- Higher ratio to the usual amount than usual: 3.5x the usual amount for this direction, against a usual 0.8x.",True,True,True,True,True,True,,,1.0,0.76,True,,
+rsyn-00158,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 16 transactions in the previous 7 days, against a usual 7.6 transactions.
+- Longer gap than usual: 6 hours since the previous transaction, against a usual under an hour.",True,True,True,True,True,True,,1.0,1.0,0.7878787878787878,True,,
+rsyn-00125,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 7 transactions in the previous 7 days, against a usual 3.9 transactions.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00223,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 32.7 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00034,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 20 hours.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00310,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 29.1 transactions.
+- Shorter gap than usual: 2 hours since the previous transaction, against a usual 22 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8785046728971964,True,,
+rsyn-00044,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 116 transactions in the previous 7 days, against a usual 32.2 transactions.
+- Higher ratio to the usual amount than usual: 1.7x the usual amount for this direction, against a usual 0.1x.
+- Longer gap than usual: 9 days since the previous transaction, against a usual 40 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8516129032258064,True,,
+rsyn-00279,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 21.2x the usual amount for this direction, against a usual 0.3x.
+- Busier week than usual: 48 transactions in the previous 7 days, against a usual 38.7 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8869565217391304,True,,
+rsyn-00487,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00114891 BTC moved, against a usual 0.0962547 BTC.
+- Lower ratio to the usual amount than usual: 0.012x the usual amount for this direction, against a usual 0.4x.",True,True,True,True,True,True,,1.0,1.0,0.7628865979381444,True,,
+rsyn-00358,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.0x the usual amount for this direction, against a usual 0.1x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8395061728395061,True,,
+rsyn-00106,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.010x the usual amount for this direction, against a usual 1.4x.
+- Quieter week than usual: 25 transactions in the previous 7 days, against a usual 31.5 transactions.
+- Smaller amount than usual: 0.00000056 BTC moved, against a usual 0.00005487 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8211920529801325,True,,
+rsyn-00341,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.3333333333333333,True,,
+rsyn-00214,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 19 transactions in the previous 7 days, against a usual 4.5 transactions.
+- Higher ratio to the usual amount than usual: 2.4x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,0.7706422018348623,True,,
+rsyn-00262,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.11764705882352941,True,,
+rsyn-00148,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 86 transactions in the previous 7 days, against a usual 28.0 transactions.
+- Higher ratio to the usual amount than usual: 0.7x the usual amount for this direction, against a usual 0.1x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00367,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 102 transactions in the previous 7 days, against a usual 8.8 transactions.
+- Larger amount than usual: 0.60012027 BTC moved, against a usual 0.00195753 BTC.
+- Higher ratio to the usual amount than usual: 306.6x the usual amount for this direction, against a usual 1.2x.
+- Shorter gap than usual: 3 hours since the previous transaction, against a usual 7 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9248554913294798,True,,
+rsyn-00227,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 126.0x the usual amount for this direction, against a usual 0.5x.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 7.93961382 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8392857142857144,True,,
+rsyn-00366,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 8.7 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6666666666666666,True,,
+rsyn-00109,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 19 transactions in the previous 7 days, against a usual 32.9 transactions.
+- Higher ratio to the usual amount than usual: 1.1x the usual amount for this direction, against a usual 0.5x.",True,True,True,True,True,True,,1.0,1.0,0.7999999999999999,True,,
+rsyn-00261,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.5405405405405405,True,,
+rsyn-00275,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.5405405405405405,True,,
+rsyn-00395,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 260.4x the usual amount for this direction, against a usual 1.0x.
+- Larger amount than usual: 143.58782142 BTC moved, against a usual 0.55135882 BTC.
+- Shorter gap than usual: 33 hours since the previous transaction, against a usual 4 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.906474820143885,True,,
+rsyn-00178,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 40067.0x the usual amount for this direction, against a usual 0.3x.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 0.02495822 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00263,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 18.3x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,0.676056338028169,True,,
+rsyn-00224,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Smaller amount than usual: 0.00477234 BTC moved, against a usual 0.02681827 BTC.
+- Busier week than usual: 12 transactions in the previous 7 days, against a usual 2.6 transactions.",True,True,True,True,True,True,,,1.0,0.7446808510638298,True,,
+rsyn-00321,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 12433.2x the usual amount for this direction, against a usual 1.0x.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 0.0804296 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00357,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 45 hours since the previous transaction, against a usual 9 hours.
+- Busier week than usual: 3 transactions in the previous 7 days, against a usual 2.0 transactions.",True,True,True,True,True,True,,,1.0,0.7835051546391754,True,,
+rsyn-00045,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 13 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00046,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 57 transactions in the previous 7 days, against a usual 16.1 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00401,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 9.06973241 BTC moved, against a usual 0.06161491 BTC.
+- Higher ratio to the usual amount than usual: 147.2x the usual amount for this direction, against a usual 1.4x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00152,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00001175 BTC moved, against a usual 0.00012973 BTC.
+- Busier week than usual: 29 transactions in the previous 7 days, against a usual 18.1 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7368421052631581,True,,
+rsyn-00466,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 8 transactions in the previous 7 days, against a usual 16.6 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7796610169491526,True,,
+rsyn-00070,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 26 days.
+- Smaller amount than usual: 0.00000051 BTC moved, against a usual 0.00002719 BTC.
+- Lower ratio to the usual amount than usual: 0.019x the usual amount for this direction, against a usual 0.5x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.906474820143885,True,,
+rsyn-00337,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 6 days.
+- Higher ratio to the usual amount than usual: 10.3x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,0.8659793814432989,True,,
+rsyn-00464,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 2.4x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,0.676056338028169,True,,
+rsyn-00181,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 18.02864212 BTC moved, against a usual 0.13764761 BTC.
+- Higher ratio to the usual amount than usual: 131.0x the usual amount for this direction, against a usual 0.1x.
+- Longer gap than usual: 23 days since the previous transaction, against a usual 12 days.",True,True,True,True,True,True,,1.0,1.0,0.7969924812030074,True,,
+rsyn-00471,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 81 days since the previous transaction, against a usual 12 hours.",True,True,True,True,True,True,,1.0,1.0,0.6984126984126984,True,,
+rsyn-00007,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Larger amount than usual: 5.61444753 BTC moved, against a usual 0.90432478 BTC.
+- Higher ratio to the usual amount than usual: 6.2x the usual amount for this direction, against a usual 0.4x.",True,True,True,True,True,True,,,1.0,0.7551020408163265,True,,
+rsyn-00040,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 0.8x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00054,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 4 days since the previous transaction, against a usual 33 days.",True,True,True,True,True,True,,1.0,1.0,0.6567164179104478,True,,
+rsyn-00100,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 26 transactions in the previous 7 days, against a usual 19.0 transactions.
+- Higher ratio to the usual amount than usual: 1.3x the usual amount for this direction, against a usual 0.4x.",True,True,True,True,True,True,,,1.0,0.7735849056603775,True,,
+rsyn-00427,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.00001803 BTC.
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 2 days.
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 0.2x.
+- Busier week than usual: 20 transactions in the previous 7 days, against a usual 7.9 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00406,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.00007329 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.3x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7863247863247863,True,,
+rsyn-00128,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 17 transactions in the previous 7 days, against a usual 27.5 transactions.
+- Longer gap than usual: 140 days since the previous transaction, against a usual 32 days.",True,True,True,True,True,True,,,1.0,0.7551020408163265,True,,
+rsyn-00164,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.0x the usual amount for this direction, against a usual 0.3x.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 3 hours.",True,True,True,True,True,True,,1.0,1.0,0.7999999999999999,True,,
+rsyn-00205,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 10 transactions in the previous 7 days, against a usual 3.0 transactions.
+- Higher ratio to the usual amount than usual: 0.8x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,,1.0,0.7999999999999999,True,,
+rsyn-00294,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 3 days since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,,1.0,1.0,0.6984126984126984,True,,
+rsyn-00095,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 53 transactions in the previous 7 days, against a usual 29.9 transactions.
+- Higher ratio to the usual amount than usual: 136.3x the usual amount for this direction, against a usual 0.8x.
+- Longer gap than usual: 5 days since the previous transaction, against a usual 3 hours.
+- Larger amount than usual: 58.28700352 BTC moved, against a usual 0.42750288 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8729281767955802,True,,
+rsyn-00495,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.8x.
+- Smaller amount than usual: 0.00000078 BTC moved, against a usual 0.00527719 BTC.
+- Shorter gap than usual: 11 days since the previous transaction, against a usual 36 days.
+- Busier week than usual: 27 transactions in the previous 7 days, against a usual 9.1 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8764044943820225,True,,
+rsyn-00147,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 3.4x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00080,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 23 transactions in the previous 7 days, against a usual 31.4 transactions.
+- Smaller amount than usual: 3.23497025 BTC moved, against a usual 4.73198841 BTC.",True,True,True,True,True,True,,,1.0,0.7446808510638298,True,,
+rsyn-00459,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 36 transactions in the previous 7 days, against a usual 24.5 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6461538461538462,True,,
+rsyn-00116,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 76 transactions in the previous 7 days, against a usual 34.6 transactions.
+- Larger amount than usual: 0.00309812 BTC moved, against a usual 0.0004502 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7889908256880734,True,,
+rsyn-00053,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 35.3 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00065,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 25 transactions in the previous 7 days, against a usual 38.2 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7796610169491526,True,,
+rsyn-00041,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1156.9x the usual amount for this direction, against a usual 0.2x.
+- Larger amount than usual: 0.6158 BTC moved, against a usual 0.00053229 BTC.
+- Busier week than usual: 12 transactions in the previous 7 days, against a usual 6.9 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8211920529801325,True,,
+rsyn-00326,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 3.4x the usual amount for this direction, against a usual 1.1x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00496,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.3333333333333333,True,,
+rsyn-00122,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Smaller amount than usual: 0.24781776 BTC moved, against a usual 1.18813507 BTC.
+- Busier week than usual: 14 transactions in the previous 7 days, against a usual 6.3 transactions.",True,True,True,True,True,True,,,1.0,0.8372093023255814,True,,
+rsyn-00331,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual under an hour.
+- Smaller amount than usual: 0.00137083 BTC moved, against a usual 0.03108396 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.830188679245283,True,,
+rsyn-00273,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 7 days since the previous transaction, against a usual 5 days.
+- Larger amount than usual: 0.00005621 BTC moved, against a usual 0.00004169 BTC.",True,True,True,True,True,True,,,1.0,0.8333333333333333,True,,
+rsyn-00107,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 9 transactions in the previous 7 days, against a usual 21.2 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6461538461538462,True,,
+rsyn-00004,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.2x the usual amount for this direction, against a usual 1.2x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00410,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 15.5 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7796610169491526,True,,
+rsyn-00498,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 2 days.
+- Lower ratio to the usual amount than usual: 0.1x the usual amount for this direction, against a usual 1.1x.
+- Smaller amount than usual: 0.56423284 BTC moved, against a usual 5.19467128 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.863013698630137,True,,
+rsyn-00306,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.00012769 BTC moved, against a usual 0.00001043 BTC.
+- Higher ratio to the usual amount than usual: 12.2x the usual amount for this direction, against a usual 1.6x.",True,True,True,True,True,True,,1.0,1.0,0.7628865979381444,True,,
+rsyn-00446,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 43 transactions in the previous 7 days, against a usual 17.0 transactions.
+- Larger amount than usual: 0.07183079 BTC moved, against a usual 0.00264411 BTC.
+- Higher ratio to the usual amount than usual: 27.2x the usual amount for this direction, against a usual 1.1x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9078014184397162,True,,
+rsyn-00251,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 12 transactions in the previous 7 days, against a usual 5.6 transactions.
+- Shorter gap than usual: 9 days since the previous transaction, against a usual 16 days.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00242,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 1.6x the usual amount for this direction, against a usual 0.7x.
+- Busier week than usual: 35 transactions in the previous 7 days, against a usual 33.4 transactions.",True,True,True,True,True,True,,,1.0,0.86,True,,
+rsyn-00415,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00003682 BTC moved, against a usual 0.02066537 BTC.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 35.1 transactions.
+- Longer gap than usual: 4 hours since the previous transaction, against a usual under an hour.
+- Lower ratio to the usual amount than usual: 0.002x the usual amount for this direction, against a usual 0.4x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00396,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 5 transactions in the previous 7 days, against a usual 27.5 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00092,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 7074675.6x the usual amount for this direction, against a usual 0.2x.
+- Larger amount than usual: 158.75348696 BTC moved, against a usual 0.00002244 BTC.
+- Longer gap than usual: 11 hours since the previous transaction, against a usual 4 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00462,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 10 days.
+- Lower ratio to the usual amount than usual: 0.2x the usual amount for this direction, against a usual 0.6x.",True,True,True,True,True,True,,1.0,1.0,0.7961165048543688,True,,
+rsyn-00091,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 5 hours since the previous transaction, against a usual 18 hours.",True,True,True,True,True,True,,1.0,1.0,0.6567164179104478,True,,
+rsyn-00420,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 28 transactions in the previous 7 days, against a usual 25.0 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00111,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.5405405405405405,True,,
+rsyn-00055,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.013x the usual amount for this direction, against a usual 1.4x.
+- Busier week than usual: 37 transactions in the previous 7 days, against a usual 9.6 transactions.
+- Smaller amount than usual: 0.00722305 BTC moved, against a usual 0.56130897 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00289,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00007573 BTC moved, against a usual 0.03708006 BTC.
+- Lower ratio to the usual amount than usual: 0.002x the usual amount for this direction, against a usual 0.3x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8392857142857144,True,,
+rsyn-00463,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 68 transactions in the previous 7 days, against a usual 29.9 transactions.
+- Longer gap than usual: 14 hours since the previous transaction, against a usual under an hour.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8807339449541284,True,,
+rsyn-00155,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 41 transactions in the previous 7 days, against a usual 34.5 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00438,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 6.3x the usual amount for this direction, against a usual 1.8x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00377,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 11 transactions in the previous 7 days, against a usual 36.2 transactions.
+- Shorter gap than usual: 3 hours since the previous transaction, against a usual 15 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8392857142857144,True,,
+rsyn-00296,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.3333333333333333,True,,
+rsyn-00484,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.033x the usual amount for this direction, against a usual 1.1x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00049,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00632799 BTC moved, against a usual 4.4563129 BTC.
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 0.4x.",True,True,True,True,True,True,,1.0,1.0,0.8571428571428572,True,,
+rsyn-00413,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: 29 hours since the previous transaction, against a usual 40 days.
+- Busier week than usual: 20 transactions in the previous 7 days, against a usual 15.4 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7835051546391752,True,,
+rsyn-00017,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 12 transactions in the previous 7 days, against a usual 2.3 transactions.
+- Smaller amount than usual: 0.0001817 BTC moved, against a usual 0.00023121 BTC.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00382,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 10 transactions in the previous 7 days, against a usual 2.8 transactions.
+- Higher ratio to the usual amount than usual: 1.0x the usual amount for this direction, against a usual 0.4x.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00330,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 66 transactions in the previous 7 days, against a usual 24.8 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7228915662650603,True,,
+rsyn-00373,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.22857142857142856,True,,
+rsyn-00301,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 56 transactions in the previous 7 days, against a usual 39.0 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00194,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.6x the usual amount for this direction, against a usual 1.4x.",True,True,True,True,True,True,,1.0,1.0,0.676056338028169,True,,
+rsyn-00416,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 2 hours.
+- Higher ratio to the usual amount than usual: 16.1x the usual amount for this direction, against a usual 0.2x.
+- Larger amount than usual: 0.7729704 BTC moved, against a usual 0.04802705 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8435374149659863,True,,
+rsyn-00184,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 16.7x the usual amount for this direction, against a usual 0.3x.
+- Larger amount than usual: 0.00022057 BTC moved, against a usual 0.00001324 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8392857142857144,True,,
+rsyn-00429,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.4x the usual amount for this direction, against a usual 1.0x.",True,True,True,True,True,True,,1.0,1.0,0.732394366197183,True,,
+rsyn-00068,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 49 transactions in the previous 7 days, against a usual 24.0 transactions.
+- Longer gap than usual: 469 days since the previous transaction, against a usual 42 hours.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00376,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.5x the usual amount for this direction, against a usual 0.2x.
+- Quieter week than usual: 1 transaction in the previous 7 days, against a usual 17.8 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7706422018348623,True,,
+rsyn-00139,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 16 transactions in the previous 7 days, against a usual 11.0 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual under an hour.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00064,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 38.1x the usual amount for this direction, against a usual 0.9x.",True,True,True,True,True,True,,1.0,1.0,0.7999999999999999,True,,
+rsyn-00369,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 2 transactions in the previous 7 days, against a usual 10.2 transactions.
+- Longer gap than usual: 155 days since the previous transaction, against a usual 43 hours.",True,True,True,True,True,True,,1.0,1.0,0.7835051546391752,True,,
+rsyn-00234,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 7 hours.
+- Smaller amount than usual: 0.18732181 BTC moved, against a usual 3.67082657 BTC.
+- Quieter week than usual: 7 transactions in the previous 7 days, against a usual 26.6 transactions.
+- Lower ratio to the usual amount than usual: 0.051x the usual amount for this direction, against a usual 0.2x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9248554913294798,True,,
+rsyn-00028,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 454.2x the usual amount for this direction, against a usual 2.0x.
+- Larger amount than usual: 0.38425317 BTC moved, against a usual 0.00084597 BTC.
+- Busier week than usual: 30 transactions in the previous 7 days, against a usual 18.6 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 2 days.",True,True,True,True,True,True,,1.0,1.0,0.8606060606060606,True,,
+rsyn-00185,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 0.7x the usual amount for this direction, against a usual 0.2x.
+- Longer gap than usual: 5 days since the previous transaction, against a usual 2 days.",True,True,True,True,True,True,,,1.0,0.796116504854369,True,,
+rsyn-00218,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 1.1x.
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.00007983 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8785046728971964,True,,
+rsyn-00072,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 16 transactions in the previous 7 days, against a usual 5.1 transactions.
+- Higher ratio to the usual amount than usual: 3.6x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,0.7706422018348623,True,,
+rsyn-00075,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.00559412 BTC moved, against a usual 0.00013639 BTC.
+- Higher ratio to the usual amount than usual: 41.0x the usual amount for this direction, against a usual 1.2x.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 31 hours.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00200,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 22 days since the previous transaction, against a usual 8 hours.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00108,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 9 transactions in the previous 7 days, against a usual 22.5 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7796610169491526,True,,
+rsyn-00031,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 32 days.
+- Higher ratio to the usual amount than usual: 81.7x the usual amount for this direction, against a usual 0.5x.
+- Larger amount than usual: 146.87041904 BTC moved, against a usual 1.79675756 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00026,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.002x the usual amount for this direction, against a usual 0.3x.
+- Smaller amount than usual: 0.00000013 BTC moved, against a usual 0.00007021 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7863247863247863,True,,
+rsyn-00170,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 6 days since the previous transaction, against a usual 40 hours.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 0.5 transactions.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00177,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.3333333333333333,True,,
+rsyn-00450,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 30 transactions in the previous 7 days, against a usual 37.0 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 4 days.
+- Higher ratio to the usual amount than usual: 3.1x the usual amount for this direction, against a usual 0.6x.
+- Larger amount than usual: 0.21940334 BTC moved, against a usual 0.07022656 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00491,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.3333333333333333,True,,
+rsyn-00447,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 21 transactions in the previous 7 days, against a usual 18.9 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual under an hour.",True,True,True,True,True,True,,,1.0,0.8541666666666667,True,,
+rsyn-00067,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 0.8x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,0.7999999999999999,True,,
+rsyn-00188,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.015x the usual amount for this direction, against a usual 0.2x.
+- Shorter gap than usual: 2 days since the previous transaction, against a usual 14 days.
+- Smaller amount than usual: 0.00000082 BTC moved, against a usual 0.00005464 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.906474820143885,True,,
+rsyn-00094,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Larger amount than usual: 0.07505898 BTC moved, against a usual 0.03630804 BTC.
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 9.1 transactions.",True,True,True,True,True,True,,,1.0,0.8372093023255814,True,,
+rsyn-00024,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 5.2x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,0.6933333333333334,True,,
+rsyn-00270,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00160,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.00075639 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.2x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8785046728971964,True,,
+rsyn-00254,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 11 transactions in the previous 7 days, against a usual 16.1 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6461538461538462,True,,
+rsyn-00074,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 21.05750934 BTC moved, against a usual 1.29802808 BTC.
+- Higher ratio to the usual amount than usual: 16.2x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,0.7628865979381444,True,,
+rsyn-00260,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 31 transactions in the previous 7 days, against a usual 3.0 transactions.
+- Higher ratio to the usual amount than usual: 77.9x the usual amount for this direction, against a usual 0.1x.
+- Larger amount than usual: 0.17364386 BTC moved, against a usual 0.0022289 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8456375838926175,True,,
+rsyn-00393,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.5405405405405405,True,,
+rsyn-00371,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 2 days.
+- Larger amount than usual: 33.62050309 BTC moved, against a usual 0.06297309 BTC.
+- Higher ratio to the usual amount than usual: 533.9x the usual amount for this direction, against a usual 1.7x.
+- Quieter week than usual: 25 transactions in the previous 7 days, against a usual 27.8 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8415300546448087,True,,
+rsyn-00287,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 6.9x the usual amount for this direction, against a usual 0.3x.
+- Busier week than usual: 25 transactions in the previous 7 days, against a usual 17.0 transactions.",True,True,True,True,True,True,,,1.0,0.7777777777777778,True,,
+rsyn-00494,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 1.4x the usual amount for this direction, against a usual 0.5x.
+- Shorter gap than usual: 1 hour since the previous transaction, against a usual 5 hours.",True,True,True,True,True,True,,,1.0,0.8571428571428572,True,,
+rsyn-00056,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.1x the usual amount for this direction, against a usual 1.6x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00356,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.012x the usual amount for this direction, against a usual 0.1x.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 7 days.
+- Smaller amount than usual: 0.00001427 BTC moved, against a usual 0.00115278 BTC.
+- Busier week than usual: 28 transactions in the previous 7 days, against a usual 21.2 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8743169398907105,True,,
+rsyn-00478,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 31 transactions in the previous 7 days, against a usual 33.1 transactions.
+- Longer gap than usual: 3 days since the previous transaction, against a usual 3 days.",True,True,True,True,True,True,,,1.0,0.76,True,,
+rsyn-00154,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 140 days since the previous transaction, against a usual 35 days.",True,True,True,True,True,True,,1.0,1.0,0.7719298245614036,True,,
+rsyn-00265,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 2.0x the usual amount for this direction, against a usual 0.9x.
+- Longer gap than usual: 36 days since the previous transaction, against a usual 16 days.",True,True,True,True,True,True,,,1.0,0.8571428571428572,True,,
+rsyn-00370,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual under an hour.
+- Busier week than usual: 36 transactions in the previous 7 days, against a usual 19.9 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7899159663865546,True,,
+rsyn-00226,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 79 transactions in the previous 7 days, against a usual 14.4 transactions.
+- Smaller amount than usual: 0.00092535 BTC moved, against a usual 0.2441188 BTC.
+- Lower ratio to the usual amount than usual: 0.004x the usual amount for this direction, against a usual 1.6x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00311,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 28.2x the usual amount for this direction, against a usual 0.1x.
+- Larger amount than usual: 0.54636531 BTC moved, against a usual 0.01936976 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7835051546391752,True,,
+rsyn-00482,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.3x the usual amount for this direction, against a usual 1.3x.",True,True,True,True,True,True,,1.0,1.0,0.732394366197183,True,,
+rsyn-00085,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.00223719 BTC moved, against a usual 0.00007661 BTC.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00492,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 50 days since the previous transaction, against a usual under an hour.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00011,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 10 hours.
+- Higher ratio to the usual amount than usual: 1.1x the usual amount for this direction, against a usual 0.1x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00099,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 582.6x the usual amount for this direction, against a usual 0.1x.
+- Shorter gap than usual: 2 hours since the previous transaction, against a usual 28 hours.
+- Larger amount than usual: 1.40379424 BTC moved, against a usual 0.00240954 BTC.
+- Busier week than usual: 32 transactions in the previous 7 days, against a usual 27.9 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8729281767955802,True,,
+rsyn-00156,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 5 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7160493827160495,True,,
+rsyn-00146,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 36 transactions in the previous 7 days, against a usual 18.2 transactions.
+- Higher ratio to the usual amount than usual: 1.0x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,1.0,1.0,0.7706422018348623,True,,
+rsyn-00300,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.30594087 BTC moved, against a usual 0.00802294 BTC.
+- Higher ratio to the usual amount than usual: 38.1x the usual amount for this direction, against a usual 0.2x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7863247863247863,True,,
+rsyn-00199,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Shorter gap than usual: 12 hours since the previous transaction, against a usual 19 hours.
+- Higher ratio to the usual amount than usual: 1.0x the usual amount for this direction, against a usual 0.5x.",True,True,True,True,True,True,,,1.0,0.7735849056603773,True,,
+rsyn-00272,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.015x the usual amount for this direction, against a usual 1.5x.
+- Smaller amount than usual: 0.0000005 BTC moved, against a usual 0.0000336 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00439,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 8 days since the previous transaction, against a usual 7 hours.",True,True,True,True,True,True,,1.0,1.0,0.6567164179104478,True,,
+rsyn-00288,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 44 transactions in the previous 7 days, against a usual 24.2 transactions.
+- Higher ratio to the usual amount than usual: 18.0x the usual amount for this direction, against a usual 1.2x.
+- Larger amount than usual: 0.04846891 BTC moved, against a usual 0.00268782 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00323,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 68 transactions in the previous 7 days, against a usual 13.4 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7228915662650603,True,,
+rsyn-00250,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 393.3x the usual amount for this direction, against a usual 1.3x.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 2.54289486 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00102,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00054521 BTC moved, against a usual 0.00648119 BTC.",True,True,True,True,True,True,,1.0,1.0,0.5964912280701754,True,,
+rsyn-00193,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 34 days.
+- Higher ratio to the usual amount than usual: 1.0x the usual amount for this direction, against a usual 0.2x.
+- Quieter week than usual: 3 transactions in the previous 7 days, against a usual 11.8 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8280254777070064,True,,
+rsyn-00474,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 40 hours since the previous transaction, against a usual 25 hours.
+- Quieter week than usual: 3 transactions in the previous 7 days, against a usual 3.3 transactions.",True,True,True,True,True,True,,,1.0,0.7835051546391754,True,,
+rsyn-00098,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 11 days since the previous transaction, against a usual 2 days.
+- Larger amount than usual: 235.21518378 BTC moved, against a usual 6.5511207 BTC.
+- Higher ratio to the usual amount than usual: 35.9x the usual amount for this direction, against a usual 0.2x.
+- Quieter week than usual: 28 transactions in the previous 7 days, against a usual 32.8 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8729281767955802,True,,
+rsyn-00241,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 131 transactions in the previous 7 days, against a usual 25.7 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00404,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 39.0x the usual amount for this direction, against a usual 0.3x.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 7 days.
+- Larger amount than usual: 0.70462898 BTC moved, against a usual 0.01805203 BTC.
+- Busier week than usual: 21 transactions in the previous 7 days, against a usual 11.8 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9257142857142856,True,,
+rsyn-00135,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 7 days.",True,True,True,True,True,True,,1.0,1.0,0.6567164179104478,True,,
+rsyn-00317,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 24 transactions in the previous 7 days, against a usual 32.5 transactions.
+- Smaller amount than usual: 0.40375746 BTC moved, against a usual 0.79647587 BTC.",True,True,True,True,True,True,,,1.0,0.8372093023255814,True,,
+rsyn-00168,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 41 transactions in the previous 7 days, against a usual 37.7 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00088,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00071066 BTC moved, against a usual 0.53904079 BTC.
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 0.1x.
+- Busier week than usual: 28 transactions in the previous 7 days, against a usual 22.5 transactions.
+- Longer gap than usual: 90 days since the previous transaction, against a usual 17 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8764044943820225,True,,
+rsyn-00060,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 25 days.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00381,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.02964607 BTC moved, against a usual 0.00028494 BTC.
+- Higher ratio to the usual amount than usual: 104.0x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.8571428571428572,True,,
+rsyn-00066,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 2891.5x the usual amount for this direction, against a usual 0.4x.
+- Larger amount than usual: 321.47163706 BTC moved, against a usual 0.11117855 BTC.
+- Busier week than usual: 24 transactions in the previous 7 days, against a usual 20.7 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00417,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.3333333333333333,True,,
+rsyn-00137,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 9 hours.",True,True,True,True,True,True,,1.0,1.0,0.6461538461538462,True,,
+rsyn-00361,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 38 transactions in the previous 7 days, against a usual 14.2 transactions.
+- Lower ratio to the usual amount than usual: 0.013x the usual amount for this direction, against a usual 0.5x.
+- Smaller amount than usual: 0.00538598 BTC moved, against a usual 0.40211027 BTC.
+- Shorter gap than usual: 14 hours since the previous transaction, against a usual 9 days.",True,True,True,True,True,True,,1.0,1.0,0.9171974522292994,True,,
+rsyn-00236,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 35 transactions in the previous 7 days, against a usual 30.4 transactions.
+- Longer gap than usual: 53 days since the previous transaction, against a usual 14 hours.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00411,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 24 transactions in the previous 7 days, against a usual 12.5 transactions.
+- Shorter gap than usual: 1 hour since the previous transaction, against a usual 11 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8392857142857144,True,,
+rsyn-00405,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 6 days.",True,True,True,True,True,True,,1.0,1.0,0.634920634920635,True,,
+rsyn-00418,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Smaller amount than usual: 0.05246499 BTC moved, against a usual 0.15981423 BTC.
+- Lower ratio to the usual amount than usual: 0.3x the usual amount for this direction, against a usual 1.2x.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00103,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 185 days since the previous transaction, against a usual 25 hours.
+- Higher ratio to the usual amount than usual: 4.5x the usual amount for this direction, against a usual 0.4x.",True,True,True,True,True,True,,1.0,1.0,0.8659793814432989,True,,
+rsyn-00493,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 20 hours since the previous transaction, against a usual 4 hours.
+- Lower ratio to the usual amount than usual: 0.6x the usual amount for this direction, against a usual 0.9x.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00379,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.11764705882352941,True,,
+rsyn-00383,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000046 BTC moved, against a usual 0.06521854 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.1x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7863247863247863,True,,
+rsyn-00132,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 25 transactions in the previous 7 days, against a usual 3.9 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7228915662650603,True,,
+rsyn-00363,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 0.7x the usual amount for this direction, against a usual 0.5x.
+- Smaller amount than usual: 0.06516559 BTC moved, against a usual 0.08889228 BTC.",True,True,True,True,True,True,,,1.0,0.8478260869565217,True,,
+rsyn-00426,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Lower ratio to the usual amount than usual: 0.9x the usual amount for this direction, against a usual 1.3x.
+- Shorter gap than usual: 3 hours since the previous transaction, against a usual 5 hours.",True,True,True,True,True,True,,,1.0,0.7735849056603773,True,,
+rsyn-00445,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Quieter week than usual: 27 transactions in the previous 7 days, against a usual 30.8 transactions.
+- Longer gap than usual: 7 hours since the previous transaction, against a usual 1 hour.",True,True,True,True,True,True,,,1.0,0.76,True,,
+rsyn-00190,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 77.2x the usual amount for this direction, against a usual 0.2x.
+- Larger amount than usual: 1.05131856 BTC moved, against a usual 0.01361237 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8392857142857144,True,,
+rsyn-00237,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 543.2x the usual amount for this direction, against a usual 1.2x.
+- Larger amount than usual: 61.62610468 BTC moved, against a usual 0.11345872 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7863247863247863,True,,
+rsyn-00150,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 8.2x the usual amount for this direction, against a usual 1.0x.",True,True,True,True,True,True,,1.0,1.0,0.732394366197183,True,,
+rsyn-00449,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.1x the usual amount for this direction, against a usual 0.1x.
+- Longer gap than usual: 15 days since the previous transaction, against a usual 4 days.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00166,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00002582 BTC moved, against a usual 0.00016154 BTC.
+- Busier week than usual: 26 transactions in the previous 7 days, against a usual 9.8 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,,1.0,1.0,0.8907563025210083,True,,
+rsyn-00314,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.00220108 BTC moved, against a usual 0.00034585 BTC.
+- Quieter week than usual: 27 transactions in the previous 7 days, against a usual 37.8 transactions.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00430,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000002 BTC moved, against a usual 0.00108901 BTC.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 1.2x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7863247863247863,True,,
+rsyn-00342,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 4.9x the usual amount for this direction, against a usual 0.5x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00284,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 60 transactions in the previous 7 days, against a usual 35.2 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8266666666666665,True,,
+rsyn-00025,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.0x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.676056338028169,True,,
+rsyn-00183,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 6.1x the usual amount for this direction, against a usual 0.1x.
+- Busier week than usual: 36 transactions in the previous 7 days, against a usual 22.4 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8869565217391304,True,,
+rsyn-00019,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 15 days.",True,True,True,True,True,True,,1.0,1.0,0.634920634920635,True,,
+rsyn-00345,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 1.5x the usual amount for this direction, against a usual 0.7x.
+- Longer gap than usual: 7 days since the previous transaction, against a usual 3 days.",True,True,True,True,True,True,,,1.0,0.7735849056603773,True,,
+rsyn-00123,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00127,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 13 days.
+- Smaller amount than usual: 0.11560392 BTC moved, against a usual 0.29736119 BTC.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00039,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000001 BTC moved, against a usual 0.00001688 BTC.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 38.2 transactions.
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 0.6x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9078014184397162,True,,
+rsyn-00050,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Smaller amount than usual: 0.6955797 BTC moved, against a usual 1.15216062 BTC.
+- Busier week than usual: 10 transactions in the previous 7 days, against a usual 7.3 transactions.",True,True,True,True,True,True,,,1.0,0.7446808510638298,True,,
+rsyn-00210,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 40291.6x the usual amount for this direction, against a usual 0.1x.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 0.02481907 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00334,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.01160877 BTC moved, against a usual 0.0001581 BTC.
+- Higher ratio to the usual amount than usual: 73.4x the usual amount for this direction, against a usual 0.3x.
+- Busier week than usual: 24 transactions in the previous 7 days, against a usual 17.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8456375838926175,True,,
+rsyn-00029,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 406.9x the usual amount for this direction, against a usual 1.6x.
+- Larger amount than usual: 0.00466264 BTC moved, against a usual 0.00001146 BTC.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 15 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8211920529801325,True,,
+rsyn-00333,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.3x the usual amount for this direction, against a usual 0.3x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7415730337078651,True,,
+rsyn-00281,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 10 days.
+- Quieter week than usual: 9 transactions in the previous 7 days, against a usual 19.6 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8807339449541284,True,,
+rsyn-00243,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 4 days since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,,1.0,1.0,0.6984126984126984,True,,
+rsyn-00047,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 39 transactions in the previous 7 days, against a usual 13.7 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00189,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.1x the usual amount for this direction, against a usual 0.7x.",True,True,True,True,True,True,,1.0,1.0,0.6933333333333334,True,,
+rsyn-00191,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 21.6 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7796610169491526,True,,
+rsyn-00038,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual under an hour.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7294117647058823,True,,
+rsyn-00012,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 0.9x.
+- Smaller amount than usual: 0.0004475 BTC moved, against a usual 0.30660238 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00408,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.091x the usual amount for this direction, against a usual 1.3x.
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 3 hours.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 21.8 transactions.
+- Smaller amount than usual: 0.00370886 BTC moved, against a usual 0.04070339 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8729281767955802,True,,
+rsyn-00332,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 31.7 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8266666666666665,True,,
+rsyn-00222,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 9 transactions in the previous 7 days, against a usual 22.9 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6666666666666666,True,,
+rsyn-00322,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 9.1x the usual amount for this direction, against a usual 1.3x.
+- Larger amount than usual: 0.00021987 BTC moved, against a usual 0.00002409 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7835051546391752,True,,
+rsyn-00037,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 26 transactions in the previous 7 days, against a usual 13.6 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 3 days.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00309,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 33.8x the usual amount for this direction, against a usual 0.2x.
+- Larger amount than usual: 91.42309113 BTC moved, against a usual 2.70821816 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7524752475247524,True,,
+rsyn-00292,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.009x the usual amount for this direction, against a usual 1.5x.
+- Smaller amount than usual: 0.01422595 BTC moved, against a usual 1.66655272 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7835051546391752,True,,
+rsyn-00362,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 20 transactions in the previous 7 days, against a usual 25.9 transactions.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00061,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 0.8x the usual amount for this direction, against a usual 0.3x.
+- Quieter week than usual: 35 transactions in the previous 7 days, against a usual 35.7 transactions.",True,True,True,True,True,True,,,1.0,0.86,True,,
+rsyn-00115,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.22857142857142856,True,,
+rsyn-00240,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 221 days since the previous transaction, against a usual 32 days.
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 3.4 transactions.",True,True,True,True,True,True,,1.0,1.0,0.8571428571428572,True,,
+rsyn-00246,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 25.4x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,1.0,1.0,0.7999999999999999,True,,
+rsyn-00076,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 22 transactions in the previous 7 days, against a usual 11.5 transactions.
+- Higher ratio to the usual amount than usual: 10.9x the usual amount for this direction, against a usual 0.3x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8,True,,
+rsyn-00387,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00005887 BTC moved, against a usual 0.00032535 BTC.",True,True,True,True,True,True,,1.0,1.0,0.7450980392156864,True,,
+rsyn-00059,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Busier week than usual: 26 transactions in the previous 7 days, against a usual 20.3 transactions.
+- Higher ratio to the usual amount than usual: 0.4x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00280,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 47.2x the usual amount for this direction, against a usual 1.5x.
+- Busier week than usual: 15 transactions in the previous 7 days, against a usual 4.6 transactions.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 17 hours.
+- Larger amount than usual: 51.24914274 BTC moved, against a usual 1.08524585 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00461,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 110 days since the previous transaction, against a usual 8 days.",True,True,True,True,True,True,,1.0,1.0,0.6567164179104478,True,,
+rsyn-00255,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 40147979.7x the usual amount for this direction, against a usual 1.5x.
+- Larger amount than usual: 999.99999999 BTC moved, against a usual 0.00002491 BTC.
+- Quieter week than usual: 22 transactions in the previous 7 days, against a usual 26.2 transactions.
+- Shorter gap than usual: 13 hours since the previous transaction, against a usual 20 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8764044943820225,True,,
+rsyn-00062,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.87819462 BTC moved, against a usual 9.11647997 BTC.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00176,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 75.8x the usual amount for this direction, against a usual 1.0x.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 30 hours.
+- Larger amount than usual: 603.31482494 BTC moved, against a usual 7.96222776 BTC.
+- Quieter week than usual: 16 transactions in the previous 7 days, against a usual 22.2 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8777777777777778,True,,
+rsyn-00353,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.3x the usual amount for this direction, against a usual 0.3x.
+- Busier week than usual: 27 transactions in the previous 7 days, against a usual 19.2 transactions.",True,True,True,True,True,True,,1.0,1.0,0.780952380952381,True,,
+rsyn-00460,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 8.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7228915662650603,True,,
+rsyn-00303,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 4 days since the previous transaction, against a usual 4 hours.
+- Higher ratio to the usual amount than usual: 17.4x the usual amount for this direction, against a usual 1.3x.",True,True,True,True,True,True,,1.0,1.0,0.8659793814432989,True,,
+rsyn-00490,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.2x the usual amount for this direction, against a usual 1.4x.
+- Busier week than usual: 56 transactions in the previous 7 days, against a usual 31.5 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.85,True,,
+rsyn-00297,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Smaller amount than usual: 0.00110043 BTC moved, against a usual 0.01688402 BTC.
+- Lower ratio to the usual amount than usual: 0.065x the usual amount for this direction, against a usual 0.1x.",True,True,True,True,True,True,,,1.0,0.76,True,,
+rsyn-00129,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 37.7x the usual amount for this direction, against a usual 0.6x.
+- Quieter week than usual: 15 transactions in the previous 7 days, against a usual 30.5 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8869565217391304,True,,
+rsyn-00003,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 0.0001649 BTC moved, against a usual 0.0000124 BTC.
+- Higher ratio to the usual amount than usual: 13.3x the usual amount for this direction, against a usual 0.3x.
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 32 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.906474820143885,True,,
+rsyn-00456,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000198 BTC moved, against a usual 0.00162519 BTC.
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 0.2x.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 10 days.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.863013698630137,True,,
+rsyn-00207,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 29 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7948717948717949,True,,
+rsyn-00327,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 10 transactions in the previous 7 days, against a usual 2.9 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6666666666666666,True,,
+rsyn-00143,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 37.6499388 BTC moved, against a usual 0.38590547 BTC.
+- Higher ratio to the usual amount than usual: 97.6x the usual amount for this direction, against a usual 0.2x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8392857142857144,True,,
+rsyn-00499,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 81 transactions in the previous 7 days, against a usual 6.1 transactions.
+- Longer gap than usual: 1825 days since the previous transaction, against a usual 6 hours.
+- Higher ratio to the usual amount than usual: 2.5x the usual amount for this direction, against a usual 0.3x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9115646258503401,True,,
+rsyn-00419,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Larger amount than usual: 6.55186421 BTC moved, against a usual 0.00031683 BTC.
+- Higher ratio to the usual amount than usual: 20679.6x the usual amount for this direction, against a usual 0.3x.
+- Longer gap than usual: 253 days since the previous transaction, against a usual 15 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00153,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Higher ratio to the usual amount than usual: 0.7x the usual amount for this direction, against a usual 0.2x.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual under an hour.",True,True,True,True,True,True,,,1.0,1.0,True,,
+rsyn-00052,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 4 hours since the previous transaction, against a usual under an hour.
+- Higher ratio to the usual amount than usual: 2.1x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00421,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000002 BTC moved, against a usual 0.00391377 BTC.
+- Busier week than usual: 22 transactions in the previous 7 days, against a usual 7.1 transactions.
+- Lower ratio to the usual amount than usual: 0.000x the usual amount for this direction, against a usual 0.2x.
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 25 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.9257142857142856,True,,
+rsyn-00211,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 128.4x the usual amount for this direction, against a usual 0.3x.
+- Longer gap than usual: 1306 days since the previous transaction, against a usual 7 days.
+- Quieter week than usual: 14 transactions in the previous 7 days, against a usual 18.3 transactions.
+- Larger amount than usual: 29.0868409 BTC moved, against a usual 0.22649039 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00329,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 7.6x the usual amount for this direction, against a usual 0.2x.
+- Larger amount than usual: 0.0126622 BTC moved, against a usual 0.00166665 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7863247863247863,True,,
+rsyn-00253,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Shorter gap than usual: 1 hour since the previous transaction, against a usual 5 hours.
+- Quieter week than usual: 10 transactions in the previous 7 days, against a usual 18.2 transactions.",True,True,True,True,True,True,,,1.0,0.7835051546391754,True,,
+rsyn-00077,unscored,This transaction is not scored: the address does not yet have enough earlier history to compare it with.,True,True,True,True,True,True,,,1.0,0.3333333333333333,True,,
+rsyn-00084,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 10.3 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00220,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 47 transactions in the previous 7 days, against a usual 5.0 transactions.
+- Higher ratio to the usual amount than usual: 5.8x the usual amount for this direction, against a usual 0.3x.
+- Larger amount than usual: 10.35738973 BTC moved, against a usual 1.77297753 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8456375838926175,True,,
+rsyn-00114,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Lower ratio to the usual amount than usual: 0.039x the usual amount for this direction, against a usual 0.8x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8139534883720929,True,,
+rsyn-00372,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 58 transactions in the previous 7 days, against a usual 39.1 transactions.",True,True,True,True,True,True,,1.0,1.0,0.6461538461538462,True,,
+rsyn-00174,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Larger amount than usual: 6.13671066 BTC moved, against a usual 2.11638982 BTC.
+- Quieter week than usual: 12 transactions in the previous 7 days, against a usual 14.3 transactions.",True,True,True,True,True,True,,,1.0,0.7692307692307692,True,,
+rsyn-00162,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Smaller amount than usual: 0.00000153 BTC moved, against a usual 0.00173608 BTC.
+- Lower ratio to the usual amount than usual: 0.001x the usual amount for this direction, against a usual 1.3x.",True,True,True,True,True,True,,1.0,1.0,0.7524752475247524,True,,
+rsyn-00182,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 2.5x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00198,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Longer gap than usual: 7 days since the previous transaction, against a usual 2 hours.
+- Higher ratio to the usual amount than usual: 124.4x the usual amount for this direction, against a usual 0.9x.
+- Larger amount than usual: 0.18083298 BTC moved, against a usual 0.00145309 BTC.",True,True,True,True,True,True,,1.0,1.0,1.0,True,,
+rsyn-00229,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 8.5x the usual amount for this direction, against a usual 1.3x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.7472527472527473,True,,
+rsyn-00436,not_flagged,"Not flagged by Robust z baseline (A1).
+Largest differences from this address's usual activity:
+- Longer gap than usual: 12 days since the previous transaction, against a usual 3 days.
+- Higher ratio to the usual amount than usual: 0.7x the usual amount for this direction, against a usual 0.3x.",True,True,True,True,True,True,,,1.0,0.7735849056603773,True,,
+rsyn-00149,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 18 transactions in the previous 7 days, against a usual 8.5 transactions.",True,True,True,True,True,True,,1.0,1.0,0.7076923076923077,True,,
+rsyn-00386,not_flagged,"Not flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 1.3x the usual amount for this direction, against a usual 0.2x.",True,True,True,True,True,True,,1.0,1.0,0.6933333333333334,True,,
+rsyn-00057,flagged,"Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Busier week than usual: 46 transactions in the previous 7 days, against a usual 22.3 transactions.
+- Smaller amount than usual: 0.00011703 BTC moved, against a usual 0.02687034 BTC.
+- Lower ratio to the usual amount than usual: 0.004x the usual amount for this direction, against a usual 0.2x.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,,1.0,1.0,0.8211920529801325,True,,

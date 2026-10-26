@@ -314,6 +314,27 @@
     "frozenTest": "data/processed/ds7/test.jsonl"
   },
 
+  "randomTest": {
+    "_about": "A randomized test set for both Explorer Assistants and both rounds (user, 26 Oct; explorer/random_test.py): real prompts drawn from DS7 v2's test addresses (none in the frozen v1 test) and synthetic transactions drawn from the ranges below. Built once with this seed, then frozen.",
+    "seed": 50000,
+    "realPrompts": 500,
+    "syntheticPrompts": 500,
+    "unscoredShare": 0.09,
+    "noComparisonShare": 0.05,
+    "_z": "each feature's z is drawn from a mixture: within usual, contributing or flag-level, either sign; values follow from z and the usual value on the feature's own scale",
+    "zMixture": {"withinSd": 1.2, "contributingShare": 0.25, "flagShare": 0.15, "nearZeroShare": 0.03},
+    "_ranges": "log10 bounds: usual amount in satoshis, usual gap in hours, usual ratio (F4); linear bounds: usual 7-day count; spreads on each feature's z scale (baseline -> zTransform)",
+    "usualSatsLog10": [3, 9],
+    "usualGapHoursLog10": [-0.5, 3],
+    "usualRatioLog10": [-1, 0.3],
+    "usualCount": [0, 40],
+    "spread": {"F1": [0.1, 0.8], "F2": [1, 6], "F3": [0.1, 0.8], "F4": [0.1, 0.8]},
+    "_caps": "values a real address could show: amounts up to 10^11 satoshis (1,000 BTC), gaps up to 5 years, 500 transactions in the burst window; z is recomputed from the capped value",
+    "maxSatsLog10": 11,
+    "maxGapHours": 43800,
+    "maxCount": 500
+  },
+
   "profiles": {
     "_about": "Address profiles of DS1 (main addresses) and DS2 (plan §9.4, S-7): 8 address-level features, standardised, K-Means by silhouette; the DS2-covers-DS1 check (plan §7). Uses clustering.kmeansNInit and silhouetteSample, and model.seed.",
     "k": [3, 4, 5, 6, 7, 8],
