@@ -689,6 +689,36 @@ for p in sorted(tables.iterdir()):
 ]
 
 
+DIST_NB = [
+    ("markdown", r'''
+# COS30049 A2 - Distributions of the scoring methods' recall over many plant seeds (Kaggle CPU session)
+
+Runs `python -m explorer.cli distribution` (`explorer/distribution.py`): the three planted patterns replanted with
+100 seeds on DS1 and DS10 and 20 on DS2 (seeds from 70000, disjoint from every tuning and reporting seed), every
+frozen method scored on each. Output: `reports/tables/stats_methods_seeds.csv` and `stats_methods_summary.csv`
+(mean, spread, 95% interval, paired comparison with the baseline, rank). CPU only, so no GPU quota.
+
+**Settings:** Accelerator **None**, **Internet on**. Then **Save Version -> Save & Run All (Commit)**.
+'''),
+    ("code", f'''
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code this run uses
+PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2"]
+'''),
+    ("code", SETUP + CLONE),
+    ("code", r'''
+sh(sys.executable, "-m", "explorer.cli", "distribution", log="distribution.log")
+tables = WORK / "reports" / "tables"
+tables.mkdir(parents=True, exist_ok=True)
+for name in ("stats_methods_seeds.csv", "stats_methods_summary.csv"):
+    shutil.copy(SRC / "reports" / "tables" / name, tables / name)
+shutil.copy(SRC / "reports" / "logs" / "distribution.log", WORK / "distribution_step.log")
+(WORK / "kaggle_run.json").write_text(json.dumps({"commit": COMMIT, "hours": round((time.time() - T0) / 3600, 2),
+    "packages": {p.split("==")[0]: version(p.split("==")[0]) for p in PINS}}, indent=2), encoding="utf-8")
+'''),
+]
+
+
 def metadata(slug, code_file, gpu, kernel_sources, dataset_sources=()):
     return {"id": f"KAGGLE_USERNAME/{slug}", "title": slug, "code_file": code_file, "language": "python",
             "kernel_type": "notebook", "is_private": True, "enable_gpu": gpu, "enable_tpu": False,
@@ -708,6 +738,7 @@ for folder, slug, cells, gpu, sources, datasets in [
          ["KAGGLE_USERNAME/cos30049a2-qwen-data"], BASE),
         ("text150m_stages", "cos30049a2-text150m-stages", STAGES_NB, True,
          ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data", "KAGGLE_USERNAME/cos30049a2-text150m-train"], BASE),
+        ("distribution", "cos30049a2-distribution", DIST_NB, False, [], []),
         ("assistant_random_eval", "cos30049a2-assistant-random-eval", RANDOM_EVAL_NB, True,
          ["KAGGLE_USERNAME/cos30049a2-qwen3b-explain-v2", "KAGGLE_USERNAME/cos30049a2-qwen3b-explain"], BASE)]:
     out = REPO_DIR / "kaggle" / folder

@@ -173,3 +173,29 @@ class DS2CheckTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DistributionTests(unittest.TestCase):
+    """explorer/distribution.py (27 Oct): every method's recall over many plant seeds."""
+
+    def test_two_seeds_on_ds1_give_one_row_per_seed_and_method_and_a_summary(self):
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+
+        import pandas as pd
+
+        from explorer import distribution
+        from explorer.settings import SETTINGS
+
+        with tempfile.TemporaryDirectory() as tmp:
+            small = {**SETTINGS["distribution"], "seedCount": {"DS1": 2, "DS2": 0, "DS10": 0}}
+            with mock.patch.dict(SETTINGS, {"distribution": small}), mock.patch.object(distribution, "TABLES_DIR", Path(tmp)):
+                distribution.run_distribution(only=["DS1"], n_jobs=2)
+            seeds = pd.read_csv(Path(tmp) / "stats_methods_seeds.csv")
+            summary = pd.read_csv(Path(tmp) / "stats_methods_summary.csv")
+        self.assertEqual(sorted(seeds["seed"].unique()), [small["firstSeed"], small["firstSeed"] + 1])
+        self.assertEqual(len(seeds), 2 * seeds["method"].nunique())
+        self.assertTrue(seeds["mean_recall"].between(0, 1).all())
+        base = summary.set_index("method").loc["baseline"]
+        self.assertEqual((base["seeds"], base["minus_baseline_mean"], base["beats_baseline_share"]), (2, 0.0, 0.0))

@@ -39,6 +39,7 @@ Usage (from the repository root):
     python -m explorer.cli build-ds7 --out data/processed/ds7_v2 --settings ds7v2   # round 2's larger DS7
     python -m explorer.cli build-random-test      # the Assistants' randomized test set (needs DS7 v2's test split)
     python -m explorer.cli build-balanced-test    # ... and its balanced real set (DS10 + DS2's test split)
+    python -m explorer.cli distribution [--only DS1 DS10]   # every method's recall over many plant seeds
     python -m explorer.cli label-check            # unsupervised scores against DS3/DS4 labels
     python -m explorer.cli reviewer-sheet         # 40 shuffled rows for the blind reviewer check
     python -m explorer.cli reviewer-score --ratings ratings_mkn.csv ratings_cdb.csv
@@ -297,6 +298,12 @@ def cmd_build_balanced_test(args: argparse.Namespace) -> int:
     return run_build_balanced_test()
 
 
+def cmd_distribution(args: argparse.Namespace) -> int:
+    from .distribution import run_distribution
+
+    return run_distribution(args.only)
+
+
 def cmd_build_more_tests(args: argparse.Namespace) -> int:
     from .random_test import run_build_more_tests
 
@@ -499,6 +506,9 @@ def build_parser() -> argparse.ArgumentParser:
     random_test.set_defaults(func=cmd_build_random_test)
     steps.add_parser("build-balanced-test", help="the Assistants' balanced real test set (DS10 and DS2's test split)"
                      ).set_defaults(func=cmd_build_balanced_test)
+    distribution = steps.add_parser("distribution", help="every method's recall over many plant seeds (DS1, DS2, DS10)")
+    distribution.add_argument("--only", nargs="+", choices=["DS1", "DS2", "DS10"], help="these data sets only")
+    distribution.set_defaults(func=cmd_distribution)
     steps.add_parser("build-more-tests", help="per-source, close-call, extreme and maximal-shift Assistant test sets"
                      ).set_defaults(func=cmd_build_more_tests)
     steps.add_parser("reviewer-sheet", help="DS1: the blind sheet for the reviewer check, and its key").set_defaults(
