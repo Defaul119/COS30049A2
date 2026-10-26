@@ -1,0 +1,17 @@
+{
+  "name": "text-150m-chat-v2",
+  "_about": "Round 2: round 1's chat stage (text_150m_chat.json, DS6 smol-smoltalk), started from the continued pretraining (text_150m_pretrain_cont.json). Run on Kaggle (kaggle/text150m_stages).",
+  "data_dir": "data/chat",
+  "out_dir": "runs/text-150m-chat-v2",
+  "init_from": "runs/text-150m-cont/model.pt",
+  "total_tokens": 100000000,
+  "batch_tokens": 65536,
+  "micro_batch": 4,
+  "lr": 0.0002,
+  "min_lr": 2e-05,
+  "warmup_steps": 50,
+  "weight_decay": 0.0,
+  "eval_every": 100,
+  "eval_batches": 80,
+  "ckpt_every_minutes": 30
+}

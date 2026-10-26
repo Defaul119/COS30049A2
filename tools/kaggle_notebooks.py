@@ -9,6 +9,12 @@ account's name in a copy that is pushed (`kaggle kernels push -p <copy>`, run fr
     qwen3b_explain_v2   T4x2  Qwen v2 QLoRA on both GPUs, then every evaluation          (the user's account)
     text150m_data       CPU   the 152M model's continuation tokens (lm.prepare_text)     (the teammate's account)
     text150m_train      T4x2  fp16 check, benchmark, gate, continued pretraining chain  (the teammate's account)
+    text150m_stage_data CPU   DS6 and DS7 v2 tokenized for the 152M stages               (with the 152M chain)
+    text150m_stages     T4x2  chat and explanation stages, then every 152M evaluation    (with the 152M chain)
+
+The 152M notebooks run on whichever account holds cos30049a2-text150m-base and the chain's outputs: a private
+notebook's output cannot be read from another account (26 Oct: the teammate's account needs phone verification
+first, so they run on the user's).
 
 Usage:  python tools/kaggle_notebooks.py <commit>      (the full hash of a commit already on GitHub)
 """
@@ -449,6 +455,159 @@ for p in sorted(WORK.rglob("*")):
 ]
 
 
+STAGE_DATA_NB = [
+    ("markdown", r'''
+# COS30049 A2 - Round 2 data for the 152M model's chat and explanation stages (Kaggle CPU session)
+
+Tokenizes, with the 152M model's own tokenizer, what its two fine-tuning stages train on (`docs/KAGGLE_LM_PLAN.md`,
+section 4): DS6 smol-smoltalk for the chat stage, as in round 1, and DS7 v2 for the explanation stage, with the
+glossary's training rows repeated 4 times as for Qwen v2. CPU only, so no GPU quota.
+
+**Settings:** Accelerator **None**, **Internet on**. **Inputs:** this account's dataset `cos30049a2-text150m-base`
+(the tokenizer) and notebook `cos30049a2-qwen-data` (DS7 v2). Output `stage/` and `stage_manifest.json`, read by
+`cos30049a2-text150m-stages`.
+'''),
+    ("code", f'''
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code this build uses; recorded in stage_manifest.json
+PINS = ["numpy==2.2.6", "tokenizers==0.21.1", "huggingface_hub==0.30.2", "pyarrow==20.0.0"]  # environment.yml
+GLOSSARY_REPEATS = 4   # as configs/qwen3b_explain_v2.json -> repeat_sources
+'''),
+    ("code", SETUP + CLONE + FIND),
+    ("code", r'''
+base = check_base()
+TOK = base / "tokenizer.json"
+qwen_manifest_path = find_input("data_manifest.json")
+qwen_manifest = json.loads(qwen_manifest_path.read_text(encoding="utf-8"))
+DS7 = SRC / "data" / "processed" / "ds7_v2"
+DS7.mkdir(parents=True, exist_ok=True)
+for name in ("train.jsonl", "val.jsonl", "glossary_test.jsonl"):
+    rel = f"data/processed/ds7_v2/{name}"
+    shutil.copy(qwen_manifest_path.parent / rel, DS7 / name)
+    assert sha256(DS7 / name) == qwen_manifest["files"][rel], f"{rel} differs from data_manifest.json"
+# The glossary rows are in train.jsonl once; GLOSSARY_REPEATS - 1 more copies go in as extra files.
+glossary = Path("/tmp/glossary_train.jsonl")
+with open(DS7 / "train.jsonl", encoding="utf-8") as f, open(glossary, "w", encoding="utf-8") as out:
+    out.writelines(line for line in f if json.loads(line)["source"] == "glossary")
+STAGE = WORK / "stage"
+sh(sys.executable, "-m", "lm.prepare_chat", "--tokenizer", str(TOK), "--out", str(STAGE / "chat"), log="prepare-chat.log")
+sh(sys.executable, "-m", "lm.prepare_chat", "--tokenizer", str(TOK), "--source", "jsonl", "--jsonl", str(DS7 / "train.jsonl"),
+   "--val-jsonl", str(DS7 / "val.jsonl"), "--extra", *[str(glossary)] * (GLOSSARY_REPEATS - 1),
+   "--out", str(STAGE / "ds7_v2_chat"), log="prepare-ds7-v2-chat.log")
+shutil.copy(DS7 / "glossary_test.jsonl", STAGE / "glossary_test.jsonl")
+'''),
+    ("code", r'''
+manifest = {"commit": COMMIT, "ds7_v2_commit": qwen_manifest["commit"],
+            "built_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "files": {p.relative_to(WORK).as_posix(): sha256(p) for p in sorted(STAGE.rglob("*")) if p.is_file()}}
+(WORK / "stage_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+for p in sorted(WORK.rglob("*")):
+    if p.is_file():
+        print(f"{p.stat().st_size / 2**20:9.1f} MB  {p.relative_to(WORK)}")
+'''),
+]
+
+STAGES_NB = [
+    ("markdown", r'''
+# COS30049 A2 - Round 2: the 152M model's chat and explanation stages, then every evaluation (T4 x2)
+
+After the continued pretraining (`cos30049a2-text150m-train`), round 1's two fine-tuning stages run again from the
+new weights on both GPUs: chat on DS6 (`configs/text_150m_chat_v2.json`), then explanations on DS7 v2
+(`configs/text_150m_explain_v2.json`). The new writer is then scored on the frozen DS7 v1 test, DS10 and the glossary
+test, and round 1's writer on the glossary test, side by side on the two GPUs (`docs/KAGGLE_LM_PLAN.md` section 3).
+
+**Settings:** Accelerator **GPU T4 x2**, **Internet on**. **Inputs:** this account's dataset `cos30049a2-text150m-base`
+and notebooks `cos30049a2-text150m-stage-data` and `cos30049a2-text150m-train` (its finished `model.pt`); to resume,
+also this notebook's own previous output, with `RESUME_FROM` set.
+'''),
+    ("code", f'''
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code this run uses; recorded in kaggle_run.json
+SESSION_HOURS = 11.75  # Kaggle ends a GPU session at 12 h
+EVAL_HOURS = 0.75      # what the evaluations need on two GPUs
+RESUME_FROM = None     # e.g. "/kaggle/input/<this notebook>/runs" to continue a stopped session
+PINS = ["tokenizers==0.21.1", "numpy==2.2.6"]  # environment.yml; torch is Kaggle's own (recorded)
+'''),
+    ("code", SETUP + r'''
+if shutil.which("nvidia-smi") is None:
+    raise SystemExit("No GPU in this session: Settings panel -> Accelerator -> GPU T4 x2 (needs a verified phone).")
+GPUS = len(subprocess.run(["nvidia-smi", "-L"], capture_output=True, text=True).stdout.strip().splitlines())
+RUNS = WORK / "runs"
+''' + CLONE + FIND + r'''
+TORCHRUN = [sys.executable, "-m", "torch.distributed.run", "--standalone", "--nproc_per_node", str(GPUS)]
+'''),
+    ("code", r'''
+base = check_base()
+stage_manifest_path = find_input("stage_manifest.json")
+for rel, digest in json.loads(stage_manifest_path.read_text(encoding="utf-8"))["files"].items():
+    assert sha256(stage_manifest_path.parent / rel) == digest, f"{rel} differs from stage_manifest.json"
+STAGE = stage_manifest_path.parent / "stage"
+PRETRAINED = find_input("runs/text-150m-cont/model.pt")
+if RESUME_FROM and not RUNS.exists():
+    shutil.copytree(RESUME_FROM, RUNS)
+    print("resuming from", RESUME_FROM)
+
+
+def config(name, **paths):
+    cfg = json.loads((SRC / "configs" / f"{name}.json").read_text(encoding="utf-8"))
+    cfg.update({k: str(v) for k, v in paths.items()})
+    path = Path(f"/tmp/{name}.json")
+    path.write_text(json.dumps(cfg, indent=2), encoding="utf-8")
+    return path
+
+
+CHAT, EXPLAIN = RUNS / "text-150m-chat-v2", RUNS / "text-150m-explain-v2"
+STAGES = [(config("text_150m_chat_v2", data_dir=STAGE / "chat", out_dir=CHAT, init_from=PRETRAINED), CHAT),
+          (config("text_150m_explain_v2", data_dir=STAGE / "ds7_v2_chat", out_dir=EXPLAIN,
+                  init_from=CHAT / "model.pt"), EXPLAIN)]
+'''),
+    ("code", r'''
+for cfg, out in STAGES:
+    if (out / "model.pt").exists():
+        continue
+    hours = SESSION_HOURS - (time.time() - T0) / 3600 - EVAL_HOURS - 0.2
+    sh(*TORCHRUN, "-m", "lm.train", "--config", str(cfg), "--max-hours", f"{hours:.2f}", log=f"{out.name}.log")
+    if not (out / "model.pt").exists():
+        print(f"{out.name} stopped for time: run again with RESUME_FROM (see the top)")
+        break
+'''),
+    ("code", r'''
+# Every evaluation the adoption rule needs, one queue per GPU; each test set writes its own tables.
+V2 = EXPLAIN / "model_best.pt"
+GLOSSARY = STAGE / "glossary_test.jsonl"
+EVALS = [("text150m_v2", V2, SRC / "data" / "processed" / "ds7" / "test.jsonl", ""),
+         ("text150m_v2", V2, SRC / "data" / "processed" / "ds10" / "explain.jsonl", "ds10"),
+         ("text150m_v2", V2, GLOSSARY, "glossary"),
+         ("text150m", base / "text150m_explain_v1.pt", GLOSSARY, "glossary")]
+QUEUES = [[EVALS[0]], EVALS[1:]] if GPUS > 1 else [EVALS]
+
+
+def run_queue(gpu, queue):
+    for model, checkpoint, test, tag in queue:
+        sh(sys.executable, "-m", "lm.eval_explain", "--model", model, "--checkpoint", str(checkpoint), "--test", str(test),
+           "--tag", tag, log=f"eval-{model}-{tag or 'ds7'}.log", env=dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu)))
+
+
+if (EXPLAIN / "model.pt").exists():
+    threads = [threading.Thread(target=run_queue, args=(gpu, q)) for gpu, q in enumerate(QUEUES)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    tables = WORK / "reports" / "tables"
+    tables.mkdir(parents=True, exist_ok=True)
+    for f in (SRC / "reports" / "tables").glob("assistant_eval*.csv"):
+        shutil.copy(f, tables)
+(WORK / "kaggle_run.json").write_text(json.dumps({
+    "commit": COMMIT, "gpus": GPUS, "python": sys.version.split()[0],
+    "packages": {p: version(p) for p in ("torch", "numpy", "tokenizers")}, "resumed_from": RESUME_FROM,
+    "session_hours": round((time.time() - T0) / 3600, 2),
+    "finished": {out.name: (out / "model.pt").exists() for _, out in STAGES},
+}, indent=2), encoding="utf-8")
+'''),
+]
+
+
 def metadata(slug, code_file, gpu, kernel_sources, dataset_sources=()):
     return {"id": f"KAGGLE_USERNAME/{slug}", "title": slug, "code_file": code_file, "language": "python",
             "kernel_type": "notebook", "is_private": True, "enable_gpu": gpu, "enable_tpu": False,
@@ -463,7 +622,11 @@ for folder, slug, cells, gpu, sources, datasets in [
          ["KAGGLE_USERNAME/cos30049a2-qwen-data", "KAGGLE_USERNAME/cos30049a2-qwen3b-explain"], []),
         ("text150m_data", "cos30049a2-text150m-data", TEXT_DATA_NB, False, [], BASE),
         ("text150m_train", "cos30049a2-text150m-train", TEXT_TRAIN_NB, True,
-         ["KAGGLE_USERNAME/cos30049a2-text150m-data"], BASE)]:
+         ["KAGGLE_USERNAME/cos30049a2-text150m-data"], BASE),
+        ("text150m_stage_data", "cos30049a2-text150m-stage-data", STAGE_DATA_NB, False,
+         ["KAGGLE_USERNAME/cos30049a2-qwen-data"], BASE),
+        ("text150m_stages", "cos30049a2-text150m-stages", STAGES_NB, True,
+         ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data", "KAGGLE_USERNAME/cos30049a2-text150m-train"], BASE)]:
     out = REPO_DIR / "kaggle" / folder
     out.mkdir(parents=True, exist_ok=True)
     (out / f"{folder}.ipynb").write_text(json.dumps(nb(cells), indent=1, ensure_ascii=False) + "\n", encoding="utf-8")

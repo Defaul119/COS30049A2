@@ -1,0 +1,18 @@
+{
+  "name": "text-150m-explain-v2",
+  "_about": "Round 2: the explanation stage on DS7 v2 (about 4x round 1's pairs) with the glossary repeated 4 times, as for Qwen v2; 2 epochs at most with round 1's early stopping. Run on Kaggle (kaggle/text150m_stages).",
+  "data_dir": "data/ds7_v2_chat",
+  "out_dir": "runs/text-150m-explain-v2",
+  "init_from": "runs/text-150m-chat-v2/model.pt",
+  "epochs": 2,
+  "batch_tokens": 32768,
+  "micro_batch": 4,
+  "lr": 0.0001,
+  "min_lr": 1e-05,
+  "warmup_steps": 20,
+  "weight_decay": 0.0,
+  "eval_every": 50,
+  "eval_batches": 40,
+  "early_stop_evals": 4,
+  "ckpt_every_minutes": 10
+}
