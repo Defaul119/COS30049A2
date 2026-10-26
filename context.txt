@@ -31,7 +31,13 @@ ROUND 2 STATUS (26 Oct evening; plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct ha
   evaluates DS7 v1 test, DS10, glossary test, and round-1 Qwen on the glossary test). When text150m-data completes,
   push honglquanganh/cos30049a2-text150m-train (session 1: fp16 check vs 3.1305, bench, gate with GPU_HOURS 50,
   then train). Each later 152M session: add the notebook's own output as an input (kernel_sources) and set
-  RESUME_FROM. Cut-off Sun 1 Nov 23:59. Then (written 26 Oct, pinned dbd39bf): tritran72/cos30049a2-text150m-
+  RESUME_FROM. 26 Oct 20:36: tritran72/cos30049a2-text150m-data COMPLETE: 3,000,941,125 new tokens from file 2
+  row 483,432 (files 002-006), val 10,001,319 (round 1's); stage-data COMPLETE 20:06 (chat = round 1's counts
+  exactly; ds7_v2_chat 36,840 conversations, 17.2M tokens). The 152M GPU session is HELD until Qwen v2 ends (both
+  on tritran72's weekly quota; running both risks Qwen being cut before its evaluation) unless the user's quota
+  allows both, or Modal (user may sign up tonight; `! modal token new`) takes the 152M chain. On tritran72 set
+  GPU_HOURS to this week's remainder + next week's 30 h - ~6 h for the stages (~32 h), not 50.
+  Cut-off Sun 1 Nov 23:59. Then (written 26 Oct, pinned dbd39bf): tritran72/cos30049a2-text150m-
   stage-data (CPU; DS6 + DS7 v2 tokenized, glossary x4; STARTED 26 Oct ~19:45) and cos30049a2-text150m-stages (T4
   x2; chat v2 -> explain v2 -> evals text150m_v2 on DS7 v1/DS10/glossary + round-1 text150m on glossary; needs the
   train notebook's finished model.pt as input). Tue 3 Nov adoption rule. Watchers: scratchpad watch_kernels.py
