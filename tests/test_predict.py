@@ -85,11 +85,13 @@ class AssistantExplainTests(unittest.TestCase):
         self.assertIsNone(self.p.writers)  # nothing is loaded unless the Assistant is asked for
 
     def test_a_rejected_answer_is_never_shown_and_the_next_writer_is_tried(self):
+        method = self.tx["method"]["name"]
         self.p.writers = [("bad", lambda messages: "This looks fraudulent: 99999 BTC."),
-                          ("good", lambda messages: f"Worth a look. {SETTINGS['limitationLine']}")]
+                          ("good", lambda messages: f"Flagged by {method}. Worth a look. {SETTINGS['limitationLine']}")]
         result = self.p.explain(self.tx, use_assistant=True)
         self.assertEqual(result["source"], "good")
-        self.assertEqual(result["attempts"][0], {"source": "bad", "failedChecks": ["numbers_ok", "limitation_ok", "wording_ok"]})
+        self.assertEqual(result["attempts"][0], {"source": "bad", "failedChecks": ["numbers_ok", "limitation_ok",
+                                                                                   "wording_ok", "verdict_ok"]})
         check_outputs(result)  # the rejected text is not in the result, so the wording rule holds
         self.assertNotIn("99999", json.dumps(result))
 
