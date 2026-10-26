@@ -5,6 +5,21 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 27 October 2026 (overnight; the user gave Claude full decision rights)
 
+**Statistics campaign A: every scoring method's planted-pattern recall over many seeds** (`explorer/distribution.py`,
+Kaggle CPU, 1.8 h; seeds 70000-; `stats_methods_{seeds,summary}.csv`).
+
+| Data set | Seeds | Baseline mean recall (sd) | Baseline first | Fusion beats baseline |
+|---|---|---|---|---|
+| DS1 | 100 | 0.661 (0.035) | 4% | 95% |
+| DS10 | 100 | 0.449 (0.031) | 99% | 1% |
+| DS2 | 20 | 0.502 (0.010) | 100% | 0% |
+
+On DS1, where fusion and regression were tuned, fusion beats the baseline on 95% of seeds (0.685, +0.024) and
+regression on 59%. On addresses the methods never saw, the baseline ranks first on 99-100% of seeds, ahead of
+fusion every time. The selection rule (within five points, the easier method to explain) picked the method that
+transfers best; the tuned methods' DS1 advantage is partly fitted to DS1. TxGPT is not in this study (its scoring
+needs a GPU).
+
 **Statistics campaign B: classifiers over 10 training seeds and a 1,000-draw test bootstrap**
 (`explorer/classify_distribution.py`, Kaggle CPU, 63 min; `stats_classifiers_{seeds,summary,paired}.csv`). The seed
 means reproduce the reported numbers; for example, the Elliptic random forest has F1 0.815, seed SD 0.002, 95% CI
