@@ -346,3 +346,42 @@ class RandomTestSetTests(unittest.TestCase):
             synthetic = (tmp / "out" / "synthetic.jsonl").read_text(encoding="utf-8").splitlines()
         self.assertEqual((len(real), len(synthetic)), (30, 10))
         self.assertFalse({r["messages"][1]["content"] for r in real if r["kind"] != "unscored"} & frozen)
+
+
+class VerdictAndReasonsTests(unittest.TestCase):
+    """The verdict check (guardrail) and the reasons check (evaluation), added 26 Oct."""
+
+    def test_every_phrasing_states_the_right_verdict_and_reasons(self):
+        for flagged in (True, False):
+            t = tx(flagged)
+            facts, template = assistant.summary(t), ds7.phrase(t, 0)
+            for k in range(SETTINGS["ds7"]["phrasings"]):
+                reply = ds7.phrase(t, k)
+                self.assertTrue(assistant.verdict_ok(reply, facts), (flagged, k, reply))
+                self.assertTrue(assistant.reasons_ok(reply, template, facts), (flagged, k, reply))
+
+    def test_wrong_verdict_fails_the_guardrail_and_a_missing_reason_fails_reasons(self):
+        t = tx(flagged=False)
+        messages, facts, good = assistant.prompt_messages(t), assistant.summary(t), ds7.phrase(t, 0)
+        bad = good.replace("Not flagged by", "Flagged by")
+        self.assertEqual((assistant.check(bad, messages, facts)["verdict_ok"], assistant.check(bad, messages, facts)["passed"]),
+                         (False, False))
+        dropped = "\n".join(line for line in good.splitlines() if "gap" not in line.lower())
+        self.assertFalse(assistant.reasons_ok(dropped, good, facts))
+        unscored = tx(scored=False)
+        self.assertTrue(assistant.verdict_ok(ds7.phrase(unscored, 3), assistant.summary(unscored)))
+        self.assertFalse(assistant.verdict_ok("Not flagged by Robust z baseline (A1).", assistant.summary(unscored)))
+
+    def test_hard_prompts_vary_and_their_replies_pass(self):
+        import random
+
+        from explorer import random_test
+        from lm.eval_explain import facts_of
+
+        rng, flag_z = random.Random(3), random_test.flag_abs_z()
+        rows = [random_test.hard_record(rng, flag_z) for _ in range(120)]  # each reply is checked as it is made
+        variants = [r["variant"] for r in rows]
+        self.assertGreater(len({v["method"] for v in variants}), 4)
+        self.assertTrue(any(v["reworded"] is not None for v in variants) and any(v["shuffled"] for v in variants))
+        for r in rows:  # the evaluation reads the facts under any instruction wording
+            self.assertEqual(facts_of(r["messages"][:-1]).get("scored", False), r["kind"] != "unscored")

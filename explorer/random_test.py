@@ -13,6 +13,11 @@ writer, both models in both rounds, answers exactly the same prompts:
                       z always agree; roles and the flag come from them as in explorer.predict. Some features have
                       no comparison and some transactions are unscored, as in real data. No writer has seen these
                       numbers, so number faithfulness and the direction check meet new combinations.
+    hard.jsonl        synthetic transactions with what neither model trained on (user, 26 Oct: "try another
+                      randomized dataset" after round 1's 99% pass rates): any of the nine methods, a method
+                      other than the baseline flagging independently of the features (flagged with nothing
+                      standing out, or not flagged despite a flag-level feature), the instruction reworded and the
+                      facts shuffled in some prompts. Its own seed, so real.jsonl and synthetic.jsonl stay as built.
 
 Each row carries the template (the ROUGE-L reference) and a reply in a random DS7 phrasing (rouge_own), and every
 reply passes the guardrail, as in DS7. Score a writer with
@@ -117,17 +122,54 @@ def synthetic_tx(rng: random.Random, flag_z: float) -> dict[str, Any]:
             "direction": direction, "features": features}
 
 
-def record(tx: dict[str, Any], rng: random.Random, source: str) -> dict[str, Any]:
+def record(tx: dict[str, Any], rng: random.Random, source: str,
+           messages: list[dict[str, str]] | None = None, facts: dict[str, Any] | None = None) -> dict[str, Any]:
     """A test row like DS7's: the prompt, a reply in a random phrasing (checked by the guardrail) and the template."""
     k = rng.randrange(SETTINGS["ds7"]["phrasings"])
     reply = phrase(tx, k)
-    messages = assistant.prompt_messages(tx)
-    checks = assistant.check(reply, messages, assistant.summary(tx))
+    messages = messages or assistant.prompt_messages(tx)
+    checks = assistant.check(reply, messages, facts or assistant.summary(tx))
     if not checks["passed"]:
         raise ValueError(f"a synthetic reply fails its own guardrail ({checks}): {reply!r}")
     kind = "unscored" if not tx["scored"] else "flagged" if tx["flagged"] else "not_flagged"
     return {"source": source, "kind": kind, "phrasing": k, "template": template_explanation(tx),
             "messages": messages + [{"role": "assistant", "content": reply}]}
+
+
+# Instructions neither model was trained with (DS7 uses assistant.INSTRUCTION only); each fits on one line, so the
+# facts still start on the second, where lm.eval_explain reads them.
+REWORDED = [
+    "Why was this transaction flagged or not? Answer in plain words for an analyst, using only these facts:",
+    "Summarise what stands out about this transaction for an analyst. Use only the facts below:",
+    "Using only the facts below, tell an analyst whether this transaction is unusual for its address and why:",
+    "Explain the result below to a colleague who is new to the Explorer. Stick to these facts:",
+    "Write a short explanation of this scoring result, based only on these facts:",
+    "In plain English, what does this result mean? Only use these facts:",
+]
+
+
+def hard_record(rng: random.Random, flag_z: float) -> dict[str, Any]:
+    """A synthetic transaction explained for a random method, maybe with a reworded instruction and shuffled facts."""
+    p = SETTINGS["randomTest"]
+    tx = synthetic_tx(rng, flag_z)
+    method = "baseline" if rng.random() < p["hardBaselineShare"] else rng.choice(
+        [m for m in METHOD_NAMES if m != "baseline"])
+    tx["method"] = {"name": METHOD_NAMES[method]}
+    if method != "baseline" and tx["scored"]:
+        # Its flag does not follow the features' roles: a pattern method can flag with nothing standing out,
+        # or pass over a flag-level feature (explorer.predict takes the flag from the method itself).
+        tx["flagged"] = rng.random() < p["hardOtherFlagShare"]
+    facts = assistant.summary(tx)
+    shuffled = bool(facts.get("features")) and rng.random() < p["shuffleShare"]
+    if shuffled:
+        rng.shuffle(facts["features"])
+    reworded = rng.randrange(len(REWORDED)) if rng.random() < p["rewordShare"] else None
+    instruction = assistant.INSTRUCTION if reworded is None else REWORDED[reworded]
+    messages = [{"role": "system", "content": assistant.SYSTEM_PROMPT},
+                {"role": "user", "content": f"{instruction}\n{json.dumps(facts, ensure_ascii=False)}"}]
+    row = record(tx, rng, "hard", messages, facts)
+    row["variant"] = {"method": method, "reworded": reworded, "shuffled": shuffled}
+    return row
 
 
 def write(path: Path, rows: list[dict[str, Any]], prefix: str) -> str:
@@ -150,17 +192,21 @@ def run_build_random_test(ds7_v2_test: Path = DS7_V2_TEST, out_dir: Path = OUT_D
             for r in rng.sample(pool, min(p["realPrompts"], len(pool)))]
     flag_z = flag_abs_z()
     synthetic = [record(synthetic_tx(rng, flag_z), rng, "synthetic") for _ in range(p["syntheticPrompts"])]
+    # Its own seed, so adding it left real.jsonl and synthetic.jsonl exactly as first built.
+    hard_rng = random.Random(p["hardSeed"])
+    hard = [hard_record(hard_rng, flag_z) for _ in range(p["hardPrompts"])]
 
     out_dir.mkdir(parents=True, exist_ok=True)
     files = {"real.jsonl": write(out_dir / "real.jsonl", real, "rreal"),
-             "synthetic.jsonl": write(out_dir / "synthetic.jsonl", synthetic, "rsyn")}
+             "synthetic.jsonl": write(out_dir / "synthetic.jsonl", synthetic, "rsyn"),
+             "hard.jsonl": write(out_dir / "hard.jsonl", hard, "rhard")}
     kinds = {name: {k: sum(r["kind"] == k for r in rows) for k in ("flagged", "not_flagged", "unscored")}
-             for name, rows in (("real", real), ("synthetic", synthetic))}
+             for name, rows in (("real", real), ("synthetic", synthetic), ("hard", hard))}
     manifest = {"dataset": "Randomized Assistant test set (real held-out DS7 v2 prompts and synthetic transactions)",
                 "built_utc": utc_now(), "settings": p, "flag_abs_z": flag_z, "pool": len(pool),
                 "ds7_v2_test_sha256": hashlib.sha256(ds7_v2_test.read_bytes()).hexdigest(), "kinds": kinds,
                 "files": [{"path": f"data/processed/random_test/{name}", "sha256": digest} for name, digest in files.items()]}
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    log.info("Randomized test set: %d real prompts (from %d eligible) and %d synthetic: %s", len(real), len(pool),
-             len(synthetic), kinds)
+    log.info("Randomized test set: %d real prompts (from %d eligible), %d synthetic and %d hard: %s", len(real),
+             len(pool), len(synthetic), len(hard), kinds)
     return 0

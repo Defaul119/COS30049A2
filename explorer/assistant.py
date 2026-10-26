@@ -10,10 +10,16 @@ before the Explorer shows it:
     wording      no banned word (settings.json -> bannedWords; A1 NFR-01)
     direction    no comparison phrase contradicts its feature's z sign ("Quieter week" for a busier
                  week passes the number check, so it needs its own; added 26 Oct, round 2)
+    verdict      the answer states the right result: flagged, not flagged or not scored (added 26 Oct:
+                 "Not flagged" for a flagged transaction kept every number and passed the other checks)
 
-The Explorer tries its writers in order (the team's design, 23 Oct): the 152M model, trained from
-scratch, explains DS1 transactions first; if its answer fails a check, the fine-tuned Qwen 3B
-writes one; if that fails too, the template explanation is shown. The checks are code, not a
+The evaluation also measures whether an answer names exactly the template's reasons (reasons_ok): an
+answer that leaves out or adds a feature is not wrong in a way the Explorer must block, but it is not
+fully correct either.
+
+The Explorer tries its writers in settings -> assistant -> writerOrder (Qwen 3B, then the 152M model,
+from the DS7 results of 25 Oct; writers a machine cannot run are skipped): the first answer that
+passes every check is shown, and if none does, the template explanation is. The checks are code, not a
 model, so they are exact. The template is authoritative, and the Assistants only rephrase it.
 Qwen 3B also answers general questions as the Explorer's chatbot; that is outside this module. The evaluation measures (number faithfulness,
 limitation line, banned words, feature coverage, ROUGE-L against the template) use the same
@@ -121,13 +127,48 @@ def wrong_directions(answer: str, facts: dict[str, Any]) -> list[str]:
     A clustering method's reason describes its centroid, not this transaction ("in a busier week than
     usual"), so the answer's copy of the model's reason is left out of the search.
     """
-    text = answer.lower().replace(facts.get("modelReason", "").lower(), "")
+    text = without_reason(answer, facts)
     wrong = []
     for f in facts.get("features", []):
         sign = z_sign(f["z"])
         if sign is not None:
             wrong += [phrase for phrase in DIRECTION_PHRASES[f["feature"]][-sign] if phrase in text]
     return wrong
+
+
+def without_reason(answer: str, facts: dict[str, Any]) -> str:
+    """The answer in lower case, without its copy of the model's reason (which describes a centroid, not this
+    transaction)."""
+    return answer.lower().replace(facts.get("modelReason", "").lower(), "")
+
+
+# Every DS7 phrasing states the result in its first line (explorer.ds7.OPENERS): a negation shortly before
+# "flag" or "mark" says not flagged. An unscored answer says so anywhere.
+NEGATED_FLAG = re.compile(r"\b(not|never|n't)\b[^.\n]{0,40}\b(flag|mark)", re.IGNORECASE)
+FLAG_CLAIM = re.compile(r"\b(flag(?:ged|s)?|marks)\b", re.IGNORECASE)
+UNSCORED_CLAIM = re.compile(r"\b(not scored|unscored|no score|cannot be scored|can't be scored)\b", re.IGNORECASE)
+
+
+def verdict_ok(answer: str, facts: dict[str, Any]) -> bool:
+    """The answer states the facts' result: not scored, flagged, or not flagged (True for a glossary question)."""
+    if not facts:
+        return True
+    if not facts.get("scored", True):
+        return bool(UNSCORED_CLAIM.search(answer))
+    first = answer.strip().split("\n", 1)[0]
+    says_not = bool(NEGATED_FLAG.search(first))
+    return bool(FLAG_CLAIM.search(first)) and not says_not if facts["flagged"] else says_not
+
+
+def features_named(text: str, facts: dict[str, Any]) -> set[str]:
+    """The features whose comparison phrase (either direction) the text uses."""
+    text = without_reason(text, facts)
+    return {name for name, signs in DIRECTION_PHRASES.items() if any(p in text for ps in signs.values() for p in ps)}
+
+
+def reasons_ok(answer: str, template: str, facts: dict[str, Any]) -> bool:
+    """The answer names exactly the features the template explains with, no fewer and no more."""
+    return features_named(answer, facts) == features_named(template, facts)
 
 
 def normalise(text: str) -> str:
@@ -166,12 +207,12 @@ def rouge_l(candidate: str, reference: str) -> float:
 
 
 def check(answer: str, messages: list[dict[str, str]], facts: dict[str, Any]) -> dict[str, Any]:
-    """The guardrail's four checks on one answer, and whether it passes all of them."""
+    """The guardrail's five checks on one answer, and whether it passes all of them."""
     prompt = "\n".join(m["content"] for m in messages)
     result = {"numbers_ok": numbers_faithful(answer, prompt),
               "limitation_ok": has_limitation(answer) or not facts.get("flagged", False),
               "wording_ok": not banned_words(answer), "direction_ok": not wrong_directions(answer, facts),
-              "nonempty": bool(answer.strip())}
+              "verdict_ok": verdict_ok(answer, facts), "nonempty": bool(answer.strip())}
     result["passed"] = all(result.values())
     return result
 

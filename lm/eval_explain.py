@@ -9,7 +9,10 @@ real behaviour:
     limitation_ok   a flagged item's answer has the limitation line exactly
     wording_ok      no banned word
     direction_ok    no comparison phrase contradicts its feature's z sign (wrong_direction lists them)
-    passed          all four (the guardrail would show the answer, not the template)
+    verdict_ok      the answer states the right result: flagged, not flagged or not scored
+    passed          all five (the guardrail would show the answer, not the template)
+    reasons_ok      the answer names exactly the template's features, no fewer and no more
+    correct         passed and reasons_ok: a fully correct explanation
     coverage        share of flag-level and contributing features whose value the answer repeats
     rouge_l         ROUGE-L against the template answer
     rouge_own       ROUGE-L against the row's own reply (one of DS7's five phrasings), which does not
@@ -55,11 +58,10 @@ KINDS = ("template", "text150m", "qwen3b")
 
 
 def facts_of(messages: list[dict[str, str]]) -> dict:
-    """The JSON facts in a DS7 prompt (the user message's second line); {} for glossary questions."""
-    user = messages[1]["content"]
-    if not user.startswith(assistant.INSTRUCTION):
-        return {}
-    return json.loads(user[len(assistant.INSTRUCTION):].strip())
+    """The JSON facts after the user message's first line, whatever the instruction's wording (the hard
+    randomized set rewords it); {} for glossary questions, which have none."""
+    _, _, rest = messages[1]["content"].partition("\n")
+    return json.loads(rest) if rest.lstrip().startswith("{") else {}
 
 
 def measure(answer: str, row: dict) -> dict:
@@ -71,6 +73,8 @@ def measure(answer: str, row: dict) -> dict:
     out["coverage"] = assistant.coverage(answer, facts)
     out["rouge_l"] = assistant.rouge_l(answer, template)
     out["rouge_own"] = assistant.rouge_l(answer, row["messages"][-1]["content"])
+    out["reasons_ok"] = assistant.reasons_ok(answer, template, facts)
+    out["correct"] = out["passed"] and out["reasons_ok"]
     out["copy"] = answer.strip() == template.strip()
     out["key_facts"] = assistant.key_facts_found(answer, row.get("key_facts", []))
     out["banned"] = ", ".join(assistant.banned_words(answer))
@@ -92,7 +96,8 @@ def summarise(frame: pd.DataFrame, model: str) -> dict:
             "banned_word_share": 1 - expl["wording_ok"].mean(), "guardrail_pass": expl["passed"].mean(),
             "feature_coverage": expl["coverage"].dropna().mean(), "rouge_l": expl["rouge_l"].mean(),
             "direction_errors": int((~expl["direction_ok"]).sum()), "rouge_own": expl["rouge_own"].mean(),
-            "copy_rate_flagged": flagged["copy"].mean(),
+            "copy_rate_flagged": flagged["copy"].mean(), "verdict_accuracy": expl["verdict_ok"].mean(),
+            "reasons_accuracy": expl["reasons_ok"].mean(), "fully_correct": expl["correct"].mean(),
             "glossary_prompts": len(gloss),
             "glossary_banned_word_share": 1 - gloss["wording_ok"].mean() if len(gloss) else nan,
             "glossary_rouge_l": gloss["rouge_l"].mean() if len(gloss) else nan,

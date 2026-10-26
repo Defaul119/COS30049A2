@@ -332,7 +332,14 @@
     "_caps": "values a real address could show: amounts up to 10^11 satoshis (1,000 BTC), gaps up to 5 years, 500 transactions in the burst window; z is recomputed from the capped value",
     "maxSatsLog10": 11,
     "maxGapHours": 43800,
-    "maxCount": 500
+    "maxCount": 500,
+    "_hard": "hard.jsonl: synthetic transactions explained for any of the nine methods (a method other than the baseline flags independently of the features, as Isolation Forest can), with the instruction reworded and the features shuffled in some prompts: what neither model trained on",
+    "hardSeed": 50001,
+    "hardPrompts": 500,
+    "hardBaselineShare": 0.4,
+    "hardOtherFlagShare": 0.35,
+    "rewordShare": 0.5,
+    "shuffleShare": 0.5
   },
 
   "profiles": {

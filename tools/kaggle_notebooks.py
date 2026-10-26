@@ -579,12 +579,13 @@ GLOSSARY = STAGE / "glossary_test.jsonl"
 RANDOM = SRC / "data" / "processed" / "random_test"
 EVALS = [("text150m_v2", V2, SRC / "data" / "processed" / "ds7" / "test.jsonl", ""),
          ("text150m_v2", V2, RANDOM / "real.jsonl", "random_real"),
+         ("text150m_v2", V2, RANDOM / "hard.jsonl", "random_hard"),
          ("text150m_v2", V2, SRC / "data" / "processed" / "ds10" / "explain.jsonl", "ds10"),
          ("text150m_v2", V2, GLOSSARY, "glossary"),
          ("text150m", base / "text150m_explain_v1.pt", GLOSSARY, "glossary"),
          ("text150m_v2", V2, RANDOM / "synthetic.jsonl", "random_synthetic")]
 # A test set's evaluations stay in one queue: they write one summary table.
-QUEUES = [EVALS[:2], EVALS[2:]] if GPUS > 1 else [EVALS]
+QUEUES = [EVALS[:3], EVALS[3:]] if GPUS > 1 else [EVALS]
 
 
 def run_queue(gpu, queue):
@@ -618,14 +619,15 @@ RANDOM_EVAL_NB = [
 # COS30049 A2 - The randomized test set: both Explorer Assistants, both rounds (T4 x2)
 
 Scores Qwen 3B (round 2 and round 1) and the 152M model (round 1) on the randomized test set
-(`data/processed/random_test/`, `explorer/random_test.py`): 500 real prompts drawn from DS7 v2's held-out addresses
-and 500 synthetic transactions no writer has seen. The template's own rows were scored when the set was built; the
-152M model's round 2 is scored by `cos30049a2-text150m-stages`. One GPU takes the real prompts, the other the
-synthetic ones, so each summary table has one writer process.
+(`data/processed/random_test/`, `explorer/random_test.py`): 500 real prompts drawn from DS7 v2's held-out addresses,
+500 synthetic transactions no writer has seen, and 500 hard ones (any of the nine methods, reworded instructions,
+shuffled facts). The template's own rows were scored when the set was built; the 152M model's round 2 is scored by
+`cos30049a2-text150m-stages`. One GPU takes the real and hard prompts, the other the synthetic ones, so each summary
+table has one writer process.
 
 **Settings:** Accelerator **GPU T4 x2**, **Internet on**. **Inputs:** this account's notebooks
 `cos30049a2-qwen3b-explain-v2` (round 2's adapter) and `cos30049a2-qwen3b-explain` (round 1's), and dataset
-`cos30049a2-text150m-base` (the 152M round-1 writer). Then **Save Version -> Save & Run All (Commit)**; about an hour.
+`cos30049a2-text150m-base` (the 152M round-1 writer). Then **Save Version -> Save & Run All (Commit)**; about 70 minutes.
 '''),
     ("code", f'''
 REPO = "https://github.com/Defaul119/COS30049A2.git"
@@ -651,7 +653,7 @@ WRITERS = [("qwen3b_v2", ["--config", str(SRC / "configs" / "qwen3b_explain_v2.j
            ("qwen3b", ["--config", str(SRC / "configs" / "qwen3b_explain.json"), "--adapter", str(V1_ADAPTER),
                        "--batch-size", str(EVAL_BATCH)]),
            ("text150m", ["--checkpoint", str(base / "text150m_explain_v1.pt")])]
-QUEUES = [[(w, a, "real") for w, a in WRITERS], [(w, a, "synthetic") for w, a in WRITERS]]
+QUEUES = [[(w, a, part) for part in ("real", "hard") for w, a in WRITERS], [(w, a, "synthetic") for w, a in WRITERS]]
 if GPUS == 1:
     QUEUES = [QUEUES[0] + QUEUES[1]]
 

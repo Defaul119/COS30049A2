@@ -1,6 +1,6 @@
 {
   "dataset": "Randomized Assistant test set (real held-out DS7 v2 prompts and synthetic transactions)",
-  "built_utc": "2026-10-26T14:24:44+00:00",
+  "built_utc": "2026-10-26T14:32:40+00:00",
   "settings": {
     "_about": "A randomized test set for both Explorer Assistants and both rounds (user, 26 Oct; explorer/random_test.py): real prompts drawn from DS7 v2's test addresses (none in the frozen v1 test) and synthetic transactions drawn from the ranges below. Built once with this seed, then frozen.",
     "seed": 50000,
@@ -53,7 +53,14 @@
     "_caps": "values a real address could show: amounts up to 10^11 satoshis (1,000 BTC), gaps up to 5 years, 500 transactions in the burst window; z is recomputed from the capped value",
     "maxSatsLog10": 11,
     "maxGapHours": 43800,
-    "maxCount": 500
+    "maxCount": 500,
+    "_hard": "hard.jsonl: synthetic transactions explained for any of the nine methods (a method other than the baseline flags independently of the features, as Isolation Forest can), with the instruction reworded and the features shuffled in some prompts: what neither model trained on",
+    "hardSeed": 50001,
+    "hardPrompts": 500,
+    "hardBaselineShare": 0.4,
+    "hardOtherFlagShare": 0.35,
+    "rewordShare": 0.5,
+    "shuffleShare": 0.5
   },
   "flag_abs_z": 5.0,
   "pool": 1401,
@@ -68,6 +75,11 @@
       "flagged": 187,
       "not_flagged": 279,
       "unscored": 34
+    },
+    "hard": {
+      "flagged": 171,
+      "not_flagged": 285,
+      "unscored": 44
     }
   },
   "files": [
@@ -78,6 +90,10 @@
     {
       "path": "data/processed/random_test/synthetic.jsonl",
       "sha256": "b0410fbbcb38d69590b69699c066536b3a8417fad3aa534a29b48c77b71dae7b"
+    },
+    {
+      "path": "data/processed/random_test/hard.jsonl",
+      "sha256": "75ae3ec52fe3f602519737a771150cea4ce2799c7cbdc27f00095e8f0efe9a3d"
     }
   ]
 }

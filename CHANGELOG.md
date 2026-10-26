@@ -5,6 +5,30 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 26 October 2026
 
+**Stricter scoring and a hard randomized set (user, late evening: "that's high... try another randomized
+dataset").** The guardrail's 99% only checks surface rules, so:
+- *Verdict check, now in the guardrail* (`explorer.assistant.verdict_ok`): the answer must state the right result
+  (flagged, not flagged or not scored). "Not flagged" for a flagged transaction kept every number and passed before.
+- *Reasons check, an evaluation measure* (`reasons_ok`): the answer must name exactly the template's features.
+  `fully_correct` = guardrail passed and reasons right.
+
+Round 1 re-scored on the same answers (verdicts 100% everywhere):
+
+| Test | Model | Reasons right | Fully correct |
+|---|---|---|---|
+| DS7 v1 test | 152M | 95.7% | 95.1% |
+| DS7 v1 test | Qwen | 96.0% | 95.5% |
+| DS10 | 152M | 94.8% | 94.2% |
+| DS10 | Qwen | 96.2% | 95.9% |
+
+The misses are real: where no feature stands out, the template lists the two largest differences, and both models
+often pick the wrong pair (that choice needs z values compared).
+
+`random_test/hard.jsonl` (seed 50001; real.jsonl and synthetic.jsonl unchanged) has 500 synthetic transactions
+explained for any of the nine methods: 289 non-baseline, with the flag independent of the features (71 not flagged
+despite a flag-level feature, 13 flagged with nothing standing out). 249 have a reworded instruction and 223 shuffled
+facts, none of which either model trained on. The template control passes everything on it.
+
 **A randomized test set for both Assistants (user's request, evening).** `python -m explorer.cli build-random-test`
 (`explorer/random_test.py`, settings `randomTest`, seed 50000) writes `data/processed/random_test/`. It is
 built once and frozen, so all four writers (152M and Qwen, rounds 1 and 2) answer the same prompts:
