@@ -75,6 +75,47 @@ class GuardrailTests(unittest.TestCase):
         self.assertEqual((neither["source"], neither["text"]), ("template", ds7.phrase(t, 0)))
         self.assertFalse(neither["attempts"][1]["checks"]["numbers_ok"])
 
+    def test_comparison_phrase_against_its_z_sign_fails_only_the_direction_check(self):
+        t = tx()
+        messages, facts = assistant.prompt_messages(t), assistant.summary(t)
+        good = ds7.phrase(t, 0)
+        self.assertEqual(assistant.wrong_directions(good, facts), [])
+        bad = assistant.check(good.replace("Larger amount", "Smaller amount"), messages, facts)
+        self.assertEqual((bad["numbers_ok"], bad["direction_ok"], bad["passed"]), (True, False, False))
+        # Within-usual features count too: F2's z is +0.3, so "quieter week" contradicts it wherever it appears.
+        self.assertEqual(assistant.wrong_directions(good + "\nA quieter week than usual.", facts),
+                         ["quieter week than usual"])
+
+    def test_z_sign_leaves_a_rounded_zero_open(self):
+        self.assertEqual([assistant.z_sign(z) for z in ("4.1", "-0.7", "-0.0", "0.0", None)], [1, -1, -1, None, None])
+
+    def test_round1_answers_with_a_wrong_comparison_word_are_caught(self):
+        # The three cases found by hand on 25 Oct (context.txt): one per writer and test set.
+        import json
+        from pathlib import Path
+
+        import pandas as pd
+
+        from lm.eval_explain import facts_of
+
+        root = Path(__file__).resolve().parents[1]
+        cases = [("ds7/test.jsonl", "qwen3b", "test-00285", "quieter week than usual"),
+                 ("ds7/test.jsonl", "text150m", "test-00127", "larger amount than usual"),
+                 ("ds10/explain.jsonl", "text150m_ds10", "ds10-00153", None)]
+        for data, table, rid, phrase in cases:
+            rows = (json.loads(line) for line in open(root / "data" / "processed" / data, encoding="utf-8"))
+            row = next(r for r in rows if r["id"] == rid)
+            answers = pd.read_csv(root / "reports" / "tables" / f"assistant_eval_{table}.csv").set_index("id")
+            wrong = assistant.wrong_directions(answers.loc[rid, "answer"], facts_of(row["messages"][:-1]))
+            self.assertTrue(wrong, rid)
+            if phrase:
+                self.assertEqual(wrong, [phrase])
+
+    def test_key_facts_accept_any_listed_phrase(self):
+        facts = ["median", ["MAD", "median absolute deviation"], "1.4826"]
+        self.assertEqual(assistant.key_facts_found("The  Median and its median absolute deviation", facts), 2 / 3)
+        self.assertIsNone(assistant.key_facts_found("anything", []))
+
     def test_rouge_l(self):
         self.assertEqual(assistant.rouge_l("a b c", "a b c"), 1.0)
         self.assertAlmostEqual(assistant.rouge_l("a x c", "a b c"), 2 / 3)

@@ -1,4 +1,4 @@
-model,prompts,number_faithfulness,limitation_line,banned_word_share,guardrail_pass,feature_coverage,rouge_l,glossary_prompts,glossary_banned_word_share,glossary_rouge_l,seconds,source
-template,291,1.0,1.0,0.0,1.0,1.0,1.0,0,,,0.1,explorer.explain.template_explanation
-text150m,291,1.0,1.0,0.0,1.0,1.0,0.6783131269957967,0,,,245.3,models/assistant/model.pt
-qwen3b,291,1.0,1.0,0.0,1.0,0.9984567901234568,0.7926978785769497,0,,,2098.0,models/qwen3b_adapter
+model,prompts,number_faithfulness,limitation_line,banned_word_share,guardrail_pass,feature_coverage,rouge_l,glossary_prompts,glossary_banned_word_share,glossary_rouge_l,seconds,source,direction_errors,rouge_own,copy_rate_flagged,glossary_key_facts,glossary_correct
+template,291,1.0,1.0,0.0,1.0,1.0,1.0,0,,,0.1,explorer.explain.template_explanation,0.0,0.7902765189711071,1.0,,
+text150m,291,1.0,1.0,0.0,0.993127147766323,1.0,0.6783131269957967,0,,,245.3,models/assistant/model.pt,2.0,0.7066435406323082,0.0,,
+qwen3b,291,1.0,1.0,0.0,0.9862542955326461,0.9984567901234568,0.7926978785769497,0,,,2098.0,models/qwen3b_adapter,4.0,0.7462145934219283,0.981651376146789,,

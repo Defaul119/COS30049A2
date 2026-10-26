@@ -312,12 +312,18 @@ def run_ds10_check(out_dir: Path = OUT_DIR, n_jobs: int = SETTINGS["classificati
                  f"{r.ds2_mean_recall:.3f}" if not np.isnan(getattr(r, "ds2_mean_recall", np.nan)) else "-",
                  r.ds10_flag_rate, 100 * r.ds10_share_addresses_over_limit)
 
+    log.info("Wrote %s, eval_ds10_plant_hits.csv and split_ds10.csv", TABLES_DIR / "eval_ds10.csv")
+    explain_path = out_dir / "explain.jsonl"
+    if explain_path.exists():
+        # A frozen test set: both rounds of the Assistants are scored on these exact prompts and templates
+        # (docs/KAGGLE_LM_PLAN.md §3), so a later template change must not rewrite them. Delete it to rebuild.
+        log.info("Kept the frozen explanation test set %s", explain_path)
+        return 0
     explain_methods = {n: m for n, m in methods.items() if n not in PRECOMPUTED_ONLY}
     records = explanation_set(features, tx, explain_methods, {**SETTINGS["ds7"], **p["explanations"]})
-    with open(out_dir / "explain.jsonl", "w", encoding="utf-8") as fh:
+    with open(explain_path, "w", encoding="utf-8") as fh:
         for r in records:
             fh.write(json.dumps(r, ensure_ascii=False) + "\n")
-    log.info("Wrote %s, eval_ds10_plant_hits.csv, split_ds10.csv and %s (%d explanation prompts: %s)",
-             TABLES_DIR / "eval_ds10.csv", out_dir / "explain.jsonl", len(records),
+    log.info("Wrote %s (%d explanation prompts: %s)", explain_path, len(records),
              pd.Series([r["kind"] for r in records]).value_counts().to_dict())
     return 0

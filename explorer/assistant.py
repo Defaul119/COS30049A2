@@ -8,6 +8,8 @@ before the Explorer shows it:
     numbers      every number in the answer appears in the prompt (after the prompt's own formatting)
     limitation   a flagged transaction's answer contains the fixed limitation line exactly
     wording      no banned word (settings.json -> bannedWords; A1 NFR-01)
+    direction    no comparison phrase contradicts its feature's z sign ("Quieter week" for a busier
+                 week passes the number check, so it needs its own; added 26 Oct, round 2)
 
 The Explorer tries its writers in order (the team's design, 23 Oct): the 152M model, trained from
 scratch, explains DS1 transactions first; if its answer fails a check, the fine-tuned Qwen 3B
@@ -23,7 +25,7 @@ import json
 import re
 from typing import Any, Callable
 
-from .explain import BANNED, FEATURE_NAMES, describe_value, template_explanation
+from .explain import BANNED, FEATURE_NAMES, describe_value, headline, template_explanation
 from .settings import SETTINGS
 
 SYSTEM_PROMPT = (
@@ -35,6 +37,15 @@ INSTRUCTION = "Explain this transaction's result in plain words for an analyst, 
 NUMBER = re.compile(r"\d+(?:\.\d+)?")
 # Roles whose features the explanation must mention (the template lists them; plan "feature coverage").
 MENTIONED_ROLES = ("flag", "contributing")
+# The template's comparison phrases (explain.headline), by feature name and the z sign each asserts, plus
+# the A1 wording of F4 that round-1 writers learnt. Each phrase names one feature, so it is matched anywhere
+# in the answer, case-insensitively.
+LEGACY_PHRASES = {"Relative size": {1: ["large compared with the usual amount"],
+                                    -1: ["small compared with the usual amount"]}}
+DIRECTION_PHRASES = {FEATURE_NAMES[fid]: {sign: [headline(fid, sign).lower()]
+                                          + LEGACY_PHRASES.get(FEATURE_NAMES[fid], {}).get(sign, [])
+                                          for sign in (1, -1)}
+                     for fid in FEATURE_NAMES}
 
 Generator = Callable[[list[dict[str, str]]], str]
 
@@ -91,6 +102,51 @@ def coverage(answer: str, facts: dict[str, Any]) -> float | None:
     return sum(f["value"] in answer for f in wanted) / len(wanted)
 
 
+def z_sign(z: str | None) -> int | None:
+    """+1 or -1 for a prompt's z (formatted to one decimal), None when absent or "0.0".
+
+    "0.0" is ambiguous: the template says "up" for any z > 0 (e.g. 0.03) and "down" for exactly 0,
+    so a phrase about such a feature is never counted as wrong. "-0.0" is a small negative z: "down".
+    """
+    if z is None:
+        return None
+    if z.startswith("-"):
+        return -1
+    return 1 if float(z) > 0 else None
+
+
+def wrong_directions(answer: str, facts: dict[str, Any]) -> list[str]:
+    """Comparison phrases in the answer that contradict their feature's z sign, e.g. "quieter week than usual".
+
+    A clustering method's reason describes its centroid, not this transaction ("in a busier week than
+    usual"), so the answer's copy of the model's reason is left out of the search.
+    """
+    text = answer.lower().replace(facts.get("modelReason", "").lower(), "")
+    wrong = []
+    for f in facts.get("features", []):
+        sign = z_sign(f["z"])
+        if sign is not None:
+            wrong += [phrase for phrase in DIRECTION_PHRASES[f["feature"]][-sign] if phrase in text]
+    return wrong
+
+
+def normalise(text: str) -> str:
+    return " ".join(text.lower().split())
+
+
+def key_facts_found(answer: str, key_facts: list[str | list[str]]) -> float | None:
+    """Share of a glossary question's key facts the answer states (None if it has none).
+
+    Each fact is a phrase, or a list of interchangeable phrases ("median" / "middle value"), matched
+    case- and spacing-insensitively. An open answer is judged on what it says, not on its wording.
+    """
+    if not key_facts:
+        return None
+    text = normalise(answer)
+    found = [any(normalise(p) in text for p in ([f] if isinstance(f, str) else f)) for f in key_facts]
+    return sum(found) / len(found)
+
+
 def rouge_l(candidate: str, reference: str) -> float:
     """ROUGE-L F-measure on words: the longest common subsequence, with no extra dependency."""
     a, b = candidate.split(), reference.split()
@@ -110,11 +166,12 @@ def rouge_l(candidate: str, reference: str) -> float:
 
 
 def check(answer: str, messages: list[dict[str, str]], facts: dict[str, Any]) -> dict[str, Any]:
-    """The guardrail's three checks on one answer, and whether it passes all of them."""
+    """The guardrail's four checks on one answer, and whether it passes all of them."""
     prompt = "\n".join(m["content"] for m in messages)
     result = {"numbers_ok": numbers_faithful(answer, prompt),
               "limitation_ok": has_limitation(answer) or not facts.get("flagged", False),
-              "wording_ok": not banned_words(answer), "nonempty": bool(answer.strip())}
+              "wording_ok": not banned_words(answer), "direction_ok": not wrong_directions(answer, facts),
+              "nonempty": bool(answer.strip())}
     result["passed"] = all(result.values())
     return result
 

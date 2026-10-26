@@ -78,7 +78,10 @@ def headline(fid: str, z: float) -> str:
         "F1": "Larger amount than usual" if up else "Smaller amount than usual",
         "F2": "Busier week than usual" if up else "Quieter week than usual",
         "F3": "Longer gap than usual" if up else "Shorter gap than usual",
-        "F4": "Large compared with the usual amount" if up else "Small compared with the usual amount",
+        # F4's z compares this ratio with the address's usual ratio, not with 1x, so the headline says
+        # "ratio": 0.4x against a usual 0.3x is higher than usual (the A1 wording, "Large compared with
+        # the usual amount", read as wrong there; changed 26 Oct, CHANGELOG).
+        "F4": "Higher ratio to the usual amount than usual" if up else "Lower ratio to the usual amount than usual",
     }[fid]
 
 
@@ -90,7 +93,7 @@ def detail(feature: dict[str, Any]) -> str:
         "F1": f"{value} moved, against a usual {usual}.",
         "F2": f"{value} in the previous 7 days, against a usual {usual}.",
         "F3": f"{value} since the previous transaction, against a usual {usual}.",
-        "F4": f"{value} the usual amount for this direction.",
+        "F4": f"{value} the usual amount for this direction, against a usual {usual}.",
     }[fid]
 
 

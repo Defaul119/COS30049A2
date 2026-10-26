@@ -5,6 +5,23 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 26 October 2026
 
+**Guardrail direction check and the Relative size wording (round 2, C6; user's decision).** The guardrail
+(`explorer.assistant.check`) now also rejects a comparison phrase that contradicts its feature's z sign, e.g.
+"Quieter week than usual" for a busier week, which the number check cannot see. `lm.eval_explain` adds
+`direction_ok`, `rouge_own` (ROUGE-L against the row's own reply), `copy` and glossary `key_facts`, and `--rescore`
+measures saved answers again without a model. Round 1 re-scored (same answers): DS7 test, the 152M model has 2
+direction errors and Qwen 5, so the guardrail pass falls from 99.8% / 100% to 99.3% / 98.9%; DS10, 2 and 4 (99.3% /
+98.6%). The hand count of 25 Oct (1 and 4) missed three: two are the 152M model writing "Small compared with the
+usual amount" for 0.4x against a usual 0.3x, which is what the A1 wording invited. So the template's F4 headline now
+compares the ratio with its usual ratio ("Higher / Lower ratio to the usual amount than usual"), and its detail adds
+"against a usual 0.3x" like every other feature. The Explorer's explanation text changes for F4 lines only. The DS7
+v1 test and DS10 prompt files stay frozen (`ds10-check` no longer rewrites an existing `explain.jsonl`), and the
+direction check also knows the A1 wording, so both rounds are judged on identical tests.
+
+**The PC's GPU is no longer used (user).** Every GPU step of round 2 runs on Kaggle, or on other free cloud GPUs if
+they add capacity. A teammate's Kaggle account (Le Quang Anh Hoang) arrived the same day, so the 152M model can start
+before the 31 Oct quota reset. The token is kept outside the repository.
+
 **Language models, round 2, on Kaggle (user).** The user is not happy with the language models' accuracy, so the
 152M model gets 4-5B more pretraining tokens and Qwen 3B another 12-20 GPU hours, with every data, training and
 evaluation step on Kaggle (`docs/KAGGLE_LM_PLAN.md`). This reverses the 24 Oct decision to give the 152M model no
