@@ -1,0 +1,658 @@
+id,kind,prompt,answer,numbers_ok,limitation_ok,wording_ok,direction_ok,verdict_ok,nonempty,passed,wrong_direction,coverage,rouge_l,rouge_own,reasons_ok,order_ok,binding_ok,correct,case,copy,key_facts,banned
+rcrawlds1-00065,not_flagged,99a255e2e2629faf,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Shorter gap than usual: 20 hours since the previous transaction, against a usual 24 hours.
+- Quieter week than usual: 7 transactions in the previous 7 days, against a usual 8.0 transactions.",True,True,True,True,True,True,True,,,0.7835051546391754,0.8118811881188118,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00129,not_flagged,3bf6f4087ea65d6d,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00202903 BTC moved, against a usual 0.005733 BTC.
+- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5106382978723405,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00016,not_flagged,80fb3bd01ae3f3e2,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Longer gap than usual: 25 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,,0.5957446808510639,0.5652173913043478,True,False,True,False,"not flagged, nothing stands out",False,,
+rcrawlds1-00142,not_flagged,042370b82e177e10,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Longer gap than usual. 14 hours since the previous transaction, against a usual 1 hour.",True,True,True,True,True,True,True,,1.0,0.6984126984126984,0.6428571428571428,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00133,not_flagged,2104f3af50b26578,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Longer gap than usual. 46 hours since the previous transaction, against a usual 1 hour.
+- Busier week than usual. 7 transactions in the previous 7 days, against a usual 1.5 transactions.",True,True,True,True,True,True,True,,1.0,0.7835051546391752,0.7916666666666666,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00021,not_flagged,f211015f62ffdccb,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Smaller amount than usual. 0.00039084 BTC moved, against a usual 0.00124019 BTC.",True,True,True,True,True,True,True,,1.0,0.6666666666666666,0.6785714285714286,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00098,not_flagged,07f3f4757c05845f,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Longer gap than usual: 8 days since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.634920634920635,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00072,not_flagged,2ea912a029a20870,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 4 transactions in the previous 7 days, against a usual 1.5 transactions.
+- Shorter gap than usual: 7 hours since the previous transaction, against a usual 43 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00159,not_flagged,19cb31c867a73ffd,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Smaller amount than usual. 0.00031576 BTC moved, against a usual 0.00114448 BTC.",True,True,True,True,True,True,True,,1.0,0.6666666666666666,0.6,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00122,not_flagged,365581858fc3c1ef,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 7 transactions in the previous 7 days, against a usual 6.0 transactions.
+- Longer gap than usual: 24 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,0.8118811881188118,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00062,not_flagged,be3867a08b4d71b8,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.03607991 BTC moved, against a usual 0.11181415 BTC.
+- Small compared with the usual amount: 0.3x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5106382978723405,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00050,not_flagged,2949902974f15803,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Longer gap than usual: 27 hours since the previous transaction, against a usual 23 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00108,flagged,db0167a638924c33,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Quieter week than usual. 2 transactions in the previous 7 days, against a usual 7.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8,0.8,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00103,not_flagged,975c06f096407db1,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Shorter gap than usual: 3 hours since the previous transaction, against a usual 20 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.634920634920635,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00059,not_flagged,973514290798ca1a,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Shorter gap than usual: 10 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,1.0,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00135,not_flagged,5d0427f829a1abe0,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Larger amount than usual: 0.00596735 BTC moved, against a usual 0.0021181 BTC.
+- Quieter week than usual: 1 transaction in the previous 7 days, against a usual 2.0 transactions.",True,True,True,True,True,True,True,,,0.7692307692307692,0.7692307692307692,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00090,flagged,2fb0688582735f88,"Robust z baseline (A1) marks this transaction as unusual for its address.
+The reasons, strongest first:
+- Shorter gap than usual: 6 hours since the previous transaction, against a usual 24 hours.
+- Larger amount than usual: 0.46786493 BTC moved, against a usual 0.10496498 BTC.
+- Large compared with the usual amount: 4.5x the usual amount for this direction.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.49645390070921985,0.5035971223021583,True,False,True,False,"flagged, 3 reasons",False,,
+rcrawlds1-00124,not_flagged,0cbcd8d87c2c1d9b,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Longer gap than usual: 4 days since the previous transaction, against a usual 44 hours.
+- Quieter week than usual: 2 transactions in the previous 7 days, against a usual 2.5 transactions.",True,True,True,True,True,True,True,,,0.7835051546391754,0.6796116504854369,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00152,not_flagged,a6dc76de950e227b,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 7 transactions in the previous 7 days, against a usual 2.0 transactions.
+- Smaller amount than usual. 0.00015013 BTC moved, against a usual 0.00132056 BTC.
+- Small compared with the usual amount. 0.1x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.704,0.870967741935484,True,True,True,True,"not flagged, 3 reasons",False,,
+rcrawlds1-00093,not_flagged,1c41435794a99e2e,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00029063 BTC moved, against a usual 0.00065818 BTC.
+- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,0.5,0.4545454545454545,0.4691358024691358,False,False,True,False,"not flagged, 2 reasons",False,,
+rcrawlds1-00151,not_flagged,f100c3e230463156,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00017553 BTC moved, against a usual 0.00141174 BTC.
+- Small compared with the usual amount: 0.1x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5106382978723405,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00043,flagged,a52e28c284675708,"Robust z baseline (A1) marks this transaction as unusual for its address.
+The reasons, strongest first:
+- Shorter gap than usual: 6 hours since the previous transaction, against a usual 24 hours.
+- Larger amount than usual: 0.53208641 BTC moved, against a usual 0.10496498 BTC.
+- Large compared with the usual amount: 5.1x the usual amount for this direction.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.49645390070921985,0.5074626865671642,True,False,True,False,"flagged, 3 reasons",False,,
+rcrawlds1-00101,not_flagged,dfa1a81e6d5d75e1,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Shorter gap than usual: 22 hours since the previous transaction, against a usual 24 hours.
+- Busier week than usual: 7 transactions in the previous 7 days, against a usual 6.0 transactions.",True,True,True,True,True,True,True,,,0.7835051546391754,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00056,not_flagged,af52c35b92bc2cb2,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 5 transactions in the previous 7 days, against a usual 2.0 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6176470588235293,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00165,not_flagged,f3adc1e3c70c8570,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 28 transactions in the previous 7 days, against a usual 13.0 transactions.
+- Longer gap than usual: 20 hours since the previous transaction, against a usual 6 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00109,not_flagged,a628e922713c19cc,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Large compared with the usual amount: 3.6x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.39999999999999997,0.75,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00107,not_flagged,cc4846666b8c41d8,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 8 transactions in the previous 7 days, against a usual 2.0 transactions.
+- Smaller amount than usual. 0.00015013 BTC moved, against a usual 0.00048726 BTC.
+- Small compared with the usual amount. 0.3x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5599999999999999,0.5599999999999999,True,False,True,False,"not flagged, 3 reasons",False,,
+rcrawlds1-00070,not_flagged,c53af4bb35d8e45b,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 13 transactions in the previous 7 days, against a usual 2.5 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6176470588235293,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00058,not_flagged,ca24d47cd5938ad8,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Busier week than usual: 5 transactions in the previous 7 days, against a usual 1.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.6461538461538462,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00035,not_flagged,8749048e139919b8,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Busier week than usual: 5 transactions in the previous 7 days, against a usual 1.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.6896551724137931,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00063,not_flagged,d62d406f54fcc135,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Larger amount than usual. 0.00548045 BTC moved, against a usual 0.00073462 BTC.
+- Busier week than usual. 5 transactions in the previous 7 days, against a usual 2.0 transactions.",True,True,True,True,True,True,True,,1.0,0.7692307692307693,0.738095238095238,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00000,flagged,edd696261b388789,"Robust z baseline (A1) marks this transaction as unusual for its address.
+The reasons, strongest first:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 23 hours.
+- Busier week than usual: 14 transactions in the previous 7 days, against a usual 6.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8034188034188032,0.8,True,True,True,True,"flagged, 2 reasons",False,,
+rcrawlds1-00168,not_flagged,6dbdc4e33c1b3a40,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Smaller amount than usual. 0.00039084 BTC moved, against a usual 0.00124188 BTC.",True,True,True,True,True,True,True,,1.0,0.6666666666666666,0.5666666666666667,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00115,not_flagged,63f654780b6df84d,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00216155 BTC moved, against a usual 0.00548045 BTC.
+- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.3736263736263736,0.6222222222222222,True,False,True,False,"not flagged, 2 reasons",False,,
+rcrawlds1-00041,not_flagged,0ab08b3ff06ad5f0,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.0001866 BTC moved, against a usual 0.000529 BTC.
+- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5714285714285714,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00128,not_flagged,06321d89b83529a7,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Larger amount than usual: 0.11332519 BTC moved, against a usual 0.11091128 BTC.",True,True,True,True,True,True,True,,,0.7692307692307692,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00161,not_flagged,8ad6e81c6d8242bd,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 8 transactions in the previous 7 days, against a usual 1.5 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6551724137931033,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00119,not_flagged,09d924d353bdb4db,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Longer gap than usual: 38 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.634920634920635,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00149,not_flagged,e1c6f67f144c0f7a,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Quieter week than usual: 4 transactions in the previous 7 days, against a usual 6.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.6896551724137931,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00155,not_flagged,4370b10a161c1512,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 10 transactions in the previous 7 days, against a usual 3.0 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6551724137931033,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00080,not_flagged,af787a2e9dacf11b,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Shorter gap than usual: 24 hours since the previous transaction, against a usual 3 days.
+- Smaller amount than usual: 0.00052973 BTC moved, against a usual 0.00147404 BTC.",True,True,True,True,True,True,True,,,0.7640449438202247,0.6526315789473685,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00163,flagged,f6d2168078bafc10,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. 2 hours since the previous transaction, against a usual 23 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.7948717948717949,0.7605633802816901,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00039,not_flagged,c9c2326e55adfc0d,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Longer gap than usual: 19 hours since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.7096774193548389,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00085,not_flagged,318c5fc9d13225ab,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Large compared with the usual amount: 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.39999999999999997,0.5,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00171,not_flagged,fecc8074e7f22b16,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Busier week than usual: 4 transactions in the previous 7 days, against a usual 1.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,1.0,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00044,not_flagged,7ac386b3f1b4a0fd,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Longer gap than usual: 27 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00086,not_flagged,9f37ebd743392641,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Small compared with the usual amount: 0.5x the usual amount for this direction.
+- Smaller amount than usual: 0.00064569 BTC moved, against a usual 0.00132971 BTC.",True,True,True,True,True,True,True,,,0.5934065934065934,0.5617977528089888,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00113,not_flagged,d534984845479a3e,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Quieter week than usual: 2 transactions in the previous 7 days, against a usual 6.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,1.0,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00081,flagged,cf96b7ff2ce8e106,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. under an hour since the previous transaction, against a usual 22 hours.
+- Busier week than usual. 17 transactions in the previous 7 days, against a usual 6.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8421052631578947,0.8421052631578947,True,True,True,True,"flagged, 2 reasons",False,,
+rcrawlds1-00167,not_flagged,9c0c7a9dfb778af0,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Large compared with the usual amount: 11.9x the usual amount for this direction.
+- Larger amount than usual: 0.01270118 BTC moved, against a usual 0.00106192 BTC.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5952380952380952,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00120,not_flagged,867f387eb7654338,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Longer gap than usual: 30 hours since the previous transaction, against a usual 24 hours.
+- Busier week than usual: 8 transactions in the previous 7 days, against a usual 7.0 transactions.",True,True,True,True,True,True,True,,,0.7835051546391754,0.8118811881188118,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00166,flagged,ef4ed520fa8c8202,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. 3 hours since the previous transaction, against a usual 24 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.7948717948717949,0.7160493827160495,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00156,not_flagged,444ca2374064521a,"Robust z baseline (A1) does not flag this transaction.
+The biggest differences from what this address usually does:
+- Smaller amount than usual. 0.11141682 BTC moved, against a usual 0.11278928 BTC.
+- Small compared with the usual amount. 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.3913043478260869,0.6458333333333334,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00028,not_flagged,e337708a99a87fe5,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Large compared with the usual amount: 1.0x the usual amount for this direction.
+- Quieter week than usual: 5 transactions in the previous 7 days, against a usual 10.0 transactions.",True,True,True,True,True,True,True,,,0.6262626262626263,0.5523809523809524,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00022,not_flagged,425edf2054845a2e,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Longer gap than usual: 61 days since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.5454545454545455,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00012,flagged,0b858fe77b5b6390,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. under an hour since the previous transaction, against a usual 24 hours.
+- Large compared with the usual amount. 3.7x the usual amount for this direction.
+- Larger amount than usual. 1.69228717 BTC moved, against a usual 0.45310839 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.7571428571428571,0.7571428571428571,True,True,True,True,"flagged, 3 reasons",False,,
+rcrawlds1-00100,not_flagged,c34cb403f10db8c1,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Busier week than usual: 5 transactions in the previous 7 days, against a usual 1.5 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.71875,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00099,flagged,0aa430e5e2dc5169,"Robust z baseline (A1) marks this transaction as unusual for its address.
+The reasons, strongest first:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 23 hours.
+- Busier week than usual: 14 transactions in the previous 7 days, against a usual 6.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8034188034188032,0.8,True,True,True,True,"flagged, 2 reasons",False,,
+rcrawlds1-00071,not_flagged,9e5b52e00a0d68ae,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Smaller amount than usual. 0.00019377 BTC moved, against a usual 0.00316953 BTC.
+- Longer gap than usual. 11 hours since the previous transaction, against a usual 1 hour.",True,True,True,True,True,True,True,,1.0,0.7640449438202247,0.7640449438202247,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00036,not_flagged,d9a1d21e6093badf,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Smaller amount than usual: 0.10755644 BTC moved, against a usual 0.11555897 BTC.
+- Small compared with the usual amount: 0.9x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.5934065934065934,0.6526315789473683,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00001,not_flagged,2902a5dd63b189fe,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Large compared with the usual amount: 7.7x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.39999999999999997,0.35294117647058826,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00064,not_flagged,cc85cce5e2ad36ae,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Shorter gap than usual: 7 hours since the previous transaction, against a usual 3 days.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.7096774193548389,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00170,flagged,a54f9db8cf672e0e,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Busier week than usual. 19 transactions in the previous 7 days, against a usual 6.0 transactions.
+- Shorter gap than usual. under an hour since the previous transaction, against a usual 21 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8421052631578947,0.8034188034188035,True,True,True,True,"flagged, 2 reasons",False,,
+rcrawlds1-00145,not_flagged,b50b8b5fa2adbd4f,"Robust z baseline (A1) does not flag this transaction.
+The biggest differences from what this address usually does:
+- Busier week than usual. 7 transactions in the previous 7 days, against a usual 6.0 transactions.
+- Small compared with the usual amount. 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.62,0.62,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00019,not_flagged,a23427e76d5f3bf5,"Robust z baseline (A1) does not flag this transaction.
+The biggest differences from what this address usually does:
+- Busier week than usual. 8 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Small compared with the usual amount. 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.62,0.8461538461538463,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00110,not_flagged,a9b7568a3d19c1c5,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Busier week than usual: 27 transactions in the previous 7 days, against a usual 7.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.71875,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00014,not_flagged,b817c94792f4af07,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00230916 BTC moved, against a usual 0.0054696 BTC.
+- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.3736263736263736,0.3736263736263736,True,False,True,False,"not flagged, 2 reasons",False,,
+rcrawlds1-00066,not_flagged,1b14f60e2ff9d870,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Smaller amount than usual: 0.00048152 BTC moved, against a usual 0.00132056 BTC.
+- Longer gap than usual: 17 days since the previous transaction, against a usual 6 hours.",True,True,True,True,True,True,True,,,0.49438202247191015,0.49438202247191015,True,False,True,False,"not flagged, nothing stands out",False,,
+rcrawlds1-00148,flagged,57c735157447a0b8,"Robust z baseline (A1) marks this transaction as unusual for its address.
+The reasons, strongest first:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 24 hours.
+- Smaller amount than usual: 0.01740996 BTC moved, against a usual 0.10516031 BTC.
+- Small compared with the usual amount: 0.2x the usual amount for this direction.
+- Busier week than usual: 10 transactions in the previous 7 days, against a usual 6.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.7796610169491525,0.7796610169491525,True,True,True,True,"flagged, 4 reasons",False,,
+rcrawlds1-00126,not_flagged,6046fa737f4382b8,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Smaller amount than usual. 0.0003318 BTC moved, against a usual 0.00159394 BTC.",True,True,True,True,True,True,True,,1.0,0.6666666666666666,0.6,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00029,not_flagged,e2f1d51d6c27eaab,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Shorter gap than usual: 20 hours since the previous transaction, against a usual 24 hours.
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 7.0 transactions.",True,True,True,True,True,True,True,,,0.4742268041237113,0.4742268041237113,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00150,not_flagged,1c5745dd90990a8e,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 11 transactions in the previous 7 days, against a usual 1.5 transactions.
+- Longer gap than usual. 19 hours since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,True,,1.0,0.7835051546391752,0.7555555555555556,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00138,not_flagged,23cdcdbb8de82032,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Large compared with the usual amount: 26.1x the usual amount for this direction.
+- Larger amount than usual: 0.0277247 BTC moved, against a usual 0.00106192 BTC.",True,True,True,True,True,True,True,,1.0,0.41758241758241765,0.38095238095238093,True,False,True,False,"not flagged, 2 reasons",False,,
+rcrawlds1-00137,not_flagged,e6dd64bb3a1a42a6,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Larger amount than usual: 0.04824663 BTC moved, against a usual 0.00130268 BTC.
+- Large compared with the usual amount: 36.6x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5106382978723405,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00042,flagged,2ff84e7fdc04f702,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. under an hour since the previous transaction, against a usual 23 hours.
+- Busier week than usual. 13 transactions in the previous 7 days, against a usual 6.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8421052631578947,1.0,True,True,True,True,"flagged, 2 reasons",False,,
+rcrawlds1-00026,not_flagged,3e250e74c611979d,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Large compared with the usual amount: 2.9x the usual amount for this direction.
+- Larger amount than usual: 0.00296635 BTC moved, against a usual 0.00103085 BTC.",True,True,True,True,True,True,True,,,0.5934065934065934,0.5154639175257733,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00024,not_flagged,47955b2a422b4991,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 8 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Shorter gap than usual: 21 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,0.7578947368421052,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00069,not_flagged,2f9cc5818ae795df,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00020411 BTC moved, against a usual 0.00121622 BTC.",True,True,True,True,True,True,True,,1.0,0.5964912280701754,0.64,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00045,not_flagged,0a0edc71d59aeb26,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00018409 BTC moved, against a usual 0.00050606 BTC.
+- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5106382978723405,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00140,not_flagged,7ef22af684affeeb,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Shorter gap than usual: 22 hours since the previous transaction, against a usual 24 hours.
+- Smaller amount than usual: 0.11175037 BTC moved, against a usual 0.11224776 BTC.",True,True,True,True,True,True,True,,,0.5833333333333334,0.8080808080808081,True,False,True,False,"not flagged, nothing stands out",False,,
+rcrawlds1-00127,not_flagged,4d74ce4e1e3e9c0e,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Larger amount than usual: 0.1229729 BTC moved, against a usual 0.11176911 BTC.
+- Large compared with the usual amount: 1.1x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.41758241758241754,0.4631578947368421,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00074,not_flagged,c82418dff2f1907a,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 7 transactions in the previous 7 days, against a usual 8.0 transactions.
+- Longer gap than usual: 27 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,0.6796116504854369,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00121,not_flagged,4c6ed1a068efdc88,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Longer gap than usual: 23 hours since the previous transaction, against a usual 6 hours.
+- Larger amount than usual: 0.44711178 BTC moved, against a usual 0.3922113 BTC.",True,True,True,True,True,True,True,,,0.7640449438202247,0.7356321839080461,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00053,not_flagged,6233d1acf05f78b7,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Large compared with the usual amount: 7.6x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.39999999999999997,0.39999999999999997,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00077,not_flagged,a55cdd36210119c4,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Large compared with the usual amount: 1.0x the usual amount for this direction.
+- Larger amount than usual: 0.11565985 BTC moved, against a usual 0.11557921 BTC.",True,True,True,True,True,True,True,,,0.4255319148936171,0.4255319148936171,True,False,True,False,"not flagged, nothing stands out",False,,
+rcrawlds1-00162,not_flagged,c33a2051d80a3733,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 9 transactions in the previous 7 days, against a usual 2.5 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.7076923076923077,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00017,not_flagged,0f13e7b2af13317d,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 5.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.6896551724137931,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00005,not_flagged,ea10d903c2b969c2,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Longer gap than usual. 27 hours since the previous transaction, against a usual 2 hours.
+- Smaller amount than usual. 0.00030918 BTC moved, against a usual 0.00137401 BTC.",True,True,True,True,True,True,True,,1.0,0.4943820224719101,0.5,True,False,True,False,"not flagged, 2 reasons",False,,
+rcrawlds1-00154,not_flagged,c7f26fb07c1b7343,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00023119 BTC moved, against a usual 0.00059297 BTC.
+- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5714285714285714,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00144,not_flagged,bb1fdeb454ea3f7e,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Quieter week than usual: 3 transactions in the previous 7 days, against a usual 7.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.6896551724137931,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00157,not_flagged,3d8ee03c486d56fe,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 9 transactions in the previous 7 days, against a usual 8.0 transactions.
+- Shorter gap than usual: 22 hours since the previous transaction, against a usual 23 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,0.8118811881188118,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00033,not_flagged,01e29a1152b7a59d,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Busier week than usual: 6 transactions in the previous 7 days, against a usual 1.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.5588235294117648,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00082,not_flagged,bf30417c2a22de94,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Smaller amount than usual. 0.00018628 BTC moved, against a usual 0.00052411 BTC.
+- Small compared with the usual amount. 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.6153846153846153,0.5714285714285714,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00061,not_flagged,fdc1b338860f884d,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 8 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Large compared with the usual amount: 1.1x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.5217391304347826,0.4489795918367347,True,False,True,False,"not flagged, nothing stands out",False,,
+rcrawlds1-00104,not_flagged,466e15addf171c95,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Shorter gap than usual: 21 hours since the previous transaction, against a usual 24 hours.
+- Larger amount than usual: 0.11547025 BTC moved, against a usual 0.11230018 BTC.",True,True,True,True,True,True,True,,,0.7640449438202247,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00075,not_flagged,e3df2a988aeb9832,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Larger amount than usual: 0.00337108 BTC moved, against a usual 0.00071245 BTC.
+- Large compared with the usual amount: 4.7x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.5934065934065934,0.8297872340425532,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00020,not_flagged,d2e717ff713e289f,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Longer gap than usual: 25 hours since the previous transaction, against a usual 23 hours.
+- Smaller amount than usual: 0.11602466 BTC moved, against a usual 0.12027396 BTC.",True,True,True,True,True,True,True,,,0.7640449438202247,0.795698924731183,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00057,not_flagged,15954281b7017f31,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Shorter gap than usual: under an hour since the previous transaction, against a usual 3 days.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.6461538461538462,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00030,not_flagged,2528b04117c70e37,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Shorter gap than usual: 16 hours since the previous transaction, against a usual 24 hours.
+- Busier week than usual: 7 transactions in the previous 7 days, against a usual 6.0 transactions.",True,True,True,True,True,True,True,,,0.7835051546391754,0.7835051546391754,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00025,not_flagged,66ab23e875741aec,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. under an hour since the previous transaction, against a usual 3 days.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6551724137931033,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00125,flagged,bf512481d2294649,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. 6 hours since the previous transaction, against a usual 24 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.7948717948717949,0.7160493827160495,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00078,not_flagged,7a74f079cf494ea8,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 14 transactions in the previous 7 days, against a usual 3.5 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6176470588235293,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00034,not_flagged,9b93f4436803d7a2,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Larger amount than usual: 0.04423292 BTC moved, against a usual 0.00125133 BTC.
+- Large compared with the usual amount: 35.1x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5952380952380952,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00004,not_flagged,a186115efed82f8e,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 7 transactions in the previous 7 days, against a usual 8.0 transactions.
+- Large compared with the usual amount: 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.6262626262626263,0.6262626262626263,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00083,flagged,2c23e9ad69bbca97,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Busier week than usual. 23 transactions in the previous 7 days, against a usual 6.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8,0.767123287671233,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00032,not_flagged,c5657e0464162621,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Larger amount than usual: 0.04824663 BTC moved, against a usual 0.00125133 BTC.
+- Large compared with the usual amount: 38.3x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5106382978723405,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00067,not_flagged,143c7d2704c0043b,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Large compared with the usual amount: 4.4x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.39999999999999997,0.5,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00160,flagged,995dcaf23895c437,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. 3 hours since the previous transaction, against a usual 24 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.7948717948717949,1.0,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00010,not_flagged,aa27c9965760e3ad,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Longer gap than usual. 4 days since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,True,,1.0,0.6984126984126984,0.606060606060606,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00096,not_flagged,2fbcbefb3f0deab1,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Longer gap than usual: 24 hours since the previous transaction, against a usual 6 hours.
+- Quieter week than usual: 7 transactions in the previous 7 days, against a usual 13.5 transactions.",True,True,True,True,True,True,True,,,0.7835051546391754,0.6796116504854369,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00097,not_flagged,301046f9111ce974,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Smaller amount than usual. 0.00017553 BTC moved, against a usual 0.00141174 BTC.
+- Small compared with the usual amount. 0.1x the usual amount for this direction.
+- Longer gap than usual. 19 hours since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,True,,1.0,0.5528455284552846,0.7213114754098361,True,False,True,False,"not flagged, 3 reasons",False,,
+rcrawlds1-00173,not_flagged,806349fe4c138308,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Longer gap than usual: 23 hours since the previous transaction, against a usual 18 hours.
+- Quieter week than usual: 7 transactions in the previous 7 days, against a usual 8.0 transactions.",True,True,True,True,True,True,True,,,0.7835051546391754,0.6796116504854369,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00088,not_flagged,b868124e7922ef16,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Smaller amount than usual. 0.00031576 BTC moved, against a usual 0.00114448 BTC.",True,True,True,True,True,True,True,,1.0,0.6666666666666666,0.6666666666666666,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00106,not_flagged,2a5a7821abe6441a,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Small compared with the usual amount: 0.2x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.39999999999999997,0.35294117647058826,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00116,not_flagged,be422d165abf57b7,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00102907 BTC moved, against a usual 0.00537031 BTC.
+- Small compared with the usual amount: 0.2x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5106382978723405,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00027,not_flagged,f3d5e6ffb9ad3167,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Longer gap than usual: 18 days since the previous transaction, against a usual 34 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.7096774193548389,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00094,not_flagged,d93e02851ce7a140,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00103264 BTC moved, against a usual 0.00545877 BTC.
+- Small compared with the usual amount: 0.2x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.8222222222222222,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00079,not_flagged,e7b035c433a863cd,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Longer gap than usual: 25 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00048,not_flagged,5423e197cbda4718,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Smaller amount than usual: 0.00120866 BTC moved, against a usual 0.00262122 BTC.
+- Busier week than usual: 2 transactions in the previous 7 days, against a usual 1.5 transactions.",True,True,True,True,True,True,True,,,0.7692307692307692,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00095,not_flagged,61dfdcac4f97932e,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00337108 BTC moved, against a usual 0.00599718 BTC.",True,True,True,True,True,True,True,,1.0,0.5964912280701754,0.5,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00084,not_flagged,03a957263378e296,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Shorter gap than usual: 3 hours since the previous transaction, against a usual 18 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.634920634920635,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00037,not_flagged,8de4b3aa506da720,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 2 transactions in the previous 7 days, against a usual 1.0 transactions.
+- Smaller amount than usual: 0.00130895 BTC moved, against a usual 0.00223414 BTC.",True,True,True,True,True,True,True,,,0.7692307692307692,0.6597938144329897,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00013,not_flagged,c6b9b23048be9800,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 7 transactions in the previous 7 days, against a usual 5.5 transactions.
+- Small compared with the usual amount: 0.9x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.6262626262626263,0.6796116504854369,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00051,not_flagged,8921c5df618ed7d6,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 26 transactions in the previous 7 days, against a usual 6.0 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6176470588235293,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00102,flagged,aec33ac798f1b8dc,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Busier week than usual. 23 transactions in the previous 7 days, against a usual 6.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8,1.0,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00060,not_flagged,060fd9d0c8723f95,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Longer gap than usual: 32 days since the previous transaction, against a usual 3 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.634920634920635,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00091,flagged,6f0ed0b063b39f38,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. under an hour since the previous transaction, against a usual 22 hours.
+- Busier week than usual. 17 transactions in the previous 7 days, against a usual 6.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8421052631578947,0.8421052631578947,True,True,True,True,"flagged, 2 reasons",False,,
+rcrawlds1-00068,not_flagged,3641e3843be9ee9f,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 28 transactions in the previous 7 days, against a usual 10.0 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6551724137931033,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00112,not_flagged,e8a8f957d149fcf2,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Larger amount than usual. 0.01270118 BTC moved, against a usual 0.00130268 BTC.",True,True,True,True,True,True,True,,1.0,0.6666666666666666,0.6,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00046,not_flagged,423c38f0bd250470,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Large compared with the usual amount: 1.4x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.39999999999999997,0.41379310344827586,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00143,not_flagged,e92ab3295c8c7a8c,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00020411 BTC moved, against a usual 0.00054107 BTC.
+- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5952380952380952,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00049,not_flagged,ef666b8fc9886c78,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Longer gap than usual: 24 hours since the previous transaction, against a usual 23 hours.
+- Smaller amount than usual: 0.12031576 BTC moved, against a usual 0.12091553 BTC.",True,True,True,True,True,True,True,,,0.7640449438202247,0.7640449438202247,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00052,not_flagged,80a00af621374026,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Longer gap than usual: 24 hours since the previous transaction, against a usual 24 hours.
+- Larger amount than usual: 0.11441699 BTC moved, against a usual 0.11074581 BTC.",True,True,True,True,True,True,True,,,0.4086021505376344,0.6250000000000001,True,False,True,False,"not flagged, nothing stands out",False,,
+rcrawlds1-00169,not_flagged,9624079167d443dd,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Larger amount than usual: 0.11490198 BTC moved, against a usual 0.11099632 BTC.
+- Large compared with the usual amount: 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.5934065934065934,0.5154639175257733,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00002,not_flagged,8c829e297a93662c,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Longer gap than usual: 24 hours since the previous transaction, against a usual 24 hours.
+- Large compared with the usual amount: 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.4536082474226804,0.4536082474226804,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00073,flagged,6c7544e68da8ea60,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. under an hour since the previous transaction, against a usual 24 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8,0.8,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00158,not_flagged,2fb816bf7440d674,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Longer gap than usual: 9 days since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.7096774193548389,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00134,not_flagged,238d4e217bc32107,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Smaller amount than usual: 0.00089934 BTC moved, against a usual 0.00170517 BTC.
+- Busier week than usual: 3 transactions in the previous 7 days, against a usual 1.5 transactions.",True,True,True,True,True,True,True,,,0.7692307692307692,0.6597938144329897,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00038,not_flagged,cf7be5b9a048881a,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Quieter week than usual: 4 transactions in the previous 7 days, against a usual 7.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,1.0,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00089,not_flagged,640901bf6ef1322d,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 9 transactions in the previous 7 days, against a usual 8.0 transactions.
+- Shorter gap than usual: 22 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,0.7835051546391754,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00092,flagged,f182ac8cffc828a7,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Smaller amount than usual. 0.00559555 BTC moved, against a usual 0.11569036 BTC.
+- Small compared with the usual amount. 0.048x the usual amount for this direction.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.5283018867924528,0.5050505050505051,True,True,True,True,"flagged, 2 reasons",False,,
+rcrawlds1-00131,not_flagged,4bda965a969ab7ea,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Large compared with the usual amount: 6.3x the usual amount for this direction.
+- Larger amount than usual: 0.00684619 BTC moved, against a usual 0.00106693 BTC.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5106382978723405,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00006,not_flagged,fc0e4d5719555e13,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Larger amount than usual: 0.00806015 BTC moved, against a usual 0.00209424 BTC.
+- Busier week than usual: 4 transactions in the previous 7 days, against a usual 2.0 transactions.",True,True,True,True,True,True,True,,,0.5054945054945055,0.723404255319149,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00147,not_flagged,d8cce2755c3add5b,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 9 transactions in the previous 7 days, against a usual 8.0 transactions.
+- Shorter gap than usual: 21 hours since the previous transaction, against a usual 23 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,0.7578947368421052,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00076,not_flagged,9956980ddd9da824,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 9 transactions in the previous 7 days, against a usual 1.5 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6551724137931033,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00007,flagged,4d3ee68e8e90ccab,"Robust z baseline (A1) marks this transaction as unusual for its address.
+The reasons, strongest first:
+- Longer gap than usual: 7 days since the previous transaction, against a usual 24 hours.
+- Small compared with the usual amount: 0.2x the usual amount for this direction.
+- Smaller amount than usual: 0.01740996 BTC moved, against a usual 0.10638786 BTC.
+- Quieter week than usual: 1 transaction in the previous 7 days, against a usual 7.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.6742857142857143,0.6589595375722542,True,True,True,True,"flagged, 4 reasons",False,,
+rcrawlds1-00139,not_flagged,6ce248b09ee04656,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Smaller amount than usual: 0.00108233 BTC moved, against a usual 0.00541436 BTC.
+- Small compared with the usual amount: 0.2x the usual amount for this direction.",True,True,True,True,True,True,True,,1.0,0.5714285714285714,0.5106382978723405,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00105,flagged,24c92eaf3bcf1655,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. under an hour since the previous transaction, against a usual 24 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8,0.7407407407407408,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00018,not_flagged,7aeacbc110a17376,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Busier week than usual: 16 transactions in the previous 7 days, against a usual 5.5 transactions.
+- Small compared with the usual amount: 0.4x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.6262626262626263,0.8431372549019608,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00153,not_flagged,6d7c136d25e4dfe9,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 12 transactions in the previous 7 days, against a usual 1.5 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6176470588235293,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00003,not_flagged,eb4a8f53e2cbc29d,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Shorter gap than usual: 2 hours since the previous transaction, against a usual 44 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.6785714285714285,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00047,flagged,b691472534a9d6a8,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. under an hour since the previous transaction, against a usual 24 hours.
+- Busier week than usual. 12 transactions in the previous 7 days, against a usual 6.0 transactions.
+- Larger amount than usual. 0.34482935 BTC moved, against a usual 0.10516031 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.6857142857142857,0.6524822695035462,True,False,True,False,"flagged, 3 reasons",False,,
+rcrawlds1-00055,unscored,ed2df690cfd1307d,Not scored yet. The address has too little earlier history to say what is usual for it.,True,True,True,True,True,True,True,,,0.22857142857142856,0.22857142857142856,True,True,True,True,unscored,False,,
+rcrawlds1-00136,not_flagged,ee26f8eb5b192caf,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Small compared with the usual amount: 0.2x the usual amount for this direction.
+- Smaller amount than usual: 0.00048205 BTC moved, against a usual 0.00209424 BTC.",True,True,True,True,True,True,True,,,0.5934065934065934,0.5617977528089888,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00146,not_flagged,8dbf156247126a81,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 7 transactions in the previous 7 days, against a usual 8.0 transactions.
+- Longer gap than usual: 26 hours since the previous transaction, against a usual 23 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00114,not_flagged,8251470fc7e31e24,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Smaller amount than usual: 0.00438 BTC moved, against a usual 0.005733 BTC.
+- Small compared with the usual amount: 0.8x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.5934065934065934,0.6526315789473683,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00117,not_flagged,958ff912c0543bb6,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Longer gap than usual: 6 days since the previous transaction, against a usual 11 hours.
+- Quieter week than usual: 1 transaction in the previous 7 days, against a usual 2.0 transactions.",True,True,True,True,True,True,True,,,0.7835051546391754,1.0,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00015,not_flagged,ecb3ce4fcaa58b2c,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Longer gap than usual. 43 hours since the previous transaction, against a usual 2 hours.
+- Smaller amount than usual. 0.0003318 BTC moved, against a usual 0.00159394 BTC.",True,True,True,True,True,True,True,,1.0,0.7640449438202247,0.7727272727272727,True,True,True,True,"not flagged, 2 reasons",False,,
+rcrawlds1-00118,not_flagged,ff11da6d72b17a47,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 5 transactions in the previous 7 days, against a usual 7.5 transactions.
+- Smaller amount than usual: 0.00143741 BTC moved, against a usual 0.00160926 BTC.",True,True,True,True,True,True,True,,,0.46938775510204084,0.46938775510204084,False,False,True,False,"not flagged, nothing stands out",False,,
+rcrawlds1-00111,not_flagged,4847c4366da3c7e9,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 0 transactions in the previous 7 days, against a usual 2.0 transactions.
+- Longer gap than usual: 10 days since the previous transaction, against a usual 2 days.",True,True,True,True,True,True,True,,,0.7835051546391754,0.7835051546391754,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00123,not_flagged,89ee495380afd74a,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Quieter week than usual: 3 transactions in the previous 7 days, against a usual 6.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.6896551724137931,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00009,not_flagged,9951307937a1db66,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Longer gap than usual: 5 days since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.5454545454545455,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00132,not_flagged,64c15bc8a257e789,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 28 transactions in the previous 7 days, against a usual 7.0 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6176470588235293,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00130,not_flagged,e9375c5eb3621500,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 8 transactions in the previous 7 days, against a usual 3.5 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6551724137931033,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00164,not_flagged,eec3261ae1a8164d,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 7 transactions in the previous 7 days, against a usual 8.0 transactions.
+- Longer gap than usual: 25 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,0.7835051546391754,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00031,not_flagged,ef68cc566772363e,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Busier week than usual: 4 transactions in the previous 7 days, against a usual 1.0 transactions.",True,True,True,True,True,True,True,,1.0,0.6461538461538462,0.5588235294117648,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00054,flagged,2e2e3b88474fc014,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Busier week than usual. 25 transactions in the previous 7 days, against a usual 6.0 transactions.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8,0.767123287671233,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00087,flagged,88d2418f6209f6bd,"Robust z baseline (A1) flags this transaction.
+Compared with this address's own past:
+- Shorter gap than usual. under an hour since the previous transaction, against a usual 23 hours.
+Unusual activity requires investigation; it does not indicate wrongdoing.",True,True,True,True,True,True,True,,1.0,0.8,1.0,True,True,True,True,"flagged, 1 reason",False,,
+rcrawlds1-00040,not_flagged,da0b12b336e93c37,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Small compared with the usual amount: 1.0x the usual amount for this direction.",True,True,True,True,True,True,True,,,0.6262626262626263,0.6262626262626263,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00141,not_flagged,abe2e2d7c92627c9,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Longer gap than usual: 25 hours since the previous transaction, against a usual 24 hours.",True,True,True,True,True,True,True,,,0.7835051546391754,0.6796116504854369,True,True,True,True,"not flagged, nothing stands out",False,,
+rcrawlds1-00011,not_flagged,e09d562ea831869a,"Robust z baseline (A1) does not flag this transaction.
+Compared with this address's own past:
+- Busier week than usual. 10 transactions in the previous 7 days, against a usual 1.5 transactions.",True,True,True,True,True,True,True,,1.0,0.7076923076923077,0.6176470588235293,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00008,not_flagged,a18da063b9de27a1,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Longer gap than usual: 45 hours since the previous transaction, against a usual 2 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.634920634920635,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00023,not_flagged,080abbe40b5e3886,"Robust z baseline (A1) does not mark this transaction as unusual.
+The reasons, strongest first:
+- Longer gap than usual: 6 days since the previous transaction, against a usual 3 hours.",True,True,True,True,True,True,True,,1.0,0.634920634920635,0.6785714285714285,True,True,True,True,"not flagged, 1 reason",False,,
+rcrawlds1-00172,not_flagged,8645bb251cb2e23c,"Robust z baseline (A1) does not mark this transaction as unusual.
+The two largest differences from usual:
+- Quieter week than usual: 6 transactions in the previous 7 days, against a usual 7.0 transactions.
+- Smaller amount than usual: 0.11393165 BTC moved, against a usual 0.11047492 BTC.",True,True,True,False,True,True,False,smaller amount than usual,,0.7472527472527473,0.6391752577319586,True,True,True,False,"not flagged, nothing stands out",False,,

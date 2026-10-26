@@ -8,3 +8,30 @@ template,"not flagged, 2 reasons",26,1.0
 template,"not flagged, 3 reasons",3,1.0
 template,"not flagged, nothing stands out",60,1.0
 template,unscored,1,1.0
+qwen3b_v2,"flagged, 1 reason",11,1.0
+qwen3b_v2,"flagged, 2 reasons",7,1.0
+qwen3b_v2,"flagged, 3 reasons",4,1.0
+qwen3b_v2,"flagged, 4 reasons",2,1.0
+qwen3b_v2,"not flagged, 1 reason",60,1.0
+qwen3b_v2,"not flagged, 2 reasons",26,1.0
+qwen3b_v2,"not flagged, 3 reasons",3,1.0
+qwen3b_v2,"not flagged, nothing stands out",60,0.8666666666666667
+qwen3b_v2,unscored,1,1.0
+qwen3b,"flagged, 1 reason",11,1.0
+qwen3b,"flagged, 2 reasons",7,1.0
+qwen3b,"flagged, 3 reasons",4,1.0
+qwen3b,"flagged, 4 reasons",2,1.0
+qwen3b,"not flagged, 1 reason",60,1.0
+qwen3b,"not flagged, 2 reasons",26,1.0
+qwen3b,"not flagged, 3 reasons",3,1.0
+qwen3b,"not flagged, nothing stands out",60,0.8166666666666667
+qwen3b,unscored,1,1.0
+text150m,"flagged, 1 reason",11,1.0
+text150m,"flagged, 2 reasons",7,1.0
+text150m,"flagged, 3 reasons",4,0.25
+text150m,"flagged, 4 reasons",2,1.0
+text150m,"not flagged, 1 reason",60,1.0
+text150m,"not flagged, 2 reasons",26,0.8076923076923077
+text150m,"not flagged, 3 reasons",3,0.3333333333333333
+text150m,"not flagged, nothing stands out",60,0.8666666666666667
+text150m,unscored,1,1.0

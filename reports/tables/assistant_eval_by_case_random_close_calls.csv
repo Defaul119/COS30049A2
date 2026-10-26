@@ -3,3 +3,15 @@ template,"flagged, 3 reasons",2,1.0
 template,"not flagged, 2 reasons",17,1.0
 template,"not flagged, 3 reasons",5,1.0
 template,"not flagged, nothing stands out",276,1.0
+qwen3b_v2,"flagged, 3 reasons",2,1.0
+qwen3b_v2,"not flagged, 2 reasons",17,1.0
+qwen3b_v2,"not flagged, 3 reasons",5,1.0
+qwen3b_v2,"not flagged, nothing stands out",276,0.9311594202898552
+qwen3b,"flagged, 3 reasons",2,1.0
+qwen3b,"not flagged, 2 reasons",17,1.0
+qwen3b,"not flagged, 3 reasons",5,0.8
+qwen3b,"not flagged, nothing stands out",276,0.9202898550724636
+text150m,"flagged, 3 reasons",2,0.5
+text150m,"not flagged, 2 reasons",17,0.6470588235294118
+text150m,"not flagged, 3 reasons",5,0.2
+text150m,"not flagged, nothing stands out",276,0.822463768115942
