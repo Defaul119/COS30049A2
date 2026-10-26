@@ -392,8 +392,9 @@
     "_writerOrder": "Confirmed by the DS7 test results (reports/tables/assistant_eval.csv, 25 Oct): qwen3b keeps every number and passes the guardrail on all 445 prompts (ROUGE-L 0.783); text150m on 99.8% (0.683) and follows it: it runs in the CPU environment, where Qwen (4-bit, CUDA only) cannot.",
     "text150mCheckpoint": "models/assistant/model.pt",
     "_text150mCheckpoint": "the explanation stage's model_best.pt, with its tokenizer.json in the same folder",
-    "qwenConfig": "configs/qwen3b_explain.json",
-    "qwenAdapter": "models/qwen3b_adapter",
+    "qwenConfig": "configs/qwen3b_explain_v2.json",
+    "qwenAdapter": "models/qwen3b_adapter_v2",
+    "_qwenAdapter": "Round 2 adopted 27 Oct by the rule fixed in docs/KAGGLE_LM_PLAN.md section 3 (CHANGELOG 27 Oct). Round 1 stays in models/qwen3b_adapter with configs/qwen3b_explain.json as the fallback.",
     "maxNewTokens": 256
   },
 

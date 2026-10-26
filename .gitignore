@@ -55,6 +55,7 @@ models/heist_best.joblib
 # adapter (114 MB) are also over the limit; their SHA-256 are in context.txt until they ship as release assets.
 models/assistant/
 models/qwen3b_adapter/
+models/qwen3b_adapter_v2/
 
 # Console copies of logs that are already written to reports/logs/<step>.log
 reports/logs/*.stdout.log

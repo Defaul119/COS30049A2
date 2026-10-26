@@ -5,6 +5,27 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 27 October 2026 (overnight; the user gave Claude full decision rights)
 
+**Qwen 3B round 2 adopted** (by the rule fixed in advance, KAGGLE_LM_PLAN.md section 3).
+- *Run:* `tritran72/cos30049a2-qwen3b-explain-v2` on two T4s, 619 tok/s (round 1: 326 on one), stopped early by
+  `patience` at step 2,600 of 5,820, best validation loss 0.0234, 7.9 h.
+- *Scoring:* its answers were re-scored here with the current measures (its notebook predates them).
+
+| Rule (all must hold) | Round 1 | Round 2 |
+|---|---|---|
+| Guardrail pass, DS7 v1 test / DS10 | 98.9% / 98.6% | 99.8% / 99.3% |
+| Number faithfulness | 100% / 100% | 100% / 100% |
+| Wrong comparison words | 5 / 4 | 1 / 2 |
+| Glossary test: key facts | 15.3% | 41.3% (+26 points) |
+
+Also better: fully correct on DS7 v1 test / DS10 95.5% / 95.9% -> 96.2% / 96.6%, and glossary answers fully right
+6.8% -> 31.1%. It no longer copies the template word for word (copy rate on flagged prompts 96% -> 0%), so ROUGE-L
+against the template falls (0.783 -> 0.669) while every check rises.
+
+`settings.json -> assistant` now points at `models/qwen3b_adapter_v2` with `configs/qwen3b_explain_v2.json`. Round 1
+stays in `models/qwen3b_adapter` as the fallback. Adapter SHA-256: adapter_model.safetensors 9b1c5f40...0890,
+adapter_config.json 91e3b7f7...0ddf (full hashes in context.txt). `data/processed/ds7_v2/glossary_test.jsonl` (74
+held-out questions) is now committed as a frozen test set.
+
 **Statistics campaign A: every scoring method's planted-pattern recall over many seeds** (`explorer/distribution.py`,
 Kaggle CPU, 1.8 h; seeds 70000-; `stats_methods_{seeds,summary}.csv`).
 
