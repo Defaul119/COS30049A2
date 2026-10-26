@@ -8,6 +8,16 @@ Usage:
     python -m lm.train --config configs/text_150m_pretrain.json --bench   # speed and memory test only
     python -m lm.train --config configs/text_150m_pretrain.json           # train, or resume
     python -m lm.train --config configs/text_150m_chat.json               # chat fine-tuning
+    python -m lm.train --config ... --max-hours 11                        # stop and save after 11 h (Kaggle)
+    python -m lm.train --config ... --eval-only                           # validation loss of the starting weights
+    torchrun --standalone --nproc_per_node 2 -m lm.train --config ...     # both GPUs of a Kaggle T4 x2 session
+
+Round 2 (docs/KAGGLE_LM_PLAN.md, C1-C3) continues the 152M model's pretraining on Kaggle, in sessions of at
+most 12 hours on GPUs without bf16: --max-hours ends a session cleanly; under torchrun each GPU takes its
+share of every step's micro-batches (lm.dist), which leaves the data order and the steps as on one GPU;
+"schedule": "wsd" holds the learning rate constant and decays it only over the last `decay_fraction` of
+the tokens, so `total_tokens` can still be raised between sessions until the decay begins; and
+"eval_windows" fixes the validation windows, so a loss stays comparable with round 1's at any micro-batch.
 
 Files written to the run folder (out_dir in the config):
     ckpt_last.pt     everything needed to resume (model, optimizer, step)
@@ -20,15 +30,18 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import io
 import json
 import math
 import os
 import shutil
+import sys
 import time
 from pathlib import Path
 
 import torch
 
+from . import dist
 from .data import WindowSampler
 from .model import GPT, GPTConfig, pad_vocab
 
@@ -48,6 +61,9 @@ DEFAULTS = {
     "eval_every": 200,          # steps between validation runs
     "early_stop_evals": None,   # stop after this many evaluations without a new best (None: never)
     "eval_batches": 40,
+    "eval_windows": None,       # validation windows per evaluation (None: eval_batches x micro_batch)
+    "schedule": "cosine",       # or "wsd": warm-up, constant, then linear decay over the last decay_fraction
+    "decay_fraction": 0.15,     # wsd: share of total_tokens spent decaying to min_lr
     "log_every": 1,
     "ckpt_every_minutes": 30,
     "compile": False,           # torch.compile: faster, but needs Triton (Linux/WSL2)
@@ -81,9 +97,14 @@ def precision(device: torch.device):
 
 
 def lr_at(step: int, cfg: dict, max_steps: int) -> float:
-    """Linear warm-up, then cosine decay from lr to min_lr."""
+    """Linear warm-up, then cosine decay from lr to min_lr; or, with "schedule": "wsd", constant until the
+    last decay_fraction of the steps and a linear decay to min_lr over them (warm-up, stable, decay)."""
     if step < cfg["warmup_steps"]:
         return cfg["lr"] * (step + 1) / cfg["warmup_steps"]
+    if cfg.get("schedule", "cosine") == "wsd":
+        decay_start = max(cfg["warmup_steps"], round(max_steps * (1 - cfg["decay_fraction"])))
+        progress = min(1.0, max(0, step - decay_start) / max(1, max_steps - decay_start))
+        return cfg["lr"] + (cfg["min_lr"] - cfg["lr"]) * progress
     progress = min(1.0, (step - cfg["warmup_steps"]) / max(1, max_steps - cfg["warmup_steps"]))
     return cfg["min_lr"] + 0.5 * (cfg["lr"] - cfg["min_lr"]) * (1 + math.cos(math.pi * progress))
 
@@ -119,20 +140,28 @@ def fmt_duration(seconds: float) -> str:
 
 
 @torch.no_grad()
-def evaluate(model, sampler, n_batches, micro_batch, device, autocast) -> float:
+def evaluate(model, sampler, n_windows, micro_batch, device, autocast, d: dist.Dist = dist.Dist()) -> float:
+    """Mean loss over the validation stream's first n_windows windows (the same ones at any micro-batch),
+    shared between the processes."""
     model.eval()
-    losses = []
-    for i in range(n_batches):
-        x, y = sampler.batch(i * micro_batch, micro_batch)
+    total, count = 0.0, 0
+    for start in range(d.rank * micro_batch, n_windows, d.world * micro_batch):
+        n = min(micro_batch, n_windows - start)
+        x, y = sampler.batch(start, n)
         with autocast:
             _, loss, _ = model(to_device(x, device), to_device(y, device))
-        losses.append(loss.item())
+        total += loss.item() * n
+        count += n
     model.train()
-    return sum(losses) / len(losses)
+    total, count = dist.total(d, total, count, device=device)
+    return total / count
 
 
-def bench(model, optimizer, sampler, cfg, device, autocast, seq_len, total_tokens) -> None:
-    """Measure speed and memory for several micro-batch sizes, without saving anything."""
+def bench(model, optimizer, sampler, cfg, device, autocast, seq_len, total_tokens) -> tuple[int, float] | None:
+    """Measure speed and memory for several micro-batch sizes, without saving anything.
+
+    Returns (micro_batch, tokens/s) of the fastest size that fits, or None if none fits.
+    """
     print("\n[bench] micro_batch | tokens/s | peak GPU memory | time for the full run")
     sizes = cfg["bench_micro_batches"] if device.type == "cuda" else [cfg["micro_batch"]]
     vram = torch.cuda.get_device_properties(device).total_memory / 1e9 if device.type == "cuda" else None
@@ -186,6 +215,7 @@ def bench(model, optimizer, sampler, cfg, device, autocast, seq_len, total_token
     if best:
         print(f"\n[bench] fastest that fits: \"micro_batch\": {best[0]} "
               f"(about {fmt_duration(total_tokens / best[1])} for {total_tokens:,} tokens)")
+    return best
 
 
 def main() -> None:
@@ -193,7 +223,11 @@ def main() -> None:
     p.add_argument("--config", required=True)
     p.add_argument("--device", default="auto", help="auto, cuda, cpu or mps")
     p.add_argument("--bench", action="store_true", help="measure speed and memory, then exit")
+    p.add_argument("--eval-only", action="store_true",
+                   help="print the starting weights' validation loss (resumed, init_from or random), then exit")
     p.add_argument("--max-steps", type=int, help="stop after this step (testing); the schedule is unchanged")
+    p.add_argument("--max-hours", type=float, metavar="H",
+                   help="save and stop after H hours of training; the same command resumes (Kaggle's 12-hour sessions)")
     p.add_argument("--fresh", action="store_true", help="ignore an existing checkpoint and start over")
     p.add_argument("--seed", type=int, help="override the config's seed; the run folder gets a -s<seed> suffix")
     args = p.parse_args()
@@ -204,6 +238,10 @@ def main() -> None:
         cfg["seed"] = args.seed
         cfg["out_dir"] = f"{cfg['out_dir']}-s{args.seed}"
     device = pick_device(args.device)
+    d = dist.setup(device.type)
+    if d.on and device.type == "cuda":
+        device = torch.device("cuda", d.local_rank)
+    say = print if d.main else (lambda *a, **k: None)
     torch.manual_seed(cfg["seed"])
     if device.type == "cuda":
         torch.backends.cuda.matmul.allow_tf32 = True
@@ -213,7 +251,7 @@ def main() -> None:
     data_dir, out_dir = Path(cfg["data_dir"]), Path(cfg["out_dir"])
     meta = json.loads((data_dir / "meta.json").read_text(encoding="utf-8"))
     out_dir.mkdir(parents=True, exist_ok=True)
-    if (data_dir / meta.get("tokenizer", "tokenizer.json")).exists():
+    if d.main and (data_dir / meta.get("tokenizer", "tokenizer.json")).exists():
         shutil.copyfile(data_dir / meta.get("tokenizer", "tokenizer.json"), out_dir / "tokenizer.json")
 
     # Where do the weights come from: our own checkpoint (resume), an earlier stage, or random?
@@ -237,18 +275,22 @@ def main() -> None:
         model.load_state_dict(base["model"])
         del base
     model.to(device)
+    dist.broadcast_parameters(d, list(model.parameters()))
     optimizer = model.configure_optimizer(cfg["lr"], cfg["weight_decay"], cfg["betas"], device.type)
     if ckpt and ckpt.get("optimizer"):
         optimizer.load_state_dict(ckpt["optimizer"])
     scaler = torch.amp.GradScaler("cuda", enabled=(amp_dtype == torch.float16))
 
     T, B = model_cfg.seq_len, cfg["micro_batch"]
-    if cfg["batch_tokens"] % (B * T):
-        raise SystemExit(f"batch_tokens ({cfg['batch_tokens']}) must be a multiple of micro_batch x seq_len ({B * T})")
+    if cfg["batch_tokens"] % (B * T * d.world):
+        raise SystemExit(f"batch_tokens ({cfg['batch_tokens']}) must be a multiple of micro_batch x seq_len x "
+                         f"processes ({B * T * d.world})")
     seqs_per_step = cfg["batch_tokens"] // T
     accum = seqs_per_step // B
+    local_accum = accum // d.world  # this process's share of each step's micro-batches
     total_tokens = cfg["total_tokens"] or int(cfg["epochs"] * meta["train_tokens"])
     max_steps = max(1, math.ceil(total_tokens / cfg["batch_tokens"]))
+    eval_windows = cfg["eval_windows"] or cfg["eval_batches"] * B
     mask = "train_mask.bin" if (data_dir / "train_mask.bin").exists() else None
     train_data = WindowSampler(data_dir / "train.bin", T, cfg["seed"], mask and data_dir / mask)
     val_data = WindowSampler(data_dir / "val.bin", T, cfg["seed"] + 1,
@@ -259,26 +301,45 @@ def main() -> None:
     evals_since_best = ckpt.get("evals_since_best", 0) if ckpt else 0
     stopped_early = bool(ckpt.get("stopped_early")) if ckpt else False
     n_params = model.num_params()
-    print(f"[train] {cfg.get('name', out_dir.name)} on {device}"
-          f"{' (' + torch.cuda.get_device_name(device) + ')' if device.type == 'cuda' else ''}"
-          f", {'fp32' if amp_dtype is None else str(amp_dtype).replace('torch.', '')}")
-    print(f"[train] model {n_params / 1e6:.1f}M parameters: {model_cfg.n_layer} layers, d_model {model_cfg.d_model}, "
-          f"{model_cfg.n_head} heads, context {T}, vocabulary {model_cfg.vocab_size}")
-    print(f"[train] data {meta['train_tokens']:,} training tokens; run {total_tokens:,} tokens = {max_steps:,} steps "
-          f"of {cfg['batch_tokens']:,} ({B} x {T} x {accum} accumulation)")
+    say(f"[train] {cfg.get('name', out_dir.name)} on {d.world} x {device.type}"
+        f"{' (' + torch.cuda.get_device_name(device) + ')' if device.type == 'cuda' else ''}"
+        f", {'fp32' if amp_dtype is None else str(amp_dtype).replace('torch.', '')}")
+    say(f"[train] model {n_params / 1e6:.1f}M parameters: {model_cfg.n_layer} layers, d_model {model_cfg.d_model}, "
+        f"{model_cfg.n_head} heads, context {T}, vocabulary {model_cfg.vocab_size}")
+    say(f"[train] data {meta['train_tokens']:,} training tokens; run {total_tokens:,} tokens = {max_steps:,} steps "
+        f"of {cfg['batch_tokens']:,} ({B} x {T} x {accum} accumulation{f' over {d.world} processes' if d.on else ''})"
+        f"; {cfg['schedule']} schedule")
     if ckpt:
-        print(f"[train] resuming from step {step:,} ({ckpt_path})")
+        say(f"[train] resuming from step {step:,} ({ckpt_path})")
     elif cfg["init_from"]:
-        print(f"[train] starting from {cfg['init_from']}")
+        say(f"[train] starting from {cfg['init_from']}")
 
     run_model = torch.compile(model) if cfg["compile"] else model
 
+    if args.eval_only:
+        val = evaluate(run_model, val_data, eval_windows, B, device, autocast, d)
+        say(f"[eval] validation loss {val:.4f} on {eval_windows} windows (perplexity {math.exp(min(val, 20)):.1f})")
+        if d.main:
+            (out_dir / "eval_only.json").write_text(json.dumps(
+                {"val_loss": val, "windows": eval_windows, "step": step, "precision": str(amp_dtype),
+                 "weights": str(ckpt_path if ckpt else cfg["init_from"])}, indent=2) + "\n", encoding="utf-8")
+        dist.cleanup(d)
+        return
     if args.bench:
-        bench(run_model, optimizer, train_data, cfg, device, autocast, T, total_tokens)
+        # Each process measures its own GPU; the gradient exchange adds well under 1% at these step sizes.
+        with contextlib.redirect_stdout(sys.stdout if d.main else io.StringIO()):
+            best = bench(run_model, optimizer, train_data, cfg, device, autocast, T, total_tokens // d.world)
+        if d.main and best:
+            (out_dir / "bench.json").write_text(json.dumps(
+                {"micro_batch": best[0], "tok_per_s_per_gpu": best[1], "gpus": d.world, "compile": cfg["compile"],
+                 "device": torch.cuda.get_device_name(device) if device.type == "cuda" else device.type}, indent=2)
+                + "\n", encoding="utf-8")
+        dist.cleanup(d)
         return
     if step >= max_steps or stopped_early:
-        print(f"[train] already finished ({step:,}/{max_steps:,} steps"
-              f"{', stopped early' if stopped_early else ''}). Weights: {out_dir / 'model.pt'}")
+        say(f"[train] already finished ({step:,}/{max_steps:,} steps"
+            f"{', stopped early' if stopped_early else ''}). Weights: {out_dir / 'model.pt'}")
+        dist.cleanup(d)
         return
 
     def weights(val_loss=None) -> dict:
@@ -287,20 +348,24 @@ def main() -> None:
                 "kind": meta.get("kind"), "train_config": cfg}
 
     def checkpoint() -> None:
-        save_atomic({**weights(), "optimizer": optimizer.state_dict(), "best_val": float(best_val),
-                     "evals_since_best": evals_since_best, "stopped_early": stopped_early}, ckpt_path)
+        if d.main:
+            save_atomic({**weights(), "optimizer": optimizer.state_dict(), "best_val": float(best_val),
+                         "evals_since_best": evals_since_best, "stopped_early": stopped_early}, ckpt_path)
 
-    log = open(out_dir / "log.jsonl", "a", encoding="utf-8")
+    log = open(out_dir / "log.jsonl", "a", encoding="utf-8") if d.main else None
 
     def run_eval() -> float:
         nonlocal best_val, evals_since_best
-        val = evaluate(run_model, val_data, cfg["eval_batches"], B, device, autocast)
-        print(f"[eval] step {step:,} | validation loss {val:.4f} (perplexity {math.exp(min(val, 20)):.1f})", flush=True)
-        log.write(json.dumps({"step": step, "val_loss": val, "time": time.time()}) + "\n")
-        log.flush()
+        val = evaluate(run_model, val_data, eval_windows, B, device, autocast, d)
+        say(f"[eval] step {step:,} | validation loss {val:.4f} (perplexity {math.exp(min(val, 20)):.1f})", flush=True)
+        if log:
+            log.write(json.dumps({"step": step, "val_loss": val, "time": time.time()}) + "\n")
+            log.flush()
+        # Every process computed the same mean, so they agree on the best step and on stopping early.
         if val < best_val:
             best_val, evals_since_best = val, 0
-            save_atomic(weights(val), out_dir / "model_best.pt")
+            if d.main:
+                save_atomic(weights(val), out_dir / "model_best.pt")
         else:
             evals_since_best += 1
         return val
@@ -310,11 +375,12 @@ def main() -> None:
 
     run_model.train()
     flops_per_token = model.flops_per_token()
-    last_ckpt, step_times, bad_steps = time.time(), [], 0
+    started, last_ckpt, step_times, bad_steps = time.time(), time.time(), [], 0
+    out_of_time = False
     try:
         while step < max_steps:
             if args.max_steps is not None and step >= args.max_steps:
-                print(f"[train] stopping at --max-steps {args.max_steps}")
+                say(f"[train] stopping at --max-steps {args.max_steps}")
                 break
             lr = lr_at(step, cfg, max_steps)
             for group in optimizer.param_groups:
@@ -322,15 +388,19 @@ def main() -> None:
 
             t0 = time.time()
             loss_sum = torch.zeros((), device=device)
-            for micro in range(accum):
+            # Micro-batch m of this step is the stream's position step x seqs_per_step + m x B on any number of
+            # processes; process r takes m = r, r + world, ... and lm.dist averages the processes' gradients.
+            for micro in range(d.rank, accum, d.world):
                 x, y = train_data.batch(step * seqs_per_step + micro * B, B)
                 with autocast:
                     _, loss, _ = run_model(to_device(x, device), to_device(y, device))
-                scaler.scale(loss / accum).backward()
+                scaler.scale(loss / local_accum).backward()
                 loss_sum += loss.detach()
+            dist.average_gradients(d, list(model.parameters()))
             scaler.unscale_(optimizer)
             grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), cfg["grad_clip"])
-            train_loss = (loss_sum / accum).item()
+            (loss_total,) = dist.total(d, (loss_sum / local_accum).item(), device=device)
+            train_loss = loss_total / d.world
 
             # With fp16, the gradient scaler handles overflowing gradients itself (it skips the
             # step and lowers its scale), so only bf16/fp32 runs check the gradients here.
@@ -340,7 +410,7 @@ def main() -> None:
                 bad_steps += 1
                 optimizer.zero_grad(set_to_none=True)
                 scaler.update()
-                print(f"[train] step {step:,}: non-finite loss or gradients, update skipped ({bad_steps} in a row)")
+                say(f"[train] step {step:,}: non-finite loss or gradients, update skipped ({bad_steps} in a row)")
                 if bad_steps >= 5:
                     raise SystemExit("[train] training diverged; resume from the last checkpoint with a lower lr")
                 step += 1
@@ -359,40 +429,51 @@ def main() -> None:
                 line = (f"[train] step {step:,}/{max_steps:,} | loss {train_loss:.4f} | lr {lr:.2e} | "
                         f"grad {grad_norm.item():.2f} | {tok_s:,.0f} tok/s")
                 if device.type == "cuda":
-                    mfu = flops_per_token * tok_s / (cfg["peak_tflops"] * 1e12)
+                    mfu = flops_per_token * tok_s / (cfg["peak_tflops"] * 1e12 * d.world)
                     line += f" | MFU {100 * mfu:.0f}% | {torch.cuda.max_memory_allocated(device) / 1e9:.1f} GB"
                 line += f" | ETA {fmt_duration(avg * (max_steps - step))}"
-                print(line, flush=True)
-                log.write(json.dumps({"step": step, "loss": train_loss, "lr": lr, "grad_norm": grad_norm.item(),
-                                      "tok_s": tok_s, "time": time.time()}) + "\n")
-                log.flush()
+                say(line, flush=True)
+                if log:
+                    log.write(json.dumps({"step": step, "loss": train_loss, "lr": lr, "grad_norm": grad_norm.item(),
+                                          "tok_s": tok_s, "time": time.time()}) + "\n")
+                    log.flush()
 
             if step % cfg["eval_every"] == 0 and step < max_steps:
                 run_eval()
                 if cfg["early_stop_evals"] and evals_since_best >= cfg["early_stop_evals"]:
                     stopped_early = True
-                    print(f"[train] no improvement in {evals_since_best} evaluations: stopping early "
-                          f"(best validation loss {best_val:.4f} in model_best.pt)", flush=True)
+                    say(f"[train] no improvement in {evals_since_best} evaluations: stopping early "
+                        f"(best validation loss {best_val:.4f} in model_best.pt)", flush=True)
                     break
             if time.time() - last_ckpt > cfg["ckpt_every_minutes"] * 60:
                 checkpoint()
                 last_ckpt = time.time()
-                print(f"[train] checkpoint saved at step {step:,}", flush=True)
+                say(f"[train] checkpoint saved at step {step:,}", flush=True)
+            if args.max_hours and dist.any_true(d, time.time() - started > args.max_hours * 3600, device):
+                out_of_time = True
+                break
     except KeyboardInterrupt:
-        print("\n[train] interrupted: saving a checkpoint, please wait ...", flush=True)
+        say("\n[train] interrupted: saving a checkpoint, please wait ...", flush=True)
         checkpoint()
-        print(f"[train] saved at step {step:,}. Run the same command to continue.")
+        say(f"[train] saved at step {step:,}. Run the same command to continue.")
         return
     finally:
-        log.close()
+        if log:
+            log.close()
 
     checkpoint()
-    if step >= max_steps or stopped_early:
-        log = open(out_dir / "log.jsonl", "a", encoding="utf-8")
+    if out_of_time and step < max_steps:
+        say(f"[train] --max-hours {args.max_hours} reached: saved at step {step:,}. Run the same command to continue.")
+    elif step >= max_steps or stopped_early:
+        log = open(out_dir / "log.jsonl", "a", encoding="utf-8") if d.main else None
         val = run_eval()
-        log.close()
-        save_atomic(weights(val), out_dir / "model.pt")
-        print(f"[train] finished: {out_dir / 'model.pt'} (validation loss {val:.4f})")
+        if log:
+            log.close()
+        if d.main:
+            save_atomic(weights(val), out_dir / "model.pt")
+        say(f"[train] finished: {out_dir / 'model.pt'} (validation loss {val:.4f})")
+    dist.barrier(d)
+    dist.cleanup(d)
 
 
 if __name__ == "__main__":

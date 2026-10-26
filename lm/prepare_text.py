@@ -13,15 +13,22 @@ It is safe to stop with Ctrl+C and run the same command again. Progress is
 saved to state.json after every batch of documents, and a re-run continues
 from there.
 
+Round 2 (docs/KAGGLE_LM_PLAN.md, C4) continues a finished corpus: --continue-from DIR copies DIR's
+tokenizer and validation file and starts at the document after DIR's last one, so the new train.bin
+holds only documents the first corpus never used, and validation losses of both rounds are measured
+on the same tokens. meta.json records where the continuation started.
+
 Usage:
     python -m lm.prepare_text                        # 2B training tokens, 32,768-token vocabulary
     python -m lm.prepare_text --tokens 200000000     # a smaller corpus
     python -m lm.prepare_text --source local --local-dir path/to/txt --out data/smoke_text   # testing
+    python -m lm.prepare_text --continue-from data/text --out data/text_cont --tokens 2000000000 --delete-raw
 """
 from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import time
 from datetime import datetime, timezone
 from itertools import chain, islice
@@ -86,6 +93,8 @@ def main() -> None:
     p.add_argument("--local-dir", help="folder of .txt files when --source local")
     p.add_argument("--raw", default="data/raw/fineweb-edu", help="where downloaded Parquet files go")
     p.add_argument("--delete-raw", action="store_true", help="delete each Parquet file once it is tokenized")
+    p.add_argument("--continue-from", metavar="DIR",
+                   help="a finished corpus to continue: its tokenizer, validation file and file list, from its next document")
     args = p.parse_args()
     if args.vocab > 65536:
         p.error("--vocab must be at most 65,536 so token ids fit in uint16")
@@ -96,6 +105,22 @@ def main() -> None:
     train_path, val_path = out / "train.bin", out / "val.bin"
 
     state = read_json(state_path)
+    if args.continue_from and not state:
+        # Start where the finished corpus stopped: same files, same tokenizer, same validation tokens.
+        src = Path(args.continue_from)
+        previous = read_json(src / "state.json")
+        if not (previous and previous.get("finished")):
+            raise SystemExit(f"[data] {src} is not a finished corpus (no finished state.json)")
+        shutil.copyfile(src / "tokenizer.json", tok_path)
+        shutil.copyfile(src / "val.bin", val_path)
+        state = {"files": previous["files"], "next_file": previous["next_file"], "next_row": previous["next_row"],
+                 "train_tokens": 0, "val_tokens": previous["val_tokens"], "documents": 0,
+                 "continued_from": {"dir": src.as_posix(), "next_file": previous["next_file"],
+                                    "next_row": previous["next_row"], "train_tokens": previous["train_tokens"],
+                                    "documents": previous["documents"]}}
+        train_path.unlink(missing_ok=True)
+        write_json(state_path, state)
+        print(f"[data] continuing {src} from file {state['next_file']}, row {state['next_row']:,}")
     if state and state.get("finished"):
         print(f"[data] already finished: {state['train_tokens']:,} training tokens in {out}. Delete {state_path} to rebuild.")
         return
@@ -151,6 +176,9 @@ def main() -> None:
 
     eot = token_id(tok, EOT)
     start_time, start_tokens = time.time(), counts["train"]
+    continued = (state or {}).get("continued_from")
+    if continued:
+        args.val_tokens = counts["val"]  # the validation file stays the first corpus's, token for token
 
     def flush(batch: list[Doc]) -> None:
         nonlocal n_docs
@@ -166,6 +194,7 @@ def main() -> None:
         write_json(state_path, {
             "files": files, "next_file": last.file, "next_row": last.row + 1,
             "train_tokens": counts["train"], "val_tokens": counts["val"], "documents": n_docs,
+            **({"continued_from": continued} if continued else {}),
         })
 
     batch: list[Doc] = []
@@ -204,7 +233,8 @@ def main() -> None:
         "val_tokens": counts["val"],
         "documents": n_docs,
         "source": source_info,
-        "files_used": files[: read_json(state_path)["next_file"] + 1],
+        "files_used": files[(continued or {}).get("next_file", 0): read_json(state_path)["next_file"] + 1],
+        **({"continued_from": continued} if continued else {}),
         "created_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     })
     state = read_json(state_path)
