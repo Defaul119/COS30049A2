@@ -14,6 +14,11 @@ honglquanganh/cos30049a2-text150m-train (--accelerator NvidiaTeslaT4); (2) hongl
 (CPU); (3) Qwen v2 done -> bring home (runs/qwen3b-explain-v2, tables), re-score its answers with --rescore (its
 notebook used the older measures), push tritran72/cos30049a2-assistant-random-eval (10 sets x 3 writers, ~3 h),
 bring that home, rerun tools/test_report.py, commit.
+27 Oct 01:10: honglquanganh/cos30049a2-text150m-train v1 STARTED (T4 x2; GPU_HOURS 50; session 1 = fp16 check,
+bench, gate, train). Its 3.0B tokens are byte-identical to tritran72's build. Next session: add the notebook's own
+output as an input (kernel_sources += honglquanganh/cos30049a2-text150m-train) and set RESUME_FROM to its
+runs/text-150m-cont folder; repeat until the gate's total or Sun 1 Nov 23:59 (lower TOTAL_TOKENS before the decay
+if time runs short). honglquanganh's stage data is already built.
 STATISTICS CAMPAIGN (user, 27 Oct ~01:00: "a ridiculously reasonable amount of testing ... distribution math ...
 all ML and LLM ... mean accuracy"; the user said push everything when the overnight jobs are done): (A)
 explorer/distribution.py, Kaggle CPU tritran72/cos30049a2-distribution RUNNING (DS1/DS10 100 plant seeds, DS2 20,
