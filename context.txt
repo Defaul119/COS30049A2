@@ -20,8 +20,13 @@ ROUND 2 STATUS (26 Oct evening; plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct ha
   prepare_text --continue-from; configs qwen3b_explain_v2.json and text_150m_pretrain_cont.json.
 - Uploaded (user's OK): private dataset honglquanganh/cos30049a2-text150m-base (round-1 152M weights as
   text150m_base.pt, explanation model text150m_explain_v1.pt, tokenizer, val.bin, meta, state, SHA256SUMS.txt).
-- RUNNING 26 Oct ~18:30: tritran72/cos30049a2-qwen-data v2 (CPU; corrected glossary) and
-  honglquanganh/cos30049a2-text150m-data v1 (CPU; 3B continuation tokens, ~2-3 h).
+- 26 Oct ~19:05: tritran72/cos30049a2-qwen3b-explain-v2 v1 RUNNING (GPU T4 x2; data = qwen-data v2, glossary
+  fact-checked). honglquanganh/cos30049a2-text150m-data FAILED in 45 s: that account has no internet (phone not
+  verified; Kaggle also withholds GPUs) - the teammate must verify a phone at kaggle.com -> Settings. Meanwhile,
+  "use mine first" (user): the same base dataset is also on tritran72 (tritran72/cos30049a2-text150m-base) and
+  tritran72/cos30049a2-text150m-data v1 is building the 3B tokens there (CPU, started ~19:15). Kaggle's image is
+  Python 3.13 now (pins still install). A private notebook's output cannot be read from another account, so each
+  account that trains the 152M model needs its own data notebook run.
 - NEXT: when qwen-data v2 completes, push tritran72/cos30049a2-qwen3b-explain-v2 (GPU T4 x2; trains ~10 h, then
   evaluates DS7 v1 test, DS10, glossary test, and round-1 Qwen on the glossary test). When text150m-data completes,
   push honglquanganh/cos30049a2-text150m-train (session 1: fp16 check vs 3.1305, bench, gate with GPU_HOURS 50,
