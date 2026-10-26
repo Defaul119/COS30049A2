@@ -1,8 +1,35 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-26 GMT+7, from the Mac)
-Work from C:\Users\ADMIN\COS30049A2 (PC) or ~/Desktop/COS30049/COS30049A2 (Mac clone, 26 Oct); git pull first on
-either. Start a new session by reading NEXT below; python tools/status.py shows any long job. Nothing runs locally
-from 26 Oct: all data building, training and evaluation moves to Kaggle (DIRECTION 26 Oct).
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-26 ~19:00 GMT+7, on the PC)
+Work from C:\Users\ADMIN\COS30049A2 (PC) or ~/Desktop/COS30049/COS30049A2 (Mac clone); git pull first on either.
+Nothing runs locally: every GPU step runs on Kaggle (user, 26 Oct: "do NOT use the local 3060 anymore"; only code
+edits, pytest and git on the PC). Kaggle jobs: kaggle kernels status <owner>/<slug> (ROUND 2 STATUS below).
 =====================================================================================
+
+ROUND 2 STATUS (26 Oct evening; plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct has every change)
+- Accounts: tritran72 (user; ~/.kaggle/access_token) runs Qwen v2; honglquanganh (teammate Le Quang Anh Hoang, token
+  in C:\Users\ADMIN\.kaggle\accounts\honglquanganh.token, KAGGLE_API_TOKEN=$(cat ...)) runs the 152M chain.
+  Push from inside a copy of kaggle/<name>/ with KAGGLE_USERNAME replaced (`kaggle kernels push -p .`).
+  Notebooks: python tools/kaggle_notebooks.py <commit on GitHub> regenerates all four, pinned.
+- DONE and pushed: C6 direction check (guardrail + eval columns; round 1 re-scored: DS7 152M 2 / Qwen 5 direction
+  errors, pass 99.3% / 98.9%); template F4 wording ("Higher/Lower ratio to the usual amount than usual", user's
+  choice); frozen v1 test files (ds10-check keeps explain.jsonl); C7 DS7 v2 (build-ds7 --settings ds7v2; built on
+  Kaggle: 36,210 / 2,385 / 1,637 + glossary_test 74); C8 glossary 306 pairs on 65 topics, held-out QUESTIONS not
+  topics (round 1's 0/5 was certain: its test topics were never taught), fact-checked by Claude at the user's
+  request (six answers fixed; not a human read-through - say so in the AI declaration); lm/dist.py two-GPU
+  training for lm.qlora and lm.train (2 processes == 1, tested); qlora repeat_sources/monitor_sources/patience;
+  eval --batch-size; chat_subset --retention-start; C1 --max-hours, C3 wsd, eval_windows, --eval-only; C4
+  prepare_text --continue-from; configs qwen3b_explain_v2.json and text_150m_pretrain_cont.json.
+- Uploaded (user's OK): private dataset honglquanganh/cos30049a2-text150m-base (round-1 152M weights as
+  text150m_base.pt, explanation model text150m_explain_v1.pt, tokenizer, val.bin, meta, state, SHA256SUMS.txt).
+- RUNNING 26 Oct ~18:30: tritran72/cos30049a2-qwen-data v2 (CPU; corrected glossary) and
+  honglquanganh/cos30049a2-text150m-data v1 (CPU; 3B continuation tokens, ~2-3 h).
+- NEXT: when qwen-data v2 completes, push tritran72/cos30049a2-qwen3b-explain-v2 (GPU T4 x2; trains ~10 h, then
+  evaluates DS7 v1 test, DS10, glossary test, and round-1 Qwen on the glossary test). When text150m-data completes,
+  push honglquanganh/cos30049a2-text150m-train (session 1: fp16 check vs 3.1305, bench, gate with GPU_HOURS 50,
+  then train). Each later 152M session: add the notebook's own output as an input (kernel_sources) and set
+  RESUME_FROM. Cut-off Sun 1 Nov 23:59; Mon 2 Nov 152M chat + explanation stages (configs and notebook still to
+  write: text_150m_chat_v2 / text_150m_explain_v2, DS7 v2 for the 152M tokenizer); Tue 3 Nov adoption rule.
+- Other free GPUs (searched 26 Oct): Modal's free $30/month (~37 h L4 or ~27 h A10G, scriptable from the PC) is the
+  only one worth it; Colab/Lightning/Studio Lab add little. Needs the user to make an account; not started.
 
 DIRECTION (user, 26 Oct) - supersedes the 24 Oct "no more GPU time for the 152M model"
 - The user is not happy with the language models' accuracy. Round 2: the 152M model gets 4-5B more pretraining
@@ -332,8 +359,9 @@ RESULTS SO FAR (quote reports/tables/*.csv, never these)
   DS10: assistant_eval_ds10.csv.
 
 WAITING ON THE USER / TEAM
-- Round 2 (26 Oct): the user's quota (Settings; does T4 x2 count as one hour per hour?); the glossary reviewer;
-  the teammates' Kaggle accounts (being created; until then plan with the user's account only).
+- Round 2 (26 Oct): the user's quota (Settings; does T4 x2 count as one hour per hour?). The glossary was
+  fact-checked by Claude at the user's request instead of a reviewer. Modal account (optional, extra GPU hours).
+  The teammate's token was pasted into the chat: ask them to regenerate it after the project.
 - The features.csv %.12g fix and the README fixes (MAC REPLICATION). Rotating the Kaggle token (the round-2
   notebooks are pushed with the Kaggle CLI, so rotate before 27 Oct and update C:\Users\ADMIN\.kaggle). The
   release-asset OK (NEXT 4).
