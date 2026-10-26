@@ -719,6 +719,41 @@ shutil.copy(SRC / "reports" / "logs" / "distribution.log", WORK / "distribution_
 ]
 
 
+CLASS_NB = [
+    ("markdown", r'''
+# COS30049 A2 - Classifier test metrics over training seeds and a bootstrap of the test set (Kaggle CPU session)
+
+Runs `python -m explorer.cli class-distribution` (`explorer/classify_distribution.py`): every reported classifier on
+Elliptic (temporal split) and BitcoinHeist (temporal and random schemes), with its tuned settings and validation
+threshold, refitted with 10 seeds and its test scores bootstrapped 1,000 times. Elliptic comes from the attached
+Kaggle dataset (its licence forbids sharing processed rows); BitcoinHeist is downloaded from UCI. CPU only.
+
+**Settings:** Accelerator **None**, **Internet on**. **Input:** dataset `ellipticco/elliptic-data-set`.
+'''),
+    ("code", f'''
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code this run uses
+PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2"]
+'''),
+    ("code", SETUP + CLONE + FIND),
+    ("code", r'''
+raw = SRC / "data" / "external" / "elliptic"
+raw.mkdir(parents=True, exist_ok=True)
+for name in ("elliptic_txs_features.csv", "elliptic_txs_classes.csv", "elliptic_txs_edgelist.csv"):
+    shutil.copy(find_input(name), raw / name)
+sh(sys.executable, "-m", "explorer.cli", "external", "--bitcoinheist", log="external.log")
+sh(sys.executable, "-m", "explorer.cli", "process-external", log="process-external.log")
+sh(sys.executable, "-m", "explorer.cli", "class-distribution", log="class-distribution.log")
+tables = WORK / "reports" / "tables"
+tables.mkdir(parents=True, exist_ok=True)
+for name in ("stats_classifiers_seeds.csv", "stats_classifiers_summary.csv", "stats_classifiers_paired.csv"):
+    shutil.copy(SRC / "reports" / "tables" / name, tables / name)
+(WORK / "kaggle_run.json").write_text(json.dumps({"commit": COMMIT, "hours": round((time.time() - T0) / 3600, 2),
+    "packages": {p.split("==")[0]: version(p.split("==")[0]) for p in PINS}}, indent=2), encoding="utf-8")
+'''),
+]
+
+
 def metadata(slug, code_file, gpu, kernel_sources, dataset_sources=()):
     return {"id": f"KAGGLE_USERNAME/{slug}", "title": slug, "code_file": code_file, "language": "python",
             "kernel_type": "notebook", "is_private": True, "enable_gpu": gpu, "enable_tpu": False,
@@ -739,6 +774,7 @@ for folder, slug, cells, gpu, sources, datasets in [
         ("text150m_stages", "cos30049a2-text150m-stages", STAGES_NB, True,
          ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data", "KAGGLE_USERNAME/cos30049a2-text150m-train"], BASE),
         ("distribution", "cos30049a2-distribution", DIST_NB, False, [], []),
+        ("class_distribution", "cos30049a2-class-distribution", CLASS_NB, False, [], ["ellipticco/elliptic-data-set"]),
         ("assistant_random_eval", "cos30049a2-assistant-random-eval", RANDOM_EVAL_NB, True,
          ["KAGGLE_USERNAME/cos30049a2-qwen3b-explain-v2", "KAGGLE_USERNAME/cos30049a2-qwen3b-explain"], BASE)]:
     out = REPO_DIR / "kaggle" / folder

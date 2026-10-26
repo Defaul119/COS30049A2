@@ -359,6 +359,13 @@
     ]
   },
 
+  "classDistribution": {
+    "_about": "explorer/classify_distribution.py: each reported classifier refitted with `seeds` seeds (random forest and gradient boosting only; logistic regression and KNN are deterministic) and its test scores bootstrapped `bootstrapDraws` times.",
+    "firstSeed": 71000,
+    "seeds": 10,
+    "bootstrapDraws": 1000
+  },
+
   "distribution": {
     "_about": "explorer/distribution.py (user, 27 Oct: distributions and mean accuracy over many tests): the three planted patterns replanted with many seeds on DS1, DS2 and DS10, every frozen method scored on each. The seed block starts above every tuning, reporting and test-set seed, so no reported number moves. DS2 is ~30x DS1's size, so it gets fewer seeds.",
     "firstSeed": 70000,

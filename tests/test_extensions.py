@@ -199,3 +199,16 @@ class DistributionTests(unittest.TestCase):
         self.assertTrue(seeds["mean_recall"].between(0, 1).all())
         base = summary.set_index("method").loc["baseline"]
         self.assertEqual((base["seeds"], base["minus_baseline_mean"], base["beats_baseline_share"]), (2, 0.0, 0.0))
+
+
+class ClassifierBootstrapTests(unittest.TestCase):
+    def test_resamples_are_shared_so_identical_models_never_differ(self):
+        from explorer.classify_distribution import bootstrap
+
+        rng = np.random.default_rng(0)
+        y = rng.integers(0, 2, 400)
+        p = np.clip(y * 0.6 + rng.random(400) * 0.5, 0, 1)
+        boot = bootstrap(y, {"a": p, "b": p.copy(), "c": rng.random(400)}, {"a": 0.5, "b": 0.5, "c": 0.5}, 50, 1)
+        self.assertTrue(np.array_equal(boot["a"]["f1"], boot["b"]["f1"]))
+        self.assertTrue(((boot["a"]["f1"] >= 0) & (boot["a"]["f1"] <= 1)).all())
+        self.assertGreater(boot["a"]["pr_auc"].mean(), boot["c"]["pr_auc"].mean())
