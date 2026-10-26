@@ -137,6 +137,20 @@ class GuardrailTests(unittest.TestCase):
             by_topic.setdefault(r["topic"], set()).add(p["split"])
         self.assertTrue(all(len(splits) == 1 for splits in by_topic.values()))
 
+    def test_a_glossary_row_can_carry_its_own_split_and_key_facts(self):
+        import json
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "glossary.jsonl"
+            rows = [{"topic": "t", "question": "Q?", "answer": "A.", "split": "test", "key_facts": ["A"]},
+                    {"topic": "t", "question": "Q2?", "answer": "A."}]
+            path.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
+            held, taught = ds7.glossary_pairs(path, SETTINGS["ds7"])
+        self.assertEqual((held["split"], held["key_facts"]), ("test", ["A"]))
+        self.assertEqual(taught["split"], ds7.split_of("t", SETTINGS["ds7"]))
+
     def test_split_is_decided_by_address(self):
         p = SETTINGS["ds7"]
         self.assertEqual({ds7.split_of("addr-1", p) for _ in range(3)}, {ds7.split_of("addr-1", p)})
@@ -241,3 +255,44 @@ class EvalGeneratorTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DS7V2BuildTests(unittest.TestCase):
+    """Round 2's build (C7) on the real DS1 data and a few DS2 addresses, against the real frozen v1 test set."""
+
+    def build(self, glossary_rows: list[dict]) -> "Path":
+        import json
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(__import__("shutil").rmtree, tmp, True)
+        (tmp / "glossary.jsonl").write_text("\n".join(json.dumps(r) for r in glossary_rows) + "\n", encoding="utf-8")
+        # DS1 gives about 1,000 pairs, so this target adds a handful of DS2 addresses.
+        small = {**SETTINGS["ds7v2"], "targetPairs": 1100}
+        with mock.patch.dict(SETTINGS, {"ds7small": small}):
+            ds7.run_build_ds7(tmp, tables_dir=tmp, settings_key="ds7small")
+        return tmp
+
+    def test_glossary_test_file_and_no_frozen_prompt_in_training(self):
+        import json
+
+        taught = {"topic": "units", "question": "What units are amounts in?", "answer": "BTC.", "split": "train"}
+        held = {**taught, "question": "Which unit do amounts use?", "split": "test", "key_facts": ["BTC"]}
+        out = self.build([taught, held])
+        rows = {s: [json.loads(line) for line in open(out / f"{s}.jsonl", encoding="utf-8")]
+                for s in ("train", "val", "test", "glossary_test")}
+        self.assertEqual([(r["key_facts"], r["template"]) for r in rows["glossary_test"]], [(["BTC"], "BTC.")])
+        self.assertIn("What units are amounts in?", {r["messages"][1]["content"] for r in rows["train"]})
+        frozen = ds7.frozen_prompts(ds7.PROJECT_ROOT / SETTINGS["ds7v2"]["frozenTest"])
+        self.assertFalse(frozen & {r["messages"][1]["content"] for s in ("train", "val") for r in rows[s]})
+        self.assertTrue(any(r["source"] == "DS2" for r in rows["train"]))
+        manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual([f["path"].rsplit("/", 1)[-1] for f in manifest["files"]],
+                         ["train.jsonl", "val.jsonl", "test.jsonl", "glossary_test.jsonl"])
+
+    def test_training_on_a_frozen_test_question_stops_the_build(self):
+        # "Who writes the explanations?" is one of the frozen v1 test set's glossary prompts.
+        with self.assertRaises(ValueError):
+            self.build([{"topic": "assistant", "question": "Who writes the explanations?", "answer": "A.", "split": "train"}])

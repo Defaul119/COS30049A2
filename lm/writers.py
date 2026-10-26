@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Callable
 
 Generate = Callable[[list[dict[str, str]]], str]
+BatchGenerate = Callable[[list[list[dict[str, str]]]], list[str]]
 QWEN_PACKAGES = ("transformers", "peft", "bitsandbytes")
 
 
@@ -33,6 +34,17 @@ def text150m_generator(checkpoint: str | Path, max_new_tokens: int) -> Generate:
 
 
 def qwen_generator(config: str | Path, adapter: str | Path, max_new_tokens: int) -> Generate:
+    batch = qwen_batch_generator(config, adapter, max_new_tokens)
+    return lambda messages: batch([messages])[0]
+
+
+def qwen_batch_generator(config: str | Path, adapter: str | Path, max_new_tokens: int) -> BatchGenerate:
+    """Replies to several prompts at once: one forward pass per new token for the whole batch.
+
+    Prompts are padded on the left with an attention mask, so every reply starts right after its own
+    prompt. Evaluation on a Kaggle T4 answered one prompt every 11 s (round 1); batching spends that
+    GPU time on many prompts. Greedy decoding, as for one prompt.
+    """
     import torch
     from peft import PeftModel
     from transformers import AutoModelForCausalLM, BitsAndBytesConfig
@@ -41,6 +53,7 @@ def qwen_generator(config: str | Path, adapter: str | Path, max_new_tokens: int)
 
     cfg = load_config(str(config))
     tok = load_tokenizer(cfg)
+    tok.padding_side = "left"
     dtype = compute_dtype()  # bf16 on the RTX 3060, fp16 on a Kaggle T4
     quant = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True,
                                bnb_4bit_compute_dtype=dtype)
@@ -49,10 +62,12 @@ def qwen_generator(config: str | Path, adapter: str | Path, max_new_tokens: int)
     model = PeftModel.from_pretrained(base, str(adapter)).eval()
 
     @torch.no_grad()
-    def generate(messages: list[dict[str, str]]) -> str:
-        ids = tok.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(model.device)
-        out = model.generate(ids, max_new_tokens=max_new_tokens, do_sample=False, pad_token_id=tok.pad_token_id)
-        return tok.decode(out[0, ids.shape[1]:], skip_special_tokens=True).strip()
+    def generate(prompts: list[list[dict[str, str]]]) -> list[str]:
+        # The chat template already writes Qwen's special tokens, so the tokenizer must not add any.
+        texts = [tok.apply_chat_template(m, add_generation_prompt=True, tokenize=False) for m in prompts]
+        enc = tok(texts, return_tensors="pt", padding=True, add_special_tokens=False).to(model.device)
+        out = model.generate(**enc, max_new_tokens=max_new_tokens, do_sample=False, pad_token_id=tok.pad_token_id)
+        return [tok.decode(row[enc["input_ids"].shape[1]:], skip_special_tokens=True).strip() for row in out]
 
     return generate
 

@@ -3,6 +3,7 @@ data/text/
 data/chat/
 data/ds7/
 data/qwen/
+data/qwen_v2/
 data/txgpt/
 data/ds7_chat/
 data/raw/fineweb-edu/
@@ -15,6 +16,12 @@ runs/
 data/raw/esplora/
 # DS10's raw replies, the same way (data/processed/ds10/histories.json.gz ships)
 data/raw/ds10/
+
+# Round 2's DS7 (about 40,000 pairs) is built on Kaggle by kaggle/qwen_data; its glossary.jsonl and
+# manifest.json (with each file's SHA-256) are committed, the pair files are not
+data/processed/ds7_v2/train.jsonl
+data/processed/ds7_v2/val.jsonl
+data/processed/ds7_v2/test.jsonl
 
 # DS4 processed rows (~2.9M rows; rebuilt in seconds by python -m explorer.cli process-external)
 data/processed/bitcoinheist/rows.parquet

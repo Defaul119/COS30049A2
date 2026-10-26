@@ -1,0 +1,35 @@
+{
+  "name": "qwen3b-explain-v2",
+  "base_model": "Qwen/Qwen2.5-3B-Instruct",
+  "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "train_files": [
+    "data/processed/ds7_v2/train.jsonl",
+    "data/qwen_v2/chat_train.jsonl"
+  ],
+  "val_files": [
+    "data/processed/ds7_v2/val.jsonl"
+  ],
+  "retention_val_files": [
+    "data/qwen_v2/chat_retention.jsonl"
+  ],
+  "repeat_sources": {
+    "glossary": 4
+  },
+  "monitor_sources": [
+    "glossary"
+  ],
+  "out_dir": "runs/qwen3b-explain-v2",
+  "init_adapter": null,
+  "seq_len": 1024,
+  "micro_batch": 4,
+  "grad_accum": 4,
+  "epochs": 2,
+  "lr": 0.0001,
+  "min_lr": 1e-05,
+  "warmup_steps": 50,
+  "eval_every": 200,
+  "eval_batches": 26,
+  "patience": 4,
+  "ckpt_every_minutes": 20,
+  "seed": 1
+}

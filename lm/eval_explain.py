@@ -25,6 +25,7 @@ Usage:
     python -m lm.eval_explain --model template
     python -m lm.eval_explain --model text150m --checkpoint runs/text-150m-explain/model_best.pt
     python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best
+    python -m lm.eval_explain --model qwen3b ... --batch-size 16      # Qwen answers 16 prompts per pass
     python -m lm.eval_explain --model template --test data/processed/ds10/explain.jsonl --tag ds10   # another set
     python -m lm.eval_explain --model qwen3b --rescore            # saved answers, current measures
     python -m lm.eval_explain --model qwen3b_v2 ... --adapter ...   # a round-2 writer gets its own rows
@@ -45,7 +46,7 @@ import pandas as pd
 
 from explorer import assistant
 
-from .writers import qwen_generator, text150m_generator
+from .writers import qwen_batch_generator, text150m_generator
 
 ROOT = Path(__file__).resolve().parents[1]
 TABLES = ROOT / "reports" / "tables"
@@ -110,6 +111,8 @@ def main() -> None:
     p.add_argument("--n", type=int, default=500, help="test prompts, drawn with --seed (plan: about 500)")
     p.add_argument("--seed", type=int, default=30049)
     p.add_argument("--max-new-tokens", type=int, default=256)
+    p.add_argument("--batch-size", type=int, default=1,
+                   help="qwen3b: prompts answered together (greedy either way; round 1 used 1)")
     p.add_argument("--tag", default="", help="suffix for the output tables (e.g. ds10)")
     p.add_argument("--rescore", action="store_true",
                    help="measure the answers saved in assistant_eval_<model>[_<tag>].csv again; no model is loaded")
@@ -129,22 +132,26 @@ def main() -> None:
         saved = pd.read_csv(answers_path, keep_default_na=False).set_index("id")["answer"]
         if set(saved.index) != {r["id"] for r in rows}:
             raise SystemExit(f"{answers_path} holds other prompts than --test/--n/--seed draw; rescore with the same ones")
-        generate = None
-    elif kind == "template":
-        generate = None
-    else:
-        generate = (text150m_generator(args.checkpoint, args.max_new_tokens) if kind == "text150m"
-                    else qwen_generator(args.config, args.adapter, args.max_new_tokens))
+    elif kind == "text150m":
+        one = text150m_generator(args.checkpoint, args.max_new_tokens)
+    elif kind == "qwen3b":
+        batch = qwen_batch_generator(args.config, args.adapter, args.max_new_tokens)
 
-    results, started = [], time.time()
-    for i, row in enumerate(rows):
+    def answer(chunk: list[dict]) -> list[str]:
         if args.rescore:
-            answer = saved[row["id"]]
-        else:
-            answer = row["template"] if generate is None else generate(row["messages"][:-1])
-        results.append({"id": row["id"], "kind": row["kind"], "answer": answer, **measure(answer, row)})
-        if (i + 1) % 50 == 0:
-            print(f"[eval] {i + 1}/{len(rows)} ({time.time() - started:.0f} s)", flush=True)
+            return [saved[r["id"]] for r in chunk]
+        if kind == "template":
+            return [r["template"] for r in chunk]
+        prompts = [r["messages"][:-1] for r in chunk]
+        return [one(m) for m in prompts] if kind == "text150m" else batch(prompts)
+
+    results, started, size = [], time.time(), max(1, args.batch_size)
+    for start in range(0, len(rows), size):
+        chunk = rows[start:start + size]
+        answers = answer(chunk)
+        results += [{"id": r["id"], "kind": r["kind"], "answer": a, **measure(a, r)} for r, a in zip(chunk, answers)]
+        if len(results) // 50 > (len(results) - len(chunk)) // 50:
+            print(f"[eval] {len(results)}/{len(rows)} ({time.time() - started:.0f} s)", flush=True)
 
     frame = pd.DataFrame(results)
     TABLES.mkdir(parents=True, exist_ok=True)

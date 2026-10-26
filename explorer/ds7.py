@@ -25,7 +25,13 @@ the same short hash.
 Writes data/processed/ds7/{train,val,test}.jsonl (one {"id", "source", "kind", "phrasing",
 "messages"} per line; test rows also carry "template", the ROUGE-L reference),
 data/processed/ds7/manifest.json and reports/tables/ds7_summary.csv. Team-written glossary pairs,
-if data/processed/ds7/glossary.jsonl exists, are split by question and added.
+if data/processed/ds7/glossary.jsonl exists, are split by topic and added.
+
+Round 2 (docs/KAGGLE_LM_PLAN.md, C7): `build-ds7 --out data/processed/ds7_v2 --settings ds7v2` builds
+a larger set with the same split rule, so every address of the frozen v1 test set is again a test
+address, and the build checks that no frozen test prompt reaches the new train or validation file.
+Glossary rows may carry their own split (tools/make_glossary.py holds out question phrasings, not
+topics); held-out glossary rows go to glossary_test.jsonl with their key facts.
 """
 from __future__ import annotations
 
@@ -191,6 +197,8 @@ def glossary_pairs(path: Path, params: dict[str, Any]) -> Iterator[dict[str, Any
 
     Several phrasings of one question share a topic, so splitting by topic keeps a paraphrase of a
     training question out of the test set (the same reason explanation pairs are split by address).
+    A row's own "split" overrides that: round 2 tests whether a model learnt the facts it was taught,
+    so it holds out phrasings of taught topics, with the "key_facts" a correct answer must state.
     """
     with open(path, encoding="utf-8") as fh:
         for line in fh:
@@ -200,15 +208,28 @@ def glossary_pairs(path: Path, params: dict[str, Any]) -> Iterator[dict[str, Any
                     raise ValueError(f"glossary answer uses a banned word: {q['question']!r}")
                 topic = q.get("topic", q["question"])
                 yield {"source": "glossary", "group": short_hash(topic, str(params["seed"])),
-                       "split": split_of(topic, params), "kind": "glossary", "phrasing": None,
-                       "template": q["answer"],
+                       "split": q.get("split", split_of(topic, params)), "kind": "glossary", "phrasing": None,
+                       "template": q["answer"], "key_facts": q.get("key_facts"),
                        "messages": [{"role": "system", "content": assistant.SYSTEM_PROMPT},
                                     {"role": "user", "content": q["question"]},
                                     {"role": "assistant", "content": q["answer"]}]}
 
 
-def run_build_ds7(out_dir: Path = OUT_DIR, ds2_path: Path = DS2_PATH, tables_dir: Path = TABLES_DIR) -> int:
-    params = SETTINGS["ds7"]
+def frozen_prompts(path: Path) -> set[str]:
+    """The user messages of a frozen test file's explanation and glossary prompts.
+
+    Unscored prompts are left out: they carry no transaction facts, so every address's unscored
+    prompt is the same text and its presence elsewhere says nothing about leakage.
+    """
+    with open(path, encoding="utf-8") as fh:
+        rows = [json.loads(line) for line in fh if line.strip()]
+    return {r["messages"][1]["content"] for r in rows if r["kind"] != "unscored"}
+
+
+def run_build_ds7(out_dir: Path = OUT_DIR, ds2_path: Path = DS2_PATH, tables_dir: Path = TABLES_DIR,
+                  settings_key: str = "ds7") -> int:
+    """Build DS7 with the settings section `settings_key` ("ds7" for round 1, "ds7v2" for round 2) into out_dir."""
+    params = SETTINGS[settings_key]
     rng = random.Random(params["seed"])
     method = selected_method()
     methods = {n: m for n, m in saved_methods().items() if n not in PRECOMPUTED_ONLY}
@@ -238,31 +259,45 @@ def run_build_ds7(out_dir: Path = OUT_DIR, ds2_path: Path = DS2_PATH, tables_dir
     glossary = out_dir / "glossary.jsonl"
     if glossary.exists():
         records += list(glossary_pairs(glossary, params))
+    if params.get("frozenTest"):
+        frozen = frozen_prompts(PROJECT_ROOT / params["frozenTest"])
+        leaked = [r for r in records if r["split"] != "test" and r["messages"][1]["content"] in frozen]
+        if leaked:
+            raise ValueError(f"{len(leaked)} prompts of the frozen test set {params['frozenTest']} would be trained or "
+                             f"validated on, e.g. {leaked[0]['messages'][1]['content'][:200]!r}")
 
     out_dir.mkdir(parents=True, exist_ok=True)
+    # A glossary row held out by its own split is a key-fact test of what was taught: it gets its own file.
+    files = {s: [r for r in records if r["split"] == s and not (r["source"] == "glossary" and r.get("key_facts"))]
+             for s in SPLITS}
+    glossary_test = [r for r in records if r["split"] == "test" and r["source"] == "glossary" and r.get("key_facts")]
+    if glossary_test:
+        files["glossary_test"] = glossary_test
     counts = []
-    for split in SPLITS:
-        part = [r for r in records if r["split"] == split]
-        with open(out_dir / f"{split}.jsonl", "w", encoding="utf-8", newline="\n") as fh:
+    for name, part in files.items():
+        with open(out_dir / f"{name}.jsonl", "w", encoding="utf-8", newline="\n") as fh:
             for n, r in enumerate(part):
-                row = {"id": f"{split}-{n:05d}", "source": r["source"], "kind": r["kind"], "phrasing": r["phrasing"],
+                row = {"id": f"{name}-{n:05d}", "source": r["source"], "kind": r["kind"], "phrasing": r["phrasing"],
                        "messages": r["messages"]}
-                if split == "test":
+                if name not in ("train", "val"):
                     row["template"] = r["template"]
+                if r.get("key_facts"):
+                    row["key_facts"] = r["key_facts"]
                 fh.write(json.dumps(row, ensure_ascii=False) + "\n")
         frame = pd.DataFrame(part, columns=["source", "kind", "group"])
         for (source, kind), g in frame.groupby(["source", "kind"]):
-            counts.append({"split": split, "source": source, "kind": kind, "pairs": len(g), "groups": g["group"].nunique()})
+            counts.append({"split": name, "source": source, "kind": kind, "pairs": len(g), "groups": g["group"].nunique()})
     summary = pd.DataFrame(counts)
     tables_dir.mkdir(parents=True, exist_ok=True)
-    summary.to_csv(tables_dir / "ds7_summary.csv", index=False)
+    summary.to_csv(tables_dir / f"{settings_key}_summary.csv", index=False)
+    shown = out_dir.relative_to(PROJECT_ROOT).as_posix() if out_dir.is_relative_to(PROJECT_ROOT) else str(out_dir)
     manifest = {
         "dataset": "DS7: Explorer explanation pairs (derived from DS1 and DS2 pipeline outputs)",
         "built_utc": utc_now(), "method": method, "settings": params, "pairs": len(records),
         "includes_ds2": ds2_path.exists(), "glossary": glossary.exists(),
         "rule": "split by a seeded hash of the source address; every reply passes explorer.assistant.check",
-        "files": [{"path": f"data/processed/ds7/{s}.jsonl", "pairs": int(summary.loc[summary["split"] == s, "pairs"].sum()),
-                   "sha256": hashlib.sha256((out_dir / f"{s}.jsonl").read_bytes()).hexdigest()} for s in SPLITS],
+        "files": [{"path": f"{shown}/{s}.jsonl", "pairs": int(summary.loc[summary["split"] == s, "pairs"].sum()),
+                   "sha256": hashlib.sha256((out_dir / f"{s}.jsonl").read_bytes()).hexdigest()} for s in files],
     }
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     log.info("Wrote %d pairs to %s: %s", len(records), out_dir,

@@ -5,6 +5,25 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 26 October 2026
 
+**Round 2's Qwen side: DS7 v2, the glossary test, two-GPU training and batched evaluation (C5, C7, C8, C9).**
+- *The glossary test now holds out questions, not topics (differs from the plan, §4).* Round 1 split the glossary
+  by topic, so its 5 test prompts were on 2 topics no model was ever taught ("assistant", "drift"). A correct answer
+  was impossible, which is why both models scored 0 of 5. A model can only be asked to recall what it was taught, so
+  `tools/make_glossary.py` now teaches every topic and holds out new phrasings of each: 306 pairs on 65 topics (210
+  taught, 22 validation, 74 test), each topic with key facts that a correct answer must state. Round 1's 5 test
+  questions are among the held-out ones, so the frozen v1 test set stays unseen. Several answers were out of date
+  and are corrected: the writer order (Qwen first), nine methods (fusion added), the direction check, DS2 and DS10.
+- `build-ds7 --out data/processed/ds7_v2 --settings ds7v2`: every DS2 address, up to 15 pairs each (target
+  40,000), with the same split rule as round 1. The build stops if a frozen v1 test prompt would be trained on.
+  It runs in a Kaggle CPU notebook (`kaggle/qwen_data`); only its manifest comes home.
+- `lm.chat_subset --retention-start 2500`: 10,000 DS6 conversations with round 1's 200 retention conversations
+  still held out (checked byte for byte, and round 1's three files rebuild identically).
+- `lm/qlora.py` trains on every GPU of a session under torchrun (`lm/dist.py`). Round 1's Kaggle run used one of
+  the two T4s. A 2-process CPU run reproduces the 1-process run exactly (same losses, identical adapter). New
+  options: `repeat_sources` (glossary x4), `monitor_sources` (glossary validation loss on its own), `patience`
+  (early stop). `configs/qwen3b_explain_v2.json`: a fresh adapter, at most 2 epochs.
+- `lm.eval_explain --batch-size`: Qwen answers many prompts per pass (round 1: one prompt every 11 s on a T4).
+
 **Guardrail direction check and the Relative size wording (round 2, C6; user's decision).** The guardrail
 (`explorer.assistant.check`) now also rejects a comparison phrase that contradicts its feature's z sign, e.g.
 "Quieter week than usual" for a busier week, which the number check cannot see. `lm.eval_explain` adds

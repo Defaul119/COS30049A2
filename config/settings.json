@@ -301,6 +301,19 @@
     "seed": 30049
   },
 
+  "ds7v2": {
+    "_about": "Round 2's larger DS7 (docs/KAGGLE_LM_PLAN.md §4, C7): every DS2 address, up to 15 pairs each, about 4x round 1. Seed and shares equal ds7's, so the frozen v1 test addresses are test addresses again; the build stops if a frozenTest prompt would be trained on.",
+    "targetPairs": 40000,
+    "maxPairsPerAddress": 15,
+    "ds1PairsPerAddress": 40,
+    "unscoredPerAddress": 1,
+    "phrasings": 5,
+    "trainShare": 0.9,
+    "valShare": 0.05,
+    "seed": 30049,
+    "frozenTest": "data/processed/ds7/test.jsonl"
+  },
+
   "profiles": {
     "_about": "Address profiles of DS1 (main addresses) and DS2 (plan §9.4, S-7): 8 address-level features, standardised, K-Means by silhouette; the DS2-covers-DS1 check (plan §7). Uses clustering.kmeansNInit and silhouetteSample, and model.seed.",
     "k": [3, 4, 5, 6, 7, 8],
