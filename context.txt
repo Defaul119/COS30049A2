@@ -37,7 +37,11 @@ ROUND 2 STATUS (26 Oct evening; plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct ha
   on tritran72's weekly quota; running both risks Qwen being cut before its evaluation) unless the user's quota
   allows both, or Modal (user may sign up tonight; `! modal token new`) takes the 152M chain. On tritran72 set
   GPU_HOURS to this week's remainder + next week's 30 h - ~6 h for the stages (~32 h), not 50.
-  Cut-off Sun 1 Nov 23:59. Then (written 26 Oct, pinned dbd39bf): tritran72/cos30049a2-text150m-
+  RANDOMIZED TEST SET (user, 26 Oct 21:20): data/processed/random_test/{real,synthetic}.jsonl (500 + 500,
+  committed, frozen; explorer/random_test.py, settings randomTest seed 50000; template control 1.0 on both). When
+  Qwen v2 ends, push tritran72/cos30049a2-assistant-random-eval (T4 x2, ~1 h: qwen3b_v2, qwen3b, text150m v1 on
+  both; tags random_real / random_synthetic); text150m_v2 is scored by the stages notebook.
+  Cut-off Sun 1 Nov 23:59. Then (written 26 Oct, pinned dbd39bf; re-pinned b5b690b with the random evals): tritran72/cos30049a2-text150m-
   stage-data (CPU; DS6 + DS7 v2 tokenized, glossary x4; STARTED 26 Oct ~19:45) and cos30049a2-text150m-stages (T4
   x2; chat v2 -> explain v2 -> evals text150m_v2 on DS7 v1/DS10/glossary + round-1 text150m on glossary; needs the
   train notebook's finished model.pt as input). Tue 3 Nov adoption rule. Watchers: scratchpad watch_kernels.py
