@@ -31,7 +31,12 @@ ROUND 2 STATUS (26 Oct evening; plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct ha
   evaluates DS7 v1 test, DS10, glossary test, and round-1 Qwen on the glossary test). When text150m-data completes,
   push honglquanganh/cos30049a2-text150m-train (session 1: fp16 check vs 3.1305, bench, gate with GPU_HOURS 50,
   then train). Each later 152M session: add the notebook's own output as an input (kernel_sources) and set
-  RESUME_FROM. 26 Oct 20:36: tritran72/cos30049a2-text150m-data COMPLETE: 3,000,941,125 new tokens from file 2
+  RESUME_FROM. 26 Oct 23:40: THE TEAMMATE'S ACCOUNT WORKS (phone verified): honglquanganh/cos30049a2-text150m-data
+  v2 RUNNING (~80 min) and honglquanganh/cos30049a2-qwen-data v1 RUNNING (DS7 v2 there, for the 152M stage data).
+  PLAN NOW: the 152M chain (train, stage-data, stages) runs on honglquanganh with GPU_HOURS 50 (its two weekly
+  quotas); tritran72 keeps Qwen v2 and the random evaluation. Push honglquanganh/cos30049a2-text150m-train
+  (--accelerator NvidiaTeslaT4) as soon as its text150m-data completes.
+  26 Oct 20:36: tritran72/cos30049a2-text150m-data COMPLETE: 3,000,941,125 new tokens from file 2
   row 483,432 (files 002-006), val 10,001,319 (round 1's); stage-data COMPLETE 20:06 (chat = round 1's counts
   exactly; ds7_v2_chat 36,840 conversations, 17.2M tokens). The 152M GPU session is HELD until Qwen v2 ends (both
   on tritran72's weekly quota; running both risks Qwen being cut before its evaluation) unless the user's quota
