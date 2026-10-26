@@ -63,3 +63,6 @@ reports/logs/ext_*.log
 # tools/run_queue.py: console copies of each step and its resume state (each job also writes its own log)
 reports/logs/queue/
 reports/logs/queue_state_*.json
+
+# tools/test_report.py build folder (the PDF itself is reports/assistant_tests.pdf)
+reports/assistant_tests/
