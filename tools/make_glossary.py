@@ -1,9 +1,11 @@
 """Write data/processed/ds7_v2/glossary.jsonl: the glossary pairs of round 2's DS7 (plan §6.7; docs/KAGGLE_LM_PLAN.md C8).
 
 The plan says the team writes about 300 questions and answers about the Explorer. On 23 Oct 2026
-the team delegated this to Cao Tri Tran, and Claude drafted them (declared in docs/AI_USE_LOG.md)
-for review. Each topic has one answer, the key facts a correct answer must state, several taught
-phrasings of the question and one or two held-out ones.
+the team delegated this to Cao Tri Tran, and Claude drafted them (declared in docs/AI_USE_LOG.md).
+On 26 Oct, at Cao Tri Tran's request, Claude checked every answer against the code, settings and
+result tables (six corrected; CHANGELOG) in place of a team read-through: STATUS records that.
+Each topic has one answer, the key facts a correct answer must state, several taught phrasings
+of the question and one or two held-out ones.
 
 Round 1 split the glossary by topic, so its test topics were never taught and a correct answer was
 impossible (both models answered 0 of 5). Round 2 asks what the open-question test is for: whether
@@ -23,6 +25,7 @@ Usage:  python tools/make_glossary.py
 """
 from __future__ import annotations
 
+import csv
 import json
 import re
 import sys
@@ -32,8 +35,13 @@ from typing import NamedTuple
 ROOT = Path(__file__).resolve().parents[1]
 S = json.loads((ROOT / "config" / "settings.json").read_text(encoding="utf-8"))
 FLAG_Z = json.loads((ROOT / "models" / "baseline.json").read_text(encoding="utf-8"))["chosen"]["refined"]["threshold"]
-DS1 = json.loads((ROOT / "data" / "processed" / "esplora" / "manifest.json").read_text(encoding="utf-8"))["totals"]
+_DS1_MANIFEST = json.loads((ROOT / "data" / "processed" / "esplora" / "manifest.json").read_text(encoding="utf-8"))
+DS1, PICK = _DS1_MANIFEST["totals"], _DS1_MANIFEST["selection_rule"]["parameters"]
 F, B, M, INJ = S["features"], S["baseline"], S["model"], S["injection"]
+# The threshold sweep (reports/tables/tuning_baseline.csv): addresses over the sanity limit at A1's threshold and ours.
+with open(ROOT / "reports" / "tables" / "tuning_baseline.csv", encoding="utf-8") as _f:
+    _SWEEP = {float(r["threshold"]): int(r["addresses_over_limit"]) for r in csv.DictReader(_f) if r["features"] == "refined"}
+OVER_A1, OVER_OURS = _SWEEP[B["flagAbsZ"]], _SWEEP[FLAG_Z]
 LIMIT = S["limitationLine"]
 OUT = ROOT / "data" / "processed" / "ds7_v2" / "glossary.jsonl"
 # Topics whose answer must end a flag-like statement with the limitation line (A1 NFR-01).
@@ -41,6 +49,7 @@ NEEDS_LIMIT = ("not-a-judgement", "dont-know", "reading-explanation", "what-next
 # One in VAL_EVERY topics lends its last taught phrasing to validation, so the best adapter is also chosen
 # on glossary answers, not only explanations.
 VAL_EVERY = 3
+STATUS = "fact-checked against code and tables by Claude, 26 Oct 2026, at the user's request"
 
 
 def n(x: float) -> str:
@@ -143,7 +152,8 @@ TOPICS: list[Topic] = [
            "Do models see the transactions they are tested on?", "Why split each history by time?"],
           ["Which part of each history is used for training?"]),
     Topic("feature-size",
-          "Size (F1) is how much the address received or sent in the transaction, in BTC. The Explorer compares it "
+          "Size (F1) is how much the transaction moved for the address: what it received minus what it sent, as an "
+          "amount in BTC. The Explorer compares it "
           "with the address's usual amount in the same direction, on a logarithmic scale, because amounts range over "
           "many orders of magnitude.",
           ["F1", "BTC", "logarithmic"],
@@ -215,11 +225,13 @@ TOPICS: list[Topic] = [
            "What makes the Explorer flag a transaction?"],
           ["How far from usual does a transaction have to be before it's flagged?"]),
     Topic("why-threshold-5",
-          f"The original plan used 3.5, but on our data it flagged far more than intended and several addresses had "
-          f"too many flags. Testing thresholds on planted transactions, {n(FLAG_Z)} gave the fewest addresses over the "
-          "limit while still finding most planted patterns. The decision and its evidence are recorded in the change log.",
-          ["3.5", "planted"],
-          [f"Why is the threshold {n(FLAG_Z)} and not 3.5?", "Why was the threshold raised?",
+          f"The original plan used {n(B['flagAbsZ'])}, but on our data that left {OVER_A1} addresses with more than "
+          f"{n(S['sanity']['maxFlaggedShare'] * 100)}% of their transactions flagged. No threshold we tested brought every "
+          f"address under that limit. {n(FLAG_Z)} left the fewest ({OVER_OURS}) while "
+          f"still finding at least {n(INJ['recallTarget'] * 100)}% of {INJ['patternsMeetingTarget']} of the 3 planted "
+          "patterns, so the team chose it. The decision and its evidence are recorded in the change log.",
+          [n(B["flagAbsZ"]), "planted"],
+          [f"Why is the threshold {n(FLAG_Z)} and not {n(B['flagAbsZ'])}?", "Why was the threshold raised?",
            "Why not use the original threshold?"],
           ["Why did you change the flag threshold from the plan?"]),
     Topic("contributing",
@@ -278,8 +290,9 @@ TOPICS: list[Topic] = [
            "How should an analyst follow up a flag?", "What follow-up does a flag call for?"],
           ["I found a flagged transaction. What should my next step be?"]),
     Topic("largest-differences",
-          "When no single feature is far from usual, the Explorer still lists the two features that differ most, so "
-          "you can see what the method reacted to. This happens with methods that look at the whole pattern at once.",
+          "When no single feature is far from usual, the explanation lists the two features that differ most, so you "
+          "can still see how the transaction compares. That is the case for most ordinary transactions, and for a "
+          "transaction flagged by a method that looks at the whole pattern at once rather than at one feature.",
           ["two features", "whole pattern"],
           ["Why does a transaction show 'largest differences' instead of reasons?",
            "What does 'largest differences from usual' mean?", "Why is a transaction flagged with no strong reason?"],
@@ -413,10 +426,11 @@ TOPICS: list[Topic] = [
            "What checks does an AI answer have to pass?"],
           ["What if the model says a week was quieter when it was busier?"]),
     Topic("two-assistants",
-          "Two models can rephrase the template. A pretrained 3-billion-parameter model (Qwen2.5-3B-Instruct), "
-          "fine-tuned by us, writes first where a GPU is available and also answers general questions. A "
-          "152-million-parameter model, trained from scratch by our team, runs on an ordinary CPU and writes next. Both "
-          "go through the same checks, and the template is the final fallback.",
+          "By default the Explorer shows the template. When the Assistant is switched on, two models can rephrase it. A "
+          "pretrained 3-billion-parameter model (Qwen2.5-3B-Instruct), fine-tuned by us, writes first where a GPU is "
+          "available and also answers general questions. A 152-million-parameter model, trained from scratch by our "
+          "team, runs on an ordinary CPU and writes next. Both go through the same checks, and the template is the "
+          "final fallback.",
           ["152-million", ["Qwen", "3-billion"], "from scratch", "template"],
           ["Why are there two language models in the Explorer?",
            "What is the difference between the small and the large model?", "What is Qwen used for?",
@@ -523,16 +537,18 @@ TOPICS: list[Topic] = [
            "Are there patterns the methods miss?"],
           ["If nothing is flagged, can I assume the address is fine?"]),
     Topic("why-these-addresses",
-          "By a rule written down before any data was fetched: addresses seen in randomly sampled recent blocks, with "
-          "enough history to have a usual pattern but at most a capped number of transactions, which leaves out the "
-          "busiest services such as exchanges. The rule and every skipped address are recorded in the snapshot's manifest.",
-          ["rule written down", "randomly sampled", "manifest"],
+          f"By a rule written down before any data was fetched: take the addresses paid in {PICK['snapshotBlockCount']} "
+          "evenly spaced blocks from the four weeks before the snapshot, visit them in a shuffled order, and keep "
+          f"addresses with {PICK['mainMinTx']} to {PICK['mainMaxTx']:,} transactions over at least "
+          f"{PICK['mainMinSpanDays']} days. The upper limit leaves out the busiest services such as exchanges. The "
+          "rule and every skipped address are recorded in the snapshot's manifest.",
+          ["rule written down", "shuffled", "manifest"],
           ["How were the addresses chosen?", f"Why these {DS1['main_addresses'] + DS1['short_addresses']} addresses?",
            "How did you pick the snapshot addresses?"],
           ["Were the addresses hand-picked?"]),
     Topic("reproducible",
-          "Yes. One command rebuilds every feature, model and table from the saved snapshot, and every number in our "
-          "report is read from tables the code writes. The README lists the commands.",
+          "Yes. One command rebuilds the features, the scoring models and every result table from the saved data, and "
+          "every number in our report is read from tables the code writes. The README lists the commands.",
           ["one command", "README"],
           ["Can I reproduce these results?", "How do I rerun the analysis?", "Can someone else rebuild your results?"],
           ["How can I check your numbers myself?"]),
@@ -585,10 +601,10 @@ def main() -> int:
         splits = ["train"] * len(t.taught)
         if i % VAL_EVERY == 0:
             splits[-1] = "val"
-        rows += [{"topic": t.name, "question": q, "answer": t.answer, "split": s, "status": "draft for review"}
+        rows += [{"topic": t.name, "question": q, "answer": t.answer, "split": s, "status": STATUS}
                  for q, s in zip(t.taught, splits)]
         rows += [{"topic": t.name, "question": q, "answer": t.answer, "split": "test", "key_facts": t.key_facts,
-                  "status": "draft for review"} for q in t.held_out]
+                  "status": STATUS} for q in t.held_out]
     if problems:
         print("\n".join(problems))
         return 1

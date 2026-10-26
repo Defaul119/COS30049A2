@@ -5,6 +5,23 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 26 October 2026
 
+**Glossary fact-checked by Claude instead of a team read-through (user's request, evening).** Every one of the 65
+answers was checked against the code, `config/settings.json` and the result tables. Fifty-nine were accurate.
+Six were corrected:
+- the address selection: 20 evenly spaced blocks with addresses visited in shuffled order, not "randomly sampled
+  recent blocks";
+- why the threshold is 5: no tested threshold met the 20% limit; 3.5 left 7 addresses over it and 5 left 4, while
+  still finding at least 70% of 2 of the 3 patterns (now read from `tuning_baseline.csv`);
+- "largest differences": these also appear for most ordinary transactions (76% of unflagged DS1 transactions
+  have no feature at |z| >= 2);
+- the two assistants: they write only when the Assistant is switched on;
+- reproducibility: one command rebuilds the features, scoring models and tables, not "every model";
+- Size: the amount is what was received minus what was sent.
+
+This is not the human read-through the plan asked for (§7 risk), and the AI declaration should say so. The 152M
+round-1 weights, tokenizer and validation tokens were uploaded as a private Kaggle dataset on the teammate's account
+(`honglquanganh/cos30049a2-text150m-base`, user's OK).
+
 **Round 2's Qwen side: DS7 v2, the glossary test, two-GPU training and batched evaluation (C5, C7, C8, C9).**
 - *The glossary test now holds out questions, not topics (differs from the plan, §4).* Round 1 split the glossary
   by topic, so its 5 test prompts were on 2 topics no model was ever taught ("assistant", "drift"). A correct answer
