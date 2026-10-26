@@ -184,18 +184,39 @@ def statistics() -> str:
     return "\n".join(parts)
 
 
+def glossary_section() -> str:
+    """The open-question test: held-out phrasings of taught topics, judged by their key facts."""
+    path = ROOT / "data/processed/ds7_v2/glossary_test.jsonl"
+    frame = results("glossary")
+    if not path.exists() or frame is None:
+        return ""
+    rows = [json.loads(line) for line in open(path, encoding="utf-8") if line.strip()]
+    parts = [r"\subsection*{Glossary test (open questions)}",
+             rf"\textbf{{Source.}} \texttt{{tools/make\_glossary.py}}: {len(rows)} held-out phrasings of the 65 taught topics, "
+             r"each with the key facts a correct answer must state.\\ \textbf{How drawn.} One or two per topic, written "
+             r"differently from the taught questions; round 1's five test questions are among them.\\",
+             r"\par\smallskip\noindent\begin{tabular}{lrrr}\toprule Writer & Key facts stated & Fully right & ROUGE-L\\\midrule"]
+    for r in frame.itertuples():
+        parts.append(rf"{tex(WRITERS.get(r.model, r.model))} & {pct(r.glossary_key_facts)} & {pct(r.glossary_correct)} & "
+                     rf"{r.glossary_rouge_l:.3f}\\")
+    parts.append(r"\bottomrule\end{tabular}")
+    return "\n".join(parts)
+
+
 def main() -> int:
     commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    overview = [r"\begin{longtable}{p{4.2cm}rrrr}\toprule Test set & Prompts & Template & 152M r1 & Qwen r1\\\midrule\endhead"]
+    writers = ["template", "text150m", "qwen3b", "qwen3b_v2", "text150m_v2"]
+    overview = [r"\begin{longtable}{p{4.2cm}rrrrrr}\toprule Test set & Prompts & Template & 152M r1 & Qwen r1 & Qwen r2 & "
+                r"152M r2\\\midrule\endhead"]
     for title, path, tag, *_ in SETS:
         n, _ = composition(path)
         frame = results(tag)
-        get = (lambda m: pct(frame.set_index("model").at[m, "fully_correct"]) if frame is not None and m in set(frame["model"])
-               and "fully_correct" in frame else "--")
-        overview.append(rf"{tex(title)} & {n} & {get('template')} & {get('text150m')} & {get('qwen3b')}\\")
+        table = frame.set_index("model") if frame is not None and "fully_correct" in frame else None
+        cells = [pct(table.at[m, "fully_correct"]) if table is not None and m in table.index else "--" for m in writers]
+        overview.append(rf"{tex(title)} & {n} & {' & '.join(cells)}\\")
     overview.append(r"\bottomrule\end{longtable}")
-    body = "\n\n".join(section(*s) for s in SETS)
+    body = "\n\n".join(section(*s) for s in SETS) + "\n\n" + glossary_section()
     doc = rf"""\documentclass[10pt,a4paper]{{article}}
 \usepackage[margin=2cm]{{geometry}}
 \usepackage{{booktabs,longtable,fancyvrb,xcolor,graphicx}}

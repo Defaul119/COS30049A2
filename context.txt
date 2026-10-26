@@ -14,6 +14,13 @@ honglquanganh/cos30049a2-text150m-train (--accelerator NvidiaTeslaT4); (2) hongl
 (CPU); (3) Qwen v2 done -> bring home (runs/qwen3b-explain-v2, tables), re-score its answers with --rescore (its
 notebook used the older measures), push tritran72/cos30049a2-assistant-random-eval (10 sets x 3 writers, ~3 h),
 bring that home, rerun tools/test_report.py, commit.
+27 Oct 02:55: QWEN V2 DONE AND ADOPTED (CHANGELOG 27 Oct): early stop at step 2,600/5,820, 7.9 h on 2 x T4 at 619
+tok/s; re-scored here: DS7 guardrail 99.8%, 1 direction error, fully correct 96.2%; DS10 99.3% / 2 / 96.6%;
+glossary key facts 41.3% (round 1 15.3%). Installed models/qwen3b_adapter_v2 (git-ignored; SHA-256
+adapter_model.safetensors 9b1c5f400870242104254ca540e1122212fd76fc93c517e311bc696b6db20890, adapter_config.json
+91e3b7f7d5e1bc3a7766c8342455e5c5fa79c687f36c63e50a48eeee18320ddf); settings assistant -> v2 config + adapter; round 1
+in models/qwen3b_adapter stays the fallback. Run folder: runs/qwen3b-explain-v2. 03:00 tritran72/cos30049a2-
+assistant-random-eval v1 RUNNING (T4 x2, ~3 h; 10 sets x qwen3b_v2, qwen3b, text150m).
 27 Oct 01:10: honglquanganh/cos30049a2-text150m-train v1 STARTED (T4 x2; GPU_HOURS 50; session 1 = fp16 check,
 bench, gate, train). Its 3.0B tokens are byte-identical to tritran72's build. Next session: add the notebook's own
 output as an input (kernel_sources += honglquanganh/cos30049a2-text150m-train) and set RESUME_FROM to its
