@@ -59,7 +59,11 @@ project up to this point"; full decision rights overnight). Due Sun 8 Nov 23:59;
       as GitHub release assets (user's OK needed); fp16 export of the 152M model.
 - [x] DATA_CARD.md, MODEL_CARD.md (generated tables: `python tools/cards.py`), LICENSES.md, NOTICE, Qwen
       licence text, "Built with Qwen" (27 Oct). [Claude]
-- [ ] SHA256SUMS.txt and the zip: `tools/package.py` (plan Appendix D), from the v1.0 tag. [Claude]
+- [x] `tools/package.py --tag v1.0 [--with-models]`: zip + SHA256SUMS.txt from the tag (27 Oct; trial from HEAD:
+      71.7 MB, 477 files, data hashes match the manifests). [Claude]
+- [ ] Find Canvas's upload limit (plan §11): decides whether --with-models (Qwen adapter 120 MB, 152M model
+      610 MB fp32) goes in the zip or the weights go to a release link. Confirm the zip leaves out CLAUDE.md,
+      context.txt, docs/HANDOFF.md and docs/brief/. [team]
 - [ ] A licence for our own code (none chosen; LICENSES.md says ask the group). [team decides]
 
 ## Report (12 marks; <= 3,000 words, aim 2,850; Harvard, numbered)

@@ -48,6 +48,12 @@ means reproduce the reported numbers; for example, the Elliptic random forest ha
 +0.042, CI 0.031-0.053). On BitcoinHeist the temporal split stays near chance for every model (best F1 0.070) and the
 random split reaches 0.246. Seed spread is small everywhere (SD 0.013 at most), so the model ranking is not luck.
 
+**Submission zip** (`python tools/package.py --tag v1.0`, plan Appendix D). Built from `git archive` of the tag, so
+nothing uncommitted can leak in; leaves out CLAUDE.md, context.txt, docs/HANDOFF.md and the unit's brief (for the
+team to confirm); writes SHA256SUMS.txt into the zip and beside it, then re-reads the zip against it.
+`--with-models` adds the writers' weights. A trial from HEAD: 71.7 MB, 477 files, and the DS1, DS2, DS7 and DS10
+files' SHA-256 equal their manifests'.
+
 **Data card, model card and licences.** `DATA_CARD.md` (every dataset's source, licence, collection, size, missing
 values, biases and users, then every shipped file with its rows, size and SHA-256 and every column with its type,
 missing count and meaning) and `MODEL_CARD.md` (every final model's purpose, data, parameters, limits and intended

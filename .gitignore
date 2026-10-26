@@ -67,3 +67,6 @@ reports/logs/queue_state_*.json
 
 # tools/test_report.py build folder (the PDF itself is reports/assistant_tests.pdf)
 reports/assistant_tests/
+
+# Submission zip built by tools/package.py
+dist/
