@@ -31,9 +31,10 @@ all ML and LLM ... mean accuracy"; the user said push everything when the overni
 explorer/distribution.py, Kaggle CPU tritran72/cos30049a2-distribution RUNNING (DS1/DS10 100 plant seeds, DS2 20,
 seeds from 70000) -> stats_methods_seeds/summary.csv; (B) explorer/classify_distribution.py, Kaggle CPU
 tritran72/cos30049a2-class-distribution RUNNING (10 seeds + 1,000-draw test bootstrap, DS3 AF temporal, DS4 temporal
-and random) -> stats_classifiers_*.csv. A and B DONE 27 Oct 02:50 / 02:10 (CHANGELOG 27 Oct; figures stats_methods.pdf, stats_classifiers.pdf; statistics section in reports/assistant_tests.pdf); (C) after round 2: every writer on all 12 test sets with bootstrap CIs and
-paired tests, plus the 152M explanation stage retrained with 5 seeds. Bring A/B home when done; add a statistics
-section (tables + distribution figures) to tools/test_report.py.
+and random) -> stats_classifiers_*.csv. A and B DONE 27 Oct 02:50 / 02:10 (CHANGELOG 27 Oct; figures stats_methods.pdf, stats_classifiers.pdf; statistics section in reports/assistant_tests.pdf); (C) DONE 27 Oct (python -m lm.eval_stats; stats_writers_*.csv, stats_writers.pdf, PDF section): pooled over 12
+sets fully correct 152M 72.7% [71.6, 73.8], Qwen r1 88.9% [88.1, 89.8], Qwen r2 92.7% [92.0, 93.4]; McNemar: r2
+better on synthetic/hard/balanced/max_shift and glossary, never worse. Rerun lm.eval_stats after the 152M v2
+evaluation (WRITERS already lists text150m_v2). Still open (C+): the 152M explanation stage retrained with 5 seeds.
 
 ROUND 2 STATUS (26 Oct evening; plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct has every change)
 - Accounts: tritran72 (user; ~/.kaggle/access_token) runs Qwen v2; honglquanganh (teammate Le Quang Anh Hoang, token

@@ -359,6 +359,12 @@
     ]
   },
 
+  "writerStats": {
+    "_about": "lm/eval_stats.py: bootstrap intervals (draws over each test set's prompts, shared by every writer, so comparisons are paired) and McNemar's exact test for the Assistants.",
+    "seed": 72000,
+    "bootstrapDraws": 2000
+  },
+
   "classDistribution": {
     "_about": "explorer/classify_distribution.py: each reported classifier refitted with `seeds` seeds (random forest and gradient boosting only; logistic regression and KNN are deterministic) and its test scores bootstrapped `bootstrapDraws` times.",
     "firstSeed": 71000,

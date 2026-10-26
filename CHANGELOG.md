@@ -48,6 +48,16 @@ means reproduce the reported numbers; for example, the Elliptic random forest ha
 +0.042, CI 0.031-0.053). On BitcoinHeist the temporal split stays near chance for every model (best F1 0.070) and the
 random split reaches 0.246. Seed spread is small everywhere (SD 0.013 at most), so the model ranking is not luck.
 
+**Statistics campaign C: the explanation writers with intervals and paired tests** (`python -m lm.eval_stats`, no
+model runs; settings `writerStats`, seed 72000, 2,000 draws; `stats_writers_{summary,paired}.csv`, figure
+`stats_writers.pdf`). Every writer answered the same prompts on 12 test sets (DS7 v1 test, DS10 and the ten
+randomized sets), so each set is resampled once and every comparison is paired. Pooled over the 12 sets (4,948
+prompts, each set weighted equally), fully correct is 72.7% (95% CI 71.6-73.8) for the 152M model, 88.9% (88.1-89.8)
+for Qwen round 1 and 92.7% (92.0-93.4) for Qwen round 2. McNemar's exact test on the prompts only one Qwen round got
+right finds round 2 better on synthetic (p 0.0005), hard (0.027), balanced (+11.1 points, p < 0.0001) and max_shift
+(+19.7 points, p < 0.0001), and on glossary key facts (+25.9 points, CI 16.2-35.8). The other eight sets show no
+significant difference, and round 2 is never significantly worse.
+
 **Order and reasons checks made fair to rounding.** The prompt shows z to one decimal, and the template orders by
 the unrounded value. Two features can therefore show the same |z| in an order the model cannot know, and when nothing
 stands out the second and third largest can tie. `order_ok` and `reasons_ok` now accept any choice among features

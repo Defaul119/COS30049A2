@@ -919,6 +919,36 @@ def fig_stats_classifiers(summary: pd.DataFrame) -> tuple[Figure, Stats]:
     return fig, s
 
 
+WRITER_LABELS = {"text150m": "152M, round 1", "qwen3b": "Qwen 3B, round 1", "qwen3b_v2": "Qwen 3B, round 2",
+                 "text150m_v2": "152M, round 2"}
+
+
+def fig_stats_writers(summary: pd.DataFrame) -> tuple[Figure, Stats]:
+    """Fully correct rate of each Assistant writer on every test set, with 95% bootstrap intervals (lm/eval_stats.py)."""
+    sets = [s for s in summary["test_set"].unique() if not s.startswith("glossary")]
+    writers = [w for w in WRITER_LABELS if w in set(summary["writer"])]
+    colours = dict(zip(WRITER_LABELS, PALETTE))
+    fig, ax = plt.subplots(figsize=(7.5, 0.42 * len(sets) + 1.2))
+    y = np.arange(len(sets))[::-1]
+    offsets = np.linspace(-0.22, 0.22, len(writers)) if len(writers) > 1 else [0.0]
+    s = []
+    for off, w in zip(offsets, writers):
+        t = summary[summary["writer"] == w].set_index("test_set").reindex(sets)
+        ax.errorbar(t["fully_correct"], y + off, xerr=[(t["fully_correct"] - t["ci_low"]).clip(lower=0),
+                                                        (t["ci_high"] - t["fully_correct"]).clip(lower=0)],
+                    fmt="o", color=colours[w], ecolor=colours[w], elinewidth=1, capsize=2, markersize=4,
+                    label=WRITER_LABELS[w])
+        s += [stat("stats_writers", f"{n} {w}: fully correct", round(float(t.at[n, "fully_correct"]), 3),
+                   f"95% CI {t.at[n, 'ci_low']:.3f}-{t.at[n, 'ci_high']:.3f}; {int(t.at[n, 'prompts'])} prompts")
+              for n in sets if not np.isnan(t.at[n, "fully_correct"])]
+    ax.set_yticks(y, sets, fontsize=7)
+    ax.set(xlabel="Fully correct (95% bootstrap interval over the set's prompts)", xlim=(0, 1))
+    ax.grid(axis="x", color=GRID)
+    ax.legend(fontsize=7, loc="lower left")
+    ax.set_title("Explanation writers on every test set", fontsize=9)
+    return fig, s
+
+
 def available() -> dict[str, Callable[[], tuple[Figure, Stats]]]:
     """Every figure whose inputs exist, by file name (without .pdf), in report order."""
     figs: dict[str, Callable[[], tuple[Figure, Stats]]] = {}
@@ -984,6 +1014,8 @@ def available() -> dict[str, Callable[[], tuple[Figure, Stats]]]:
         figs["stats_methods"] = lambda: fig_stats_methods(table("stats_methods_seeds"), table("stats_methods_summary"))
     if (TABLES_DIR / "stats_classifiers_summary.csv").exists():
         figs["stats_classifiers"] = lambda: fig_stats_classifiers(table("stats_classifiers_summary"))
+    if (TABLES_DIR / "stats_writers_summary.csv").exists():
+        figs["stats_writers"] = lambda: fig_stats_writers(table("stats_writers_summary"))
     return figs
 
 

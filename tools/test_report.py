@@ -156,7 +156,7 @@ def statistics() -> str:
              "Distributions rather than single runs (requested 27 Oct). The scoring methods' planted patterns were "
              "replanted with many seeds (\\texttt{explorer/distribution.py}); the classifiers were refitted with ten seeds "
              "and their test scores bootstrapped 1,000 times (\\texttt{explorer/classify\\_distribution.py}). "
-             "The language models' part follows round 2."]
+             "The language models were scored on 12 test sets with intervals and paired tests (\texttt{lm/eval\_stats.py})."]
     methods = TABLES / "stats_methods_summary.csv"
     if methods.exists():
         s = pd.read_csv(methods)
@@ -181,6 +181,29 @@ def statistics() -> str:
         parts.append(r"\bottomrule\end{longtable}")
         if (ROOT / "reports/figures/stats_classifiers.pdf").exists():
             parts.append(r"\begin{center}\includegraphics[width=\textwidth]{../figures/stats_classifiers.pdf}\end{center}")
+    writers = TABLES / "stats_writers_summary.csv"
+    if writers.exists():
+        w = pd.read_csv(writers)
+        pairs = pd.read_csv(TABLES / "stats_writers_paired.csv")
+        parts.append(r"\subsection*{Explanation writers: fully correct with 95\% bootstrap intervals, and paired tests}")
+        parts.append(r"\begin{tabular}{llrr}\toprule Test set & Writer & Rate & 95\% CI\\\midrule")
+        for r in w[w["test_set"].str.startswith(("pooled", "glossary"))].itertuples():
+            parts.append(rf"{tex(r.test_set)} & {tex(WRITERS.get(r.writer, r.writer))} & {pct(r.fully_correct)} & "
+                         rf"{pct(r.ci_low)}--{pct(r.ci_high)}\\")
+        parts.append(r"\bottomrule\end{tabular}")
+        q = pairs[(pairs["writer_a"] == "qwen3b") & (pairs["writer_b"] == "qwen3b_v2")]
+        if len(q):
+            parts.append(r"\par\smallskip\noindent Qwen round 1 minus round 2 on identical prompts (negative: round 2 better); "
+                         r"McNemar's exact test counts the prompts only one of them got right.\par\smallskip")
+            parts.append(r"\begin{longtable}{lrrrrr}\toprule Test set & Difference & 95\% CI & Only r1 right & "
+                         r"Only r2 right & McNemar $p$\\\midrule\endhead")
+            for r in q.itertuples():
+                counts = "--" if pd.isna(r.only_a_right) else f"{int(r.only_a_right)} & {int(r.only_b_right)} & " + (r"$<$0.0001" if r.mcnemar_p < 1e-4 else f"{r.mcnemar_p:.4f}")
+                counts = counts if counts != "--" else "-- & -- & --"
+                parts.append(rf"{tex(r.test_set)} & {100 * r.diff:+.1f} & {100 * r.ci_low:+.1f} to {100 * r.ci_high:+.1f} & {counts}\\")
+            parts.append(r"\bottomrule\end{longtable}")
+        if (ROOT / "reports/figures/stats_writers.pdf").exists():
+            parts.append(r"\begin{center}\includegraphics[width=0.9\textwidth]{../figures/stats_writers.pdf}\end{center}")
     return "\n".join(parts)
 
 
