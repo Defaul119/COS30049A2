@@ -39,11 +39,14 @@ ROUND 2 STATUS (26 Oct evening; plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct ha
   GPU_HOURS to this week's remainder + next week's 30 h - ~6 h for the stages (~32 h), not 50.
   RANDOMIZED TEST SET (user, 26 Oct 21:20 and 21:45): data/processed/random_test/{real,synthetic,hard}.jsonl
   (500 each, committed, frozen; explorer/random_test.py, settings randomTest seeds 50000 / hardSeed 50001;
-  template control 1.0 on all). STRICTER SCORING (21:45): verdict_ok is now a guardrail check; reasons_ok and
-  fully_correct are evaluation measures. Round 1 fully correct: DS7 152M 95.1% / Qwen 95.5%, DS10 94.2% / 95.9%
-  (misses: the wrong two "largest differences" when nothing stands out). When Qwen v2 ends, push
-  tritran72/cos30049a2-assistant-random-eval (T4 x2, ~70 min: qwen3b_v2, qwen3b, text150m v1 on all three; tags
-  random_real / random_synthetic / random_hard); text150m_v2 is scored by the stages notebook. NOTE: Qwen v2's own
+  template control 1.0 on all). STRICTER SCORING (21:45, 22:00): verdict_ok is a guardrail check; reasons_ok,
+  order_ok, binding_ok -> fully_correct; plus fully_correct_macro / _nothing_stands_out / _unique and
+  assistant_eval_by_case*.csv. Round 1 fully correct (CHANGELOG has the table): DS7 152M 83.8% / Qwen 91.2%, DS10
+  81.4% / 92.4%; "nothing stands out" ~80% for both. balanced.jsonl (22:00, build-balanced-test, seed 50002): 883
+  real prompts, up to 100 per case, from DS10 + DS2's 173 test-split addresses (pool 46,513; 65% "nothing stands
+  out"). Cleaning done in pandas, not KNIME (user suggested KNIME; reasons in CHANGELOG). When Qwen v2 ends, push
+  tritran72/cos30049a2-assistant-random-eval (T4 x2, ~2 h: qwen3b_v2, qwen3b, text150m v1 on real, hard,
+  synthetic, balanced; --n 100000); text150m_v2 is scored by the stages notebook. NOTE: Qwen v2's own
   notebook (pinned 16bb75e) scores with the older measures; re-score its answers locally with
   `lm.eval_explain --rescore` (CPU, no model) after bringing them home. Never pipe pytest into tail before a
   commit: it hid a failure on 26 Oct (fixed in 654fc41).
