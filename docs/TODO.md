@@ -22,31 +22,38 @@ project up to this point"; full decision rights overnight). Due Sun 8 Nov 23:59;
 
 ## Overnight 26-27 Oct [Claude]
 
-- [ ] Start 152M continued pretraining on honglquanganh when its tokens are ready (~01:00).
-- [ ] 3-4 more randomized test sets from the crawled data (user's request): more balanced draws, close calls,
+- [x] Start 152M continued pretraining on honglquanganh (session 1 running since 27 Oct 01:10, T4 x2).
+- [x] 3-4 more randomized test sets from the crawled data (user's request): more balanced draws, close calls,
       out-of-range values, maximal-shift prompts. Template control on each.
-- [ ] When Qwen v2 ends (~05:00-07:00): bring home, re-score with the strict measures, push the random-test
+- [x] When Qwen v2 ends (~05:00-07:00): bring home, re-score with the strict measures, push the random-test
       evaluation (all writers, every set).
-- [ ] PDF test report: every test set (how built, from which crawled data, composition, build log) and every
+- [x] PDF test report: every test set (how built, from which crawled data, composition, build log) and every
       writer's results; reports/assistant_tests.pdf.
 - [ ] Keep context.txt, CHANGELOG, AI_USE_LOG and the tracker current; commit and push each step.
 
 ## Round 2, language models (dates GMT+7)
 
-- [ ] Qwen v2: training and its own evaluation (running since 26 Oct 19:05, tritran72). [Kaggle]
+- [x] Qwen v2: trained, evaluated and adopted (27 Oct; CHANGELOG). [Kaggle]
 - [ ] 152M continued pretraining until Sun 1 Nov 23:59 (honglquanganh, ~50 GPU h); resume each session with
       RESUME_FROM. [Claude pushes; Kaggle]
 - [ ] honglquanganh: stage data (needs its qwen-data output) then chat + explanation stages Mon 2 Nov. [Claude]
-- [ ] Glossary test for both round-1 writers (in the Qwen v2 and stages notebooks).
+- [x] Glossary test for both round-1 writers (in the Qwen v2 and stages notebooks).
 - [ ] Tue 3 Nov: adoption rule (KAGGLE_LM_PLAN.md section 3); tables into reports/tables; models into models/;
       tag results-v1.1 if any number changed. [Claude]
 - [ ] Optional: Modal account (user) for extra 152M tokens; more teammate Kaggle accounts. [Cao, team]
 
+## Statistics campaign (user, 27 Oct)
+
+- [x] A: every scoring method over 100/100/20 plant seeds; B: classifiers over 10 seeds + test bootstrap;
+      C: every writer on 12 test sets with bootstrap CIs and McNemar tests (stats_*.csv, PDF section).
+- [ ] Rerun `python -m lm.eval_stats` after the 152M v2 evaluation (Tue 3 Nov). [Claude]
+- [ ] C+: the 152M explanation stage retrained with 5 seeds (seed spread of a language model). [Kaggle]
+
 ## Fixes and decisions still open
 
 - [ ] features.csv written with 12 significant digits (Mac/PC identical) -> rerun, results-v1.1. [Cao decides]
-- [ ] README fixes from the Mac replication: Miniforge / ToS note, pytest.ini (testpaths = tests), timings,
-      LF line endings for processed CSVs, logs churn, eda_tests.csv without DS4. [Claude]
+- [x] README fixes from the Mac replication: Miniforge / ToS note, pytest.ini (testpaths = tests), timings,
+      LF line endings for processed CSVs, logs churn, eda_tests.csv without DS4 (27 Oct). [Claude]
 - [ ] TxGPT S seed 3 validation loss check before freezing.
 - [ ] Packaging: DS4 final model too big (263 MB) -> smaller final model; models/assistant + models/qwen3b_adapter
       as GitHub release assets (user's OK needed); fp16 export of the 152M model.

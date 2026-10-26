@@ -48,6 +48,13 @@ means reproduce the reported numbers; for example, the Elliptic random forest ha
 +0.042, CI 0.031-0.053). On BitcoinHeist the temporal split stays near chance for every model (best F1 0.070) and the
 random split reaches 0.246. Seed spread is small everywhere (SD 0.013 at most), so the model ranking is not luck.
 
+**README brought up to date (Mac replication findings 1-7, round 2).** Miniforge or the Miniconda terms-of-service
+step; `pytest.ini` (testpaths = tests) so a full `_context/` cannot break collection (still 210 passed, 3 skipped);
+test time about two minutes; ds10-check about 40 min on a laptop; which `git status` changes after a rebuild are
+harmless (logs, eda_tests.csv without DS4, line endings: `git diff --ignore-cr-at-eol`, checked on a DS10 file);
+the Qwen round 2 adapter and config, the writer order, the statistics steps, the random test sets and the test
+report PDF. The features.csv rounding fix is still the user's decision.
+
 **Statistics campaign C: the explanation writers with intervals and paired tests** (`python -m lm.eval_stats`, no
 model runs; settings `writerStats`, seed 72000, 2,000 draws; `stats_writers_{summary,paired}.csv`, figure
 `stats_writers.pdf`). Every writer answered the same prompts on 12 test sets (DS7 v1 test, DS10 and the ten

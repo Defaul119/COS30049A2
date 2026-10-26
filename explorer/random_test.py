@@ -359,7 +359,8 @@ def run_build_random_test(ds7_v2_test: Path = DS7_V2_TEST, out_dir: Path = OUT_D
     p = SETTINGS["randomTest"]
     rng = random.Random(p["seed"])
     if not ds7_v2_test.exists():
-        raise SystemExit(f"{ds7_v2_test} is missing: it is built on Kaggle (kaggle/qwen_data); copy it from that output")
+        raise SystemExit(f"{ds7_v2_test} is missing: build it with python -m explorer.cli build-ds7 --settings ds7v2 "
+                         "--out data/processed/ds7_v2 (or copy it from the kaggle/qwen_data notebook's output)")
     frozen = frozen_prompts(PROJECT_ROOT / SETTINGS["ds7v2"]["frozenTest"])
     with open(ds7_v2_test, encoding="utf-8") as fh:
         pool = [json.loads(line) for line in fh if line.strip()]

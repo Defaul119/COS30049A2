@@ -15,17 +15,22 @@ lm/                    the language models: TxGPT, the 152M text model, Qwen 3B 
 configs/               language-model training settings
 data/processed/        the processed datasets (DS1, DS2, DS7, DS10 and records for DS3/DS4)
 models/                the trained models the Explorer uses
-reports/               figures (PDF), tables (CSV, the source of every number in the report) and logs
+reports/               figures (PDF), tables (CSV, the source of every number in the report), logs, and
+                       assistant_tests.pdf (every Assistant test set and result)
 tests/                 unit tests (pytest)
-kaggle/                the notebook that fine-tuned Qwen 3B on Kaggle
+kaggle/                the notebooks that trained and tested the language models on Kaggle
+tools/                 helpers: job status, the Kaggle notebook generator, the test-report PDF
 docs/                  the delivery plan, the brief, the report plan, the AI use log, LM_TRAINING.md
 CHANGELOG.md           every decision and measured result, newest first
 ```
 
 ## 1. What you need
 
-- Windows 10/11, macOS (Apple Silicon: M1 or later) or Linux, with
-  [Miniconda](https://docs.anaconda.com/miniconda/) and git.
+- Windows 10/11, macOS (Apple Silicon: M1 or later) or Linux, with git and conda:
+  [Miniforge](https://github.com/conda-forge/miniforge) (what we use) or
+  [Miniconda](https://docs.anaconda.com/miniconda/). A fresh Miniconda refuses `conda env create` until you accept
+  Anaconda's terms of service: run the `conda tos accept ...` commands its error message prints, then retry.
+  Miniforge needs no such step.
 - About 5 GB of free disk and 8 GB of RAM. No GPU: an NVIDIA GPU is only needed to *retrain* the language
   models (section 7).
 - Intel Macs: PyTorch stopped publishing Intel-Mac builds after version 2.2, so `torch==2.7.1` in
@@ -41,7 +46,8 @@ conda activate cos30049-a2
 python -m pytest -q
 ```
 
-Expected: `185 passed, 2 skipped` in under a minute. (The two skipped tests need the GPU environment.)
+Expected: `210 passed, 3 skipped` in about two minutes (the first run takes longer while the new libraries
+load). The three skipped tests need the GPU environment.
 Run every later command from the repository folder with `cos30049-a2` active. On Windows, run
 `set PYTHONUTF8=1` first in each new terminal (Command Prompt) so the logs print correctly; macOS and Linux
 need nothing.
@@ -120,7 +126,7 @@ i5-12600K, 16 threads); a laptop takes longer.
 | `sensitivity` | DS1 | recall against plant strength | 4 min |
 | `walk-forward` | DS1 | every method at four fit/evaluation cut-offs | 5 min |
 | `ds2-check` | `data/processed/corpus/ds2.parquet` | the frozen methods on 2,933 DS2 histories | 5 min |
-| `ds10-check` | `data/processed/ds10/transactions.csv` | every model, TxGPT included, on DS10 | 6 min (25-35 min on a CPU) |
+| `ds10-check` | `data/processed/ds10/transactions.csv` | every model, TxGPT included, on DS10 | 6 min (about 40 min on a laptop) |
 | `label-check` | DS3/DS4 if downloaded | unsupervised scores against the labels | skipped without them |
 | `figures` | `reports/tables/` | every figure in `reports/figures/` | 15 s |
 
@@ -130,8 +136,26 @@ On a fresh copy three things are skipped, and the log says so:
   `models/txgpt_method.joblib`, which carries every score it needs, is used as it is.
 - DS3 (Elliptic) and DS4 (BitcoinHeist) processing and classification need their downloads (section 5).
 
+`git status` after a rebuild also lists files that changed for harmless reasons:
+- `reports/logs/*.log` change on every run (they record times).
+- Without the DS4 download, `reports/tables/eda_tests.csv` loses its six DS4 rows.
+- On macOS and Linux, rebuilt files in `data/processed/` can show as modified because the committed copies have
+  Windows line endings; compare them with `git diff --ignore-cr-at-eol --stat data/processed`.
+
 Any single step can be run alone: `python -m explorer.cli <step>` (for example `evaluate`).
 `python -m explorer.cli --help` lists them all.
+
+**Statistics and extra test sets (not part of `all`).** These steps repeat the evaluation many times to give
+spreads and intervals instead of single numbers; each writes `reports/tables/stats_*.csv`, and `figures` draws
+them.
+
+| Command | What it does | Time |
+|---|---|---|
+| `python -m explorer.cli distribution` | every scoring method's planted-pattern recall over 100 plant seeds (DS1, DS10) and 20 (DS2) | about 2 h on 4 CPU cores |
+| `python -m explorer.cli class-distribution` | the DS3/DS4 classifiers over 10 training seeds, with a 1,000-draw test bootstrap (needs section 5) | about 1 h on 4 CPU cores |
+| `python -m explorer.cli build-random-test`, `build-balanced-test`, `build-more-tests` | the ten randomized Assistant test sets in `data/processed/random_test/` (committed). `build-random-test` first needs DS7 v2's test split: `python -m explorer.cli build-ds7 --settings ds7v2 --out data/processed/ds7_v2` | seconds each |
+| `python -m lm.eval_stats` | the Assistants' fully correct rates on all 12 test sets, with bootstrap intervals and McNemar tests | 10 s |
+| `python tools/test_report.py` | `reports/assistant_tests.pdf`: every test set, how it was drawn, and every writer's results (needs pdflatex) | 1 min |
 
 ## 5. Getting the data again (optional, needs internet)
 
@@ -166,11 +190,14 @@ conda activate cos30049-a2-gpu
 |---|---|---|
 | TxGPT (3 sizes x 3 seeds) | `python -m lm.prepare_tx`, then `python -m lm.train --config configs/txgpt_s.json --seed 1` (and `_m`, `_l`, seeds 1-3), `python -m lm.tx_select`, `python -m lm.tx_score --plants`, `python -m explorer.cli txgpt` | 6-30 min per run |
 | 152M text model | `docs/LM_TRAINING.md`: pretraining (2B tokens), chat stage, explanation stage (`configs/text_150m_explain.json`) | about 3 days in all |
-| Qwen 2.5 3B (QLoRA) | `kaggle/qwen3b_explain.ipynb` on a Kaggle T4, or locally `python -m lm.qlora --config configs/qwen3b_explain.json` | about 8 h on a Kaggle T4 |
-| Explanation evaluation | `python -m lm.eval_explain --model template`, `--model text150m --checkpoint models/assistant/model.pt`, `--model qwen3b --config configs/qwen3b_explain.json --adapter models/qwen3b_adapter` | 5 min (152M), 1.5 h (Qwen on a T4) |
+| Qwen 2.5 3B (QLoRA), round 2 (used) | `kaggle/qwen3b_explain_v2/` on Kaggle (GPU T4 x2; trains on both GPUs), or locally `python -m lm.qlora --config configs/qwen3b_explain_v2.json` | about 8 h on two Kaggle T4s |
+| Qwen 2.5 3B, round 1 | `kaggle/qwen3b_explain.ipynb` on one Kaggle T4, or `python -m lm.qlora --config configs/qwen3b_explain.json` | about 8 h on a Kaggle T4 |
+| Explanation evaluation | `python -m lm.eval_explain --model template`, `--model text150m --checkpoint models/assistant/model.pt`, `--model qwen3b --config configs/qwen3b_explain_v2.json --adapter models/qwen3b_adapter_v2` | 5 min (152M), 1.5 h (Qwen on a T4) |
 
 `tools/run_queue.py --plan configs/queue_after_pretraining.json` runs the whole GPU sequence unattended and
-resumes after an interruption.
+resumes after an interruption. `python tools/kaggle_notebooks.py <commit>` regenerates the Kaggle notebooks,
+pinned to that commit of this repository; `docs/KAGGLE_LM_PLAN.md` describes round 2 and the rule that decides
+whether a retrained model replaces the one in use.
 
 ## 8. Prediction
 
@@ -196,9 +223,11 @@ text = p.explain(guess, use_assistant=False)
 
 **The Assistant (`--assistant`).** Explanations are written by the first writer in
 `settings.json -> assistant -> writerOrder` that passes the code guardrail (every number from the facts, the
-limitation line, no banned word), else by the template. The writers' files are over GitHub's 100 MB limit and
-are not in the repository: `models/assistant/` (the 152M model, runs in the CPU environment) and
-`models/qwen3b_adapter/` (Qwen 3B, needs the GPU environment). With neither present, the template writes.
+limitation line, no banned word, the right comparison words and verdict), else by the template. Qwen 3B goes
+first, then the 152M model. The writers' files are over GitHub's 100 MB limit and are not in the repository:
+`models/qwen3b_adapter_v2/` (Qwen 3B round 2, needs the GPU environment; round 1's `models/qwen3b_adapter/` is
+kept for comparison) and `models/assistant/` (the 152M model, runs in the CPU environment). With neither present,
+the template writes.
 
 ## 9. Data
 
@@ -210,8 +239,9 @@ are not in the repository: `models/assistant/` (the 152M model, runs in the CPU 
 | DS4 | BitcoinHeist | UCI repository 526, CC BY 4.0 | Classification |
 | DS5 | FineWeb-Edu | Hugging Face, ODC-By 1.0 | 152M pretraining |
 | DS6 | smol-smoltalk | Hugging Face, Apache 2.0 | Chat fine-tuning |
-| DS7 | Our explanation pairs from DS1 and DS2 | Built by `explorer/ds7.py` | Teaching and testing the Assistant |
+| DS7 | Our explanation pairs from DS1 and DS2 (v1; v2 adds DS2 coverage and a glossary) | Built by `explorer/ds7.py` | Teaching and testing the Assistant |
 | DS10 | A teammate's independent 27-address snapshot | Esplora API; refetched and cross-checked | Held-out test of every model |
+| Random tests | Ten randomized Assistant test sets (real, crawled, made-up, balanced, close calls, extremes) | Built by `explorer/random_test.py` from DS1, DS2 and DS10 | Testing the Assistant on prompts it never saw |
 
 Each processed folder carries a `manifest.json` (source, date, selection rule, checks, SHA-256). DS2 stores
 addresses only as salted hashes; the salt never leaves the build machine. Base model for the Assistant:
@@ -226,6 +256,9 @@ Qwen2.5-3B-Instruct (Qwen Research License; built with Qwen).
 | `No matching distribution found for torch==2.7.1` | An Intel Mac (section 1) or a Python other than 3.11. |
 | Out of memory during `fusion`, `ds2-check` or `classify` | Lower `classification -> nJobs` in `config/settings.json` (for example to 2). |
 | `UnicodeEncodeError` on Windows | `set PYTHONUTF8=1` in that terminal. |
+| `CondaToSNonInteractiveError` (terms of service) | A fresh Miniconda: run the `conda tos accept` commands the message prints, or use Miniforge (section 1). |
+| pytest reports collection errors under `_context/` | Run it from the repository folder so `pytest.ini` applies (it limits pytest to `tests/`). |
+| macOS logs fill with `divide by zero encountered in matmul` | A harmless numpy warning on Apple Silicon; the results are unaffected. |
 | `external --elliptic` asks for a token | Save a Kaggle API token as `~/.kaggle/kaggle.json`, or download the zip by hand as the message says. |
 | `predict heist` or `predict elliptic` cannot find a model | Run section 5's commands for that dataset first. |
 | A step says `Stopping: <step> failed` | Read `reports/logs/<step>.log`, fix the cause, and run that step alone, then `all` again. |
