@@ -54,7 +54,8 @@ project up to this point"; full decision rights overnight). Due Sun 8 Nov 23:59;
 - [ ] features.csv written with 12 significant digits (Mac/PC identical) -> rerun, results-v1.1. [Cao decides]
 - [x] README fixes from the Mac replication: Miniforge / ToS note, pytest.ini (testpaths = tests), timings,
       LF line endings for processed CSVs, logs churn, eda_tests.csv without DS4 (27 Oct). [Claude]
-- [ ] TxGPT S seed 3 validation loss check before freezing.
+- [x] TxGPT S seed 3 validation loss check: a seed-dependent validation half; full-set re-score keeps S seed 3
+      (27 Oct).
 - [ ] Packaging: DS4 final model too big (263 MB) -> smaller final model; models/assistant + models/qwen3b_adapter
       as GitHub release assets (user's OK needed); fp16 export of the 152M model.
 - [x] DATA_CARD.md, MODEL_CARD.md (generated tables: `python tools/cards.py`), LICENSES.md, NOTICE, Qwen

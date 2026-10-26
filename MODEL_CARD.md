@@ -152,9 +152,9 @@ sizes with three seeds each; S was kept because the sizes tie. Files: `models/tx
 <!-- generated:txgpt -->
 | Size | Parameters | Mean validation loss (sd), 3 seeds | Kept |
 |---|---|---|---|
-| S | 820,352 | 0.6752 (0.0123) | yes |
-| M | 4,779,264 | 0.6766 (0.0126) |  |
-| L | 14,211,456 | 0.6775 (0.0117) |  |
+| S | 820,352 | 0.6717 (0.0010) | yes |
+| M | 4,779,264 | 0.6731 (0.0008) |  |
+| L | 14,211,456 | 0.6742 (0.0008) |  |
 <!-- /generated:txgpt -->
 
 **Limitations.** Surprisal is high for anything rare in DS2, including activity that is merely new to an address.

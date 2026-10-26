@@ -33,7 +33,9 @@ class FigureTests(unittest.TestCase):
 
         runs = pd.DataFrame({"size": ["s"] * 3 + ["m"] * 3 + ["l"] * 3, "seed": [1, 2, 3] * 3,
                              "parameters": [1e6] * 3 + [4e6] * 3 + [1.6e7] * 3,
-                             "best_val_loss": [2.1, 2.2, 2.15, 1.9, 1.95, 1.92, 1.97, 2.0, 1.99]})
+                             "best_val_loss": [2.1, 2.2, 2.15, 1.9, 1.95, 1.92, 1.97, 2.0, 1.99],
+                             "val_loss_all": [2.1, 2.2, 2.15, 1.9, 1.95, 1.92, 1.97, 2.0, 1.99],
+                             "test_loss_all": [2.0, 2.1, 2.05, 1.8, 1.85, 1.82, 1.87, 1.9, 1.89]})
         plots.style()
         fig, stats = plots.fig_txgpt_sizes(runs, size_table(runs))
         self.assertEqual(stats[-1]["value"], "m")

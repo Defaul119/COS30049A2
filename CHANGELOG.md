@@ -48,6 +48,14 @@ means reproduce the reported numbers; for example, the Elliptic random forest ha
 +0.042, CI 0.031-0.053). On BitcoinHeist the temporal split stays near chance for every model (best F1 0.070) and the
 random split reaches 0.246. Seed spread is small everywhere (SD 0.013 at most), so the model ranking is not luck.
 
+**TxGPT runs re-scored on the full validation set (the open "seed 3" check).** During training, lm.train scored
+the first 320 of 643 validation windows of a stream shuffled with the run's seed, so each seed saw a different half
+and seed 3 looked 0.02 better at every size (0.661 vs 0.682). `lm.tx_select` now scores every run on all validation
+and test windows (CPU, about 9 min) and selects on those: mean loss S 0.6717, M 0.6731, L 0.6742 (seed SD now
+0.001, was 0.012). The choice is unchanged (S, seed 3; `models/txgpt.pt` byte-identical), so no downstream result
+moves; `txgpt_runs.csv`, `txgpt_sizes.csv`, the size figure and the model card show the full-set losses, with the
+training-time ones kept as `best_val_loss`.
+
 **Submission zip** (`python tools/package.py --tag v1.0`, plan Appendix D). Built from `git archive` of the tag, so
 nothing uncommitted can leak in; leaves out CLAUDE.md, context.txt, docs/HANDOFF.md and the unit's brief (for the
 team to confirm); writes SHA256SUMS.txt into the zip and beside it, then re-reads the zip against it.

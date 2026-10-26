@@ -555,10 +555,11 @@ def fig_heist_lofo(lofo: pd.DataFrame, results: pd.DataFrame) -> tuple[Figure, S
 
 
 def fig_txgpt_sizes(runs: pd.DataFrame, sizes: pd.DataFrame) -> tuple[Figure, Stats]:
-    """TxGPT's size sweep (plan §9.1): best validation loss against parameters, 3 seeds per size."""
+    """TxGPT's size sweep (plan §9.1): each run's loss on the full validation set against parameters, 3 seeds per
+    size (lm.tx_select scores every run on the same windows; the training-time losses used a seed-dependent half)."""
     fig, ax = plt.subplots(figsize=(6, 3.6))
     # Seeds drawn just left of their size (log axis), so the error bar does not hide them.
-    ax.scatter(runs["parameters"] * 0.88, runs["best_val_loss"], s=24, color=PALETTE[0], alpha=0.7, edgecolors="none",
+    ax.scatter(runs["parameters"] * 0.88, runs["val_loss_all"], s=24, color=PALETTE[0], alpha=0.7, edgecolors="none",
                label="one run (seed)", zorder=3)
     ax.errorbar(sizes["parameters"], sizes["mean_val_loss"], yerr=sizes["std_val_loss"].fillna(0), color=INK,
                 linewidth=1.5, marker="o", markersize=5, capsize=3, label="mean and SD over seeds", zorder=4)
@@ -570,9 +571,9 @@ def fig_txgpt_sizes(runs: pd.DataFrame, sizes: pd.DataFrame) -> tuple[Figure, St
                     fontsize=8, color=INK)
     ax.set_xscale("log")
     ax.set(title="TxGPT: validation loss by model size", xlabel="Parameters (log scale)",
-           ylabel="Best validation loss (nats per token)")
+           ylabel="Validation loss, every window (nats per token)")
     ax.legend(fontsize=7, loc="best")
-    s = [stat("txgpt_sizes", f"size {r.size}: mean best validation loss", round(float(r.mean_val_loss), 4),
+    s = [stat("txgpt_sizes", f"size {r.size}: mean full validation loss", round(float(r.mean_val_loss), 4),
               f"{int(r.parameters):,} parameters; SD {r.std_val_loss:.4f} over {int(r.runs)} seeds") for r in sizes.itertuples()]
     s.append(stat("txgpt_sizes", "chosen size", chosen["size"], "lowest mean validation loss (plan §9.1)"))
     return fig, s
