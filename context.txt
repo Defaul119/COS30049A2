@@ -48,7 +48,13 @@ NOW (27 Oct ~10:30)
   CLI and both tokens are only on the PC; Claude can push from the Mac only if the user installs the CLI here and
   copies the two token files.
 
-- 152M SCHEDULE (user, 27 Oct 08:20, unhappy that it runs to 1 Nov; NO OPTION CHOSEN YET). GPU_HOURS 50 at ~13.5k
+- 152M SCHEDULE: OPTION 2 CHOSEN (user, 27 Oct ~11:30, on the PC): keep GPU_HOURS 50 (~4.2B tokens in all) and
+  alternate accounts: session 2 on honglquanganh (prepared: kernel_sources += its own output, RESUME_FROM =
+  /kaggle/input/cos30049a2-text150m-train/runs/text-150m-cont, TOTAL_TOKENS None = session 1's gate); when
+  honglquanganh's weekly quota (~30 h, reset Sat 31 Oct ~07:00) cannot fit another 11.75 h session, move
+  ckpt_last.pt (+ gate.json, log) as a private dataset to tritran72 (which has text150m-data and -base already)
+  and resume there. Target: pretraining done ~Fri 30 Oct. History of the choice: (user, 27 Oct 08:20, unhappy
+  that it runs to 1 Nov). GPU_HOURS 50 at ~13.5k
   tok/s (plan estimate; session 1's gate.json has the measured rate) -> gate total = rate x 50 h x 3600 x 0.9
   ~ 2.2B more tokens ~ 45 h of training = 5 sessions of 11 h, strictly one after another (each resumes the last).
   Compute alone would end ~Thu 29 Oct; the 1 Nov date comes from the weekly quota (~30 h per account, reset Sat
@@ -106,7 +112,7 @@ NEXT, IN ORDER
 
 WAITING ON THE USER / TEAM
 - The tutor's answers to NEXT 1.
-- 152M: option 1, 2 or 3.
+- 152M: option 2 chosen 27 Oct ~11:30 (done).
 - features.csv written with float_format="%.12g" (MAC REPLICATION; needs a rerun + results-v1.1). Release-asset OK.
 - Team: Canvas upload limit; the zip exclusions (tools/package.py EXCLUDE = CLAUDE.md, context.txt,
   docs/HANDOFF.md, docs/brief/); a licence for our own code (LICENSES.md says ask the group).
