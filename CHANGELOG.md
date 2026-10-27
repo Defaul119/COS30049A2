@@ -3,6 +3,26 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 27 October 2026 (afternoon)
+
+**152M continued pretraining, session 1 done** (`honglquanganh/cos30049a2-text150m-train` v1, T4 x2, commit
+`028ec4c`, 11.46 h).
+- *fp16 check:* round 1's weights give validation loss 3.1304 in fp16 (bf16 on the 3060: 3.1305; tolerance 0.01). Pass.
+- *Bench:* micro-batch 8, 11,382 tok/s per GPU (22,765 on both). Measured in training: ~18,550 tok/s (the bench
+  overstates by ~19%: evaluations and checkpoints are not in it).
+- *Gate:* GPU_HOURS 50 at the bench rate allows ~3.7B tokens, so the gate took all **3.0B prepared tokens**
+  (`total_tokens` 3,000,762,368; ~5.0B in all with round 1). This is the 3.0B option left open on 27 Oct; it
+  needs no decision now. Left after session 1: ~2.25B tokens = ~34 h at the measured rate = 3 more sessions. The
+  decay (last 15%) starts at 2.55B, in session 4.
+- *Trained:* 2,881 steps x 262,144 = 0.755B tokens. Validation loss (same 160 windows): 3.1304 -> 3.1913 (step 800,
+  after the warm-up back to the peak learning rate) -> 3.1650 (step 2800), falling again. A rise after re-warming is
+  expected with a warm-up / stable / decay schedule; the decay brings the loss down. So TRAINING_PLAN B1's "falls
+  after every session" applies from session 2 on (it must fall from 3.1650), and against round 1's 3.1305 only
+  after the decay.
+- *Session 2* pushed 13:15 (v2, same account, resumes from v1's output). The notebook's `RESUME_FROM` now accepts
+  `"auto"`: it finds the input holding `text-150m-cont/ckpt_last.pt` wherever Kaggle mounts it (inputs moved to
+  `/kaggle/input/datasets/<user>/...`), which also covers the cross-account dataset of session 3.
+
 ## 27 October 2026 (late morning)
 
 **Qwen dropped: only models trained from scratch.** The tutor confirmed (the user, in class) the message below:

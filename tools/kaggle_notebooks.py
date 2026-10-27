@@ -222,7 +222,8 @@ GPU_HOURS = 50.0       # the gate: GPU hours this chain may use in all: this wee
 TOTAL_TOKENS = None    # None: session 1's gate decides; a number overrides gate.json (only before the decay starts)
 ROUND1_VAL_LOSS = 3.1305  # runs/text-150m/log.jsonl, last evaluation (bf16 on the RTX 3060, the same 160 windows)
 FP16_TOLERANCE = 0.01  # docs/KAGGLE_LM_PLAN.md section 5, the fp16 check
-RESUME_FROM = None     # e.g. "/kaggle/input/<this notebook>/runs/text-150m-cont" from the second session on
+RESUME_FROM = None     # from the second session on: "auto" (the one input holding text-150m-cont/ckpt_last.pt,
+                       # wherever Kaggle mounts it) or that folder's path
 PINS = ["tokenizers==0.21.1", "numpy==2.2.6"]  # environment.yml; torch is Kaggle's own (recorded)
 '''),
     ("code", SETUP + r'''
@@ -242,6 +243,8 @@ for rel, digest in data_manifest["files"].items():
     if not rel.endswith("train.bin"):  # 6 GB: its size is checked instead of its hash, which would take minutes
         assert sha256(DATA.parent / rel) == digest, f"{rel} differs from data_manifest.json"
 assert (DATA / "train.bin").stat().st_size == 2 * data_manifest["train_tokens"], "train.bin is incomplete"
+if RESUME_FROM == "auto":  # Kaggle's mount layout changed once (/kaggle/input/datasets/<user>/...); search instead
+    RESUME_FROM = str(find_input("text-150m-cont/ckpt_last.pt").parent)
 if RESUME_FROM and not (RUN / "ckpt_last.pt").exists():
     shutil.copytree(RESUME_FROM, RUN, dirs_exist_ok=True)
     print("resuming from", RESUME_FROM)
