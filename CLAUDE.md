@@ -1,12 +1,13 @@
 # COS30049 Assignment 2: Bitcoin Address Activity Explorer
 
-**Current state: read `context.txt` first.** It records what is running, what is done and what comes next,
-and is updated as the work moves (the hand-off below describes 20 October).
+**Current state: read `context.txt` first.** Part 1 is the live state (what is running, open decisions,
+next steps), Part 2 is reference (environments, Kaggle, models, results), Part 3 is the dated history.
+`docs/TODO.md` is the checklist and `CHANGELOG.md` has every change with its numbers.
 
-This file is loaded automatically by Claude Code. It carries the context built up on the Mac
-before the work moved to this Windows PC (20 October 2026). **For the first session on the PC,
-read `docs/HANDOFF.md` next.** The full plan is `docs/A2_delivery_plan.pdf`; its LaTeX sources in
-`docs/plan/sections/` are easier to search.
+This file is loaded automatically by Claude Code. It holds the project's fixed facts and rules; it was
+first written on the Mac on 20 October 2026, when the work moved to the Windows PC (`docs/HANDOFF.md`
+is that hand-off, now historical). Both machines now hold a clone. The full plan is
+`docs/A2_delivery_plan.pdf`; its LaTeX sources in `docs/plan/sections/` are easier to search.
 
 ## The project in one paragraph
 
@@ -21,8 +22,8 @@ data, the machine-learning models, the code zip and a 3,000-word report.** Assig
 ## People, dates and status
 
 - **The user** is Cao Tri Tran (student 106214726), the group's Data/ML Lead, and does most of
-  the A2 build on this PC with Claude's help. (Assumed from the Mac username; correct this
-  line if it is wrong.)
+  the A2 build on the PC and the Mac with Claude's help. (Assumed from the Mac username; correct
+  this line if it is wrong.)
 - **Team** (A1 roles): Cam Dan Bui (105967074), leader and report integrator; Le Quang Anh Hoang
   (106218605), project manager and back end; Minh Khang Nguyen (106216803), front end.
 - **Tutor's name:** Arthur Hoang (given by the user, 22 Oct 2026). It goes on the report cover.
@@ -32,9 +33,13 @@ data, the machine-learning models, the code zip and a 3,000-word report.** Assig
   A1 promised this by 26 Oct). M2 Thu 29 Oct (all models evaluated; results frozen). M3 Sat 31 Oct
   (code feature-complete). M4 Wed 4 Nov (a teammate rebuilds everything from the README; code
   freeze). M5 Sat 7 Nov (submitted).
-- **Status on 20 Oct:** the plan is done. Change request **CR-06** (the plan's decisions) and four
-  **tutor questions** are written (plan Appendix A), but not yet approved or answered. Work that
-  doesn't depend on the answers goes ahead.
+- **Status (27 Oct):** every model is built and evaluated, `results-v1` is tagged (25 Oct), and the
+  cards, licences and packaging script exist. Open: the language models' round 2 on Kaggle, the
+  Qwen question (decision 4), packaging and the report. Details in `context.txt`. CR-06 (plan
+  Appendix A) was amended 22 Oct, relaxed 24 Oct, and on 23 Oct the team delegated all open A2
+  decisions to Cao Tri Tran.
+- **The user's pace:** finish as fast as possible at the highest quality; ignore the plan's calendar
+  dates, keep its content and rules.
 - **Generative AI:** the brief bans it, but the tutor allowed it on condition that a separate AI
   declaration is submitted. Keep a running list of what Claude helped with, for that declaration.
 - **Contribution form:** anyone under 33% has their mark scaled down (share/33 × group mark). The
@@ -97,6 +102,13 @@ and evaluation with accuracy, precision, recall, F1 and similar metrics. The bri
    from-scratch models, runs after the 152M model and TxGPT (relaxed 24 Oct: the queue runs Qwen first), uses the same DS7 splits, measures
    (`lm/eval_explain.py`) and guardrail (`explorer/assistant.py`), and ships adapters only. Licence:
    Qwen Research License (non-commercial; ship its text and a NOTICE line; "Built with Qwen").
+   **Round 2 (user, 26 Oct; supersedes "no more GPU time"):** both language models get more training on
+   Kaggle (`docs/KAGGLE_LM_PLAN.md`); Qwen round 2 was adopted 27 Oct, the 152M model's continued
+   pretraining is running.
+   **Under review (27 Oct):** a message forwarded by the user (source not yet recorded) says Qwen, as a
+   ready-made answer-generating AI, won't be accepted in the model training work; only what the group
+   built and trained should be integrated. It contradicts the tutor's 24 Oct announcement. Nothing is
+   removed until the user decides; `context.txt` (Part 1) lists what dropping Qwen would change.
 5. **One repository, two environments**: `environment.yml` (CPU, for markers) and
    `environment-gpu.yml` (CUDA, only to retrain the language models).
 
@@ -126,40 +138,46 @@ and evaluation with accuracy, precision, recall, F1 and similar metrics. The bri
 
 ## Machine and environments
 
-- Windows; Intel i5-12600K (16 threads); **RTX 3060 12 GB**; 16 GB RAM. Needs ≥40 GB free disk.
-- Run from an **Anaconda Prompt** in the repository root. `set PYTHONUTF8=1` first.
-- `conda activate cos30049-a2-gpu` for anything that trains a language model;
-  `cos30049-a2` (CPU) to check what markers will see.
-- `torch.compile` is off. triton-windows (3.3.1 for torch 2.7.1) now makes it possible, but it is untested
-  here and switching mid-run is the user's decision (see context.txt, TRAINING SPEED). Use `pathlib` for every path.
-- Text pretraining takes about 60–80 h. It is **gated**: run `--bench` first, and if 2B tokens
-  would take over 72 h, set `total_tokens` = 60 h × measured tokens/s (floor 1B). Pause Windows
-  Update, turn off sleep, and keep the GPU free while it trains. Ctrl+C saves; the same command
-  resumes.
+- **Since 26 Oct no GPU work runs locally** (the user's rule): every GPU step runs on Kaggle (two
+  accounts; procedures in `context.txt`, Part 2, KAGGLE). Locally: code edits, pytest and git only.
+- **PC:** Windows; Intel i5-12600K (16 threads); RTX 3060 12 GB (no longer used); 16 GB RAM.
+  Repo `C:\Users\ADMIN\COS30049A2`; run from a Miniforge/Anaconda Prompt in the repository root,
+  `set "PYTHONUTF8=1"` first. The Kaggle CLI and tokens live only here.
+- **Mac:** Apple M5, 16 GB; clone `~/Desktop/COS30049/COS30049A2`; Miniconda is not on PATH
+  (`source ~/miniconda3/etc/profile.d/conda.sh && conda activate cos30049-a2`).
+- Environments: `cos30049-a2` (CPU) for everything markers will see; `cos30049-a2-gpu` (CUDA) only to
+  retrain the language models. Use `pathlib` for every path. `torch.compile` stays off (decided 23 Oct).
+- Round 1 of text pretraining (2.0B tokens) ran on the PC and finished 24 Oct. Every trainer resumes
+  from its own checkpoint: Ctrl+C (or Kaggle's time limit) saves, the same command resumes.
 
 ## Repository
 
-Now:
+The plan's layout (§12.2), as built (27 Oct):
 
 ```
-lm/              language models (existing, tested on CPU): model, tokenizer, data, train, chat, generate, hub, smoke
-configs/         text_150m_pretrain.json, text_150m_chat.json
-explorer/        copied from the A1 repo: esplora.py (polite API client), amounts.py, settings.py
-config/          settings.json: every threshold (from A1)
-tests/           test_lm.py (15), test_amounts.py (9)
-scripts/         d1_check.py (A1's one-address data check; the DS1 selection logic starts from it)
-reference/a1_prototype/   scoring.ts (F1–F4 + baseline to port), types.ts (JSON shapes predict.py must return), generate.ts, settings.ts, explain.ts
-docs/            A2_delivery_plan.pdf, plan/ (LaTeX sources), HANDOFF.md
+explorer/        one module per pipeline step (snapshot, corpus, external, transactions, features, split,
+                 inject, baseline, clustering, regression, outliers, fusion, classify, evaluate,
+                 significance, sensitivity, walkforward, ds2_check, ds10, distribution, reviewer,
+                 predict, explain, assistant, ds7, random_test, profiles, plots, ...); one CLI:
+                 python -m explorer.cli <step>
+lm/              language models: the 152M text model (model, tokenizer, data, train, chat, generate),
+                 TxGPT (tx_tokens, tx_score, tx_select), Qwen QLoRA (qlora), evaluation
+                 (eval_explain, eval_stats, writers), two-GPU training (dist)
+configs/         training configs (text_150m_*, txgpt_s/m/l, qwen3b_explain*, queue_after_pretraining)
+config/          settings.json: every threshold, window and seed
+kaggle/          the Kaggle notebooks (regenerated, pinned, by tools/kaggle_notebooks.py)
+tools/           status, supervise, run_queue, cards, package, test_report, make_glossary, kaggle_notebooks
+tests/           pytest suite (219 passed, 3 skipped on 27 Oct)
+data/ models/ reports/{figures,tables,logs}/   committed outputs (large files git-ignored)
+notebooks/       01_eda.ipynb (only calls the package)
+reference/       the A1 prototype's TypeScript (scoring and JSON shapes predict.py follows)
+docs/            plan (PDF + LaTeX), brief, A1 LaTeX, TODO, KAGGLE_LM_PLAN, REPORT_PLAN, AI_USE_LOG,
+                 LM_TRAINING (the old LM guide), HANDOFF (historical)
+README.md, DATA_CARD.md, MODEL_CARD.md, LICENSES.md, NOTICE, CHANGELOG.md, environment*.yml
 _context/        course material and notes (git-ignored; see below)
-README.md        currently the language-model guide; becomes the A2 README (plan §12.3)
 ```
 
-Target layout (plan §12.2): one module per pipeline step under `explorer/` (snapshot, corpus,
-external, transactions, features, split, inject, baseline, clustering, regression, outliers,
-classify, evaluate, reviewer, predict, explain, assistant, plots, tables, manifest), one CLI
-(`python -m explorer.cli <step>`), notebooks that only call the package, `reports/{figures,tables}`,
-`models/`, `DATA_CARD.md`, `MODEL_CARD.md`, `LICENSES.md`, `SHA256SUMS.txt`, `CHANGELOG.md`.
-Plan Appendix D lists every command in run order.
+Plan Appendix D lists every command in run order; README.md is the current guide.
 
 ## Where the plan covers each topic (`docs/plan/sections/`)
 
@@ -204,7 +222,10 @@ Plan Appendix D lists every command in run order.
   in the separate AI declaration instead.
 - The remote is https://github.com/Defaul119/COS30049A2 (public, by the user's choice). Never
   commit `_context/`, `config/salt.txt`, `kaggle.json` or large data.
-- `python -m pytest -q` must pass before every commit (it also runs the unittest-style tests).
+- `python -m pytest -q` must pass before every commit (it also runs the unittest-style tests). Check
+  its exit code; never pipe it into `tail` before a commit (that hid a failure on 26 Oct).
+- Push after each finished batch of work (the user asked, 23 Oct). Keep replies short and answer the
+  user's questions first.
 - Write code like `explorer/esplora.py` and `lm/train.py`: module docstrings that say what the
   module does and which requirement it serves (e.g. "DR-02"), docstrings with units, and comments
   that explain *why*. Type hints; no dead code.

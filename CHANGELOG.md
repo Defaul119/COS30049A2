@@ -3,6 +3,19 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 27 October 2026 (morning)
+
+**Qwen under review (no change yet).** The user forwarded a message (in Vietnamese; the sender is not yet recorded)
+saying Qwen, as a ready-made AI that generates answers, won't be accepted in the model training work, and that only
+the algorithms and models the group built and trained should be integrated. It contradicts the tutor's 24 Oct
+announcement that fine-tuning a public model is acceptable. Nothing is removed until the user decides; the full
+message, its translation and the list of changes if Qwen is dropped are in `context.txt` (Part 1).
+
+**Working notes reorganized.** `context.txt` is now live state / reference / history, with no detail dropped;
+`CLAUDE.md`'s status, decision 4, machine and repository sections describe 27 Oct instead of 20 Oct;
+`docs/HANDOFF.md` is marked historical; `docs/TODO.md` gains a "Decide now" section. README: expected test count
+219 passed, 3 skipped (the card and package tests came after the 215 count).
+
 ## 27 October 2026 (overnight; the user gave Claude full decision rights)
 
 **Qwen 3B round 2 adopted** (by the rule fixed in advance, KAGGLE_LM_PLAN.md section 3).

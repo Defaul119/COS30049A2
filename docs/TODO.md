@@ -4,6 +4,15 @@ Written 27 Oct 2026 00:45 GMT+7 by Claude at Cao Tri Tran's request ("make yours
 project up to this point"; full decision rights overnight). Due Sun 8 Nov 23:59; the plan submits Sat 7 Nov.
 `context.txt` holds the live state; this file is the checklist. Owner in brackets.
 
+## Decide now (27 Oct)
+
+- [ ] Qwen: a forwarded message says Qwen (a ready-made answer-generating AI) won't be accepted in the model
+      training work. Record who sent it; keep or drop. If dropped, context.txt Part 1 lists every change. [Cao]
+- [ ] 152M pretraining length: (1) stop at this week's quota (~1.3B more tokens, done ~Thu 29 Oct), (2) 50 h across
+      both accounts (~Fri 30 Oct), (3) as planned (Sun 1 Nov). If Qwen goes, the 152M model is the only language-model
+      writer, which favours (2). [Cao]
+- [x] README.md line 54: expected test count 215 -> 219 passed, 3 skipped (27 Oct). [Claude]
+
 ## Done
 
 - [x] DS1 snapshot (25 + 3 addresses), DS2 crawl (4,012 addresses), DS3 Elliptic, DS4 BitcoinHeist, DS5 FineWeb-Edu

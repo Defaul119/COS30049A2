@@ -1,5 +1,8 @@
 # Hand-off: Mac → Windows PC (20 October 2026)
 
+> **Historical** (marked 27 October). The steps below were the first PC session's. The current state is in `context.txt`;
+> the checklist is `docs/TODO.md`. Kept as a record of how the work started.
+
 Read `CLAUDE.md` first, then this file. This is what the first session on the PC should do.
 
 ## What happened before this hand-off

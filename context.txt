@@ -1,447 +1,455 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-27 ~06:15 GMT+7, on the PC)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-27 ~08:45 GMT+7, on the Mac)
+Layout: PART 1 is the live state (read all of it). PART 2 is reference (look things up). PART 3 is the dated
+history of finished work (kept for the report, the AI declaration and the CHANGELOG cross-check).
+Other files: CHANGELOG.md (every change with its numbers), docs/TODO.md (checklist), docs/KAGGLE_LM_PLAN.md (LM round
+2), docs/REPORT_PLAN.md (report outline), docs/AI_USE_LOG.md (AI declaration source), docs/HANDOFF.md (20 Oct
+Mac -> PC hand-off; historical).
 Work from C:\Users\ADMIN\COS30049A2 (PC) or ~/Desktop/COS30049/COS30049A2 (Mac clone); git pull first on either.
-Nothing runs locally: every GPU step runs on Kaggle (user, 26 Oct: "do NOT use the local 3060 anymore"; only code
-edits, pytest and git on the PC). Kaggle jobs: kaggle kernels status <owner>/<slug> (ROUND 2 STATUS below).
+No GPU work runs locally (user, 26 Oct: "do NOT use the local 3060 anymore"): code edits, pytest and git only;
+every GPU step runs on Kaggle.
 =====================================================================================
 
-MORNING 27 OCT (all pushed, tree clean, HEAD 3fa319a): statistics A/B/C done (CHANGELOG 27 Oct); README Mac
-fixes + pytest.ini; DATA_CARD.md / MODEL_CARD.md (tables: python tools/cards.py; rerun after any table changes);
-LICENSES.md, NOTICE, licenses/QWEN_RESEARCH_LICENSE.txt; tools/package.py --tag v1.0 [--with-models] (zip +
-SHA256SUMS); TxGPT selection on the full validation set (choice unchanged, S seed 3). STILL RUNNING:
-honglquanganh/cos30049a2-text150m-train session 1 (started 01:10, T4 x2; watcher bm1lzy50w) -> when it ends,
-check fp16/bench/gate, push session 2 with RESUME_FROM. TEAM: Canvas upload limit (decides --with-models), zip
-exclusions (CLAUDE.md, context.txt, docs/HANDOFF.md, docs/brief/), a licence for our own code.
+PART 1 - LIVE STATE
+===================
 
-OVERNIGHT 26-27 OCT (user asleep; gave Claude full decision rights; ~20% of their Claude weekly limit left until
-27 Oct 12:00, so work lean). Checklist: docs/TODO.md. Done so far: showcase page (artifact HREXw8jomq4fTu838wyAYo,
-private: the user shares it), tie-aware order/reasons checks (round 1 fully correct DS7 152M 87.0% / Qwen 95.5%),
-six more test sets (build-more-tests; 10 randomized sets in all, data/processed/random_test/), PDF report
-(python tools/test_report.py -> reports/assistant_tests.pdf; rerun after new results), teammate's DS7 v2 build
-byte-identical to the user's. Pending on events: (1) honglquanganh text150m-data done -> push
-honglquanganh/cos30049a2-text150m-train (--accelerator NvidiaTeslaT4); (2) honglquanganh text150m-stage-data running
-(CPU); (3) Qwen v2 done -> bring home (runs/qwen3b-explain-v2, tables), re-score its answers with --rescore (its
-notebook used the older measures), push tritran72/cos30049a2-assistant-random-eval (10 sets x 3 writers, ~3 h),
-bring that home, rerun tools/test_report.py, commit.
-27 Oct 02:55: QWEN V2 DONE AND ADOPTED (CHANGELOG 27 Oct): early stop at step 2,600/5,820, 7.9 h on 2 x T4 at 619
-tok/s; re-scored here: DS7 guardrail 99.8%, 1 direction error, fully correct 96.2%; DS10 99.3% / 2 / 96.6%;
-glossary key facts 41.3% (round 1 15.3%). Installed models/qwen3b_adapter_v2 (git-ignored; SHA-256
-adapter_model.safetensors 9b1c5f400870242104254ca540e1122212fd76fc93c517e311bc696b6db20890, adapter_config.json
-91e3b7f7d5e1bc3a7766c8342455e5c5fa79c687f36c63e50a48eeee18320ddf); settings assistant -> v2 config + adapter; round 1
-in models/qwen3b_adapter stays the fallback. Run folder: runs/qwen3b-explain-v2. 03:00 tritran72/cos30049a2-
-assistant-random-eval v1 RUNNING (T4 x2, ~3 h; 10 sets x qwen3b_v2, qwen3b, text150m).
-27 Oct 01:10: honglquanganh/cos30049a2-text150m-train v1 STARTED (T4 x2; GPU_HOURS 50; session 1 = fp16 check,
-bench, gate, train). Its 3.0B tokens are byte-identical to tritran72's build. Next session: add the notebook's own
-output as an input (kernel_sources += honglquanganh/cos30049a2-text150m-train) and set RESUME_FROM to its
-runs/text-150m-cont folder; repeat until the gate's total or Sun 1 Nov 23:59 (lower TOTAL_TOKENS before the decay
-if time runs short). honglquanganh's stage data is already built.
-STATISTICS CAMPAIGN (user, 27 Oct ~01:00: "a ridiculously reasonable amount of testing ... distribution math ...
-all ML and LLM ... mean accuracy"; the user said push everything when the overnight jobs are done): (A)
-explorer/distribution.py, Kaggle CPU tritran72/cos30049a2-distribution RUNNING (DS1/DS10 100 plant seeds, DS2 20,
-seeds from 70000) -> stats_methods_seeds/summary.csv; (B) explorer/classify_distribution.py, Kaggle CPU
-tritran72/cos30049a2-class-distribution RUNNING (10 seeds + 1,000-draw test bootstrap, DS3 AF temporal, DS4 temporal
-and random) -> stats_classifiers_*.csv. A and B DONE 27 Oct 02:50 / 02:10 (CHANGELOG 27 Oct; figures stats_methods.pdf, stats_classifiers.pdf; statistics section in reports/assistant_tests.pdf); (C) DONE 27 Oct (python -m lm.eval_stats; stats_writers_*.csv, stats_writers.pdf, PDF section): pooled over 12
-sets fully correct 152M 72.7% [71.6, 73.8], Qwen r1 88.9% [88.1, 89.8], Qwen r2 92.7% [92.0, 93.4]; McNemar: r2
-better on synthetic/hard/balanced/max_shift and glossary, never worse. Rerun lm.eval_stats after the 152M v2
-evaluation (WRITERS already lists text150m_v2). Still open (C+): the 152M explanation stage retrained with 5 seeds.
+NOW (27 Oct ~08:45)
+- Repo: HEAD c3df88a (+ this context cleanup). Mac pytest: 219 passed, 3 skipped, exit 0. README.md line 54 said
+  "215 passed" (test_cards.py and test_package.py came later): fixed in the cleanup commit.
+- RUNNING (the only job): honglquanganh/cos30049a2-text150m-train v1 = 152M continued pretraining, session 1 (T4 x2,
+  started 27 Oct 01:10; fp16 check vs 3.1305, bench, gate with GPU_HOURS 50, then train; watcher bm1lzy50w on the
+  PC). The notebook stops itself at 11 h (Kaggle's limit is 12 h), so it ends by ~12:10-13:10. Its 3.0B prepared
+  tokens are byte-identical to tritran72's build. Tokens so far (estimate at 08:20, not read: the Mac has no Kaggle
+  CLI or token): ~2.3B in all (2.0B round 1 + ~0.3B at the plan's 13.5k tok/s).
+- When session 1 ends: read its gate.json (measured tok/s, micro_batch, total_tokens) and log, then push session 2:
+  kernel_sources += honglquanganh/cos30049a2-text150m-train, RESUME_FROM = its runs/text-150m-cont folder
+  ("/kaggle/input/<this notebook>/runs/text-150m-cont"), TOTAL_TOKENS per the user's 152M option (below).
 
-ROUND 2 STATUS (26 Oct evening; plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct has every change)
-- Accounts: tritran72 (user; ~/.kaggle/access_token) runs Qwen v2; honglquanganh (teammate Le Quang Anh Hoang, token
-  in C:\Users\ADMIN\.kaggle\accounts\honglquanganh.token, KAGGLE_API_TOKEN=$(cat ...)) runs the 152M chain.
-  Push from inside a copy of kaggle/<name>/ with KAGGLE_USERNAME replaced (`kaggle kernels push -p .`).
-  Notebooks: python tools/kaggle_notebooks.py <commit on GitHub> regenerates all four, pinned.
-- DONE and pushed: C6 direction check (guardrail + eval columns; round 1 re-scored: DS7 152M 2 / Qwen 5 direction
-  errors, pass 99.3% / 98.9%); template F4 wording ("Higher/Lower ratio to the usual amount than usual", user's
-  choice); frozen v1 test files (ds10-check keeps explain.jsonl); C7 DS7 v2 (build-ds7 --settings ds7v2; built on
-  Kaggle: 36,210 / 2,385 / 1,637 + glossary_test 74); C8 glossary 306 pairs on 65 topics, held-out QUESTIONS not
-  topics (round 1's 0/5 was certain: its test topics were never taught), fact-checked by Claude at the user's
-  request (six answers fixed; not a human read-through - say so in the AI declaration); lm/dist.py two-GPU
-  training for lm.qlora and lm.train (2 processes == 1, tested); qlora repeat_sources/monitor_sources/patience;
-  eval --batch-size; chat_subset --retention-start; C1 --max-hours, C3 wsd, eval_windows, --eval-only; C4
-  prepare_text --continue-from; configs qwen3b_explain_v2.json and text_150m_pretrain_cont.json.
-- Uploaded (user's OK): private dataset honglquanganh/cos30049a2-text150m-base (round-1 152M weights as
-  text150m_base.pt, explanation model text150m_explain_v1.pt, tokenizer, val.bin, meta, state, SHA256SUMS.txt).
-- 26 Oct ~19:05: tritran72/cos30049a2-qwen3b-explain-v2 v1 RUNNING (GPU T4 x2; data = qwen-data v2, glossary
-  fact-checked). honglquanganh/cos30049a2-text150m-data FAILED in 45 s: that account has no internet (phone not
-  verified; Kaggle also withholds GPUs) - the teammate must verify a phone at kaggle.com -> Settings. Meanwhile,
-  "use mine first" (user): the same base dataset is also on tritran72 (tritran72/cos30049a2-text150m-base) and
-  tritran72/cos30049a2-text150m-data v1 is building the 3B tokens there (CPU, started ~19:15). Kaggle's image is
-  Python 3.13 now (pins still install). A private notebook's output cannot be read from another account, so each
-  account that trains the 152M model needs its own data notebook run.
-- NEXT: when qwen-data v2 completes, push tritran72/cos30049a2-qwen3b-explain-v2 (GPU T4 x2; trains ~10 h, then
-  evaluates DS7 v1 test, DS10, glossary test, and round-1 Qwen on the glossary test). When text150m-data completes,
-  push honglquanganh/cos30049a2-text150m-train (session 1: fp16 check vs 3.1305, bench, gate with GPU_HOURS 50,
-  then train). Each later 152M session: add the notebook's own output as an input (kernel_sources) and set
-  RESUME_FROM. 26 Oct 23:40: THE TEAMMATE'S ACCOUNT WORKS (phone verified): honglquanganh/cos30049a2-text150m-data
-  v2 RUNNING (~80 min) and honglquanganh/cos30049a2-qwen-data v1 RUNNING (DS7 v2 there, for the 152M stage data).
-  PLAN NOW: the 152M chain (train, stage-data, stages) runs on honglquanganh with GPU_HOURS 50 (its two weekly
-  quotas); tritran72 keeps Qwen v2 and the random evaluation. Push honglquanganh/cos30049a2-text150m-train
-  (--accelerator NvidiaTeslaT4) as soon as its text150m-data completes.
-  26 Oct 20:36: tritran72/cos30049a2-text150m-data COMPLETE: 3,000,941,125 new tokens from file 2
-  row 483,432 (files 002-006), val 10,001,319 (round 1's); stage-data COMPLETE 20:06 (chat = round 1's counts
-  exactly; ds7_v2_chat 36,840 conversations, 17.2M tokens). The 152M GPU session is HELD until Qwen v2 ends (both
-  on tritran72's weekly quota; running both risks Qwen being cut before its evaluation) unless the user's quota
-  allows both, or Modal (user may sign up tonight; `! modal token new`) takes the 152M chain. On tritran72 set
-  GPU_HOURS to this week's remainder + next week's 30 h - ~6 h for the stages (~32 h), not 50.
-  RANDOMIZED TEST SET (user, 26 Oct 21:20 and 21:45): data/processed/random_test/{real,synthetic,hard}.jsonl
-  (500 each, committed, frozen; explorer/random_test.py, settings randomTest seeds 50000 / hardSeed 50001;
-  template control 1.0 on all). STRICTER SCORING (21:45, 22:00): verdict_ok is a guardrail check; reasons_ok,
-  order_ok, binding_ok -> fully_correct; plus fully_correct_macro / _nothing_stands_out / _unique and
-  assistant_eval_by_case*.csv. Round 1 fully correct (CHANGELOG has the table): DS7 152M 83.8% / Qwen 91.2%, DS10
-  81.4% / 92.4%; "nothing stands out" ~80% for both. balanced.jsonl (22:00, build-balanced-test, seed 50002): 883
-  real prompts, up to 100 per case, from DS10 + DS2's 173 test-split addresses (pool 46,513; 65% "nothing stands
-  out"). Cleaning done in pandas, not KNIME (user suggested KNIME; reasons in CHANGELOG). When Qwen v2 ends, push
-  tritran72/cos30049a2-assistant-random-eval (T4 x2, ~2 h: qwen3b_v2, qwen3b, text150m v1 on real, hard,
-  synthetic, balanced; --n 100000); text150m_v2 is scored by the stages notebook. NOTE: Qwen v2's own
-  notebook (pinned 16bb75e) scores with the older measures; re-score its answers locally with
-  `lm.eval_explain --rescore` (CPU, no model) after bringing them home. Never pipe pytest into tail before a
-  commit: it hid a failure on 26 Oct (fixed in 654fc41).
-  Cut-off Sun 1 Nov 23:59. Then (written 26 Oct, pinned dbd39bf; re-pinned b5b690b with the random evals): tritran72/cos30049a2-text150m-
-  stage-data (CPU; DS6 + DS7 v2 tokenized, glossary x4; STARTED 26 Oct ~19:45) and cos30049a2-text150m-stages (T4
-  x2; chat v2 -> explain v2 -> evals text150m_v2 on DS7 v1/DS10/glossary + round-1 text150m on glossary; needs the
-  train notebook's finished model.pt as input). Tue 3 Nov adoption rule. Watchers: scratchpad watch_kernels.py
-  (ignores network errors; the first shell-loop watchers mistook an api.kaggle.com timeout for "finished").
-- Other free GPUs (searched 26 Oct): Modal's free $30/month (~37 h L4 or ~27 h A10G, scriptable from the PC) is the
-  only one worth it; Colab/Lightning/Studio Lab add little. Needs the user to make an account; not started.
+- QWEN MAY BE DISALLOWED (27 Oct ~08:30; NOTHING CHANGED YET). The user forwarded this message (who wrote it is not
+  recorded yet - the tutor, or a teammate passing it on? ask):
+    "qwen AI là 1 con Ai tự động sinh ra câu trả lời nên sẽ ko đc chấp nhận cho quá tirnfh raining model AI, việc
+    tích hợp có thể ảnh hửoưng đến mode chúng ta chỉ nên tích hợp các thuật toán mà AI sử dụng hoặc các phần mà con
+    Ai đó được train nên và các vấn đêf mà model AI train để tiết kiêjm thời gian hơn"
+  Translation: "Qwen AI is an AI that generates answers automatically, so it won't be accepted for the AI model
+  training process; integrating it could affect the model. We should only integrate the algorithms the AI uses, or
+  the parts the AI was trained on, and the problems the model trains for, to save time."
+  Claude's reading: a fine-tuned ready-made LLM does not count as the group's own model work; keep only what the
+  group implemented and trained (scikit-learn models, TxGPT, the 152M model). It contradicts the tutor's 24 Oct
+  Outlook announcement (fine-tuning a public model is acceptable), so record the source and, if it is the tutor,
+  the wording for the CHANGELOG. Possibly also in scope if the rule is "no AI-written answers in training data":
+  DS6 smol-smoltalk (synthetic, LLM-written conversations) and the glossary pairs (drafted and fact-checked by
+  Claude). Ask.
+  IF QWEN IS DROPPED (user's decision; reverses the 22 Oct CR-06 amendment, decision 4): settings assistant
+  writerOrder -> ["text150m"] (template stays last); remove from the product and zip: lm/qlora.py,
+  configs/qwen3b_*.json, kaggle/qwen3b_explain*, the qwen writer in lm/writers.py and its tests, Qwen rows in
+  assistant_eval* / stats_writers* tables and the test-report PDF, environment-gpu.yml's transformers / peft /
+  bitsandbytes / accelerate (if nothing else needs them), licenses/QWEN_RESEARCH_LICENSE.txt, NOTICE, the Qwen parts
+  of LICENSES.md, MODEL_CARD.md, DATA_CARD.md, README.md; models/qwen3b_adapter* stay out of the zip. Keep one
+  CHANGELOG entry (tried, measured, dropped on the ruling) and the AI_USE_LOG lines. Then rerun tools/cards.py,
+  tools/test_report.py, lm.eval_stats. The report loses the "152M vs Qwen trade-off" paragraph. Numbers lost as the
+  main writer: pooled fully correct Qwen r2 92.7% vs 152M r1 72.7%.
+  Consequence for the 152M run: it becomes the only language-model writer, so cutting its tokens costs more, and
+  tritran72's quota (no longer needed for Qwen) can extend the chain this week.
 
-DIRECTION (user, 26 Oct) - supersedes the 24 Oct "no more GPU time for the 152M model"
-- The user is not happy with the language models' accuracy. Round 2: the 152M model gets 4-5B more pretraining
-  tokens and Qwen 3B another 12-20 GPU hours, with the datasets scaled to match. EVERYTHING from this point runs on
-  Kaggle, not locally (only code edits, pytest and git stay local). Full plan: docs/KAGGLE_LM_PLAN.md.
-- What the saved answers show (26 Oct, plan section 1): explanations are near the ceiling of today's measures
-  (numbers 99.8% / 100%, guardrail 99.8% / 100%; ROUGE-L vs the template understates correct paraphrases: 152M
-  0.683 vs template, 0.719 vs the row's own reply). The real weakness is OPEN QUESTIONS: both models answer 0 of 5
-  test glossary prompts correctly (only 2 topics; Qwen says the Explorer uses Isolation Forest, the 152M invents
-  "Robusta"). Qwen copies the template on 96% of flagged prompts and already overfits its data (best validation
-  loss 0.0752, final 0.0920), so its extra hours need more data, not more epochs.
-- Hence, before any GPU time: a held-out glossary test (about 300 pairs, 8+ test topics, key facts per topic;
-  needs a human read-through), the direction check and copy rate as metrics (NEXT 1 becomes part of round 2), and
-  the adoption rule (plan section 3): a round-2 writer replaces round 1 only if guardrail and numbers are no
-  lower, direction errors no more, and open-question key-fact accuracy is 10+ points higher.
-- Budget: the full target needs about 125-135 Kaggle GPU hours with T4 x2 and data parallelism (lm/train.py is
-  single-GPU today: code C2). USER, 26 Oct: assume ONLY THE USER'S KAGGLE ACCOUNT (tritran72) until further notice;
-  the team is creating accounts and will send them later. One account = about 20 h left this week (check
-  Settings) + 30 h from Sat 31 Oct 07:00 GMT+7 = about 50 h. Priority 1: Qwen v2 this week (about 15 h training
-  + 2.5 h evaluation). Priority 2: 152M on the new week's quota, Sat 31 Oct - Sun 1 Nov 23:59 cut-off, about 23 h
-  = +1.1B tokens on T4 x2 (+0.6B on one T4; predicted loss drop 0.12 / 0.07 vs 0.27 for +4B), then chat and
-  explanation stages Mon 2 Nov. Teammate accounts, when they arrive, start the 152M chain earlier and extend it.
-  Gate in session 1: total_tokens = min(5B, measured tok/s x hours left). Last day round 2 can change anything:
-  Tue 3 Nov (results-v1.1).
+- 152M SCHEDULE (user, 27 Oct 08:20, unhappy that it runs to 1 Nov; NO OPTION CHOSEN YET). GPU_HOURS 50 at ~13.5k
+  tok/s (plan estimate; session 1's gate.json has the measured rate) -> gate total = rate x 50 h x 3600 x 0.9
+  ~ 2.2B more tokens ~ 45 h of training = 5 sessions of 11 h, strictly one after another (each resumes the last).
+  Compute alone would end ~Thu 29 Oct; the 1 Nov date comes from the weekly quota (~30 h per account, reset Sat
+  31 Oct ~07:00): ~30 h this week, the other ~20 h after the reset. Options offered:
+  (1) session 2 sets TOTAL_TOKENS ~1.3B (allowed before the decay, the last 15%): pretraining ends ~Wed 28 Oct,
+      stages on tritran72 straight after, 152M round 2 done ~Thu 29 Oct; ~3.3B tokens in all. Claude recommended
+      this BEFORE the Qwen news; if Qwen goes, (2) is worth more.
+  (2) keep 50 h, alternate accounts this week (ckpt_last.pt, ~1.8 GB, moved as a private dataset; a private
+      notebook's output cannot be read from another account): ~Fri 30 Oct; ~4.2B tokens in all.
+  (3) as is: Sun 1 Nov 23:59 cut-off; ~4.2B.
+  Session 1 alone ends at ~2.5B. Plan prediction: validation loss drop ~0.12 for +1.1B, 0.27 for +4B.
+  After pretraining: stage data (already built on both accounts) -> cos30049a2-text150m-stages (T4 x2; chat v2 ->
+  explain v2 -> evals text150m_v2 on DS7 v1 test / DS10 / glossary + round-1 text150m on the glossary; needs the
+  train notebook's finished model.pt as input) -> adoption rule -> lm.eval_stats -> results-v1.1.
 
-USER PREFERENCES
+NEXT, IN ORDER
+1. Qwen: the message's source and the user's decision; if dropped, remove it (list above) in one commit.
+2. 152M session 2 when session 1 ends, with the user's option.
+3. Report: docs/REPORT_PLAN.md. The user wants the content-structure outline first (no LaTeX for the final report
+   until asked); then LaTeX with the A1 preamble (docs/a1/main.tex), <= 3,000 words (aim 2,850), Harvard numbered,
+   tutor's name on the cover, the brief's section order, numbers quoted from reports/tables only. Data collection
+   and processing is the biggest item (5 marks). Robustness paragraph: power cut recovery, Mac replication, frozen
+   tests, strict scoring.
+4. After pretraining: stages + evaluations, adoption rule (KAGGLE_LM_PLAN.md section 3), tables into reports/tables,
+   models into models/, python -m lm.eval_stats (WRITERS already lists text150m_v2), tools/test_report.py,
+   tools/cards.py; tag results-v1.1 if any number changed (never move a pushed tag). Tue 3 Nov is the last day round
+   2 may change any result.
+5. Packaging: DS4 final model too big (models/heist_best.joblib, 263 MB; pick a smaller one, e.g.
+   HistGradientBoosting); fp16 export of the 152M model (~305 MB); weights as GitHub release assets only with the
+   user's OK; python tools/package.py --tag v1.0 [--with-models]; Canvas's upload limit decides --with-models.
+   Check the download scripts + README note for data that cannot ship (Elliptic's licence, DS5 4 GB) and the zip
+   contents against the brief.
+6. M4: a teammate rebuilds everything from the README on a fresh clone; tag v1.0.
+7. Optional C+: the 152M explanation stage retrained with 5 seeds (a language model's seed spread).
+8. AI declaration from docs/AI_USE_LOG.md (say the glossary was fact-checked by Claude, not a person, unless a
+   teammate reads it).
+
+WAITING ON THE USER / TEAM
+- Qwen: who sent the message; keep or drop.
+- 152M: option 1, 2 or 3.
+- features.csv written with float_format="%.12g" (MAC REPLICATION; needs a rerun + results-v1.1). Release-asset OK.
+- Team: Canvas upload limit; the zip exclusions (tools/package.py EXCLUDE = CLAUDE.md, context.txt,
+  docs/HANDOFF.md, docs/brief/); a licence for our own code (LICENSES.md says ask the group).
+- Blind reviewer check (Minh Khang, Cam Dan: not anyone who built the scoring): send reports/reviewer/sheet.csv +
+  INSTRUCTIONS.md; then python -m explorer.cli reviewer-score --ratings ratings_<a>.csv ratings_<b>.csv.
+- Glossary: no human read-through yet. One manual DS1 transaction check on a block explorer (anyone).
+- Weekly A2 meeting minutes. Contribution form: anyone under 33% is scaled down (the A1 form gave two members 20%);
+  remind the user before it is signed.
+- Tokens: the user was advised to rotate the tritran72 Kaggle token (update C:\Users\ADMIN\.kaggle); the teammate's
+  token was pasted into the chat: ask them to regenerate it after the project.
+- Optional: Modal account (extra 152M GPU hours); more teammate Kaggle accounts.
+- _context/ on the PC is partial (restored 25 Oct from E:: _context/a1_submission/HCMC_COS30049.1_4_Assignment1_
+  Report.pdf, _context/text/a1_report.txt, _context/brief_assignment2_instructions.md = docs/brief/); the slides,
+  minutes and A1 working files are on the Mac (copy by USB/OneDrive, never the public repo).
+
+USER PREFERENCES AND WORKING RULES (on top of CLAUDE.md)
 - Finish A2 as fast as possible at the highest quality; ignore the plan's calendar dates, keep its content and rules.
-- Commits: author Defaul119, NO Co-Authored-By / AI lines. Run `python -m pytest -q` (cos30049-a2 env) and check
-  its EXIT CODE before every commit. Push after each finished batch (the user asked, 23 Oct).
-- Do NOT update the tracker artifact (https://claude.ai/artifact/NFVrJdEAcT2iLotZTx2J5e) mid-task; only when the
-  current tasks are finished or the user asks. Its db: meta/now {text,updated}, meta/log {entries[{time,text}]},
-  jobs/<id> (ds1, ds2, ds4, ds5, pretrain, queue), steps/sNN (s01-s37, s50-s65 used; s66+ for new). Writes need
-  if_version. Last updated 25 Oct (queue, Kaggle and DS10 jobs done; phase closed).
-- Keep replies short; answer the user's questions first. Since 23 Oct 02:20 the user wants a proof-checking pass:
-  every claim checked against the data and the rubric before new features.
+- Commits: author Defaul119, NO Co-Authored-By / AI lines. Run `python -m pytest -q` (cos30049-a2 env) and check its
+  EXIT CODE before every commit; never pipe pytest into tail before a commit (it hid a failure on 26 Oct, fixed in
+  654fc41). Push after each finished batch (user, 23 Oct).
+- Keep replies short; answer the user's questions first. Proof-checking pass (since 23 Oct 02:20): every claim
+  checked against the data and the rubric before new features.
+- Tracker artifact https://claude.ai/artifact/NFVrJdEAcT2iLotZTx2J5e: update only when the current tasks are finished
+  or the user asks, never mid-task. Its db: meta/now {text,updated}, meta/log {entries[{time,text}]}, jobs/<id>
+  (ds1, ds2, ds4, ds5, pretrain, queue), steps/sNN (s01-s37, s50-s65 used; s66+ for new). Writes need if_version.
+  Last updated 25 Oct (queue, Kaggle and DS10 jobs done; phase closed).
+- Showcase page for the team: artifact HREXw8jomq4fTu838wyAYo (private; the user shares it).
 - Shell: Git Bash heredocs mangle backslash escapes in Python source (\n became a real newline twice on 23 Oct).
-  Write Python to a file with the Write tool, or use Edit, whenever the code contains backslashes.
+  Write Python with the Write tool or Edit whenever the code contains backslashes.
+- torch.compile: decided NOT to try (23 Oct): small gain, risk to a healthy run.
 
-DIRECTION (user, 24 Oct 16:00) - read before planning any work
-- The tutor (Arthur Hoang) announced by Outlook that fine-tuning a public model is acceptable: training from
-  scratch is no longer an HD requirement (relaxes CR-06 decision 4; CHANGELOG 24 Oct). The user's goal is the best
-  working project when everything is put together, and what is most desirable academically.
-- [SUPERSEDED 26 Oct: round 2 trains it on Kaggle.] So: NO more GPU time for the 152M model beyond the queue.
-  Still true: it is the only language model that runs in the markers' CPU env (environment.yml has no
-  transformers, peft or bitsandbytes, so Qwen cannot run there).
-- Order the explanation writers by the measured DS7 results (guardrail pass rate, number faithfulness, human
-  check), not "from scratch first". Expected: GPU machine (A3 server) Qwen -> 152M -> template; CPU env 152M ->
-  template.
-- The marks left to win are integration, reproducibility and the report (core functionality 10, report 12,
-  README + comments + structure 6), not lower loss.
-- Integration gap: CLOSED 24 Oct 18:15. Predictor.explain(tx, use_assistant) runs the guarded cascade (writers from
-  settings -> assistant: writerOrder, paths; lm/writers.py shared with lm.eval_explain; writers this machine cannot
-  run are skipped with a reason); CLI: predict explain --address A --txid T [--assistant], what-if --assistant.
-  Default stays template-only (plan risk 26). DONE 25 Oct 06:40: models/assistant/model.pt (= runs/text-150m-explain/
-  model_best.pt, fp32, 610 MB) + tokenizer.json, and models/qwen3b_adapter/ (= Kaggle adapter_best, 114 MB); both
-  git-ignored (over 100 MB). writerOrder [qwen3b, text150m] confirmed by assistant_eval.csv. Checked 06:43 on one
-  flagged tx (1Bbcsfxj..., b2afad6c...): CPU env -> text150m writes, qwen3b skipped (no transformers); GPU env ->
-  qwen3b writes in 39 s; both pass every guardrail check. SHA-256: model.pt 086b9d157343e735...
-  (086b9d157343e73578c5acff12f9f871104c01eed56692402e5a2499130684ab), tokenizer.json c8f4509cc0951d00426ae6bae99a34b8
-  639c2f20c8c32e05b9d0bce1cc3e5d45, adapter_model.safetensors e471b4afcffeaeaa274e46869431be2d2f0ee66175ed6f9ad64ba3d5
-  e8059941, adapter_config.json 42f7f6b1eb6711cd720994d046e06244d7a0b12cf90dd661319647b789fe6250.
-  STILL TO DO (user's call): fp16 export of the 152M model (~305 MB) and publishing both as GitHub release assets
-  (outward-facing, not done unasked). Minor: Qwen generation warns "attention mask is not set" (pad = eos);
-  harmless for one unpadded prompt, but lm/writers.py could pass attention_mask explicitly.
-- Academic backbone of the report: time-safe splits, planted-transaction recall, the label check ("unusual" is not
-  "labelled illicit"), methods chosen by stated rules, every number from reports/tables. Plus one clean
-  152M-from-scratch vs Qwen-3B-QLoRA comparison on the same DS7 test and measures, framed as a trade-off (small,
-  runs anywhere vs better, needs a GPU), not "bigger wins".
-- Order: tonight the GPU queue (unattended; Qwen first) -> Sun-Tue proof-checks, the model copies into models/
-  (predict.py cascade, DS2-vs-DS1 figure, address profiles and the TxGPT size figure's code were DONE 24 Oct
-  evening) -> by Thu 29 Oct the writer order from DS7 results, results frozen (tag
-  results-v1) -> Fri-Sat 31 Oct README, DATA_CARD, MODEL_CARD, LICENSES, packaging -> from Mon 26 Oct in parallel
-  the report (outline first, as the user asked; data collection and processing is the biggest item, 5 marks) ->
-  Wed 4 Nov a teammate rebuilds everything from the README on a fresh clone, tag v1.0.
+
+PART 2 - REFERENCE
+==================
 
 ENVIRONMENT
-- Repo C:\Users\ADMIN\COS30049A2. Miniforge C:\Users\ADMIN\miniforge3; envs cos30049-a2 (CPU) and cos30049-a2-gpu
-  (CUDA; also transformers 4.52.4, peft 0.15.2, bitsandbytes 0.48.1, accelerate 1.7.0).
-- Mac (14-inch MacBook Pro, Apple M5, 10 cores, 16 GB): clone ~/Desktop/COS30049/COS30049A2 (old asm2 deleted 26 Oct;
-  its git-ignored _context/ moved into the clone). Miniconda ~/miniconda3, not on PATH: use
-  ~/miniconda3/envs/cos30049-a2/bin/python. The defaults channel was removed from ~/miniconda3/.condarc rather than
-  accepting Anaconda's ToS. pytest there needs --ignore=_context (MAC REPLICATION, finding 2).
-- In cmd one-liners write `set "PYTHONUTF8=1"` (with quotes).
-- Long jobs run in their own cmd windows (Start-Process cmd.exe /k ...). NEVER start one as a child of Claude's
-  tool shell (e.g. Start-Process powershell -RedirectStandardOutput ...): on 24 Oct ~21:35 a tool error recycled
-  that shell and killed the DS1 extension runner and its ds2-check mid-run (no crash or memory event logged).
-  Graceful stop: Ctrl+C in the window, or
-  `python -I <scratchpad>\send_ctrl_c.py <pid>` (AttachConsole + GenerateConsoleCtrlEvent(0,0); ~15 lines;
-  recreate if the scratchpad is gone). Every job resumes with the same command.
-- LaTeX: MiKTeX (user install) at %LOCALAPPDATA%\Programs\MiKTeX\miktex\bin\x64, packages auto-install.
+- PC: repo C:\Users\ADMIN\COS30049A2; Miniforge C:\Users\ADMIN\miniforge3; envs cos30049-a2 (CPU) and
+  cos30049-a2-gpu (CUDA; transformers 4.52.4, peft 0.15.2, bitsandbytes 0.48.1, accelerate 1.7.0; Kaggle CLI 2.2.5).
+  In cmd one-liners write `set "PYTHONUTF8=1"` (with quotes). Windows Update paused 1 month (23 Oct); sleep and
+  hibernate off.
+- Long jobs run in their own windows (Start-Process cmd.exe /k ..., or tools/supervise.py), NEVER as children of
+  Claude's tool shell: on 24 Oct ~21:35 a tool error recycled that shell and killed the DS1 extension runner and its
+  ds2-check mid-run (the DS2 check died the same way earlier that day). Graceful stop: Ctrl+C in the window, or
+  `python -I <scratchpad>\send_ctrl_c.py <pid>` (AttachConsole + GenerateConsoleCtrlEvent(0,0); ~15 lines; recreate
+  if the scratchpad is gone). Every job resumes with the same command. Status: python tools/status.py (crawl,
+  supervisor, training, GPU; --kaggle OWNER/NOTEBOOK adds a Kaggle run).
+- LaTeX: MiKTeX (user install) at %LOCALAPPDATA%\Programs\MiKTeX\miktex\bin\x64, packages auto-install;
   docs/a1/main.tex and docs/plan/main.tex build with pdflatex (3 passes).
 - Jupyter: a system Python 3.12 "python3" kernel shadows the env's. Execute notebooks with
   --ExecutePreprocessor.kernel_name=cos30049-a2 (registered 23 Oct), then reset the notebook's kernelspec to python3.
-- The A2 brief is in docs/brief/ (PDF + .txt); docs/a1/ holds the A1 LaTeX. The rest of _context/ (slides,
-  A1 submission, notes) is still not on this PC (git-ignored; copy by USB/OneDrive, not the public repo).
+- Mac (14-inch MacBook Pro, Apple M5, 10 cores, 16 GB): clone ~/Desktop/COS30049/COS30049A2 (old asm2 deleted 26 Oct;
+  its git-ignored _context/ moved into the clone). Miniconda ~/miniconda3, not on PATH: `source
+  ~/miniconda3/etc/profile.d/conda.sh && conda activate cos30049-a2` (or ~/miniconda3/envs/cos30049-a2/bin/python).
+  The defaults channel was removed from ~/miniconda3/.condarc rather than accepting Anaconda's ToS. pytest.ini
+  (testpaths = tests) keeps _context/ out of collection. No Kaggle CLI or token on the Mac.
+- The A2 brief: docs/brief/ (PDF + .txt). A1 LaTeX: docs/a1/.
 
-REMINDERS FOR CLAUDE (raise these with the user)
-- PACKAGING (user asked 23 Oct to be reminded later): DS4 final model is 263 MB (too big; pick a smaller one, e.g.
-  histGradientBoosting); DATA_CARD.md, MODEL_CARD.md, LICENSES.md (+ Qwen licence text and NOTICE), SHA256SUMS;
-  download scripts + README note for data that cannot ship (Elliptic licence, DS5 4 GB); zip contents per brief.
-- Report: user wants only a content-structure outline for now (no LaTeX for the final report yet).
-- torch.compile: decided NOT to try (23 Oct): small gain, the GPU is not the deadline bottleneck, risk to a healthy run.
+KAGGLE
+- Accounts: tritran72 (the user; token C:\Users\ADMIN\.kaggle\access_token) and honglquanganh (teammate Le Quang
+  Anh Hoang; phone verified 26 Oct 23:40; token C:\Users\ADMIN\.kaggle\accounts\honglquanganh.token, used as
+  KAGGLE_API_TOKEN=$(cat ...)). Neither token is ever in the repo.
+- Push from inside a copy of kaggle/<name>/ with KAGGLE_USERNAME replaced in kernel-metadata.json:
+  `kaggle kernels push -p . [--accelerator NvidiaTeslaT4]`. Status / logs: kaggle kernels status|logs [-f]
+  <owner>/<slug>. Bring home: kaggle kernels output <owner>/<slug> -p <dir>. Notebooks are pinned to a commit on
+  GitHub: python tools/kaggle_notebooks.py <commit> regenerates all of them.
+- Facts: sessions end at 12 h (notebooks stop at 11 h: MAX_HOURS / --max-hours); only /kaggle/working (20 GB) is
+  saved; the weekly GPU quota is not published (~30 h, resets Sat ~07:00 GMT+7; check Settings; whether T4 x2 costs
+  one hour per hour is unconfirmed). A private notebook's output cannot be read from another account, so each
+  account that trains needs its own data notebook run. An account without a verified phone has no internet and no
+  GPU (honglquanganh's first data run failed in 45 s for that reason). Kaggle's image is Python 3.13 (the pins still
+  install); Kaggle's own torch was 2.11.0+cu128 on 25 Oct (recorded in kaggle_run.json). T4 / P100 lack bf16: fp16
+  with loss scaling (lm.qlora.compute_dtype; meta.json records it).
+- Watchers: scratchpad watch_kernels.py (ignores network errors; the first shell-loop watchers mistook an
+  api.kaggle.com timeout for "finished").
+- 152M chain: each later session adds the notebook's own output as an input (kernel_sources) and sets RESUME_FROM.
+  TOTAL_TOKENS can be raised or lowered only before the decay starts (schedule "wsd", decay_fraction 0.15,
+  re-read at each resume). Gate (session 1): total_tokens = min(rate x GPU_HOURS x 3600 x 0.9, prepared tokens) in
+  whole steps of batch_tokens 262,144; saved as gate.json. Config configs/text_150m_pretrain_cont.json (init from
+  runs/text-150m/model.pt, same seed 1337 and 160 eval windows as round 1, checkpoints every 30 min).
+- Notebooks and datasets:
+  tritran72: cos30049a2-qwen3b-explain (round 1, done 25 Oct), cos30049a2-qwen-data v2, cos30049a2-qwen3b-explain-v2
+  (done 27 Oct 02:55), dataset cos30049a2-text150m-base, cos30049a2-text150m-data (done 26 Oct 20:36:
+  3,000,941,125 new tokens from file 2 row 483,432, files 002-006; val 10,001,319 = round 1's),
+  cos30049a2-text150m-stage-data (done 26 Oct 20:06; chat = round 1's counts exactly; ds7_v2_chat 36,840
+  conversations, 17.2M tokens), cos30049a2-distribution and cos30049a2-class-distribution (CPU, done 27 Oct),
+  cos30049a2-assistant-random-eval (done 27 Oct, 2.3 h on T4 x2; --n 100000, i.e. every prompt of each set).
+  honglquanganh: private dataset cos30049a2-text150m-base (uploaded with the user's OK: round-1 152M weights as
+  text150m_base.pt, explanation model text150m_explain_v1.pt, tokenizer, val.bin, meta, state, SHA256SUMS.txt),
+  cos30049a2-text150m-data v2 (done; tokens byte-identical to tritran72's), cos30049a2-qwen-data v1 (done; DS7 v2
+  for the stage data), cos30049a2-text150m-stage-data (built), cos30049a2-text150m-train (session 1 running),
+  cos30049a2-text150m-stages (to push after pretraining; written 26 Oct, pinned dbd39bf, re-pinned b5b690b).
+- Qwen v2's own notebook (pinned 16bb75e) scored with the older measures; its answers were re-scored locally with
+  `lm.eval_explain --rescore` (CPU, no model).
+- Other free GPUs (searched 26 Oct): Modal's free $30/month (~37 h L4 or ~27 h A10G, scriptable; `! modal token
+  new`) is the only one worth it; Colab / Lightning / Studio Lab add little. Needs the user's account; not started.
 
-INCIDENTS (user, 24 Oct: "put this in the context for it to be written on the report"; CHANGELOG 24 Oct has the
-full entry. Use in the report's reproducibility / robustness paragraph and the risk discussion.)
-- POWER CUT, Sat 24 Oct ~19:16 GMT+7: the PC was unplugged mid-pretraining (last console line 19:14:31 at step
-  7,447/7,630; rebooted 19:17). Lost: 28 optimizer steps (7,419 -> 7,447, 7.3M tokens, ~10 min of GPU time) plus
-  ~27 min idle before the restart. Nothing else lost: ckpt_last.pt (step 7,419, saved 19:05:57) and model_best.pt
-  (step 7,400) loaded with every tensor finite and the optimizer state present; all 85 files written since 17:30
-  (DS2 parquet 898,490 rows, DS7 splits, token files, tables, figures, code) parsed cleanly; git fsck clean;
-  queue state intact (4/25). Recovery = the same commands (resume design: atomic checkpoints, a queue that skips
-  finished steps). Hardening the same evening: fsync before every checkpoint rename (lm/train.py save_atomic,
-  tools/run_queue.py state), and the Qwen trainer's adapters are saved file-by-file atomically with the adapter
-  weights inside state.pt (lm/qlora.py save_adapter), because the Qwen run (~6 h tonight) used in-place saves.
-  Optional, user's call: BIOS "Restore on AC power loss" + auto-login would restart the PC, not the jobs; a UPS
-  is the real fix.
+MODELS INSTALLED (git-ignored, over 100 MB; SHA-256)
+- models/assistant/model.pt = runs/text-150m-explain/model_best.pt (152M round 1, fp32, 610 MB):
+  086b9d157343e73578c5acff12f9f871104c01eed56692402e5a2499130684ab; tokenizer.json
+  c8f4509cc0951d00426ae6bae99a34b8639c2f20c8c32e05b9d0bce1cc3e5d45.
+- models/qwen3b_adapter (Qwen round 1 = Kaggle adapter_best, 114 MB): adapter_model.safetensors
+  e471b4afcffeaeaa274e46869431be2d2f0ee66175ed6f9ad64ba3d5e8059941, adapter_config.json
+  42f7f6b1eb6711cd720994d046e06244d7a0b12cf90dd661319647b789fe6250. Kept as the fallback.
+- models/qwen3b_adapter_v2 (Qwen round 2, adopted 27 Oct; settings assistant -> configs/qwen3b_explain_v2.json + this
+  adapter; run folder runs/qwen3b-explain-v2): adapter_model.safetensors
+  9b1c5f400870242104254ca540e1122212fd76fc93c517e311bc696b6db20890, adapter_config.json
+  91e3b7f7d5e1bc3a7766c8342455e5c5fa79c687f36c63e50a48eeee18320ddf.
+- models/heist_best.joblib: DS4 final model, 263 MB (too big for the zip; packaging).
+- Assistant integration (closed 24 Oct 18:15): Predictor.explain(tx, use_assistant) runs the guarded cascade
+  (settings -> assistant: writerOrder ["qwen3b", "text150m"], paths; lm/writers.py shared with lm.eval_explain;
+  writers this machine cannot run are skipped with a reason; template always last). CLI: predict explain --address A
+  --txid T [--assistant], what-if --assistant. Default stays template-only (plan risk 26). Checked 25 Oct 06:43 on
+  one flagged tx (1Bbcsfxj..., b2afad6c...): CPU env -> text150m writes, qwen3b skipped (no transformers); GPU env ->
+  qwen3b writes in 39 s; both pass every guardrail check. Minor: Qwen warns "attention mask is not set" (pad = eos;
+  harmless for one unpadded prompt; lm/writers.py could pass attention_mask).
 
-DS1 ML EXTENSIONS (user, 24 Oct 20:10: "the rubric is more on ML ... best I can do and beyond"; ML first, LLM extra)
-- New steps (explorer.cli; all in `all`, settings.json sections of the same names; tests/test_extensions.py):
-  regression conformal ranges (CQR, regression.conformal) -> regression_results.csv (raw vs conformal coverage,
-  per-address min/median/max); fusion (explorer/fusion.py: two methods, one flag at the explorerMethod's flag
-  budget; tuning_fusion.csv + models/fusion.joblib; stability-gated like outliers.py) -> joins saved_methods,
-  scores, evaluate, explainabilityOrder (after regression), METHOD_NAMES, dark slate colour;
-  significance (address-level cluster bootstrap, eval_significance.csv, eval_plant_hits.csv);
-  sensitivity (recall vs plant strength, eval_sensitivity.csv; checks the default strength reproduces
-  eval_injection.csv); walk-forward (fit fractions 0.5-0.8, refit saved configs, eval_walkforward.csv);
-  ds2-check (frozen DS1 methods on the 2,933 DS2 histories meeting DS1's main rule, 1,000 plants per pattern per
-  reporting seed, eval_ds2.csv); 6 figures (eval_conformal, eval_fusion_frontier, eval_significance,
-  eval_sensitivity, eval_walkforward, eval_ds2_check).
-- RESULTS 24 Oct (CHANGELOG 24 Oct has the numbers): conformal fixes coverage (gap 90%: 0.787 -> 0.894); fusion
-  = baseline x1.1 + regression x3.0 (0.684 vs 0.655, p = 0.063, inside the tie margin -> baseline stays);
-  baseline CI 0.546-0.753; walk-forward ranking stable; DS2: baseline FIRST (0.494) ahead of fusion (0.471) and
-  regression (0.425), Spearman 0.905 DS1 vs DS2 -> the parameter-free baseline transfers best. All committed.
-- Run order: regression -> fusion -> scores -> evaluate -> significance -> sensitivity -> walk-forward ->
-  ds2-check -> figures. Runner: scratchpad run_ds1_ext.ps1 (BelowNormal priority so training keeps the CPU;
-  CPU jobs at normal priority cut pretraining from 11.5k to 9.5k tok/s on 24 Oct).
-- AFTER THE GPU QUEUE's evaluate (TxGPT method added): DONE 25 Oct 00:04 (window "AFTER QUEUE EVALUATE" re-ran
-  significance + figures, ALL DONE). NOT YET COMMITTED: models/txgpt*, txgpt tables/figure, the re-run
-  eval_* tables and figures (pytest + commit held back at 00:18 because free commit memory was 2.7 GB of 32.3
-  with training holding 10 GB; run them once memory frees). Re-run fusion only if txgpt_method should become a
-  candidate; sensitivity / walk-forward / ds2-check exclude TxGPT by design (PRECOMPUTED_ONLY; DS2 trained it).
-- TXGPT RESULTS (25 Oct 00:04): sizes tie on validation loss (S 0.675, M 0.677, L 0.677 mean of 3 seeds, std
-  0.012; txgpt_sizes.csv) -> S (0.8M parameters) kept. DS1: txgpt_method mean plant recall 0.547 [0.442, 0.638]
-  at a 1.5% flag rate (34 rows), best PR-AUC 0.333 (baseline 0.109) and precision lower bound 0.42 (baseline
-  0.13), stability 1.0; vs baseline -0.108, p = 0.18. Most precise, flags fewest; the baseline stays chosen.
+RESULTS (in the report, quote reports/tables/*.csv, never these lines)
+- DS1: baseline mean plant recall 0.655 (2 of 3 patterns >= 0.7), flag rate 10.4% at |z| >= 5 (no threshold met the
+  20% sanity rule: CR-03 option (a)), CI 0.546-0.753; runner-up K-Means; regression has the highest mean recall but
+  stability 0.61 < 0.7. Fusion = baseline x1.1 + regression x3.0, 0.684 vs 0.655, p = 0.063, inside the tie margin:
+  baseline kept. Conformal ranges fix coverage (gap 90%: 0.787 -> 0.894). TxGPT 0.547 [0.442, 0.638] at a 1.5% flag
+  rate (34 rows), best PR-AUC 0.333 (baseline 0.109), precision lower bound 0.42 (baseline 0.13), stability 1.0,
+  vs baseline -0.108, p = 0.18: most precise, flags fewest; the baseline stays chosen. (eval_significance.csv,
+  eval_selection.csv.)
+- TxGPT sizes tie on validation loss (S 0.675, M 0.677, L 0.677, mean of 3 seeds, std 0.012; txgpt_sizes.csv): S
+  (0.8M parameters) kept. S seed 3 (0.661 vs ~0.682) was a seed-dependent validation half; re-scored on the full
+  validation set 27 Oct, choice unchanged.
+- DS2 (2,933 histories meeting DS1's main rule, 1,000 plants per pattern per reporting seed): baseline first 0.494,
+  fusion 0.471, regression 0.425; Spearman 0.905 vs DS1 (eval_ds2.csv): the parameter-free baseline transfers best.
+- DS10: TxGPT first 0.598, baseline 0.431 (section DS10).
+- Classifiers: DS3 AF random forest test F1 ~0.815 (~0.90 on steps 35-42, ~0.05 on 43-49). DS4 temporal near chance
+  (drift); held-out families: recall 1-3% except logistic regression, whose ~48% comes with a ~49% false-positive
+  rate. Label check: unsupervised methods are below chance against Elliptic's labels and on BitcoinHeist (PR-AUC /
+  prevalence 0.57-0.80), supervised RF 10-12x: "unusual" is not "labelled illicit".
+- Statistics (27 Oct; CHANGELOG 27 Oct; figures stats_methods.pdf, stats_classifiers.pdf, stats_writers.pdf;
+  section in reports/assistant_tests.pdf): (A) explorer/distribution.py, every scoring method over 100 / 100 / 20
+  plant seeds (DS1 / DS10 / DS2, seeds from 70000): the baseline ranks first on unseen data in 99-100% of seeds
+  (stats_methods_*.csv). (B) explorer/classify_distribution.py, classifiers over 10 seeds + a 1,000-draw test
+  bootstrap (DS3 AF temporal, DS4 temporal and random; stats_classifiers_*.csv). (C) python -m lm.eval_stats,
+  writers pooled over 12 test sets, fully correct 152M 72.7% [71.6, 73.8], Qwen r1 88.9% [88.1, 89.8], Qwen r2 92.7%
+  [92.0, 93.4]; McNemar: r2 better on synthetic / hard / balanced / max_shift and the glossary, never worse
+  (stats_writers_*.csv). On the ten randomized sets alone, mean fully correct 70.3 / 87.5 / 92.0%.
+- 152M: pretraining 7,630 steps, 2.0B tokens, validation loss 3.1305 (perplexity 22.9; Chinchilla's fit predicts
+  3.38 for this size and data); chat 1,526 steps, validation loss 1.441; explanation 382 steps, 0.071.
+- Qwen r1 (Kaggle T4, fp16 loss scaling): 1,446 of 1,446 steps (4.64M training tokens, 326 tok/s), best validation
+  loss 0.0752 (final 0.0920), retention loss 0.754 on 200 DS6 conversations; DS7 test (445 prompts, 5,106 s): numbers
+  1.0, guardrail 1.0, limitation line 1.0, banned 0, coverage 1.0, ROUGE-L 0.783; glossary ROUGE-L 0.103.
+- Qwen r2: early stop at step 2,600 / 5,820 (best validation loss 0.0234), 7.9 h on 2 x T4 at 619 tok/s; re-scored
+  here: DS7 guardrail 99.8%, 1 direction error, fully correct 96.2%; DS10 99.3% / 2 / 96.6%; glossary key facts
+  41.3% (r1 15.3%), glossary fully right 31.1% (r1 6.8%); copy rate on flagged prompts 96% -> 0%, so ROUGE-L
+  against the template falls (0.783 -> 0.669) while every check rises.
+- Round 1 under the strict measures: DS7 fully correct 152M 83.8% / Qwen 91.2%, DS10 81.4% / 92.4%; "nothing stands
+  out" ~80% for both; tie-aware order/reasons: DS7 87.0% / 95.5%. Direction check C6: DS7 152M 2 / Qwen 5 direction
+  errors, pass 99.3% / 98.9%. Before the strict measures: DS7 guardrail Qwen 1.0 (ROUGE-L 0.783), 152M 0.998
+  (0.683; 0.719 against the row's own reply); Qwen copied the template verbatim on 150 of 156 flagged DS7 prompts
+  (96%). The ad hoc direction check of 25 Oct that led to C6: on the DS7 test Qwen wrote a wrong comparison word on
+  4 of 445 prompts (all "Quieter week" when busier; one flagged, test-00285), the 152M model on 1 (test-00127).
 
-KAGGLE (user, 24 Oct 20:20: "pop that fine tune of the qwen onto Kaggle")
-- The Qwen 3B fine-tune moves to Kaggle: kaggle/qwen3b_explain.ipynb (pinned to commit ef3a158; clones the public
-  repo, pip-installs the environment-gpu.yml pins, rebuilds the DS6 chat subset and asserts every data file's
-  SHA-256 equals the local copy (verified on a fresh clone 24 Oct: all 6 match), bench, train with --max-hours 11,
-  eval on DS7 test, writes kaggle_run.json). Settings: GPU T4 x2 (or P100), Internet on, Save & Run All (Commit).
-  Resume across sessions: previous output as input + RESUME_FROM. T4/P100 lack native bf16 -> fp16 with loss
-  scaling (lm.qlora.compute_dtype; meta.json records hardware + fp16_loss_scaling).
-- Pushed with the Kaggle CLI (user tritran72): kernel-metadata.json in the repo keeps KAGGLE_USERNAME; the
-  push copy with the real id is in the scratchpad (kaggle_push). Push: kaggle kernels push -p <folder>
-  --accelerator NvidiaTeslaT4. Status/logs: kaggle kernels status|logs [-f] tritran72/cos30049a2-qwen3b-explain.
-- Bring home: kaggle kernels output tritran72/cos30049a2-qwen3b-explain -p <dir>; then runs/qwen3b-explain/ ->
-  runs/qwen3b-explain/, reports/tables/assistant_eval_qwen3b.csv -> reports/tables/, and merge its row from
-  assistant_eval_with_qwen3b.csv into assistant_eval.csv. The local queue no longer has Qwen steps.
-- KAGGLE RUN DONE 25 Oct 06:38 (version 2, T4, fp16 loss scaling): 1,446 of 1,446 steps (4.64M training tokens,
-  326 tok/s), best validation loss 0.0752 (final 0.0920), retention loss 0.754 on 200 DS6 conversations. DS7 test
-  (445 prompts, 5,106 s on the T4): number faithfulness 1.0, guardrail pass 1.0, limitation line 1.0, banned 0,
-  feature coverage 1.0, ROUGE-L 0.783; glossary ROUGE-L 0.103. Kaggle's own torch was 2.11.0+cu128 (the notebook pins
-  transformers/peft/bitsandbytes/accelerate, not torch; kaggle_run.json records it). Brought home 06:40: run
-  folder + Kaggle logs -> runs/qwen3b-explain/, assistant_eval_qwen3b.csv -> reports/tables/, its row merged into
-  assistant_eval.csv (same replace-by-model rule as lm.eval_explain).
+LANGUAGE-MODEL TEST SETS AND MEASURES
+- DS7 v1: 10,160 pairs (9,149 train / 561 val / 450 test; 445 test prompts); v1 test files frozen (ds10-check keeps
+  explain.jsonl). DS7 v2 (build-ds7 --settings ds7v2; built on Kaggle and by the teammate, byte-identical): 36,210 /
+  2,385 / 1,637 + glossary_test 74.
+- Glossary: 306 pairs on 65 topics (tools/make_glossary.py), held-out QUESTIONS on taught topics, not held-out topics
+  (round 1's 0 / 5 was certain: its test topics were never taught). Fact-checked by Claude at the user's request
+  against code, settings and tables (six answers fixed); no human read-through.
+- Randomized sets, data/processed/random_test/ (committed, frozen; explorer/random_test.py; template control 1.0 on
+  all): real, synthetic, hard (500 each; settings randomTest seeds 50000 / hardSeed 50001), balanced (883 real
+  prompts, up to 100 per case, from DS10 + DS2's 173 test-split addresses, pool 46,513, 65% "nothing stands out";
+  build-balanced-test, seed 50002), and six from build-more-tests: crawl_ds1, crawl_ds2, crawl_ds10, close_calls,
+  extreme, max_shift. Cleaning done in pandas, not KNIME (user suggested KNIME; reasons in CHANGELOG).
+- Measures: guardrail = numbers, limitation line, wording, direction check (C6: a comparison word must agree with
+  the feature's z sign), verdict_ok. Strict = reasons_ok, order_ok (tie-aware), binding_ok -> fully_correct; plus
+  fully_correct_macro / _nothing_stands_out / _unique, per-case tables assistant_eval_by_case*.csv, copy rate.
+- Adoption rule (KAGGLE_LM_PLAN.md section 3): a round-2 writer replaces round 1 only if guardrail and numbers are no
+  lower, direction errors no more, and open-question key-fact accuracy is 10+ points higher.
+- Regenerate after new results: python tools/test_report.py -> reports/assistant_tests.pdf; python tools/cards.py
+  (DATA_CARD / MODEL_CARD tables); python -m lm.eval_stats.
 
 DS10 (user, 25 Oct: "put it into testing of all models and mark down the results for further reports")
-- A teammate (Le Quang Anh Hoang) collected an independent DS1-style snapshot on 23 Oct (Blockstream Esplora, their
-  own seed and blocks, DS1's rule: 24 main + 3 short-history addresses, 5,785 transactions) and sent it as a zip
+- Le Quang Anh Hoang collected an independent DS1-style snapshot on 23 Oct (Blockstream Esplora, own seed and
+  blocks, DS1's rule: 24 main + 3 short-history addresses, 5,785 transactions) and sent it as a zip
   (E:\Dataset-bitcoin.zip, SHA-256 886f7353...). Their files are unchanged in data/processed/ds10/teammate/.
-- explorer/ds10.py, settings -> ds10, tests/test_ds10.py. Steps:
-  python -m explorer.cli ds10         refetch with DS1's client (cached in data/raw/ds10/, git-ignored), checks, cut
-                                      at the teammate's last block 972,828, row-by-row cross-check, writes
-                                      data/processed/ds10/{histories.json.gz, transactions.csv, manifest.json}
-  python -m explorer.cli ds10-check   every model frozen (GPU env is faster: TxGPT scores ~240k rows); in `all`
-  then lm.eval_explain --test data/processed/ds10/explain.jsonl --tag ds10 for template / text150m / qwen3b
-  (models/assistant/model.pt, models/qwen3b_adapter).
+- explorer/ds10.py, settings -> ds10, tests/test_ds10.py. `python -m explorer.cli ds10` refetches with DS1's client
+  (cache data/raw/ds10/, git-ignored), checks, cuts at the teammate's last block 972,828, cross-checks row by row,
+  writes data/processed/ds10/{histories.json.gz, transactions.csv, manifest.json}. `ds10-check` runs every model
+  frozen (in `all`; GPU env faster: TxGPT scores ~240k rows); then lm.eval_explain --test
+  data/processed/ds10/explain.jsonl --tag ds10 for each writer.
 - Leakage: 0 addresses shared with DS1, DS1's candidate pool or DS2, so no model (TxGPT included) saw DS10.
-- Cross-check: 5,785 of 5,785 rows identical to the teammate's CSV (block, received, sent); 27 of 27 addresses;
-  every DS1 history check passed (ds10_crosscheck.csv, manifest.json).
-- RESULTS (eval_ds10.csv, eval_ds10_check.pdf; 1,646 evaluation rows, 750 plants on the reporting seeds):
-  TxGPT 0.598 [0.534, 0.657] (DS1 0.547; flag rate 3.8%; dormant 0.93, spike 0.72) FIRST; baseline 0.431
-  [0.334, 0.528] (DS1 0.655, DS2 0.494; 0 addresses over the sanity limit); fusion 0.398; regression 0.345 (3
-  addresses over); regression_interval 0.158; K-Means 0.157; IF 0.151; LOF 0.149; DBSCAN 0.138. Burst recall
-  collapses for every method (baseline 0.066 per transaction vs 0.381 on DS1): DS10's addresses are busier and
-  less even (ds10_activity.csv: median gap 13.1 h vs 23.1 h; 7-day count IQR 6 vs 4). Spearman of the method
-  ranking: DS10 vs DS2 0.81 (8 methods), vs DS1 0.67 (9). Reading: the methods travel, DS1-tuned thresholds
-  less so; TxGPT, trained on DS2's broad population, generalises best.
-- Assistant on DS10 (291 prompts: 109 flagged, 155 not flagged, 27 unscored; assistant_eval_ds10.csv):
-  template 1.0 everywhere (control); 152M guardrail pass 1.0, numbers 1.0, coverage 1.0, ROUGE-L 0.678;
-  Qwen 3B (done 08:13, 2,098 s on the 3060) guardrail pass 1.0, numbers 1.0, coverage 0.998, ROUGE-L 0.793.
-  Ad hoc direction check (scratchpad direction_check.py, matches lines by the feature's phrase; template 0):
-  Qwen 4 of 291 wrong comparison words (ds10-00032, -00033, -00036, -00212), 152M 1 (ds10-00153): same as DS7.
-- Classifiers (DS3/DS4) cannot run on DS10: they need those datasets' own features.
+  Cross-check: 5,785 of 5,785 rows identical (block, received, sent); 27 of 27 addresses; every DS1 history check
+  passed (ds10_crosscheck.csv, manifest.json).
+- Results (eval_ds10.csv, eval_ds10_check.pdf; 1,646 evaluation rows, 750 plants on the reporting seeds): TxGPT
+  0.598 [0.534, 0.657] (DS1 0.547; flag rate 3.8%; dormant 0.93, spike 0.72) FIRST; baseline 0.431 [0.334, 0.528]
+  (DS1 0.655, DS2 0.494; 0 addresses over the sanity limit); fusion 0.398; regression 0.345 (3 addresses over);
+  regression_interval 0.158; K-Means 0.157; IF 0.151; LOF 0.149; DBSCAN 0.138. Burst recall collapses for every
+  method (baseline 0.066 per transaction vs 0.381 on DS1): DS10's addresses are busier and less even
+  (ds10_activity.csv: median gap 13.1 h vs 23.1 h; 7-day count IQR 6 vs 4). Spearman of the method ranking: DS10
+  vs DS2 0.81 (8 methods), vs DS1 0.67 (9). Reading: the methods travel, DS1-tuned thresholds less so; TxGPT,
+  trained on DS2's broad population, generalises best.
+- Assistant on DS10 (291 prompts: 109 flagged, 155 not, 27 unscored; assistant_eval_ds10.csv): template 1.0
+  everywhere (control); 152M guardrail 1.0, numbers 1.0, coverage 1.0, ROUGE-L 0.678; Qwen r1 (2,098 s on the 3060)
+  guardrail 1.0, numbers 1.0, coverage 0.998, ROUGE-L 0.793. Ad hoc direction check (before C6): Qwen 4 of 291
+  (ds10-00032, -00033, -00036, -00212), 152M 1 (ds10-00153).
+- Classifiers (DS3 / DS4) cannot run on DS10: they need those datasets' own features.
 
-MAC REPLICATION (26 Oct; fresh clone at 5c07ebe, README sections 2-4 followed exactly; Mac's tree left dirty with
-the rebuilt outputs for inspection: git restore . resets it)
-- Set-up: Miniconda 26.9.4, conda env create 6.8 min; pytest 185 passed, 2 skipped (first run 2.5 min while
-  macOS scans the new libraries, then 19 s). Quick check (README 3): every output identical (totals 377 / 367 / 3 /
-  3, 214 days; what-if 5.98, F1 z 5.88; same template text; exit 2; --assistant falls back with skippedWriters).
-- all --offline 65 min (ds10-check 42 min of it, README says 25-35) + figures 11 s, every step exit 0. Template
-  eval DS7 (445) and DS10 (291): all 1.0, identical.
+DS1 ML EXTENSIONS (user, 24 Oct 20:10: "the rubric is more on ML ... best I can do and beyond"; ML first, LLM extra)
+- Steps (explorer.cli; all in `all`; settings sections of the same names; tests/test_extensions.py): regression
+  conformal ranges (CQR, regression.conformal -> regression_results.csv: raw vs conformal coverage, per-address
+  min/median/max); fusion (explorer/fusion.py: two methods, one flag at the explorerMethod's flag budget;
+  tuning_fusion.csv + models/fusion.joblib; stability-gated like outliers.py; joins saved_methods, scores, evaluate,
+  explainabilityOrder after regression, METHOD_NAMES, dark slate colour); significance (address-level cluster
+  bootstrap, eval_significance.csv, eval_plant_hits.csv); sensitivity (recall vs plant strength,
+  eval_sensitivity.csv; the default strength reproduces eval_injection.csv); walk-forward (fit fractions 0.5-0.8,
+  refit saved configs, eval_walkforward.csv); ds2-check (frozen DS1 methods on DS2, eval_ds2.csv); figures
+  eval_conformal, eval_fusion_frontier, eval_significance, eval_sensitivity, eval_walkforward, eval_ds2_check.
+- Run order: regression -> fusion -> scores -> evaluate -> significance -> sensitivity -> walk-forward -> ds2-check ->
+  figures. Sensitivity / walk-forward / ds2-check exclude TxGPT by design (PRECOMPUTED_ONLY; DS2 trained it). Re-run
+  fusion only if txgpt_method should become a candidate. On the PC, CPU jobs at normal priority cut pretraining
+  from 11.5k to 9.5k tok/s (24 Oct), hence the BelowNormal runner (scratchpad run_ds1_ext.ps1).
+
+MAC REPLICATION (26 Oct; fresh clone at 5c07ebe, README sections 2-4 followed exactly; `git restore .` resets the
+rebuilt outputs)
+- Set-up: Miniconda 26.9.4, conda env create 6.8 min; pytest 185 passed, 2 skipped (first run 2.5 min while macOS
+  scans the new libraries, then 19 s). Quick check (README 3): every output identical (totals 377 / 367 / 3 / 3, 214
+  days; what-if 5.98, F1 z 5.88; same template text; exit 2; --assistant falls back with skippedWriters).
+- all --offline 65 min (ds10-check 42 min of it; README said 25-35) + figures 11 s, every step exit 0. Template eval
+  DS7 (445) and DS10 (291): all 1.0, identical.
 - IDENTICAL (<= 1e-4): transactions, plants, baseline, IF, LOF, K-Means, DBSCAN, regression_interval, TxGPT, every
-  tuning table, on DS1, DS2 and DS10. DIFFERENT beyond README 11's 0.01 tolerance: regression and fusion only.
-  DS1 regression 0.673 -> 0.659 (dormant 0.388 -> 0.348); fusion 0.684 -> 0.675, p 0.063 -> 0.325, saved
-  multipliers 1.1/3.0 -> 1.3/2.5; DS2 fusion 0.471 -> 0.437, regression 0.425 -> 0.421; DS10 fusion 0.398 ->
-  0.306, regression 0.345 -> 0.343 (the two swap places). No conclusion changes (baseline chosen, fusion not
-  better, DS2 baseline first, DS10 TxGPT first).
+  tuning table, on DS1, DS2 and DS10. DIFFERENT beyond README 11's 0.01 tolerance: regression and fusion only. DS1
+  regression 0.673 -> 0.659 (dormant 0.388 -> 0.348); fusion 0.684 -> 0.675, p 0.063 -> 0.325, saved multipliers
+  1.1 / 3.0 -> 1.3 / 2.5; DS2 fusion 0.471 -> 0.437, regression 0.425 -> 0.421; DS10 fusion 0.398 -> 0.306,
+  regression 0.345 -> 0.343 (the two swap places). No conclusion changes (baseline chosen, fusion not better, DS2
+  baseline first, DS10 TxGPT first).
 - CAUSE (proved): features.csv differs between Apple Silicon and the Intel PC at ~1e-13 (numpy last-bit rounding;
   5,848 cells), and the gap model (HistGradientBoosting) amplifies it into a different model (predictions up to
   0.232 apart, scales 0.86-1.25x). Not threads (1-16 threads give the same Mac model); the Mac fit on the PC's
-  features.csv matches the committed model. FIX (tested, NOT applied; user's call, needs a rerun + results-v1.1):
-  write features.csv with float_format="%.12g": both machines then give identical features and identical gap
-  models. Worth one sentence in the report's robustness paragraph either way.
-- README / code findings, not yet fixed: (1) fresh Miniconda refuses env create until Anaconda's ToS are accepted
-  (non-interactive: error; nodefaults in environment.yml does not help): suggest Miniforge or mention the prompt;
-  (2) no pytest config, so a full _context/ (A1 prototype tests) breaks collection with 28 errors: add pytest.ini
-  testpaths = tests; (3) "under a minute" holds after the first run; (4) ds10-check time; (5) eda_tests.csv loses
-  its 6 DS4 rows without the DS4 download, so git status reports/tables shows it; (6) data/processed files are
-  committed with CRLF (-text), so 16 rebuilt files show as modified on macOS/Linux (manifest hashes still match;
-  to_csv(lineterminator="\n") would fix it); (7) tracked reports/logs/*.log change on every run; numpy/Accelerate
-  "divide by zero encountered in matmul" warnings flood the logs on macOS (harmless).
+  features.csv matches the committed model. FIX (tested, NOT applied; user's call; rerun + results-v1.1): write
+  features.csv with float_format="%.12g": both machines then give identical features and gap models. Worth one
+  sentence in the report's robustness paragraph either way.
+- README / code findings, FIXED 27 Oct: Miniforge / ToS note, pytest.ini, timings, LF line endings for processed
+  CSVs, logs churn, eda_tests.csv without DS4. Still true: numpy / Accelerate "divide by zero encountered in matmul"
+  warnings flood the logs on macOS (harmless).
 
-NOTHING RUNNING (training phase closed 25 Oct 2026; every job below finished, and its results are committed)
-- Status any time: python tools/status.py (crawl, supervisor, training, GPU; --kaggle OWNER/NOTEBOOK adds a Kaggle run).
-- PRETRAINING DONE 24 Oct 21:07: runs/text-150m/model.pt, 7,630 steps (2.0B tokens), final validation loss
-  3.1305 (perplexity 22.9; Chinchilla's fit predicts 3.38 for this size and data).
-- GPU QUEUE DONE 25 Oct 03:10 (python tools\run_queue.py --plan configs\queue_after_pretraining.json): 22 of 22,
-  0 failed (paused 22:11-22:34 24 Oct). TxGPT 9 runs -> S kept (sizes tie); chat-152m 00:03-02:44 (1,526 steps,
-  validation loss 1.441); explain-152m 02:44-03:04 (382 steps, 0.071); eval-152m on the DS7 test set 03:04-03:10.
-  Re-running the same command skips finished steps.
-- KAGGLE QWEN DONE 25 Oct 06:38 (see KAGGLE); its outputs are in runs/qwen3b-explain/ and models/qwen3b_adapter/.
-- DS2 DONE 24 Oct 17:46: 4,012 addresses, 898,490 rows, every check passed. DS7 10,160 pairs (9,149 train / 561
-  val / 450 test); data/txgpt 9.06M training tokens (3,611 / 201 / 200 addresses).
-- DS10 DONE 25 Oct (see DS10).
-- Long jobs run in their own terminal (cmd /k, or supervised with tools/supervise.py), never as children of
-  Claude's tool shell: a tool error recycles that shell and kills them (the DS2 check died that way on 24 Oct).
-  The training-era windows (PRETRAINING, GPU QUEUE, LIVE STATUS, KAGGLE QWEN, AFTER QUEUE EVALUATE, DS1 EXTENSIONS)
-  were closed on 25 Oct at the user's request.
-- Kaggle CLI 2.2.5 is in cos30049-a2-gpu; the token is in C:\Users\ADMIN\.kaggle\access_token (never in the repo);
-  the user was advised to rotate it now that the run is over.
-- If the DS2 crawl is ever re-run: mempool.space only, 4 workers (8 are no faster), supervised; no paid
-  Blockstream key (user's decision).
+INCIDENTS (user, 24 Oct: "put this in the context for it to be written on the report"; CHANGELOG 24 Oct has the
+full entry; use in the report's reproducibility / robustness paragraph and the risk discussion)
+- POWER CUT, Sat 24 Oct ~19:16 GMT+7: the PC was unplugged mid-pretraining (last console line 19:14:31 at step
+  7,447 / 7,630; rebooted 19:17). Lost: 28 optimizer steps (7,419 -> 7,447, 7.3M tokens, ~10 min of GPU time) plus
+  ~27 min idle before the restart. Nothing else lost: ckpt_last.pt (step 7,419, saved 19:05:57) and model_best.pt
+  (step 7,400) loaded with every tensor finite and the optimizer state present; all 85 files written since 17:30
+  (DS2 parquet 898,490 rows, DS7 splits, token files, tables, figures, code) parsed cleanly; git fsck clean; queue
+  state intact (4/25). Recovery = the same commands (atomic checkpoints, a queue that skips finished steps).
+  Hardening the same evening: fsync before every checkpoint rename (lm/train.py save_atomic, tools/run_queue.py
+  state); the Qwen trainer's adapters saved file by file atomically with the adapter weights inside state.pt
+  (lm/qlora.py save_adapter). Optional, user's call: BIOS "Restore on AC power loss" + auto-login would restart the
+  PC, not the jobs; a UPS is the real fix.
+- SHELL KILL, 24 Oct ~21:35: see ENVIRONMENT (long jobs never as children of Claude's tool shell).
+- PYTEST HIDDEN FAILURE, 26 Oct: piping pytest into tail hid a failing test before a commit (fixed in 654fc41).
 
-TRAINING SPEED (checked 23 Oct 02:20)
-- Software is near the practical limit: SDPA (flash) attention, fused AdamW, bf16 autocast, TF32, pinned memory;
-  MFU ~49% on the RTX 3060.
-- The GPU is THERMALLY THROTTLED: "SW Thermal Slowdown" active (4.7 h of it since boot), SM clock ~1,867 MHz of 2,130,
-  85 C, fan 100%; power limit now reads 153 W (was 170 W). Better airflow (side panel off, desk fan, clean filters)
-  or an Afterburner undervolt could give up to ~10% (~4 h of the remaining pretraining). User's call; an unstable
-  undervolt crash only loses work since the last checkpoint (30 min) and the run resumes.
-- torch.compile: possible after all. triton-windows 3.3.1.post21 matches torch 2.7.1 (pip dry-run: installs cleanly).
-  Typically 10-25% on small GPTs. Testing needs pretraining paused ~15 min (both cannot fit in 12 GB); then resume
-  with "compile": true. Not tried; user's call. If tried: bench first, keep the old setting if it fails.
-- GPU queue after pretraining (~13 h, done about Sun 25 Oct midday; M2 is Thu 29 Oct, so no need to pause
-  pretraining): TxGPT 9 runs ~2.5 h -> 152M chat ~2.4 h (100M tokens) -> 152M DS7 stage ~0.5 h -> Qwen ~6 h
-  (10.5M tokens at an estimated ~500 tok/s; run `--bench` first) -> evaluations ~1.5 h.
+TRAINING ON THE PC (round 1, historical; checked 23 Oct 02:20)
+- Software near the practical limit: SDPA (flash) attention, fused AdamW, bf16 autocast, TF32, pinned memory; MFU
+  ~49% on the RTX 3060. The GPU was thermally throttled ("SW Thermal Slowdown", SM ~1,867 of 2,130 MHz, 85 C, fan
+  100%, power limit 153 W of 170 W); better airflow or an undervolt could have given ~10%. torch.compile possible
+  (triton-windows 3.3.1.post21 matches torch 2.7.1) but not tried.
+- GPU queue after pretraining (python tools\run_queue.py --plan configs\queue_after_pretraining.json; re-running skips
+  finished steps): TxGPT 9 runs -> 152M chat -> 152M DS7 stage -> evaluations; Qwen moved to Kaggle.
+- If the DS2 crawl is ever re-run: mempool.space only, 4 workers (8 are no faster), supervised; no paid Blockstream
+  key (user's decision).
 
-DONE (committed)
-- 25 Oct (phase closed): GPU queue 22/22, Kaggle Qwen 3B, both writers installed in models/ (writerOrder qwen3b,
-  text150m confirmed), DS10 added and every model tested on it, eval_ds10_check.pdf, docs/REPORT_PLAN.md,
-  AI_USE_LOG 24-25 Oct. Commits a874e5e (TxGPT), fbab14a (152M), e34638e (Qwen), then the DS10 commit.
-- DS1 snapshot; DS3/DS4 classification; DS5 corpus; DS1 pipeline end to end: baseline recommended (runner-up
-  K-Means; regression has the highest mean recall but stability 0.61 < 0.7). Baseline sweep: no threshold meets the
-  20% sanity rule; fell back to |z| >= 5.0 (CR-03, team).
-- Label check: unsupervised methods are BELOW chance against Elliptic's labels and below chance on BitcoinHeist
-  (PR-AUC / prevalence 0.57-0.80), supervised RF 10-12x: "unusual" is not "labelled illicit".
-- Reviewer sheet/score code; key in data/interim/reviewer/ (git-ignored).
-- Assistant pipeline: explorer/ds7.py (build-ds7), explorer/assistant.py (prompt, guardrail, explain cascade
-  152M -> Qwen -> template), lm/chat_subset.py (2,500 DS6 train + 25 val + 200 held-out retention conversations),
-  lm/qlora.py (Qwen2.5-3B-Instruct; --bench, --smoke, retention loss), configs/qwen3b_explain.json,
-  lm/eval_explain.py. Qwen weights cached. DS7 is DS1-only (1,003 pairs) until DS2 exists.
-- Figures (19 PDFs, explorer/plots.py, `figures`), reports/tables/eda_tests.csv, notebooks/01_eda.ipynb.
-- 24 Oct evening (commits 80bbe81, ea85038, 46d8336, 1731dda): queue reordered (Qwen first); guarded Assistant in
-  predict.py (Predictor.explain, `predict explain --assistant`, lm/writers.py, settings -> assistant); address
-  profiles + DS2 coverage (explorer/profiles.py, eda_ds2_coverage.pdf, eda_profiles.pdf, profiles*.csv,
-  ds2_coverage.csv); TxGPT size figure code (plots.fig_txgpt_sizes). Tests 160 passed, 2 skipped.
-- 23 Oct morning: explorer/esplora.py retries dropped connections (RemoteDisconnected, IncompleteRead) instead of
-  crashing; tools/supervise.py restarts crashed long jobs (tests: test_esplora, test_supervise).
-- Proof-check fixes (23 Oct 02:20-02:35): 152M greedy decoding no longer applies the repetition penalty to the prompt
-  (it would have hurt number faithfulness); DS7 fallback intros no longer contradict a flag; Qwen trainer ETA after
-  resume; three notebook notes corrected (selection reasoning, burst claim, gap buckets).
 
-NEXT, IN ORDER (26 Oct; LM round 2 is docs/KAGGLE_LM_PLAN.md, the report plan is docs/REPORT_PLAN.md)
-0. DONE 26 Oct: the Mac replication (MAC REPLICATION above). Decide: the features.csv %.12g fix (results-v1.1)
-   and the README fixes (1)-(7).
-0a. LM ROUND 2, ONE ACCOUNT (KAGGLE_LM_PLAN.md section 6; the user continues on the PC): Mon 26 the user checks
-   the quota and names the glossary reviewer. Tue 27 QWEN SIDE FIRST: C5 Qwen config, C6 direction check + eval
-   columns, C7 DS7 v2, C8 glossary 300 pairs (human read-through), C9 Qwen notebook; pytest, push; Kaggle CPU
-   notebook builds DS7 v2, chat data and 2B DS5 continuation tokens. Wed 28-Thu 29 Qwen v2 training (about 15 h).
-   Wed 28-Thu 29 the 152M side: C1 --max-hours, C2 DDP, C3 wsd, C4 --continue-from, C9 152M notebook; the user
-   uploads cos30049a2-text150m-base from the PC (runs/text-150m/model.pt, data/text/{tokenizer.json, val.bin,
-   meta.json, state.json}). Fri 30 Qwen evaluation + 152M bench, fp16 check, gate. Sat 31 Oct 07:00-Sun 1 Nov
-   23:59 152M pretraining (about 23 h). Mon 2 Nov 152M chat + explanation stages + evals. Tue 3 Nov adoption rule,
-   tables home, results-v1.1.
-1. PART OF ROUND 2 (was DECIDE, 25 Oct; C6): add a direction check to the guardrail
-   (explorer/assistant.check: a comparison word must agree
-   with the feature's z sign) and re-score the saved DS7 and DS10 answers (no regeneration); fix the template's
-   "Relative size" wording ("Large compared with the usual amount: 0.4x" when the usual is 0.3x, test-00272).
-   Found 25 Oct by an ad hoc check (not yet in any table): on the DS7 test set Qwen wrote a wrong comparison word
-   on 4 of 445 prompts (all "Quieter week" when busier; one flagged, test-00285) and the 152M model on 1
-   (test-00127); all pass the current guardrail. Also: Qwen copies the template verbatim on 150 of 156 flagged
-   prompts, which is why its pass rate is 100%.
-2. Check TxGPT S seed 3's validation loss (0.661 vs ~0.682 for seeds 1-2; txgpt_runs.csv) before freezing.
-3. Results tagged results-v1 on 25 Oct at the user's request (after Qwen's DS10 row). If NEXT 1 or 2 changes any
-   number, re-run, commit and tag results-v1.1; never move a pushed tag.
-4. Packaging: models/assistant (152M, fp32 610 MB; fp16 export ~305 MB planned) and models/qwen3b_adapter (114 MB)
-   are git-ignored (over 100 MB); publish as GitHub release assets with SHA-256 only with the user's OK.
-5. Write: DATA_CARD.md (DS1-DS10), MODEL_CARD.md, LICENSES.md (+ Qwen licence text and NOTICE, "Built with Qwen")
-   (README.md DONE 25 Oct; the old LM guide is docs/LM_TRAINING.md); then the report (docs/REPORT_PLAN.md; LaTeX, <= 2,850 body words). The DS7 glossary
-   draft (160 pairs, tools/make_glossary.py) awaits the user's skim.
-6. DECIDED 23 Oct (the team delegated all open decisions to Cao Tri Tran): CR-03 option (a) (keep |z| >= 5,
-   report the behaviour-change finding); Qwen-Instruct switch and roles accepted; explorerMethod = baseline.
-   Still needs other people: the blind reviewer check (not anyone who built the scoring), weekly A2 meeting
-   minutes, and the signed contribution form (anyone under 33% is scaled down; the A1 form gave two members 20%).
+PART 3 - HISTORY (newest first; CHANGELOG.md has every entry in full)
+=====================================================================
 
-RESULTS SO FAR (quote reports/tables/*.csv, never these)
-- DS4 temporal near chance (drift); held-out families: recall 1-3% except logistic regression, whose ~48% comes with a
-  ~49% false-positive rate. DS3 AF random forest test F1 ~0.815; F1 ~0.90 on steps 35-42, ~0.05 on 43-49.
-- DS1: baseline mean plant recall 0.655 (2 of 3 patterns >= 0.7), flag rate 10.4% at |z| >= 5; fusion 0.684 (p = 0.063,
-  inside the tie margin: baseline kept); TxGPT 0.547 at a 1.5% flag rate, best PR-AUC 0.333 (eval_significance.csv,
-  eval_selection.csv). TxGPT sizes tie (S 0.675, M 0.677, L 0.677): S kept (txgpt_sizes.csv).
-- DS2 (2,933 histories): baseline first (0.494), Spearman 0.905 vs DS1 (eval_ds2.csv).
-- DS10 (unseen teammate snapshot): TxGPT first (0.598), baseline second (0.431) (eval_ds10.csv; section DS10).
-- Assistant, DS7 test (assistant_eval.csv): Qwen 3B guardrail pass 1.0, ROUGE-L 0.783; 152M 0.998, 0.683.
-  DS10: assistant_eval_ds10.csv.
+27 OCT, MORNING (HEAD 3fa319a, all pushed): statistics A / B / C done; README Mac fixes + pytest.ini; DATA_CARD.md /
+MODEL_CARD.md (tables from tools/cards.py); LICENSES.md, NOTICE, licenses/QWEN_RESEARCH_LICENSE.txt ("Built with
+Qwen"); tools/package.py --tag v1.0 [--with-models] (zip + SHA256SUMS.txt; trial from HEAD: 71.7 MB, 477 files,
+data hashes match the manifests); TxGPT selection on the full validation set (unchanged). 08:20 the user pulled on
+the Mac; 08:30 the Qwen message arrived (PART 1).
 
-WAITING ON THE USER / TEAM
-- Round 2 (26 Oct): the user's quota (Settings; does T4 x2 count as one hour per hour?). The glossary was
-  fact-checked by Claude at the user's request instead of a reviewer. Modal account (optional, extra GPU hours).
-  The teammate's token was pasted into the chat: ask them to regenerate it after the project.
-- The features.csv %.12g fix and the README fixes (MAC REPLICATION). Rotating the Kaggle token (the round-2
-  notebooks are pushed with the Kaggle CLI, so rotate before 27 Oct and update C:\Users\ADMIN\.kaggle). The
-  release-asset OK (NEXT 4).
-- _context/ (git-ignored) partly restored 25 Oct from files the user put on E:: the A1 report
-  (_context/a1_submission/HCMC_COS30049.1_4_Assignment1_Report.pdf, text in _context/text/a1_report.txt) and the
-  brief as markdown (_context/brief_assignment2_instructions.md; same content as docs/brief/). The rest (slides,
-  minutes, A1 working files) is still on the Mac. Windows Update paused 1 month (23 Oct); sleep/hibernate off.
-- Send reports/reviewer/sheet.csv + INSTRUCTIONS.md to two teammates who did not build the scoring; then
-  python -m explorer.cli reviewer-score --ratings ratings_<a>.csv ratings_<b>.csv.
-- Skim the glossary draft (tools/make_glossary.py); one manual DS1 transaction check on a block explorer (anyone).
-- Contribution form shares before signing. models/heist_best.joblib (263 MB) is git-ignored (packaging reminder).
+26-27 OCT, OVERNIGHT (user asleep; full decision rights given to Claude; ~20% of the user's Claude weekly limit
+left until 27 Oct 12:00, so the work was lean; checklist docs/TODO.md)
+- Showcase page (artifact HREXw8jomq4fTu838wyAYo); tie-aware order / reasons checks; six more randomized test sets
+  (build-more-tests); PDF test report (tools/test_report.py); the teammate's DS7 v2 build byte-identical to the
+  user's.
+- 01:10 honglquanganh/cos30049a2-text150m-train v1 started (session 1).
+- ~01:00 STATISTICS CAMPAIGN requested (user: "a ridiculously reasonable amount of testing ... distribution math ...
+  all ML and LLM ... mean accuracy"; push everything when the overnight jobs are done). A and B ran as Kaggle CPU
+  notebooks (done 02:50 / 02:10), C locally (done 27 Oct). Still open: C+ (152M explanation stage x 5 seeds).
+- 02:55 QWEN V2 DONE AND ADOPTED (numbers in RESULTS); installed models/qwen3b_adapter_v2; round 1 stays the
+  fallback. 03:00 tritran72/cos30049a2-assistant-random-eval v1 started (10 sets x qwen3b_v2, qwen3b, text150m);
+  done after 2.3 h; brought home, report rerun, committed (46efdd3, 8ac4acd).
+
+26 OCT, ROUND 2 (plan docs/KAGGLE_LM_PLAN.md; CHANGELOG 26 Oct has every change)
+- DIRECTION (user, 26 Oct; supersedes 24 Oct's "no more GPU time for the 152M model"): the user is not happy with the
+  language models' accuracy. Round 2: the 152M model gets 4-5B more pretraining tokens and Qwen 3B another 12-20 GPU
+  hours, with the datasets scaled to match; everything on Kaggle.
+- What the saved answers showed (plan section 1): explanations near the ceiling of the old measures (numbers 99.8% /
+  100%, guardrail 99.8% / 100%; ROUGE-L against the template understates correct paraphrases). The real weakness was
+  OPEN QUESTIONS: both models answered 0 of 5 test glossary prompts correctly (2 topics only; Qwen said the Explorer
+  uses Isolation Forest, the 152M invented "Robusta"). Qwen copied the template on 96% of flagged prompts and
+  already overfitted (best validation loss 0.0752, final 0.0920), so its extra hours needed more data, not epochs.
+  Hence, before any GPU time: the held-out glossary test, the direction check and copy rate, and the adoption rule.
+- Budget: the full target needed ~125-135 Kaggle GPU hours on T4 x2 with data parallelism (pretraining 93 +
+  session overhead 5 + 152M stages 3 + Qwen 12-20 + ...). The user first said to assume only tritran72 (~20 h left
+  that week + 30 h from Sat 31 Oct = ~50 h): Qwen v2 first (~15 h + 2.5 h evaluation), then 152M ~23 h from Sat
+  31 Oct (+1.1B tokens on T4 x2, +0.6B on one T4; predicted loss drop 0.12 / 0.07 vs 0.27 for +4B), stages Mon 2
+  Nov, adoption Tue 3 Nov (results-v1.1). 23:40 the teammate's account (honglquanganh) was verified, so the 152M
+  chain moved there with GPU_HOURS 50 (two weekly quotas) while tritran72 kept Qwen v2 and the random evaluation.
+- Code (C1-C9, all tested and pushed): C1 lm/train.py --max-hours; C2 lm/dist.py two-GPU training for lm.qlora and
+  lm.train (2 processes == 1, tested); C3 "wsd" schedule; C4 prepare_text --continue-from; C5 configs
+  qwen3b_explain_v2.json and text_150m_pretrain_cont.json; C6 direction check (guardrail + eval columns; round 1
+  re-scored); C7 DS7 v2; C8 glossary 306 pairs; C9 Kaggle notebooks. Also qlora repeat_sources / monitor_sources /
+  patience, eval --batch-size and --eval-only, chat_subset --retention-start, eval_windows; template F4 wording
+  "Higher / Lower ratio to the usual amount than usual" (user's choice; was "Large compared with the usual amount:
+  0.4x" when the usual was 0.3x, test-00272).
+- Kaggle events: ~19:05 tritran72 Qwen v2 started; honglquanganh text150m-data failed in 45 s (no verified phone);
+  "use mine first" (user): tritran72 built the base dataset, the 3.0B tokens (done 20:36) and the stage data (done
+  20:06); the 152M GPU session was held until Qwen v2 ended (one quota; had it run on tritran72, GPU_HOURS would
+  have been that week's remainder + the next week's 30 h - ~6 h for the stages, ~32 h, not 50) until the teammate's
+  account worked at 23:40 (text150m-data v2 and qwen-data v1 then ran there).
+- RANDOMIZED TEST SET (user, 21:20 and 21:45) and STRICTER SCORING (21:45, 22:00); balanced.jsonl (22:00).
+- Mac replication (PART 2).
+
+25 OCT (phase closed): GPU queue 22 / 22 done 03:10, 0 failed (paused 22:11-22:34 24 Oct): TxGPT 9 runs, chat-152m
+00:03-02:44, explain-152m 02:44-03:04, eval-152m 03:04-03:10. Kaggle Qwen r1 done 06:38 (version 2, T4); brought
+home 06:40 (runs/qwen3b-explain/, assistant_eval_qwen3b.csv, its row merged into assistant_eval.csv). Both writers
+installed in models/ (writerOrder qwen3b, text150m confirmed by assistant_eval.csv). DS10 added and every model
+tested on it. results-v1 tagged at the user's request (after Qwen's DS10 row). docs/REPORT_PLAN.md; AI_USE_LOG 24-25
+Oct. Commits a874e5e (TxGPT), fbab14a (152M), e34638e (Qwen), then DS10. README.md became the A2 README (the old
+LM guide is docs/LM_TRAINING.md). The training-era windows were closed at the user's request. The user was advised
+to rotate the Kaggle token.
+
+24 OCT
+- DIRECTION (user, 16:00): the tutor (Arthur Hoang) announced by Outlook that fine-tuning a public model is
+  acceptable, so training from scratch is no longer an HD requirement (relaxes CR-06 decision 4; CHANGELOG 24 Oct).
+  Goal: the best working project when everything is put together, and what is most desirable academically. Order
+  the writers by measured DS7 results (GPU: Qwen -> 152M -> template; CPU: 152M -> template); the 152M model is the
+  only language model the markers' CPU env can run (environment.yml has no transformers, peft or bitsandbytes). The
+  marks left are integration, reproducibility and the report (core functionality 10, report 12, README + comments +
+  structure 6), not lower loss. Academic backbone of the report: time-safe splits, planted-transaction recall, the
+  label check, methods chosen by stated rules, every number from reports/tables, plus one 152M-vs-Qwen comparison on
+  the same test and measures framed as a trade-off (small, runs anywhere vs better, needs a GPU).
+- 20:20 "pop that fine tune of the qwen onto Kaggle": kaggle/qwen3b_explain.ipynb (pinned ef3a158; clones the public
+  repo, installs the environment-gpu.yml pins, rebuilds the DS6 subset and asserts every data file's SHA-256 equals
+  the local copy: all 6 matched on a fresh clone).
+- Pretraining done 21:07 (2.0B tokens). Power cut 19:16 (INCIDENTS). DS1 extensions (PART 2). DS2 done 17:46: 4,012
+  addresses, 898,490 rows, every check passed; DS7 10,160 pairs; data/txgpt 9.06M training tokens (3,611 / 201 /
+  200 addresses). Evening commits 80bbe81, ea85038, 46d8336, 1731dda: queue reordered (Qwen first), guarded
+  Assistant in predict.py, address profiles + DS2 coverage (explorer/profiles.py, eda_ds2_coverage.pdf,
+  eda_profiles.pdf, profiles*.csv, ds2_coverage.csv), TxGPT size figure code; tests 160 passed, 2 skipped.
+
+23 OCT
+- The team delegated all open A2 decisions to Cao Tri Tran: CR-03 option (a) (keep |z| >= 5, report the
+  behaviour-change finding); Qwen-Instruct switch and roles accepted; explorerMethod = baseline.
+- Proof-check fixes (02:20-02:35): 152M greedy decoding no longer applies the repetition penalty to the prompt; DS7
+  fallback intros no longer contradict a flag; Qwen trainer ETA after resume; three notebook notes corrected.
+- explorer/esplora.py retries dropped connections (RemoteDisconnected, IncompleteRead); tools/supervise.py restarts
+  crashed long jobs. Glossary first draft (160 pairs, 61 topics). User asked to be reminded about packaging later.
+
+EARLIER (20-22 Oct): DS1 snapshot; DS3 / DS4 classification; DS5 corpus; the DS1 pipeline end to end (baseline
+recommended); reviewer sheet / score code (key in data/interim/reviewer/, git-ignored); assistant pipeline
+(explorer/ds7.py, explorer/assistant.py, lm/chat_subset.py: 2,500 DS6 train + 25 val + 200 held-out retention
+conversations, lm/qlora.py, lm/eval_explain.py; Qwen weights cached; DS7 was DS1-only, 1,003 pairs, until DS2
+existed); 19 figures (explorer/plots.py), eda_tests.csv, notebooks/01_eda.ipynb.
