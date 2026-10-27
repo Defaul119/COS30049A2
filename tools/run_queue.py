@@ -1,7 +1,7 @@
 """Run a plan of jobs one after another, unattended: the work queued behind pretraining (24 Oct 2026).
 
 Why: when the 152M pretraining ends, about 13 hours of GPU jobs remain (TxGPT's 9 runs and its scoring, the 152M
-chat and explanation stages, the Qwen 3B fine-tune and every evaluation), and the CPU steps that need DS2 wait on
+chat and explanation stages and every evaluation), and the CPU steps that need DS2 wait on
 the crawl. Started by hand, the GPU would sit idle overnight. A plan file (configs/queue_after_pretraining.json)
 lists the steps in run order; each step has
 

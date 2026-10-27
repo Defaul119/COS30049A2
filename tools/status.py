@@ -5,7 +5,7 @@ Reads only files the jobs already write (and nvidia-smi, if present), so it neve
 Usage (from the repository root, any environment with Python 3.10+):
     python tools/status.py              # once
     python tools/status.py --watch 60   # refresh every 60 seconds; Ctrl+C stops only this view
-    python tools/status.py --watch 60 --kaggle tritran72/cos30049a2-qwen3b-explain   # plus the Kaggle run
+    python tools/status.py --watch 60 --kaggle honglquanganh/cos30049a2-text150m-train   # plus the Kaggle run
 """
 from __future__ import annotations
 
@@ -126,7 +126,7 @@ def kaggle_cli() -> str | None:
 
 
 def kaggle(kernel: str) -> str:
-    """The latest run of a Kaggle notebook (kaggle/qwen3b_explain.ipynb): its status, from the Kaggle API."""
+    """The latest run of a Kaggle notebook (kaggle/<name>/): its status, from the Kaggle API."""
     cli = kaggle_cli()
     if not cli:
         return "Kaggle: CLI not found (pip install kaggle in cos30049-a2-gpu)"

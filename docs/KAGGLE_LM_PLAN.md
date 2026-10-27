@@ -1,5 +1,9 @@
 # Language models, round 2: plan (Kaggle only)
 
+> **27 Oct 2026: Qwen dropped.** The tutor ruled that a fine-tuned pretrained model (Qwen) is not accepted; only
+> models the team trains from scratch count. Everything below about Qwen is history (its code and results are on
+> the `qwen-archive` branch); the 152M chain is unchanged, and its DS7 v2 data notebook is now `kaggle/ds7_data`.
+
 Written 26 Oct 2026 at the user's request: train the 152M model on **4-5B more tokens** and Qwen 2.5 3B for
 **another 12-20 GPU hours**, with every data-building, training and evaluation step on **Kaggle**, not on the
 home PC or the Mac, because the user is not happy with the language models' accuracy. Only code edits, `pytest`

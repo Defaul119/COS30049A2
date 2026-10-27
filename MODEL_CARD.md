@@ -159,22 +159,20 @@ sizes with three seeds each; S was kept because the sizes tie. Files: `models/tx
 
 **Limitations.** Surprisal is high for anything rare in DS2, including activity that is merely new to an address.
 
-## 6. The Explorer Assistants (explanations)
+## 6. The Explorer Assistant (explanations)
 
 The Explorer's explanation is always available from a template (`explorer/explain.py`). With `--assistant`, a
 language model may write it instead, but only if its answer passes the code guardrail
 (`explorer/assistant.py`): every number comes from the facts, the limitation line is present, no banned word,
 the comparison words point the right way, and the verdict matches the flag. Otherwise the template's text is used.
-The writer order is Qwen 3B, then the 152M model, then the template.
+The writer is the 152M model, trained from scratch by the team; the template is the fallback.
 
 | Writer | What it is | Trained on | Files |
 |---|---|---|---|
-| Qwen 3B, round 2 (**used**) | Qwen2.5-3B-Instruct (revision `aa8e7253`), 4-bit QLoRA: rank 16, alpha 32, dropout 0.05, on every attention and MLP projection. **Built with Qwen.** | DS7 v2 with the glossary repeated four times, plus 2,500 DS6 conversations; two Kaggle T4s, stopped early at step 2,600 (best validation loss 0.0234) | `models/qwen3b_adapter_v2/` (adapter only), `configs/qwen3b_explain_v2.json` |
-| Qwen 3B, round 1 | the same, one T4 | DS7 v1 plus 2,500 DS6 conversations | `models/qwen3b_adapter/` |
 | 152M model, round 1 | trained from scratch: 18 layers, 12 heads, width 768, 1,024-token context, our 32,768-token tokenizer | pretrained on 2.0B DS5 tokens, chat-tuned on DS6, then taught DS7 v1 | `models/assistant/` |
 | Template | fixed sentences from the facts | none | `explorer/explain.py` |
 
-The language-model files are over GitHub's 100 MB limit and are not in the repository (README section 8).
+The model's files are over GitHub's 100 MB limit and are not in the repository (README section 8).
 "Fully correct" means the answer passes the guardrail and also names the right reasons, in the right order, each
 tied to its own number. The pooled rate weights every test set equally; intervals are bootstrap 95%
 (`python -m lm.eval_stats`).
@@ -184,11 +182,9 @@ tied to its own number. The pooled rate weights every test set equally; interval
 |---|---|---|---|---|
 | Template (control) | 100.0% / 100.0% | 100.0% / 100.0% | -- | -- |
 | 152M, round 1 | 99.3% / 99.3% | 87.0% / 83.2% | 72.7% [71.6%, 73.8%] | -- |
-| Qwen 3B, round 1 | 98.9% / 98.6% | 95.5% / 95.9% | 88.9% [88.1%, 89.8%] | 15.3% [9.5%, 22.1%] |
-| Qwen 3B, round 2 (used) | 99.8% / 99.3% | 96.2% / 96.6% | 92.7% [92.0%, 93.4%] | 41.3% [31.3%, 50.9%] |
 <!-- /generated:writers -->
 
 **Limitations.** A language model can still give a wrong reason that the guardrail does not catch; the template
-fallback limits the damage but does not remove it. Glossary answers (questions about the Explorer's terms) are
-the weakest part: round 2 states well under half of the expected key facts. English only. Qwen's licence (Qwen
-Research License) allows non-commercial use only; see `LICENSES.md`.
+fallback limits the damage but does not remove it. Round 1 is weakest on the hard and maximal-shift test sets,
+and its glossary answers (questions about the Explorer's terms) are not yet scored on the round-2 glossary test;
+round 2 (more pretraining, DS7 v2 with the glossary) targets both. English only.

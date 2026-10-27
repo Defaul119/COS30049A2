@@ -6,12 +6,16 @@ project up to this point"; full decision rights overnight). Due Sun 8 Nov 23:59;
 
 ## Decide now (27 Oct)
 
-- [ ] Qwen: a forwarded message says Qwen (a ready-made answer-generating AI) won't be accepted in the model
-      training work. Record who sent it; keep or drop. If dropped, context.txt Part 1 lists every change. [Cao]
+- [x] Qwen dropped on the tutor's ruling (only models trained from scratch): removed from main, kept on the
+      `qwen-archive` branch; glossary topic fixed; tables, cards, PDF rebuilt; pytest 218 passed (27 Oct). [Claude]
+- [ ] Ask the tutor: DS6 (AI-written conversations) for the 152M chat stage? Claude-drafted glossary as training
+      data? Qwen in the report at all? [Cao, in class]
 - [ ] 152M pretraining length: (1) stop at this week's quota (~1.3B more tokens, done ~Thu 29 Oct), (2) 50 h across
-      both accounts (~Fri 30 Oct), (3) as planned (Sun 1 Nov). If Qwen goes, the 152M model is the only language-model
-      writer, which favours (2). [Cao]
-- [x] README.md line 54: expected test count 215 -> 219 passed, 3 skipped (27 Oct). [Claude]
+      both accounts (~Fri 30 Oct; Claude's recommendation now that the 152M model is the only writer), (3) as
+      planned (Sun 1 Nov). [Cao]
+- [ ] Kaggle, before the 152M stages: push ds7_data (new slug cos30049a2-ds7-data; DS7 v2 with the fixed glossary),
+      then text150m_stage_data with it as input. [Claude pushes from the PC]
+- [x] README test count (27 Oct). [Claude]
 
 ## Done
 
@@ -42,11 +46,11 @@ project up to this point"; full decision rights overnight). Due Sun 8 Nov 23:59;
 
 ## Round 2, language models (dates GMT+7)
 
-- [x] Qwen v2: trained, evaluated and adopted (27 Oct; CHANGELOG). [Kaggle]
+- [x] Qwen v2: trained, evaluated and adopted (27 Oct), then dropped the same day on the tutor's ruling. [Kaggle]
 - [ ] 152M continued pretraining until Sun 1 Nov 23:59 (honglquanganh, ~50 GPU h); resume each session with
       RESUME_FROM. [Claude pushes; Kaggle]
-- [ ] honglquanganh: stage data (needs its qwen-data output) then chat + explanation stages Mon 2 Nov. [Claude]
-- [x] Glossary test for both round-1 writers (in the Qwen v2 and stages notebooks).
+- [ ] Stage data (needs the ds7_data output) then chat + explanation stages after pretraining. [Claude]
+- [x] Glossary test for the round-1 writer (in the stages notebook).
 - [ ] Tue 3 Nov: adoption rule (KAGGLE_LM_PLAN.md section 3); tables into reports/tables; models into models/;
       tag results-v1.1 if any number changed. [Claude]
 - [ ] Optional: Modal account (user) for extra 152M tokens; more teammate Kaggle accounts. [Cao, team]
@@ -65,14 +69,14 @@ project up to this point"; full decision rights overnight). Due Sun 8 Nov 23:59;
       LF line endings for processed CSVs, logs churn, eda_tests.csv without DS4 (27 Oct). [Claude]
 - [x] TxGPT S seed 3 validation loss check: a seed-dependent validation half; full-set re-score keeps S seed 3
       (27 Oct).
-- [ ] Packaging: DS4 final model too big (263 MB) -> smaller final model; models/assistant + models/qwen3b_adapter
-      as GitHub release assets (user's OK needed); fp16 export of the 152M model.
-- [x] DATA_CARD.md, MODEL_CARD.md (generated tables: `python tools/cards.py`), LICENSES.md, NOTICE, Qwen
-      licence text, "Built with Qwen" (27 Oct). [Claude]
+- [ ] Packaging: DS4 final model too big (263 MB) -> smaller final model; models/assistant
+      as a GitHub release asset (user's OK needed); fp16 export of the 152M model.
+- [x] DATA_CARD.md, MODEL_CARD.md (generated tables: `python tools/cards.py`), LICENSES.md (27 Oct; the Qwen
+      licence, NOTICE and "Built with Qwen" went with Qwen). [Claude]
 - [x] `tools/package.py --tag v1.0 [--with-models]`: zip + SHA256SUMS.txt from the tag (27 Oct; trial from HEAD:
       71.7 MB, 477 files, data hashes match the manifests). [Claude]
-- [ ] Find Canvas's upload limit (plan §11): decides whether --with-models (Qwen adapter 120 MB, 152M model
-      610 MB fp32) goes in the zip or the weights go to a release link. Confirm the zip leaves out CLAUDE.md,
+- [ ] Find Canvas's upload limit (plan §11): decides whether --with-models (152M model
+      610 MB fp32, ~305 MB fp16) goes in the zip or the weights go to a release link. Confirm the zip leaves out CLAUDE.md,
       context.txt, docs/HANDOFF.md and docs/brief/. [team]
 - [ ] A licence for our own code (none chosen; LICENSES.md says ask the group). [team decides]
 

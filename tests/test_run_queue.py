@@ -61,7 +61,7 @@ class RunQueueTests(unittest.TestCase):
             self.assertIn("not done: broken, needs-broken", log)
 
     def test_a_zero_exit_without_the_steps_files_is_a_failure(self):
-        # lm.train and lm.qlora return 0 after a Ctrl+C has saved a checkpoint; the check files catch that.
+        # lm.train returns 0 after a Ctrl+C has saved a checkpoint; the check files catch that.
         with tempfile.TemporaryDirectory() as tmp:
             tmp = Path(tmp)
             code, state, _ = run_queue(tmp, [{"name": "a", "run": ["-c", "pass"], "check": [str(tmp / "model.pt")]}])

@@ -1,8 +1,8 @@
-"""A randomized test set for both Explorer Assistants: real held-out prompts and synthetic transactions.
+"""A randomized test set for the Explorer Assistant: real held-out prompts and synthetic transactions.
 
 Serves the round-2 evaluation (docs/KAGGLE_LM_PLAN.md; the user asked on 26 Oct for a new randomized test of the
-152M model and Qwen 3B). Built once with settings -> randomTest -> seed and then frozen (committed), so every
-writer, both models in both rounds, answers exactly the same prompts:
+language models). Built once with settings -> randomTest -> seed and then frozen (committed), so every
+writer, the 152M model in both rounds, answers exactly the same prompts:
 
     real.jsonl        prompts drawn at random from DS7 v2's test split. Both rounds split DS7 by the same seeded
                       hash of the address, so no writer of either round trained on these addresses; every prompt
@@ -360,7 +360,7 @@ def run_build_random_test(ds7_v2_test: Path = DS7_V2_TEST, out_dir: Path = OUT_D
     rng = random.Random(p["seed"])
     if not ds7_v2_test.exists():
         raise SystemExit(f"{ds7_v2_test} is missing: build it with python -m explorer.cli build-ds7 --settings ds7v2 "
-                         "--out data/processed/ds7_v2 (or copy it from the kaggle/qwen_data notebook's output)")
+                         "--out data/processed/ds7_v2 (or copy it from the kaggle/ds7_data notebook's output)")
     frozen = frozen_prompts(PROJECT_ROOT / SETTINGS["ds7v2"]["frozenTest"])
     with open(ds7_v2_test, encoding="utf-8") as fh:
         pool = [json.loads(line) for line in fh if line.strip()]

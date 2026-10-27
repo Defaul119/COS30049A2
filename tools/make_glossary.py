@@ -425,17 +425,14 @@ TOPICS: list[Topic] = [
           ["What happens if the AI gets a number wrong?", "What is the guardrail?", "Can the assistant make things up?",
            "What checks does an AI answer have to pass?"],
           ["What if the model says a week was quieter when it was busier?"]),
-    Topic("two-assistants",
-          "By default the Explorer shows the template. When the Assistant is switched on, two models can rephrase it. A "
-          "pretrained 3-billion-parameter model (Qwen2.5-3B-Instruct), fine-tuned by us, writes first where a GPU is "
-          "available and also answers general questions. A 152-million-parameter model, trained from scratch by our "
-          "team, runs on an ordinary CPU and writes next. Both go through the same checks, and the template is the "
-          "final fallback.",
-          ["152-million", ["Qwen", "3-billion"], "from scratch", "template"],
-          ["Why are there two language models in the Explorer?",
-           "What is the difference between the small and the large model?", "What is Qwen used for?",
-           "Which model runs without a GPU?"],
-          ["Why do you have a small model and a big model?"]),
+    Topic("assistant-model",
+          "By default the Explorer shows the template. When the Assistant is switched on, a 152-million-parameter "
+          "language model, trained from scratch by our team, rephrases it. It runs on an ordinary CPU, every answer "
+          "goes through the code checks, and the template is shown whenever a check fails.",
+          ["152-million", "from scratch", "template"],
+          ["Which language model writes the explanations?", "How big is the Assistant's language model?",
+           "Was the Assistant's model trained from scratch?", "Does the Assistant need a GPU?"],
+          ["What model rephrases the explanations, and how was it made?"]),
     Topic("labelled-datasets",
           "Two public labelled datasets: Elliptic, Bitcoin transactions labelled by the dataset's authors, and "
           "BitcoinHeist, address-days labelled with ransomware families. We use them to train and test classifiers "

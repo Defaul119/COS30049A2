@@ -2,6 +2,7 @@
 data/text/
 data/chat/
 data/ds7/
+# the dropped Qwen 3B fine-tune's local data and adapters (27 Oct; qwen-archive branch)
 data/qwen/
 data/qwen_v2/
 data/txgpt/
@@ -17,7 +18,7 @@ data/raw/esplora/
 # DS10's raw replies, the same way (data/processed/ds10/histories.json.gz ships)
 data/raw/ds10/
 
-# Round 2's DS7 (about 40,000 pairs) is built on Kaggle by kaggle/qwen_data; its glossary.jsonl and
+# Round 2's DS7 (about 40,000 pairs) is built on Kaggle by kaggle/ds7_data; its glossary.jsonl and
 # manifest.json (with each file's SHA-256) are committed, the pair files are not
 data/processed/ds7_v2/train.jsonl
 data/processed/ds7_v2/val.jsonl
@@ -51,8 +52,8 @@ data/processed/elliptic/*
 # Large fitted models (rebuilt by their steps). heist_best.joblib is a 276 MB random forest, over
 # GitHub's 100 MB limit; the zip will carry a smaller final model or a link with SHA-256.
 models/heist_best.joblib
-# The two language-model writers (settings.json "assistant"): the 152M model (610 MB in fp32) and the Qwen 3B
-# adapter (114 MB) are also over the limit; their SHA-256 are in context.txt until they ship as release assets.
+# The Assistant's writer (settings.json "assistant"): the 152M model (610 MB in fp32) is also over the limit; its
+# SHA-256 is in context.txt until it ships as a release asset.
 models/assistant/
 models/qwen3b_adapter/
 models/qwen3b_adapter_v2/

@@ -3,9 +3,27 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
-## 27 October 2026 (morning)
+## 27 October 2026 (late morning)
 
-**Qwen under review (no change yet).** The user forwarded a message (in Vietnamese; the sender is not yet recorded)
+**Qwen dropped: only models trained from scratch.** The tutor confirmed (the user, in class) the message below:
+a ready-made model that generates answers (Qwen) is not accepted in the model training work; only what the group
+builds and trains counts. This reverses the 22 Oct addition to CR-06 decision 4 and the 24 Oct relaxation; the
+project is back to decision 4 as first written (TxGPT and the 152M model, both trained from scratch).
+- *Kept:* branch `qwen-archive` (= `b1f5c1b`) holds every Qwen file, table and result, so the work is traceable.
+- *Removed from main:* `lm/qlora.py`, `lm/chat_subset.py`, `configs/qwen3b_*`, the Qwen Kaggle notebooks and the
+  random-set notebook that evaluated Qwen, every Qwen answer table and summary row, `NOTICE` and the Qwen licence,
+  the GPU environment's transformers / peft / bitsandbytes / accelerate, the Qwen writer and its tests. The
+  Assistant's `writerOrder` is now `["text150m"]`, with the template as the fallback.
+- *Renamed:* `kaggle/qwen_data` -> `kaggle/ds7_data` (slug `cos30049a2-ds7-data`); it builds DS7 v2 only.
+- *Glossary:* the topic that said Qwen writes first ("two-assistants") is now "assistant-model" (the 152M model,
+  trained from scratch); `glossary.jsonl` regenerated, and the one affected frozen test question
+  (`glossary_test-00053`) rebuilt the same way `build-ds7` writes it. DS7 v2 and the 152M stage data are rebuilt
+  on Kaggle from this before the stages run, so the 152M model is never taught that Qwen exists.
+- *Results:* `lm.eval_stats` rerun; the 152M model's numbers are unchanged (pooled fully correct 72.7%); the
+  writer figure, the test-report PDF and the cards are rebuilt. Tests: 218 passed, none skipped (the three
+  skipped tests and the adapter-save test were Qwen's).
+
+**Qwen under review (09:00; superseded by the entry above).** The user forwarded a message (in Vietnamese; the sender is not yet recorded)
 saying Qwen, as a ready-made AI that generates answers, won't be accepted in the model training work, and that only
 the algorithms and models the group built and trained should be integrated. It contradicts the tutor's 24 Oct
 announcement that fine-tuning a public model is acceptable. Nothing is removed until the user decides; the full

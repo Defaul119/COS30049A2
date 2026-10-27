@@ -1,17 +1,16 @@
-"""Data parallelism over the GPUs of one machine (Kaggle's "GPU T4 x2"), for lm.qlora and lm.train.
+"""Data parallelism over the GPUs of one machine (Kaggle's "GPU T4 x2"), for lm.train.
 
 Serves docs/KAGGLE_LM_PLAN.md (C2; round 2 runs on Kaggle only): a T4 x2 session costs the same quota
 as one T4, so a trainer that uses one GPU wastes half of every hour. Started under torchrun, each
 process trains on its own share of the micro-batches, and the trainable parameters' gradients are
 averaged across processes before every optimizer step, so every process takes the same step and the
-weights stay identical. This is what DistributedDataParallel does, done by hand: both trainers keep
-their single-GPU loop (gradient accumulation, fp16 loss scaling, clipping, resume), and a QLoRA model
-with gradient checkpointing needs none of DDP's hooks.
+weights stay identical. This is what DistributedDataParallel does, done by hand: the trainer keeps
+its single-GPU loop (gradient accumulation, fp16 loss scaling, clipping, resume).
 
 Without torchrun (WORLD_SIZE unset) everything here is a no-op for one process, so a single-GPU or
 CPU run behaves exactly as before.
 
-    torchrun --standalone --nproc_per_node 2 -m lm.qlora --config ...
+    torchrun --standalone --nproc_per_node 2 -m lm.train --config ...
 """
 from __future__ import annotations
 

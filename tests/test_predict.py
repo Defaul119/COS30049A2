@@ -101,8 +101,7 @@ class AssistantExplainTests(unittest.TestCase):
         self.assertEqual((result["source"], result["explanation"]), ("template", self.tx["explanation"]))
 
     def test_writers_this_machine_cannot_run_are_skipped_with_a_reason(self):
-        with patch.dict(SETTINGS["assistant"], {"text150mCheckpoint": "models/missing/model.pt",
-                                                "qwenAdapter": "models/missing_adapter"}):
+        with patch.dict(SETTINGS["assistant"], {"text150mCheckpoint": "models/missing/model.pt"}):
             writers, skipped = load_writers()
         self.assertEqual(writers, [])
         self.assertEqual(set(skipped), set(SETTINGS["assistant"]["writerOrder"]))

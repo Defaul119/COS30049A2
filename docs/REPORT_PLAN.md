@@ -50,10 +50,10 @@ section can now quote and the order to write it in.
 | Collection and processing (5) | DS1 snapshot with manifest and checks; DS2 crawl (4,012 histories); DS3/DS4 labelled; DS5-DS7 text; DS10 refetched and cross-checked (5,785 of 5,785 rows); `cleaning_ds1.csv`, leakage controls, injection design | Write it; the most words go here |
 | Analysis (2) | 13 EDA figures, `eda_tests.csv` | Pick 3-4 figures; each finding as observation, statistic, decision |
 | Model selection (2) | criteria, grids (`tuning_*.csv`), stability gate, selection rule, `eval_significance.csv` (fusion +0.029, p = 0.063: baseline kept) | Condense the candidates table |
-| Core code (10) | the pipeline, `predict.py`, guarded Assistant, tests (185 pass) | README, comments pass |
+| Core code (10) | the pipeline, `predict.py`, guarded Assistant, tests (pytest; README gives the count) | README, comments pass |
 | Datasets (4) | processed CSV/JSON under `data/processed/` | Decide what ships (only what final models use) |
 | Additional datasets (4) | DS2, DS3, DS4, DS5, DS6, DS7, DS10 | Show each one's use in one table |
-| Additional ML (4) | IF, LOF, K-Means, DBSCAN, regression + conformal, fusion, TxGPT, the 152M model, Qwen 3B QLoRA | Keep each to a sentence or a table row |
+| Additional ML (4) | IF, LOF, K-Means, DBSCAN, regression + conformal, fusion, TxGPT and the 152M model (both trained from scratch) | Keep each to a sentence or a table row |
 | Accuracy / precision / recall / F1 | DS3 and DS4 classifiers (`elliptic_results.csv`, `heist_results.csv`); planted recall on DS1, DS2, DS10 | State why DS1 has no accuracy or F1 (no labels) |
 
 ## Headline results to build the story on (quote the CSVs, never these lines)
@@ -66,9 +66,9 @@ section can now quote and the order to write it in.
   find there because DS10's addresses are busier and less even (`ds10_activity.csv`).
 - Labelled data: unsupervised scores do not match "illicit" labels (`label_check.csv`): "unusual" is
   not "labelled illicit", the report's central caution.
-- Assistant: the guardrail passes Qwen 3B on every DS7 test prompt (ROUGE-L 0.783) and the 152M model on
-  99.8% (0.683); a stricter direction check finds a few wrong comparison words both pass (unexpected
-  outcome; the fix is pending the user's decision).
+- Assistant: the 152M model (trained from scratch) passes the guardrail on 99.3% of DS7 test prompts and is
+  fully correct on 87.0% (pooled over 12 test sets: 72.7%); round 2 results replace these if they pass the
+  adoption rule. The Qwen 3B fine-tune was dropped on the tutor's ruling (27 Oct; CHANGELOG).
 
 ## Before writing: freeze the results (M2)
 
@@ -90,7 +90,7 @@ section can now quote and the order to write it in.
    then Data analysis 370, Model selection 400, Evaluation 560 and Technical 170, and last Introduction
    170, Problem framing 210 and Conclusion 160, so they match the results. Total 2,850.
 4. **In parallel** (code marks): README (A2 outline: conda, processing, training, prediction),
-   DATA_CARD.md (DS1-DS10), MODEL_CARD.md, LICENSES.md (Qwen licence text, "Built with Qwen").
+   DATA_CARD.md (DS1-DS10), MODEL_CARD.md, LICENSES.md.
 5. **Review**: Cam Dan Bui reads against the rubric and the completeness checklist (plan s12);
    references checked entry by entry; the number check and word count pass.
 6. **Team items**: weekly A2 meeting minutes, the blind reviewer check, the AI declaration, and the

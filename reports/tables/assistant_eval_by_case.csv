@@ -17,21 +17,3 @@ text150m,"not flagged, 2 reasons",16,0.6875
 text150m,"not flagged, 3 reasons",5,0.4
 text150m,"not flagged, nothing stands out",167,0.8682634730538922
 text150m,unscored,39,1.0
-qwen3b,"flagged, 1 reason",64,1.0
-qwen3b,"flagged, 2 reasons",58,1.0
-qwen3b,"flagged, 3 reasons",28,1.0
-qwen3b,"flagged, 4 reasons",6,0.8333333333333334
-qwen3b,"not flagged, 1 reason",62,1.0
-qwen3b,"not flagged, 2 reasons",16,1.0
-qwen3b,"not flagged, 3 reasons",5,1.0
-qwen3b,"not flagged, nothing stands out",167,0.8862275449101796
-qwen3b,unscored,39,1.0
-qwen3b_v2,"flagged, 1 reason",64,1.0
-qwen3b_v2,"flagged, 2 reasons",58,1.0
-qwen3b_v2,"flagged, 3 reasons",28,1.0
-qwen3b_v2,"flagged, 4 reasons",6,1.0
-qwen3b_v2,"not flagged, 1 reason",62,1.0
-qwen3b_v2,"not flagged, 2 reasons",16,1.0
-qwen3b_v2,"not flagged, 3 reasons",5,1.0
-qwen3b_v2,"not flagged, nothing stands out",167,0.8982035928143712
-qwen3b_v2,unscored,39,1.0

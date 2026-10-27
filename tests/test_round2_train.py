@@ -2,14 +2,12 @@
 
 The warm-up/stable/decay schedule, --max-hours (save, stop, resume), validation windows that do not
 depend on the micro-batch, --eval-only, two processes training exactly as one (lm.dist, run here with
-gloo on the CPU), the same for the QLoRA trainer where transformers is installed, and
-prepare_text --continue-from.
+gloo on the CPU), and prepare_text --continue-from.
 
 Run from the project root:  python -m pytest -q
 """
 from __future__ import annotations
 
-import importlib.util
 import json
 import os
 import socket
@@ -133,30 +131,6 @@ class TrainerTests(unittest.TestCase):
             self.assertEqual(proc.returncode, 0, proc.stderr[-2000:])
             losses.append(json.loads((self.tmp / f"eval{mb}" / "eval_only.json").read_text(encoding="utf-8"))["val_loss"])
         self.assertAlmostEqual(losses[0], losses[1], places=5)
-
-
-@unittest.skipUnless(importlib.util.find_spec("peft") and importlib.util.find_spec("transformers"),
-                     "needs transformers and peft (GPU environment)")
-class QLoRAProcessesTests(unittest.TestCase):
-    def test_two_processes_train_the_adapter_exactly_as_one(self):
-        from safetensors.torch import load_file
-
-        tmp = Path(tempfile.mkdtemp())
-        self.addCleanup(__import__("shutil").rmtree, tmp, True)
-        cfg = json.loads((ROOT / "configs" / "qwen3b_explain.json").read_text(encoding="utf-8"))
-        cfg["lora"] = {"r": 8, "alpha": 16, "dropout": 0.0, "target_modules": ["q_proj", "v_proj"]}
-        cfg["train_files"] = cfg["val_files"] = ["data/processed/ds7/val.jsonl"]
-        cfg["retention_val_files"] = []
-        for name in ("one", "two"):
-            (tmp / f"{name}.json").write_text(json.dumps({**cfg, "out_dir": str(tmp / name)}), encoding="utf-8")
-        procs = (run("lm.qlora", "--config", str(tmp / "one.json"), "--smoke")
-                 + run("lm.qlora", "--config", str(tmp / "two.json"), "--smoke", world=2))
-        for p in procs:
-            self.assertEqual(p.returncode, 0, p.stderr[-2000:])
-        a = load_file(str(tmp / "one-smoke" / "adapter" / "adapter_model.safetensors"))
-        b = load_file(str(tmp / "two-smoke" / "adapter" / "adapter_model.safetensors"))
-        for k in a:
-            torch.testing.assert_close(a[k], b[k], rtol=0, atol=1e-7)
 
 
 class ContinueCorpusTests(unittest.TestCase):

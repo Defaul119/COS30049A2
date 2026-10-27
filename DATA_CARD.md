@@ -13,7 +13,7 @@ investigation; it does not indicate wrongdoing.*
 | DS3 | Elliptic Data Set (Weber et al., 2019) | 22 Oct 2026 | 203,769 transactions | CC BY-NC-ND 4.0 (not redistributed) | classification |
 | DS4 | BitcoinHeist (Akcora et al., 2020; UCI 526) | 22 Oct 2026 | 2,916,697 rows | CC BY 4.0 | classification |
 | DS5 | FineWeb-Edu, 10B-token sample | 22 Oct 2026 (round 2: 26 Oct) | 2.0B tokens (round 2: +3.0B) | ODC-By 1.0 | 152M model pretraining |
-| DS6 | smol-smoltalk | 24 Oct 2026 | 450,584 conversations | Apache 2.0 | chat stage (152M), mixed into Qwen 3B fine-tuning |
+| DS6 | smol-smoltalk | 24 Oct 2026 | 450,584 conversations | Apache 2.0 | chat stage (152M) |
 | DS7 | Our explanation pairs from DS1 and DS2 | 24 Oct 2026 (v2: 26 Oct) | 10,160 pairs (v2: 40,232 + 74) | ours | teaching and testing the Assistants |
 | DS10 | A teammate's independent DS1-style snapshot | 23 Oct 2026 (refetched 25 Oct) | 27 addresses, 5,785 transactions | public blockchain data | held-out test of every model |
 | Random tests | Ten randomized Assistant test sets | 26 Oct 2026 | 4,212 prompts | ours | testing the Assistants |
@@ -104,7 +104,7 @@ DS8 (Elliptic++) and DS9 (Ransomwhere) were optional in the plan and were not us
 
 - **Source and licence.** Hugging Face `HuggingFaceTB/smol-smoltalk`, Apache 2.0.
 - **Use.** 446,099 training and 4,485 validation conversations (294,891,521 tokens) for the 152M model's chat
-  stage (`data/chat/meta.json`); 2,500 conversations mixed into the Qwen 3B fine-tuning (`lm/chat_subset.py`).
+  stage (`data/chat/meta.json`).
 - **Not shipped**; `python -m lm.prepare_chat` rebuilds it.
 
 ## DS7: explanation pairs
@@ -193,8 +193,8 @@ Written by `python tools/cards.py`. Types are as pandas reads them; "Missing" co
 | `data/processed/ds7/val.jsonl` | DS7 | 561 | 786 kB | `7818a89e3ffb8c16` | round 1 validation pairs |
 | `data/processed/ds7/test.jsonl` | DS7 | 450 | 762 kB | `c2f1be1d519ad6ab` | round 1 test pairs (frozen; every writer is compared on it) |
 | `data/processed/ds7/glossary.jsonl` | DS7 | 160 | 59 kB | `b2558774a1d1855c` | round 1 glossary: questions and answers on the Explorer's terms |
-| `data/processed/ds7_v2/glossary.jsonl` | DS7 | 306 | 150 kB | `6797ba10ad030b4a` | round 2 glossary (306 answers on 65 topics, fact-checked), split by question |
-| `data/processed/ds7_v2/glossary_test.jsonl` | DS7 | 74 | 85 kB | `59bfb0ab882c8b8c` | round 2 glossary test prompts with the key facts an answer must state (frozen) |
+| `data/processed/ds7_v2/glossary.jsonl` | DS7 | 306 | 149 kB | `246abce080c20045` | round 2 glossary (306 answers on 65 topics, fact-checked), split by question |
+| `data/processed/ds7_v2/glossary_test.jsonl` | DS7 | 74 | 84 kB | `d77a471e27d1fbb5` | round 2 glossary test prompts with the key facts an answer must state (frozen) |
 | `data/processed/random_test/manifest.json` | Random tests |  | 9 kB | `651b16c9a4da81a5` | seeds, draws and composition of every randomized set |
 | `data/processed/random_test/balanced.jsonl` | Random tests | 883 | 1.7 MB | `6fc75de02e15cc2d` | one randomized Assistant test set per file |
 | `data/processed/random_test/close_calls.jsonl` | Random tests | 300 | 547 kB | `e4d5033bddd11f8d` | as above |

@@ -34,8 +34,8 @@ data, the machine-learning models, the code zip and a 3,000-word report.** Assig
   (code feature-complete). M4 Wed 4 Nov (a teammate rebuilds everything from the README; code
   freeze). M5 Sat 7 Nov (submitted).
 - **Status (27 Oct):** every model is built and evaluated, `results-v1` is tagged (25 Oct), and the
-  cards, licences and packaging script exist. Open: the language models' round 2 on Kaggle, the
-  Qwen question (decision 4), packaging and the report. Details in `context.txt`. CR-06 (plan
+  cards, licences and packaging script exist. Qwen was dropped on the tutor's ruling (decision 4).
+  Open: the 152M model's round 2 on Kaggle, packaging and the report. Details in `context.txt`. CR-06 (plan
   Appendix A) was amended 22 Oct, relaxed 24 Oct, and on 23 Oct the team delegated all open A2
   decisions to Cao Tri Tran.
 - **The user's pace:** finish as fast as possible at the highest quality; ignore the plan's calendar
@@ -87,28 +87,17 @@ and evaluation with accuracy, precision, recall, F1 and similar metrics. The bri
    public models): **TxGPT**, a small GPT over transaction tokens whose per-transaction surprisal
    is an unusualness score (HD-critical); and the **Explorer Assistant**, the 152M text model in
    `lm/`, pretrained on DS5, chat-tuned on DS6, then taught on DS7 to explain flags behind a
-   guardrail that falls back to the template text.
-   **Added 22 Oct (tutor's OK confirmed, team approved, CR-06 amended):** a third, extra model,
-   **Qwen2.5-3B-Instruct QLoRA-fine-tuned** once on DS7 mixed with 2,500 DS6 conversations (plan §9,
-   `sec:assistant3b`; `lm/qlora.py`, `configs/qwen3b_explain.json`); it also serves as the chatbot.
-   Changed from Llama 3.2 3B on 23 Oct at the user's request (not gated, no HF token); accepted by
-   the team (23 Oct: the team delegated all open A2 decisions to Cao Tri Tran).
-   **Relaxed 24 Oct:** the tutor announced (Outlook) that fine-tuning a public model is acceptable, so
-   "from scratch" is no longer required; the 152M model stays (the only LM the CPU env can run) but gets no
-   more GPU time, and the writer order follows the measured DS7 results (context.txt, DIRECTION).
-   **Roles (user, 23 Oct):** the 152M model only explains DS1 transactions; Qwen 3B is the general
-   chatbot AND the second writer: `explorer.assistant.explain` tries 152M, then Qwen, then the template,
-   each answer passing the code guardrail (numbers, limitation line, wording). The 3B model is extra and doesn't replace the
-   from-scratch models, runs after the 152M model and TxGPT (relaxed 24 Oct: the queue runs Qwen first), uses the same DS7 splits, measures
-   (`lm/eval_explain.py`) and guardrail (`explorer/assistant.py`), and ships adapters only. Licence:
-   Qwen Research License (non-commercial; ship its text and a NOTICE line; "Built with Qwen").
-   **Round 2 (user, 26 Oct; supersedes "no more GPU time"):** both language models get more training on
-   Kaggle (`docs/KAGGLE_LM_PLAN.md`); Qwen round 2 was adopted 27 Oct, the 152M model's continued
-   pretraining is running.
-   **Under review (27 Oct):** a message forwarded by the user (source not yet recorded) says Qwen, as a
-   ready-made answer-generating AI, won't be accepted in the model training work; only what the group
-   built and trained should be integrated. It contradicts the tutor's 24 Oct announcement. Nothing is
-   removed until the user decides; `context.txt` (Part 1) lists what dropping Qwen would change.
+   guardrail that falls back to the template text. Every answer passes the code guardrail
+   (numbers, limitation line, wording, comparison direction, verdict) or the template is shown.
+   **Round 2 (user, 26 Oct):** the 152M model gets more pretraining and its stages again on Kaggle
+   (`docs/KAGGLE_LM_PLAN.md`); a round-2 model replaces round 1 only by the plan's adoption rule.
+   **QWEN DROPPED (27 Oct; the tutor's ruling, confirmed by the user):** a ready-made model that
+   generates answers is not accepted in the model training work; only models the team trains from
+   scratch count. **Never fine-tune a pretrained model.** History (CHANGELOG 22-27 Oct): a Qwen2.5-3B-
+   Instruct QLoRA fine-tune was added 22 Oct as an extra writer and chatbot (from Llama 3.2 3B on 23
+   Oct), allowed by a tutor announcement on 24 Oct, retrained in round 2 and adopted 27 Oct, then
+   removed the same day from the code, settings, tables, notebooks and docs; its work is on the
+   `qwen-archive` branch.
 5. **One repository, two environments**: `environment.yml` (CPU, for markers) and
    `environment-gpu.yml` (CUDA, only to retrain the language models).
 
@@ -161,19 +150,19 @@ explorer/        one module per pipeline step (snapshot, corpus, external, trans
                  predict, explain, assistant, ds7, random_test, profiles, plots, ...); one CLI:
                  python -m explorer.cli <step>
 lm/              language models: the 152M text model (model, tokenizer, data, train, chat, generate),
-                 TxGPT (tx_tokens, tx_score, tx_select), Qwen QLoRA (qlora), evaluation
-                 (eval_explain, eval_stats, writers), two-GPU training (dist)
-configs/         training configs (text_150m_*, txgpt_s/m/l, qwen3b_explain*, queue_after_pretraining)
+                 TxGPT (tx_tokens, tx_score, tx_select), evaluation (eval_explain, eval_stats,
+                 writers), two-GPU training (dist); both models trained from scratch
+configs/         training configs (text_150m_*, txgpt_s/m/l, queue_after_pretraining)
 config/          settings.json: every threshold, window and seed
 kaggle/          the Kaggle notebooks (regenerated, pinned, by tools/kaggle_notebooks.py)
 tools/           status, supervise, run_queue, cards, package, test_report, make_glossary, kaggle_notebooks
-tests/           pytest suite (219 passed, 3 skipped on 27 Oct)
+tests/           pytest suite (218 passed on 27 Oct, after Qwen's removal)
 data/ models/ reports/{figures,tables,logs}/   committed outputs (large files git-ignored)
 notebooks/       01_eda.ipynb (only calls the package)
 reference/       the A1 prototype's TypeScript (scoring and JSON shapes predict.py follows)
 docs/            plan (PDF + LaTeX), brief, A1 LaTeX, TODO, KAGGLE_LM_PLAN, REPORT_PLAN, AI_USE_LOG,
                  LM_TRAINING (the old LM guide), HANDOFF (historical)
-README.md, DATA_CARD.md, MODEL_CARD.md, LICENSES.md, NOTICE, CHANGELOG.md, environment*.yml
+README.md, DATA_CARD.md, MODEL_CARD.md, LICENSES.md, CHANGELOG.md, environment*.yml
 _context/        course material and notes (git-ignored; see below)
 ```
 

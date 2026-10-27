@@ -11,7 +11,7 @@ interface that Assignment 3's web app will call. It is an investigation aid, nev
 ```
 config/settings.json   every threshold, window, seed and grid (no magic numbers in the code)
 explorer/              the pipeline: one module per step, all run through explorer/cli.py
-lm/                    the language models: TxGPT, the 152M text model, Qwen 3B fine-tuning, evaluation
+lm/                    the language models, both trained from scratch: TxGPT and the 152M text model; evaluation
 configs/               language-model training settings
 data/processed/        the processed datasets (DS1, DS2, DS7, DS10 and records for DS3/DS4)
 models/                the trained models the Explorer uses
@@ -24,10 +24,11 @@ docs/                  the delivery plan, the brief, the report plan, the AI use
 CHANGELOG.md           every decision and measured result, newest first
 DATA_CARD.md           every dataset: source, licence, collection, biases, and every file and column
 MODEL_CARD.md          every final model: purpose, data, parameters, metrics, limits, intended use
-LICENSES.md, NOTICE   third-party licences (Qwen's text in licenses/)
+LICENSES.md            third-party licences
 ```
 
-**Built with Qwen**: one of the Explorer Assistants is a fine-tuned Qwen2.5-3B-Instruct (see `NOTICE`).
+Every model here is trained by the team; the language models are trained from scratch (no pretrained model is
+fine-tuned).
 
 ## 1. What you need
 
@@ -51,8 +52,7 @@ conda activate cos30049-a2
 python -m pytest -q
 ```
 
-Expected: `219 passed, 3 skipped` in about two minutes (the first run takes longer while the new libraries
-load). The three skipped tests need the GPU environment.
+Expected: `218 passed` in about two minutes (the first run takes longer while the new libraries load).
 Run every later command from the repository folder with `cos30049-a2` active. On Windows, run
 `set PYTHONUTF8=1` first in each new terminal (Command Prompt) so the logs print correctly; macOS and Linux
 need nothing.
@@ -195,9 +195,8 @@ conda activate cos30049-a2-gpu
 |---|---|---|
 | TxGPT (3 sizes x 3 seeds) | `python -m lm.prepare_tx`, then `python -m lm.train --config configs/txgpt_s.json --seed 1` (and `_m`, `_l`, seeds 1-3), `python -m lm.tx_select`, `python -m lm.tx_score --plants`, `python -m explorer.cli txgpt` | 6-30 min per run |
 | 152M text model | `docs/LM_TRAINING.md`: pretraining (2B tokens), chat stage, explanation stage (`configs/text_150m_explain.json`) | about 3 days in all |
-| Qwen 2.5 3B (QLoRA), round 2 (used) | `kaggle/qwen3b_explain_v2/` on Kaggle (GPU T4 x2; trains on both GPUs), or locally `python -m lm.qlora --config configs/qwen3b_explain_v2.json` | about 8 h on two Kaggle T4s |
-| Qwen 2.5 3B, round 1 | `kaggle/qwen3b_explain.ipynb` on one Kaggle T4, or `python -m lm.qlora --config configs/qwen3b_explain.json` | about 8 h on a Kaggle T4 |
-| Explanation evaluation | `python -m lm.eval_explain --model template`, `--model text150m --checkpoint models/assistant/model.pt`, `--model qwen3b --config configs/qwen3b_explain_v2.json --adapter models/qwen3b_adapter_v2` | 5 min (152M), 1.5 h (Qwen on a T4) |
+| 152M round 2 | `kaggle/text150m_data/`, `kaggle/text150m_train/` (continued pretraining on two Kaggle T4s), `kaggle/ds7_data/`, `kaggle/text150m_stage_data/`, `kaggle/text150m_stages/` (chat and explanation stages, then every evaluation) | about 2 days of Kaggle sessions |
+| Explanation evaluation | `python -m lm.eval_explain --model template`, `--model text150m --checkpoint models/assistant/model.pt` | 5 min (152M) |
 
 `tools/run_queue.py --plan configs/queue_after_pretraining.json` runs the whole GPU sequence unattended and
 resumes after an interruption. `python tools/kaggle_notebooks.py <commit>` regenerates the Kaggle notebooks,
@@ -228,11 +227,9 @@ text = p.explain(guess, use_assistant=False)
 
 **The Assistant (`--assistant`).** Explanations are written by the first writer in
 `settings.json -> assistant -> writerOrder` that passes the code guardrail (every number from the facts, the
-limitation line, no banned word, the right comparison words and verdict), else by the template. Qwen 3B goes
-first, then the 152M model. The writers' files are over GitHub's 100 MB limit and are not in the repository:
-`models/qwen3b_adapter_v2/` (Qwen 3B round 2, needs the GPU environment; round 1's `models/qwen3b_adapter/` is
-kept for comparison) and `models/assistant/` (the 152M model, runs in the CPU environment). With neither present,
-the template writes.
+limitation line, no banned word, the right comparison words and verdict), else by the template. The writer is
+the 152M model trained from scratch, which runs in the CPU environment. Its weights (`models/assistant/`) are over
+GitHub's 100 MB limit and are not in the repository; without them the template writes.
 
 ## 9. Data
 
@@ -251,8 +248,7 @@ the template writes.
 Each processed folder carries a `manifest.json` (source, date, selection rule, checks, SHA-256). DS2 stores
 addresses only as salted hashes; the salt never leaves the build machine. `DATA_CARD.md` describes every
 dataset, file and column; `MODEL_CARD.md` every model and its metrics (both refreshed by `python tools/cards.py`);
-`LICENSES.md` every licence. Base model for the Assistant: Qwen2.5-3B-Instruct (Qwen Research License,
-non-commercial; Built with Qwen).
+`LICENSES.md` every licence.
 
 ## 10. Troubleshooting
 

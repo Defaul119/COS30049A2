@@ -1,5 +1,5 @@
 {
-  "about": "Every job after the 152M pretraining, in run order (context.txt NEXT A and B). No Qwen steps (24 Oct 21:20): the Qwen fine-tune and its evaluation run on Kaggle (kaggle/qwen3b_explain.ipynb, started 21:08), so this PC trains only TxGPT and the 152M stages. To run Qwen here instead: python -m lm.qlora --config configs/qwen3b_explain.json (--bench first), then python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best. Run: python tools/run_queue.py --plan configs/queue_after_pretraining.json (cos30049-a2-gpu).",
+  "about": "Every job after the 152M pretraining, in run order (24 Oct): TxGPT's runs and scoring, the 152M chat and explanation stages, then the evaluations. Run: python tools/run_queue.py --plan configs/queue_after_pretraining.json (cos30049-a2-gpu).",
   "steps": [
     {"name": "prepare-tx", "run": ["-m", "lm.prepare_tx"],
      "wait_for": ["data/processed/corpus/ds2.parquet", "data/processed/corpus/manifest.json"],

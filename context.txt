@@ -12,43 +12,41 @@ every GPU step runs on Kaggle.
 PART 1 - LIVE STATE
 ===================
 
-NOW (27 Oct ~08:45)
-- Repo: HEAD c3df88a (+ this context cleanup). Mac pytest: 219 passed, 3 skipped, exit 0. README.md line 54 said
-  "215 passed" (test_cards.py and test_package.py came later): fixed in the cleanup commit.
-- RUNNING (the only job): honglquanganh/cos30049a2-text150m-train v1 = 152M continued pretraining, session 1 (T4 x2,
-  started 27 Oct 01:10; fp16 check vs 3.1305, bench, gate with GPU_HOURS 50, then train; watcher bm1lzy50w on the
-  PC). The notebook stops itself at 11 h (Kaggle's limit is 12 h), so it ends by ~12:10-13:10. Its 3.0B prepared
-  tokens are byte-identical to tritran72's build. Tokens so far (estimate at 08:20, not read: the Mac has no Kaggle
-  CLI or token): ~2.3B in all (2.0B round 1 + ~0.3B at the plan's 13.5k tok/s).
-- When session 1 ends: read its gate.json (measured tok/s, micro_batch, total_tokens) and log, then push session 2:
-  kernel_sources += honglquanganh/cos30049a2-text150m-train, RESUME_FROM = its runs/text-150m-cont folder
-  ("/kaggle/input/<this notebook>/runs/text-150m-cont"), TOTAL_TOKENS per the user's 152M option (below).
-
-- QWEN MAY BE DISALLOWED (27 Oct ~08:30; NOTHING CHANGED YET). The user forwarded this message (who wrote it is not
-  recorded yet - the tutor, or a teammate passing it on? ask):
+NOW (27 Oct ~10:30)
+- QWEN IS GONE (tutor's ruling, confirmed by the user in class 27 Oct ~09:30: "its the tutor himself"). The tutor's
+  message (Vietnamese, as forwarded):
     "qwen AI là 1 con Ai tự động sinh ra câu trả lời nên sẽ ko đc chấp nhận cho quá tirnfh raining model AI, việc
     tích hợp có thể ảnh hửoưng đến mode chúng ta chỉ nên tích hợp các thuật toán mà AI sử dụng hoặc các phần mà con
     Ai đó được train nên và các vấn đêf mà model AI train để tiết kiêjm thời gian hơn"
   Translation: "Qwen AI is an AI that generates answers automatically, so it won't be accepted for the AI model
   training process; integrating it could affect the model. We should only integrate the algorithms the AI uses, or
   the parts the AI was trained on, and the problems the model trains for, to save time."
-  Claude's reading: a fine-tuned ready-made LLM does not count as the group's own model work; keep only what the
-  group implemented and trained (scikit-learn models, TxGPT, the 152M model). It contradicts the tutor's 24 Oct
-  Outlook announcement (fine-tuning a public model is acceptable), so record the source and, if it is the tutor,
-  the wording for the CHANGELOG. Possibly also in scope if the rule is "no AI-written answers in training data":
-  DS6 smol-smoltalk (synthetic, LLM-written conversations) and the glossary pairs (drafted and fact-checked by
-  Claude). Ask.
-  IF QWEN IS DROPPED (user's decision; reverses the 22 Oct CR-06 amendment, decision 4): settings assistant
-  writerOrder -> ["text150m"] (template stays last); remove from the product and zip: lm/qlora.py,
-  configs/qwen3b_*.json, kaggle/qwen3b_explain*, the qwen writer in lm/writers.py and its tests, Qwen rows in
-  assistant_eval* / stats_writers* tables and the test-report PDF, environment-gpu.yml's transformers / peft /
-  bitsandbytes / accelerate (if nothing else needs them), licenses/QWEN_RESEARCH_LICENSE.txt, NOTICE, the Qwen parts
-  of LICENSES.md, MODEL_CARD.md, DATA_CARD.md, README.md; models/qwen3b_adapter* stay out of the zip. Keep one
-  CHANGELOG entry (tried, measured, dropped on the ruling) and the AI_USE_LOG lines. Then rerun tools/cards.py,
-  tools/test_report.py, lm.eval_stats. The report loses the "152M vs Qwen trade-off" paragraph. Numbers lost as the
-  main writer: pooled fully correct Qwen r2 92.7% vs 152M r1 72.7%.
-  Consequence for the 152M run: it becomes the only language-model writer, so cutting its tokens costs more, and
-  tritran72's quota (no longer needed for Qwen) can extend the chain this week.
+  RULE FROM NOW ON: only models the team trains from scratch; never fine-tune a pretrained model.
+  Done 27 Oct (user: "push all changes and remove qwen, branch it out another branch and we'll work from there"):
+  branch qwen-archive (pushed, = b1f5c1b) keeps every Qwen file and result; main has Qwen removed (lm/qlora.py,
+  lm/chat_subset.py, configs/qwen3b_*, kaggle Qwen notebooks and the random-eval notebook, Qwen answer tables and
+  rows, NOTICE, the Qwen licence, GPU-env packages transformers/peft/bitsandbytes/accelerate, the qwen writer;
+  settings assistant writerOrder ["text150m"]); kaggle/qwen_data renamed kaggle/ds7_data (slug cos30049a2-ds7-data;
+  builds DS7 v2 only); glossary topic "two-assistants" (said Qwen writes first) replaced by "assistant-model" (the
+  152M model, from scratch), glossary.jsonl regenerated, glossary_test-00053 rebuilt the same way build-ds7 writes
+  it; lm.eval_stats rerun (152M numbers unchanged: pooled 72.7%); stats_writers figure and the test-report PDF
+  rebuilt (TinyTeX on the Mac); cards regenerated. pytest 218 passed, 0 skipped (the 3 skipped were Qwen GPU tests;
+  the adapter-save test went with lm/qlora.py). Then a new working branch was opened from main (see git branch).
+- CONSEQUENCE FOR KAGGLE: DS7 v2 was built with the old glossary, so before the 152M stages run: push
+  ds7_data (CPU) on the account that runs the stages, then text150m_stage_data (CPU) with ds7_data as its input,
+  then text150m_stages. The notebooks for these three are regenerated pinned to the removal commit. The pretraining
+  chain (text150m_data, text150m_train) is untouched and keeps its old pin.
+- RUNNING (the only job): honglquanganh/cos30049a2-text150m-train v1 = 152M continued pretraining, session 1 (T4 x2,
+  started 27 Oct 01:10; fp16 check vs 3.1305, bench, gate with GPU_HOURS 50, then train; watcher bm1lzy50w on the
+  PC). The notebook stops itself at 11 h (Kaggle's limit is 12 h), so it ends by ~12:10-13:10. Its 3.0B prepared
+  tokens are byte-identical to tritran72's build. Tokens so far (estimate at 08:20, not read: the Mac has no Kaggle
+  CLI or token): ~2.3B in all (2.0B round 1 + ~0.3B at the plan's 13.5k tok/s). lm/dist.py's docstring says a
+  T4 x2 session costs the same quota as one T4.
+- When session 1 ends: read its gate.json (measured tok/s, micro_batch, total_tokens) and log, then push session 2:
+  kernel_sources += honglquanganh/cos30049a2-text150m-train, RESUME_FROM = its runs/text-150m-cont folder
+  ("/kaggle/input/<this notebook>/runs/text-150m-cont"), TOTAL_TOKENS per the user's 152M option (below). The Kaggle
+  CLI and both tokens are only on the PC; Claude can push from the Mac only if the user installs the CLI here and
+  copies the two token files.
 
 - 152M SCHEDULE (user, 27 Oct 08:20, unhappy that it runs to 1 Nov; NO OPTION CHOSEN YET). GPU_HOURS 50 at ~13.5k
   tok/s (plan estimate; session 1's gate.json has the measured rate) -> gate total = rate x 50 h x 3600 x 0.9
@@ -56,40 +54,55 @@ NOW (27 Oct ~08:45)
   Compute alone would end ~Thu 29 Oct; the 1 Nov date comes from the weekly quota (~30 h per account, reset Sat
   31 Oct ~07:00): ~30 h this week, the other ~20 h after the reset. Options offered:
   (1) session 2 sets TOTAL_TOKENS ~1.3B (allowed before the decay, the last 15%): pretraining ends ~Wed 28 Oct,
-      stages on tritran72 straight after, 152M round 2 done ~Thu 29 Oct; ~3.3B tokens in all. Claude recommended
-      this BEFORE the Qwen news; if Qwen goes, (2) is worth more.
+      stages on tritran72 straight after, 152M round 2 done ~Thu 29 Oct; ~3.3B tokens in all.
   (2) keep 50 h, alternate accounts this week (ckpt_last.pt, ~1.8 GB, moved as a private dataset; a private
-      notebook's output cannot be read from another account): ~Fri 30 Oct; ~4.2B tokens in all.
+      notebook's output cannot be read from another account): ~Fri 30 Oct; ~4.2B tokens in all. CLAUDE'S
+      RECOMMENDATION NOW: with Qwen gone the 152M model is the only language-model writer and tritran72's quota is
+      free.
   (3) as is: Sun 1 Nov 23:59 cut-off; ~4.2B.
   Session 1 alone ends at ~2.5B. Plan prediction: validation loss drop ~0.12 for +1.1B, 0.27 for +4B.
-  After pretraining: stage data (already built on both accounts) -> cos30049a2-text150m-stages (T4 x2; chat v2 ->
-  explain v2 -> evals text150m_v2 on DS7 v1 test / DS10 / glossary + round-1 text150m on the glossary; needs the
-  train notebook's finished model.pt as input) -> adoption rule -> lm.eval_stats -> results-v1.1.
+
+- THE USER'S "~1B MODEL FROM SCRATCH" IDEA (27 Oct ~10:00: "any models around 1b parameters we could train from
+  scratch ... specifically for just predicting [unusual] transactions? ... all-in a big model on top of the 152m").
+  Claude advised against it (to discuss on the new branch): (a) compute: at the 152M run's ~13.5k tok/s on T4 x2,
+  a 1B model trains ~2k tok/s, so even 1B tokens (5% of the ~20B Chinchilla needs) is ~135 Kaggle hours, and its
+  fp32 weights + gradients + Adam states (~16 GB) do not fit a 16 GB T4 without sharding; (b) data: TxGPT's own
+  size sweep already shows bigger does not help at this data size (S 0.8M, M 4.8M, L 14.2M parameters tie on
+  validation loss, txgpt_sizes.csv; DS2 gives ~9M training tokens, enough for well under 1M parameters by
+  Chinchilla's 20 tokens per parameter); (c) labels and framing: our addresses have no labels, the labelled sets
+  are tabular where tree ensembles win, and a "suspicious transaction predictor" breaks the project's rule (an
+  investigation aid, never a fraud detector; the label check shows unusual is not labelled illicit). Better uses
+  of the effort: the full 152M run (option 2), a TxGPT scaling study (sizes x data fractions: why bigger does not
+  help), more DS2 data if a bigger TxGPT is wanted, and the report.
 
 NEXT, IN ORDER
-1. Qwen: the message's source and the user's decision; if dropped, remove it (list above) in one commit.
-2. 152M session 2 when session 1 ends, with the user's option.
+1. Ask the tutor (the user is in class 27 Oct): is DS6 (smol-smoltalk, AI-written conversations) acceptable for the
+   from-scratch 152M model's chat stage? Are the glossary pairs drafted with Claude's help acceptable as training
+   data, or must they be team-written / code-generated? Should Qwen appear in the report at all? If DS6 is not
+   acceptable: skip the chat stage, train the explanation stage straight from the pretrained model.
+2. 152M session 2 when session 1 ends, with the user's option; ds7_data -> stage_data rebuild before the stages.
 3. Report: docs/REPORT_PLAN.md. The user wants the content-structure outline first (no LaTeX for the final report
    until asked); then LaTeX with the A1 preamble (docs/a1/main.tex), <= 3,000 words (aim 2,850), Harvard numbered,
    tutor's name on the cover, the brief's section order, numbers quoted from reports/tables only. Data collection
    and processing is the biggest item (5 marks). Robustness paragraph: power cut recovery, Mac replication, frozen
-   tests, strict scoring.
+   tests, strict scoring. The academic story is now "two language models trained from scratch" (TxGPT first on
+   DS10).
 4. After pretraining: stages + evaluations, adoption rule (KAGGLE_LM_PLAN.md section 3), tables into reports/tables,
-   models into models/, python -m lm.eval_stats (WRITERS already lists text150m_v2), tools/test_report.py,
+   models into models/, python -m lm.eval_stats (WRITERS = text150m, text150m_v2), tools/test_report.py,
    tools/cards.py; tag results-v1.1 if any number changed (never move a pushed tag). Tue 3 Nov is the last day round
    2 may change any result.
 5. Packaging: DS4 final model too big (models/heist_best.joblib, 263 MB; pick a smaller one, e.g.
    HistGradientBoosting); fp16 export of the 152M model (~305 MB); weights as GitHub release assets only with the
-   user's OK; python tools/package.py --tag v1.0 [--with-models]; Canvas's upload limit decides --with-models.
-   Check the download scripts + README note for data that cannot ship (Elliptic's licence, DS5 4 GB) and the zip
-   contents against the brief.
+   user's OK; python tools/package.py --tag v1.0 [--with-models] (now only models/assistant); Canvas's upload limit
+   decides --with-models. Check the download scripts + README note for data that cannot ship (Elliptic's licence,
+   DS5 4 GB) and the zip contents against the brief.
 6. M4: a teammate rebuilds everything from the README on a fresh clone; tag v1.0.
 7. Optional C+: the 152M explanation stage retrained with 5 seeds (a language model's seed spread).
 8. AI declaration from docs/AI_USE_LOG.md (say the glossary was fact-checked by Claude, not a person, unless a
    teammate reads it).
 
 WAITING ON THE USER / TEAM
-- Qwen: who sent the message; keep or drop.
+- The tutor's answers to NEXT 1.
 - 152M: option 1, 2 or 3.
 - features.csv written with float_format="%.12g" (MAC REPLICATION; needs a rerun + results-v1.1). Release-asset OK.
 - Team: Canvas upload limit; the zip exclusions (tools/package.py EXCLUDE = CLAUDE.md, context.txt,
@@ -191,16 +204,17 @@ MODELS INSTALLED (git-ignored, over 100 MB; SHA-256)
 - models/assistant/model.pt = runs/text-150m-explain/model_best.pt (152M round 1, fp32, 610 MB):
   086b9d157343e73578c5acff12f9f871104c01eed56692402e5a2499130684ab; tokenizer.json
   c8f4509cc0951d00426ae6bae99a34b8639c2f20c8c32e05b9d0bce1cc3e5d45.
-- models/qwen3b_adapter (Qwen round 1 = Kaggle adapter_best, 114 MB): adapter_model.safetensors
+- DROPPED 27 Oct (local files on the PC only, unused; delete or keep, never ship): models/qwen3b_adapter (Qwen round 1 =
+  Kaggle adapter_best, 114 MB): adapter_model.safetensors
   e471b4afcffeaeaa274e46869431be2d2f0ee66175ed6f9ad64ba3d5e8059941, adapter_config.json
-  42f7f6b1eb6711cd720994d046e06244d7a0b12cf90dd661319647b789fe6250. Kept as the fallback.
-- models/qwen3b_adapter_v2 (Qwen round 2, adopted 27 Oct; settings assistant -> configs/qwen3b_explain_v2.json + this
-  adapter; run folder runs/qwen3b-explain-v2): adapter_model.safetensors
+  42f7f6b1eb6711cd720994d046e06244d7a0b12cf90dd661319647b789fe6250.
+- DROPPED 27 Oct: models/qwen3b_adapter_v2 (Qwen round 2, adopted then dropped the same day; run folder
+  runs/qwen3b-explain-v2): adapter_model.safetensors
   9b1c5f400870242104254ca540e1122212fd76fc93c517e311bc696b6db20890, adapter_config.json
   91e3b7f7d5e1bc3a7766c8342455e5c5fa79c687f36c63e50a48eeee18320ddf.
 - models/heist_best.joblib: DS4 final model, 263 MB (too big for the zip; packaging).
 - Assistant integration (closed 24 Oct 18:15): Predictor.explain(tx, use_assistant) runs the guarded cascade
-  (settings -> assistant: writerOrder ["qwen3b", "text150m"], paths; lm/writers.py shared with lm.eval_explain;
+  (settings -> assistant: writerOrder ["text150m"] since 27 Oct (was ["qwen3b", "text150m"]); lm/writers.py shared with lm.eval_explain;
   writers this machine cannot run are skipped with a reason; template always last). CLI: predict explain --address A
   --txid T [--assistant], what-if --assistant. Default stays template-only (plan risk 26). Checked 25 Oct 06:43 on
   one flagged tx (1Bbcsfxj..., b2afad6c...): CPU env -> text150m writes, qwen3b skipped (no transformers); GPU env ->

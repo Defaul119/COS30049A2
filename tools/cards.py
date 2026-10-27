@@ -372,8 +372,7 @@ def txgpt_block() -> str:
     return "\n".join(lines)
 
 
-WRITER_NAMES = {"template": "Template (control)", "text150m": "152M, round 1", "qwen3b": "Qwen 3B, round 1",
-                "qwen3b_v2": "Qwen 3B, round 2 (used)", "text150m_v2": "152M, round 2"}
+WRITER_NAMES = {"template": "Template (control)", "text150m": "152M, round 1", "text150m_v2": "152M, round 2"}
 
 
 def writers_block() -> str:

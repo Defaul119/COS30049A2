@@ -25,8 +25,8 @@ NAME = "HCMC_COS30049.1_4_Assignment2_Code"
 # Not part of the submission: Claude's instructions and running notes (AI use is declared separately), the hand-off
 # note between machines, and the unit's brief (course material, not ours to redistribute).
 EXCLUDE = ("CLAUDE.md", "context.txt", "docs/HANDOFF.md", "docs/brief/")
-# The writers' weights, over GitHub's file limit (README section 8): Qwen 3B round 2's adapter and the 152M model.
-MODEL_DIRS = ("models/qwen3b_adapter_v2", "models/assistant")
+# The writer's weights, over GitHub's file limit (README section 8): the 152M model and its tokenizer.
+MODEL_DIRS = ("models/assistant",)
 
 
 def included(path: str) -> bool:

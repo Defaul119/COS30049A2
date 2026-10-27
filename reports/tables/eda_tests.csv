@@ -212,29 +212,3 @@ stats_writers,random close_calls text150m: fully correct,0.8,95% CI 0.757-0.843;
 stats_writers,random extreme text150m: fully correct,0.747,95% CI 0.697-0.793; 300 prompts
 stats_writers,random max_shift text150m: fully correct,0.187,95% CI 0.143-0.230; 300 prompts
 stats_writers,pooled (12 sets) text150m: fully correct,0.727,95% CI 0.716-0.738; 4948 prompts
-stats_writers,DS7 v1 test qwen3b: fully correct,0.955,95% CI 0.935-0.973; 445 prompts
-stats_writers,DS10 qwen3b: fully correct,0.959,95% CI 0.935-0.979; 291 prompts
-stats_writers,random real qwen3b: fully correct,0.954,95% CI 0.934-0.972; 500 prompts
-stats_writers,random synthetic qwen3b: fully correct,0.942,95% CI 0.920-0.960; 500 prompts
-stats_writers,random hard qwen3b: fully correct,0.774,95% CI 0.734-0.810; 500 prompts
-stats_writers,random balanced qwen3b: fully correct,0.86,95% CI 0.837-0.882; 883 prompts
-stats_writers,random crawl_ds1 qwen3b: fully correct,0.937,95% CI 0.897-0.971; 174 prompts
-stats_writers,random crawl_ds2 qwen3b: fully correct,0.971,95% CI 0.955-0.986; 421 prompts
-stats_writers,random crawl_ds10 qwen3b: fully correct,0.973,95% CI 0.955-0.988; 334 prompts
-stats_writers,random close_calls qwen3b: fully correct,0.923,95% CI 0.893-0.953; 300 prompts
-stats_writers,random extreme qwen3b: fully correct,0.953,95% CI 0.930-0.977; 300 prompts
-stats_writers,random max_shift qwen3b: fully correct,0.467,95% CI 0.413-0.523; 300 prompts
-stats_writers,pooled (12 sets) qwen3b: fully correct,0.889,95% CI 0.881-0.898; 4948 prompts
-stats_writers,DS7 v1 test qwen3b_v2: fully correct,0.962,95% CI 0.944-0.980; 445 prompts
-stats_writers,DS10 qwen3b_v2: fully correct,0.966,95% CI 0.945-0.986; 291 prompts
-stats_writers,random real qwen3b_v2: fully correct,0.95,95% CI 0.930-0.968; 500 prompts
-stats_writers,random synthetic qwen3b_v2: fully correct,0.976,95% CI 0.962-0.990; 500 prompts
-stats_writers,random hard qwen3b_v2: fully correct,0.82,95% CI 0.784-0.854; 500 prompts
-stats_writers,random balanced qwen3b_v2: fully correct,0.971,95% CI 0.958-0.981; 883 prompts
-stats_writers,random crawl_ds1 qwen3b_v2: fully correct,0.954,95% CI 0.920-0.983; 174 prompts
-stats_writers,random crawl_ds2 qwen3b_v2: fully correct,0.979,95% CI 0.964-0.990; 421 prompts
-stats_writers,random crawl_ds10 qwen3b_v2: fully correct,0.982,95% CI 0.967-0.994; 334 prompts
-stats_writers,random close_calls qwen3b_v2: fully correct,0.937,95% CI 0.907-0.963; 300 prompts
-stats_writers,random extreme qwen3b_v2: fully correct,0.967,95% CI 0.943-0.983; 300 prompts
-stats_writers,random max_shift qwen3b_v2: fully correct,0.663,95% CI 0.607-0.717; 300 prompts
-stats_writers,pooled (12 sets) qwen3b_v2: fully correct,0.927,95% CI 0.920-0.934; 4948 prompts

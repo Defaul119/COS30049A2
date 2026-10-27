@@ -10,28 +10,6 @@ template,"not flagged, 3 reasons",29,1.0
 template,"not flagged, 4 reasons",9,1.0
 template,"not flagged, nothing stands out",73,1.0
 template,unscored,44,1.0
-qwen3b_v2,"flagged, 1 reason",46,0.9565217391304348
-qwen3b_v2,"flagged, 2 reasons",60,0.9833333333333332
-qwen3b_v2,"flagged, 3 reasons",38,0.868421052631579
-qwen3b_v2,"flagged, 4 reasons",14,0.8571428571428571
-qwen3b_v2,"flagged, nothing stands out",13,0.0
-qwen3b_v2,"not flagged, 1 reason",105,0.9904761904761904
-qwen3b_v2,"not flagged, 2 reasons",69,0.6231884057971014
-qwen3b_v2,"not flagged, 3 reasons",29,0.1724137931034483
-qwen3b_v2,"not flagged, 4 reasons",9,0.3333333333333333
-qwen3b_v2,"not flagged, nothing stands out",73,0.8767123287671232
-qwen3b_v2,unscored,44,0.9772727272727272
-qwen3b,"flagged, 1 reason",46,0.9347826086956522
-qwen3b,"flagged, 2 reasons",60,0.8333333333333334
-qwen3b,"flagged, 3 reasons",38,0.6578947368421053
-qwen3b,"flagged, 4 reasons",14,0.3571428571428571
-qwen3b,"flagged, nothing stands out",13,0.1538461538461538
-qwen3b,"not flagged, 1 reason",105,0.9714285714285714
-qwen3b,"not flagged, 2 reasons",69,0.8840579710144928
-qwen3b,"not flagged, 3 reasons",29,0.4482758620689655
-qwen3b,"not flagged, 4 reasons",9,0.0
-qwen3b,"not flagged, nothing stands out",73,0.7123287671232876
-qwen3b,unscored,44,0.7727272727272727
 text150m,"flagged, 1 reason",46,0.30434782608695654
 text150m,"flagged, 2 reasons",60,0.36666666666666664
 text150m,"flagged, 3 reasons",38,0.07894736842105263

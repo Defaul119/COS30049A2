@@ -27,8 +27,7 @@ from lm.eval_explain import facts_of  # noqa: E402
 TABLES, LOGS = ROOT / "reports" / "tables", ROOT / "reports" / "logs"
 RANDOM = ROOT / "data" / "processed" / "random_test"
 OUT = ROOT / "reports" / "assistant_tests.pdf"
-WRITERS = {"template": "Template (control)", "text150m": "152M, round 1", "qwen3b": "Qwen 3B, round 1",
-           "text150m_v2": "152M, round 2", "qwen3b_v2": "Qwen 3B, round 2"}
+WRITERS = {"template": "Template (control)", "text150m": "152M, round 1", "text150m_v2": "152M, round 2"}
 CASE_ORDER = ["unscored", "flagged, nothing stands out", "flagged, 1 reason", "flagged, 2 reasons", "flagged, 3 reasons",
               "flagged, 4 reasons", "not flagged, nothing stands out", "not flagged, 1 reason", "not flagged, 2 reasons",
               "not flagged, 3 reasons", "not flagged, 4 reasons"]
@@ -133,7 +132,7 @@ def section(title: str, path: Path, tag: str, source: str, drawn: str, step: str
                          rf"{pct(getattr(r, 'fully_correct', None))} & {pct(getattr(r, 'fully_correct_macro', None))} & "
                          rf"{pct(getattr(r, 'fully_correct_nothing_stands_out', None))}\\")
         parts.append(r"\bottomrule\end{tabular}")
-        missing = [WRITERS[w] for w in ("text150m", "qwen3b", "qwen3b_v2", "text150m_v2") if w not in set(frame["model"])]
+        missing = [WRITERS[w] for w in ("text150m", "text150m_v2") if w not in set(frame["model"])]
         if missing:
             parts.append(rf"\par\noindent{{\small Not yet scored on this set: {tex(', '.join(missing))}.}}")
     excerpt = log_excerpt(step, title)
@@ -191,9 +190,9 @@ def statistics() -> str:
             parts.append(rf"{tex(r.test_set)} & {tex(WRITERS.get(r.writer, r.writer))} & {pct(r.fully_correct)} & "
                          rf"{pct(r.ci_low)}--{pct(r.ci_high)}\\")
         parts.append(r"\bottomrule\end{tabular}")
-        q = pairs[(pairs["writer_a"] == "qwen3b") & (pairs["writer_b"] == "qwen3b_v2")]
+        q = pairs[(pairs["writer_a"] == "text150m") & (pairs["writer_b"] == "text150m_v2")] if len(pairs) else pairs
         if len(q):
-            parts.append(r"\par\smallskip\noindent Qwen round 1 minus round 2 on identical prompts (negative: round 2 better); "
+            parts.append(r"\par\smallskip\noindent 152M round 1 minus round 2 on identical prompts (negative: round 2 better); "
                          r"McNemar's exact test counts the prompts only one of them got right.\par\smallskip")
             parts.append(r"\begin{longtable}{lrrrrr}\toprule Test set & Difference & 95\% CI & Only r1 right & "
                          r"Only r2 right & McNemar $p$\\\midrule\endhead")
@@ -229,8 +228,8 @@ def glossary_section() -> str:
 def main() -> int:
     commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    writers = ["template", "text150m", "qwen3b", "qwen3b_v2", "text150m_v2"]
-    overview = [r"\begin{longtable}{p{4.2cm}rrrrrr}\toprule Test set & Prompts & Template & 152M r1 & Qwen r1 & Qwen r2 & "
+    writers = ["template", "text150m", "text150m_v2"]
+    overview = [r"\begin{longtable}{p{4.2cm}rrrr}\toprule Test set & Prompts & Template & 152M r1 & "
                 r"152M r2\\\midrule\endhead"]
     for title, path, tag, *_ in SETS:
         n, _ = composition(path)

@@ -17,11 +17,10 @@ The evaluation also measures whether an answer names exactly the template's reas
 the template's order (order_ok), with each number on its own feature's line (binding_ok): an answer
 that fails these is not wrong in a way the Explorer must block, but it is not fully correct either.
 
-The Explorer tries its writers in settings -> assistant -> writerOrder (Qwen 3B, then the 152M model,
-from the DS7 results of 25 Oct; writers a machine cannot run are skipped): the first answer that
-passes every check is shown, and if none does, the template explanation is. The checks are code, not a
-model, so they are exact. The template is authoritative, and the Assistants only rephrase it.
-Qwen 3B also answers general questions as the Explorer's chatbot; that is outside this module. The evaluation measures (number faithfulness,
+The Explorer tries its writers in settings -> assistant -> writerOrder (the 152M model trained from
+scratch; a writer a machine cannot run is skipped): the first answer that passes every check is shown,
+and if none does, the template explanation is. The checks are code, not a model, so they are exact.
+The template is authoritative, and the Assistant only rephrases it. The evaluation measures (number faithfulness,
 limitation line, banned words, feature coverage, ROUGE-L against the template) use the same
 functions, so the reported pass rate is the guardrail's real behaviour.
 """
@@ -276,7 +275,7 @@ def check(answer: str, messages: list[dict[str, str]], facts: dict[str, Any]) ->
 def explain(tx: dict[str, Any], writers: list[tuple[str, Generator]] | None = None) -> dict[str, Any]:
     """The explanation the Explorer shows: the first writer's answer that passes every check, else the template.
 
-    `writers` is an ordered list of (name, generate), e.g. [("text150m", ...), ("qwen3b", ...)];
+    `writers` is an ordered list of (name, generate), e.g. [("text150m", ...)];
     each generate maps chat messages to the model's reply. None or [] (the default, plan risk 26's
     `use_assistant=False`) always returns the template. `attempts` records every answer and its checks.
     """

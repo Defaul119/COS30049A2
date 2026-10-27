@@ -1,7 +1,7 @@
 """Evaluate an Explorer Assistant on the DS7 test set, with the measures of plan §10.2.
 
-Serves plan §9 (the Assistant's evaluation table) and the 152M-versus-3B comparison: every model
-answers the same test prompts with greedy decoding, and every answer is measured by the same
+Serves plan §9 (the Assistant's evaluation table) and the round-1-versus-round-2 comparison: every
+writer answers the same test prompts with greedy decoding, and every answer is measured by the same
 functions the guardrail uses (explorer.assistant), so the reported pass rate is the guardrail's
 real behaviour:
 
@@ -31,11 +31,9 @@ so answers written before a measure existed are judged by it too (round 2, docs/
 Usage:
     python -m lm.eval_explain --model template
     python -m lm.eval_explain --model text150m --checkpoint runs/text-150m-explain/model_best.pt
-    python -m lm.eval_explain --model qwen3b --config configs/qwen3b_explain.json --adapter runs/qwen3b-explain/adapter_best
-    python -m lm.eval_explain --model qwen3b ... --batch-size 16      # Qwen answers 16 prompts per pass
     python -m lm.eval_explain --model template --test data/processed/ds10/explain.jsonl --tag ds10   # another set
-    python -m lm.eval_explain --model qwen3b --rescore            # saved answers, current measures
-    python -m lm.eval_explain --model qwen3b_v2 ... --adapter ...   # a round-2 writer gets its own rows
+    python -m lm.eval_explain --model text150m --rescore          # saved answers, current measures
+    python -m lm.eval_explain --model text150m_v2 --checkpoint ...  # a round-2 writer gets its own rows
 
 Writes reports/tables/assistant_eval_<model>.csv (one row per test prompt, with the answer), adds or
 replaces that model's row in reports/tables/assistant_eval.csv, and its rows in assistant_eval_by_case.csv
@@ -60,12 +58,12 @@ import pandas as pd
 
 from explorer import assistant
 
-from .writers import qwen_batch_generator, text150m_generator
+from .writers import text150m_generator
 
 ROOT = Path(__file__).resolve().parents[1]
 TABLES = ROOT / "reports" / "tables"
 # Writers by kind; a round-2 model is named <kind>_v2 so its rows sit beside round 1's.
-KINDS = ("template", "text150m", "qwen3b")
+KINDS = ("template", "text150m")
 
 
 def facts_of(messages: list[dict[str, str]]) -> dict:
@@ -134,16 +132,12 @@ def summarise(frame: pd.DataFrame, model: str) -> dict:
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--model", required=True,
-                   help=f"writer name: one of {', '.join(KINDS)}, or <kind>_<round> (e.g. qwen3b_v2)")
+                   help=f"writer name: one of {', '.join(KINDS)}, or <kind>_<round> (e.g. text150m_v2)")
     p.add_argument("--checkpoint", help="text150m: the explanation stage's model_best.pt")
-    p.add_argument("--config", help="qwen3b: the run's config (base model and revision)")
-    p.add_argument("--adapter", help="qwen3b: the adapter folder")
     p.add_argument("--test", default=str(ROOT / "data" / "processed" / "ds7" / "test.jsonl"))
     p.add_argument("--n", type=int, default=500, help="test prompts, drawn with --seed (plan: about 500)")
     p.add_argument("--seed", type=int, default=30049)
     p.add_argument("--max-new-tokens", type=int, default=256)
-    p.add_argument("--batch-size", type=int, default=1,
-                   help="qwen3b: prompts answered together (greedy either way; round 1 used 1)")
     p.add_argument("--tag", default="", help="suffix for the output tables (e.g. ds10)")
     p.add_argument("--rescore", action="store_true",
                    help="measure the answers saved in assistant_eval_<model>[_<tag>].csv again; no model is loaded")
@@ -165,24 +159,19 @@ def main() -> None:
             raise SystemExit(f"{answers_path} holds other prompts than --test/--n/--seed draw; rescore with the same ones")
     elif kind == "text150m":
         one = text150m_generator(args.checkpoint, args.max_new_tokens)
-    elif kind == "qwen3b":
-        batch = qwen_batch_generator(args.config, args.adapter, args.max_new_tokens)
 
-    def answer(chunk: list[dict]) -> list[str]:
+    def answer(r: dict) -> str:
         if args.rescore:
-            return [saved[r["id"]] for r in chunk]
+            return saved[r["id"]]
         if kind == "template":
-            return [r["template"] for r in chunk]
-        prompts = [r["messages"][:-1] for r in chunk]
-        return [one(m) for m in prompts] if kind == "text150m" else batch(prompts)
+            return r["template"]
+        return one(r["messages"][:-1])
 
-    results, started, size = [], time.time(), max(1, args.batch_size)
-    for start in range(0, len(rows), size):
-        chunk = rows[start:start + size]
-        answers = answer(chunk)
-        results += [{"id": r["id"], "kind": r["kind"], "prompt": prompt_key(r), "answer": a, **measure(a, r)}
-                    for r, a in zip(chunk, answers)]
-        if len(results) // 50 > (len(results) - len(chunk)) // 50:
+    results, started = [], time.time()
+    for r in rows:
+        a = answer(r)
+        results.append({"id": r["id"], "kind": r["kind"], "prompt": prompt_key(r), "answer": a, **measure(a, r)})
+        if len(results) % 50 == 0:
             print(f"[eval] {len(results)}/{len(rows)} ({time.time() - started:.0f} s)", flush=True)
 
     frame = pd.DataFrame(results)
@@ -194,7 +183,7 @@ def main() -> None:
         summary["seconds"], summary["source"] = previous.loc[args.model, ["seconds", "source"]]
     else:
         summary["seconds"] = round(time.time() - started, 1)
-        summary["source"] = args.checkpoint or args.adapter or "explorer.explain.template_explanation"
+        summary["source"] = args.checkpoint or "explorer.explain.template_explanation"
     others = previous.drop(index=args.model, errors="ignore").reset_index()
     table = pd.concat([others, pd.DataFrame([summary])], ignore_index=True)
     table.to_csv(path, index=False)

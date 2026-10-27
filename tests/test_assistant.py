@@ -1,12 +1,9 @@
-"""Tests for the Assistant's guardrail, the DS7 phrasings, the 3B model's reply masking and adapter saves (plan §9-10).
+"""Tests for the Assistant's guardrail, the DS7 phrasings and the writers (plan §9-10).
 
 Run from the project root:  python -m pytest -q
-The masking test runs only where transformers is installed (the GPU environment) and the base
-model's tokenizer is already in the local Hugging Face cache.
 """
 from __future__ import annotations
 
-import importlib.util
 import unittest
 
 from explorer import assistant, ds7
@@ -66,12 +63,12 @@ class GuardrailTests(unittest.TestCase):
         t = tx()
         bad, good = (lambda m: "It moved 123 BTC."), (lambda m: ds7.phrase(t, 2))
         self.assertEqual(assistant.explain(t)["source"], "template")
-        first = assistant.explain(t, [("text150m", good), ("qwen3b", bad)])
+        first = assistant.explain(t, [("text150m", good), ("text150m_v2", bad)])
         self.assertEqual(first["source"], "text150m")
         self.assertEqual(len(first["attempts"]), 1)
-        second = assistant.explain(t, [("text150m", bad), ("qwen3b", good)])
-        self.assertEqual((second["source"], second["text"]), ("qwen3b", ds7.phrase(t, 2)))
-        neither = assistant.explain(t, [("text150m", bad), ("qwen3b", bad)])
+        second = assistant.explain(t, [("text150m", bad), ("text150m_v2", good)])
+        self.assertEqual((second["source"], second["text"]), ("text150m_v2", ds7.phrase(t, 2)))
+        neither = assistant.explain(t, [("text150m", bad), ("text150m_v2", bad)])
         self.assertEqual((neither["source"], neither["text"]), ("template", ds7.phrase(t, 0)))
         self.assertFalse(neither["attempts"][1]["checks"]["numbers_ok"])
 
@@ -90,7 +87,7 @@ class GuardrailTests(unittest.TestCase):
         self.assertEqual([assistant.z_sign(z) for z in ("4.1", "-0.7", "-0.0", "0.0", None)], [1, -1, -1, None, None])
 
     def test_round1_answers_with_a_wrong_comparison_word_are_caught(self):
-        # The three cases found by hand on 25 Oct (context.txt): one per writer and test set.
+        # The 152M model's cases found by hand on 25 Oct (context.txt), one per test set.
         import json
         from pathlib import Path
 
@@ -99,8 +96,7 @@ class GuardrailTests(unittest.TestCase):
         from lm.eval_explain import facts_of
 
         root = Path(__file__).resolve().parents[1]
-        cases = [("ds7/test.jsonl", "qwen3b", "test-00285", "quieter week than usual"),
-                 ("ds7/test.jsonl", "text150m", "test-00127", "larger amount than usual"),
+        cases = [("ds7/test.jsonl", "text150m", "test-00127", "larger amount than usual"),
                  ("ds10/explain.jsonl", "text150m_ds10", "ds10-00153", None)]
         for data, table, rid, phrase in cases:
             rows = (json.loads(line) for line in open(root / "data" / "processed" / data, encoding="utf-8"))
@@ -156,81 +152,6 @@ class GuardrailTests(unittest.TestCase):
         self.assertEqual({ds7.split_of("addr-1", p) for _ in range(3)}, {ds7.split_of("addr-1", p)})
         shares = [ds7.split_of(f"a{i}", p) for i in range(2000)]
         self.assertAlmostEqual(shares.count("train") / 2000, p["trainShare"], delta=0.03)
-
-
-def qwen_tokenizer():
-    from transformers import AutoTokenizer
-
-    from lm.qlora import load_config
-
-    cfg = load_config("configs/qwen3b_explain.json")
-    return AutoTokenizer.from_pretrained(cfg["base_model"], revision=cfg["revision"], local_files_only=True)
-
-
-def tokenizer_available() -> bool:
-    if importlib.util.find_spec("transformers") is None:
-        return False
-    try:
-        qwen_tokenizer()
-        return True
-    except OSError:
-        return False
-
-
-@unittest.skipUnless(tokenizer_available(), "needs transformers and the cached Qwen tokenizer (GPU environment)")
-class QwenMaskTests(unittest.TestCase):
-    def test_labels_cover_exactly_the_replies(self):
-        from lm.qlora import IGNORE, encode
-
-        tok = qwen_tokenizer()
-        messages = [{"role": "system", "content": "S"}, {"role": "user", "content": "Q1"},
-                    {"role": "assistant", "content": "Answer one."}, {"role": "user", "content": "Q2"},
-                    {"role": "assistant", "content": "Answer two."}]
-        ids, labels, truncated = encode(tok, messages, 1024)
-        self.assertFalse(truncated)
-        learnt = tok.decode([i for i, l in zip(ids, labels) if l != IGNORE])
-        self.assertIn("Answer one.", learnt)
-        self.assertIn("Answer two.", learnt)
-        self.assertNotIn("Q1", learnt)
-        self.assertNotIn("assistant", learnt)
-        self.assertEqual(tok.decode(ids), tok.apply_chat_template(messages, tokenize=False))
-
-    def test_long_conversation_is_cut_after_the_last_reply_that_fits(self):
-        from lm.qlora import encode
-
-        tok = qwen_tokenizer()
-        messages = [{"role": "user", "content": "Q"}, {"role": "assistant", "content": "short"},
-                    {"role": "user", "content": "word " * 600}, {"role": "assistant", "content": "late"}]
-        ids, labels, truncated = encode(tok, messages, 200)
-        self.assertTrue(truncated)
-        self.assertLessEqual(len(ids), 200)
-        self.assertIsNone(encode(tok, [{"role": "user", "content": "word " * 600},
-                                       {"role": "assistant", "content": "x"}], 50))
-
-
-class SaveAdapterTests(unittest.TestCase):
-    def test_new_adapter_replaces_the_old_one_and_no_scratch_folder_is_left(self):
-        import tempfile
-        from pathlib import Path
-
-        from lm.qlora import save_adapter
-
-        class Stub:
-            """Writes what peft's save_pretrained writes, with a weights file that says which save it is."""
-            def __init__(self, version: str):
-                self.version = version
-
-            def save_pretrained(self, folder: Path) -> None:
-                folder.mkdir(parents=True)
-                (folder / "adapter_config.json").write_text("{}", encoding="utf-8")
-                (folder / "adapter_model.safetensors").write_text(self.version, encoding="utf-8")
-
-        with tempfile.TemporaryDirectory() as d:
-            target = Path(d) / "adapter"
-            save_adapter(Stub("one"), target)
-            save_adapter(Stub("two"), target)
-            self.assertEqual((target / "adapter_model.safetensors").read_text(encoding="utf-8"), "two")
-            self.assertEqual(sorted(p.name for p in Path(d).iterdir()), ["adapter"])
 
 
 class EvalGeneratorTests(unittest.TestCase):

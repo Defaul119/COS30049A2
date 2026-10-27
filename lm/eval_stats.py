@@ -29,7 +29,9 @@ from scipy.stats import binomtest
 ROOT = Path(__file__).resolve().parents[1]
 TABLES = ROOT / "reports" / "tables"
 SETTINGS = json.loads((ROOT / "config" / "settings.json").read_text(encoding="utf-8"))
-WRITERS = ("text150m", "qwen3b", "qwen3b_v2", "text150m_v2")
+WRITERS = ("text150m", "text150m_v2")
+PAIRED_COLUMNS = ["test_set", "writer_a", "writer_b", "prompts", "diff", "ci_low", "ci_high", "only_a_right",
+                  "only_b_right", "mcnemar_p"]
 SETS = {"DS7 v1 test": "", "DS10": "_ds10", **{f"random {s}": f"_random_{s}" for s in (
     "real", "synthetic", "hard", "balanced", "crawl_ds1", "crawl_ds2", "crawl_ds10", "close_calls", "extreme", "max_shift")}}
 
@@ -104,7 +106,8 @@ def main() -> int:
             paired.append({"test_set": "glossary (key facts)", "writer_a": a, "writer_b": b, "prompts": len(ids),
                            "diff": float(gboot[a].mean() - gboot[b].mean()), "ci_low": low, "ci_high": high})
     pd.DataFrame(summary).to_csv(TABLES / "stats_writers_summary.csv", index=False)
-    pd.DataFrame(paired).to_csv(TABLES / "stats_writers_paired.csv", index=False)
+    # With one writer there is nothing to pair; the header is still written so readers find the columns.
+    pd.DataFrame(paired, columns=PAIRED_COLUMNS).to_csv(TABLES / "stats_writers_paired.csv", index=False)
     print(pd.DataFrame(summary).round(3).to_string(index=False))
     return 0
 

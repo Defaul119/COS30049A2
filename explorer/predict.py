@@ -80,24 +80,19 @@ def finite(value: Any) -> float | None:
 def load_writers() -> tuple[list[tuple[str, Generator]], dict[str, str]]:
     """The Assistant's writers this machine can run, in settings' writerOrder, and why any others were skipped.
 
-    The markers' CPU environment has no transformers, peft or bitsandbytes, so there Qwen is skipped
-    and the 152M model (or the template alone) writes.
+    A writer whose weights are missing (they are not in git: README) is skipped, and the template alone writes.
     """
     from lm import writers  # torch is only needed once the Assistant is asked for
 
     cfg = SETTINGS["assistant"]
-    files = {"text150m": [cfg["text150mCheckpoint"]],
-             "qwen3b": [cfg["qwenConfig"], f"{cfg['qwenAdapter']}/adapter_config.json"]}
+    files = {"text150m": [cfg["text150mCheckpoint"]]}
     loaded, skipped = [], {}
     for name in cfg["writerOrder"]:
-        reason = writers.available(name, files[name], PROJECT_ROOT)
+        reason = writers.available(files[name], PROJECT_ROOT)
         if reason:
             skipped[name] = reason
-        elif name == "text150m":
-            loaded.append((name, writers.text150m_generator(PROJECT_ROOT / cfg["text150mCheckpoint"], cfg["maxNewTokens"])))
         else:
-            loaded.append((name, writers.qwen_generator(PROJECT_ROOT / cfg["qwenConfig"], PROJECT_ROOT / cfg["qwenAdapter"],
-                                                        cfg["maxNewTokens"])))
+            loaded.append((name, writers.text150m_generator(PROJECT_ROOT / cfg["text150mCheckpoint"], cfg["maxNewTokens"])))
     return loaded, skipped
 
 

@@ -28,12 +28,9 @@ The labelled datasets' class names ("illicit", "ransomware") are theirs; we neve
 
 | Model | Base | Licence | What it requires |
 |---|---|---|---|
-| Qwen 3B adapters (`models/qwen3b_adapter*/`) | Qwen2.5-3B-Instruct, revision `aa8e72537993ba99e69dfaafa59ed015b17504d1` | [Qwen Research License](licenses/QWEN_RESEARCH_LICENSE.txt) (19 Sep 2024) | Non-commercial use only; give recipients the licence text (`licenses/QWEN_RESEARCH_LICENSE.txt`); keep the attribution line in a Notice file (`NOTICE`); show "Built with Qwen" in the documentation (README, MODEL_CARD); we ship adapters only, never modified Qwen files |
 | 152M text model (`models/assistant/`) | none (trained from scratch) | ours | Trained on DS5 (ODC-By, attributed above) and DS6 (Apache 2.0) |
 | TxGPT, scoring methods, clustering, regression | none | ours | Trained on DS1 and DS2 |
 | DS3 and DS4 classifiers | none | follow their data | Elliptic's allow no derivatives to be shared, so neither is shipped |
-
-**Built with Qwen.**
 
 ## Software
 

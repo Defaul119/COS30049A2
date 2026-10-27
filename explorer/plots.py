@@ -920,8 +920,7 @@ def fig_stats_classifiers(summary: pd.DataFrame) -> tuple[Figure, Stats]:
     return fig, s
 
 
-WRITER_LABELS = {"text150m": "152M, round 1", "qwen3b": "Qwen 3B, round 1", "qwen3b_v2": "Qwen 3B, round 2",
-                 "text150m_v2": "152M, round 2"}
+WRITER_LABELS = {"text150m": "152M, round 1", "text150m_v2": "152M, round 2"}
 
 
 def fig_stats_writers(summary: pd.DataFrame) -> tuple[Figure, Stats]:
