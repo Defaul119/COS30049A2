@@ -18,6 +18,10 @@ milestone below. Numbers here are copied from `reports/tables/` for planning onl
 | 152M explanation writer (round 1) | fully correct, pooled over 12 sets | 72.7% [71.6, 73.8] | 83.2% | `stats_writers_summary.csv` |
 | 152M pretraining | validation loss (160 fixed windows) | 3.1305 at 2.0B tokens | | `runs/text-150m/` |
 
+Every model in this table, and the classic methods not listed (Isolation Forest 0.452 / 0.149, LOF 0.316 / 0.158,
+K-Means 0.463 / 0.165, DBSCAN 0.415 / 0.145; Elliptic logistic regression 0.518, KNN 0.650, gradient boosting
+0.758), gets its own training stage (section 4).
+
 Known weak spots at M0: burst transactions for every scoring method (TxGPT 0.17 on DS1, baseline 0.066 on DS10);
 regression on dormant addresses; the 152M writer on the hard (43.2%) and max_shift (18.7%) sets; Elliptic after
 step 43 (real-world drift); BitcoinHeist across time (near chance: a data limit, not chased).
@@ -51,18 +55,48 @@ stops the run. Every result row records the git commit, the stage name and the s
 Primary metrics: scoring methods and TxGPT, mean planted recall at the method's flag budget; 152M writer, fully
 correct; classifiers, F1 (with accuracy, precision and recall reported beside it).
 
-## 4. Training stages
+## 4. Training stages: every model (user, 27 Oct: "training for ALL of them, ml llm all of them")
 
-### A. TxGPT and the scoring methods (CPU or Kaggle CPU; minutes per stage)
+Every model below is retrained and retuned on **dev** only, one stage at a time, each stage through the gate in
+section 3. scikit-learn and TxGPT run on Kaggle CPU sessions (no GPU quota) or the Mac; only the 152M model uses
+Kaggle GPUs. Libraries stay pandas, scikit-learn, matplotlib and PyTorch (no XGBoost or LightGBM). Every grid goes
+into `config/settings.json`; every search is written to `reports/tables/tuning_*.csv`.
 
-| Stage | What | Weak spot it targets |
+### A. Shared first: features (all scoring methods)
+
+| Stage | What | Weak spot |
 |---|---|---|
-| A1 | TxGPT added as a fusion candidate (baseline + TxGPT) | DS1-strong vs unseen-strong methods |
-| A2 | Event-level burst scoring: surprisal summed over a short window | bursts (0.17) |
-| A3 | Burst feature relative to the address's own pace (gap / its median gap) | bursts on busy addresses (DS10) |
-| A4 | TxGPT time tokens relative to the address's median gap; retrain S, M, L x 3 seeds | bursts, generalisation |
-| A5 | More DS2 histories (crawl in the background), then sizes x data fractions (scaling study) | data-limited TxGPT |
-| A6 | Elliptic decision threshold set on validation steps | classifier F1 |
+| A0 | Burst feature relative to the address's own pace (gap / its median gap), and a log-gap for dormancy; time-safe as F1-F4; then every method below is refit on the new features | bursts (every method), dormant (regression) |
+
+### C. The scoring methods (planted recall; one stage per model, each its own grid)
+
+| Stage | Model | What is trained and searched |
+|---|---|---|
+| C1 | Robust-z baseline | comparison window, minimum history, spread floor, how features combine (max vs sum of z), flag threshold inside the 20% sanity rule |
+| C2 | Isolation Forest | trees, max_samples, max_features, feature subset, per-address vs pooled fit |
+| C3 | LOF (novelty) | n_neighbors, distance metric, scaler (robust vs standard), feature subset |
+| C4 | K-Means | k, init, score = distance scaled per cluster |
+| C5 | DBSCAN, plus HDBSCAN (scikit-learn) as a candidate | eps / min_samples; min_cluster_size |
+| C6 | Regression (Ridge, random forest, gradient boosting with quantile loss) | targets (amount, log-gap), regularisation and depth, quantiles, conformal calibration share |
+| C7 | TxGPT | event-level burst scoring; time tokens relative to the address's median gap; context length, learning rate, dropout; sizes S/M/L x 3 seeds; a seed ensemble |
+| C8 | TxGPT data | more DS2 histories (crawl in the background), then sizes x data fractions (scaling study) |
+| C9 | Fusion | every accepted method as a candidate (TxGPT included); weights, rank vs z averaging, flag budget |
+| C10 | Selection | the existing selection rule picks the Explorer's method from the accepted stages |
+
+### D. The classifiers (labelled data: accuracy, precision, recall, F1)
+
+Validation is time-safe: Elliptic tunes on its later training steps (inside 1-34), BitcoinHeist on its later
+training period; `year` and `day` are never features.
+
+| Stage | Model | What is trained and searched |
+|---|---|---|
+| D1 | Logistic regression | C, class weighting, feature sets (local vs all) |
+| D2 | KNN | k, distance weighting, scaler, feature sets |
+| D3 | Random forest | trees, depth, max_features, balanced class weights, feature sets |
+| D4 | Histogram gradient boosting | learning rate, leaves, L2, class weights, early stopping |
+| D5 | Decision threshold | each classifier's threshold set on validation (not 0.5) |
+| D6 | Ensemble | soft voting / stacking of the accepted classifiers |
+| D7 | BitcoinHeist | D1-D6 again; leave-one-family-out kept as the hardest check (a data limit is reported as one) |
 
 ### B. The 152M model (Kaggle GPU)
 
@@ -78,13 +112,20 @@ correct; classifiers, F1 (with accuracy, precision and recall reported beside it
 B3-B5 are first tried on the round-1 model (one GPU hour each, the user's account) while B1 runs, so the recipe is
 known before the round-2 model exists; the winning recipe then runs once on the round-2 model (Mon 2 Nov).
 
-## 5. When testing runs
+## 5. Order and when testing runs
+
+Order: A0 first (it changes every scoring method's input); then C1-C6 and D1-D7 side by side on Kaggle CPU
+sessions and the Mac (Wed 28 - Thu 29 Oct); then C7-C8 (TxGPT), then C9 (fusion of the accepted methods) and C10
+(selection) by Fri 30 Oct. B runs alongside on Kaggle GPUs throughout. Many searches on one dev set can fit the dev
+set itself, so each stage's gain must clear the gate's interval, and the test tier is run only once per frozen
+candidate.
+
 
 | When | What runs | Tier |
 |---|---|---|
 | After every stage above | its gate (section 3) | Dev |
 | After every 152M pretraining session | validation loss on the fixed windows | Dev |
-| Fri 30 Oct (scoring methods, TxGPT, classifiers frozen) | every accepted candidate once | Test |
+| Fri 30 Oct (A, C and D frozen) | every accepted candidate once | Test |
 | Mon 2 Nov (152M round 2 trained) | the writer once, against round 1 by the adoption rule | Test |
 | Tue 3 Nov (freeze) | everything once on DS10; statistics, figures, cards, PDF rebuilt; tag `results-v1.1` | Final |
 
