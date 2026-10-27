@@ -5,6 +5,18 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 27 October 2026 (afternoon)
 
+**Stage A0 rejected by the gate (Kaggle CPU, tritran72 cos30049a2-stage-cpu v2, commit f0e7b70, ~1 h).** Both passes
+(M0 as committed, then `features.pace.enabled` true) refit every DS1 method in one session; dev = the tuning plants
+only. Mean planted recall M0 -> A0 (paired address bootstrap, 95%): DBSCAN 0.422 -> 0.587 (+0.165 [+0.127, +0.198];
+spike 0.436 -> 0.732, burst 0.097 -> 0.261) but its flag rate nearly doubled (0.039 -> 0.070) and its largest
+address share rose 0.377 -> 0.434, so rejected; regression 0.693 -> 0.606 (burst 0.723 -> 0.542); Isolation Forest
+0.445 -> 0.404; K-Means 0.463 -> 0.433; LOF, fusion, TxGPT and the baseline unchanged within their intervals (the
+baseline and TxGPT do not read F9). No method passed, so F9 stays off (settings unchanged) and M0 remains the last
+accepted stage for every scoring method. Recorded: `reports/tables/stages.csv`, `stage_dev/{M0,A0}_*.csv`, logs in
+`reports/logs/stages/A0/`. Noted: at M0, regression's dev flag rate (0.224) is already over the 20% sanity limit.
+A possible follow-up inside stage C5 (DBSCAN's own stage): F9 as a candidate input with the threshold re-chosen at
+M0's flag budget, so a gain cannot come from flagging more.
+
 **Stage A0 prepared: F9, burst on the address's own clock** (docs/TRAINING_PLAN.md; option 1, the user's choice).
 - *F9:* strictly earlier transactions inside the last `features.pace.windowGaps` (3) x the address's own median gap
   over its timing window (at least `minGapHours`, 1), with its robust z against the same window (spread floor

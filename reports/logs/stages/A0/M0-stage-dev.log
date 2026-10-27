@@ -1,0 +1,11 @@
+2026-10-27 11:23:17 INFO Step stage-dev started: /tmp/COS30049A2/explorer/cli.py stage-dev --stage M0
+2026-10-27 11:23:22 INFO regression           dev mean recall 0.693 (spike 0.940, burst 0.723, dormant 0.416); max address share 0.582
+2026-10-27 11:23:22 INFO fusion               dev mean recall 0.665 (spike 0.784, burst 0.420, dormant 0.792); max address share 0.453
+2026-10-27 11:23:22 INFO baseline             dev mean recall 0.649 (spike 0.792, burst 0.350, dormant 0.804); max address share 0.453
+2026-10-27 11:23:22 INFO txgpt_method         dev mean recall 0.542 (spike 0.704, burst 0.171, dormant 0.752); max address share 0.113
+2026-10-27 11:23:22 INFO kmeans               dev mean recall 0.463 (spike 0.684, burst 0.056, dormant 0.648); max address share 0.434
+2026-10-27 11:23:22 INFO isolation_forest     dev mean recall 0.445 (spike 0.680, burst 0.120, dormant 0.536); max address share 0.434
+2026-10-27 11:23:22 INFO dbscan               dev mean recall 0.422 (spike 0.436, burst 0.097, dormant 0.732); max address share 0.377
+2026-10-27 11:23:22 INFO lof                  dev mean recall 0.336 (spike 0.104, burst 0.069, dormant 0.836); max address share 0.432
+2026-10-27 11:23:22 INFO regression_interval  dev mean recall 0.252 (spike 0.472, burst 0.237, dormant 0.048); max address share 0.133
+2026-10-27 11:23:22 INFO Step stage-dev finished in 5 s (exit 0)

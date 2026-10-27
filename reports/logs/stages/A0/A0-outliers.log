@@ -1,0 +1,21 @@
+2026-10-27 11:27:01 INFO Step outliers started: /tmp/COS30049A2/explorer/cli.py outliers
+2026-10-27 11:27:18 INFO isolation_forest {'max_features': 1.0, 'max_samples': 256, 'n_estimators': 200}: mean recall 0.332 (spike 0.52, burst 0.16, dormant 0.31), stability 0.69, flag rate 0.021
+2026-10-27 11:27:51 INFO isolation_forest {'max_features': 1.0, 'max_samples': 256, 'n_estimators': 500}: mean recall 0.305 (spike 0.48, burst 0.15, dormant 0.28), stability 0.78, flag rate 0.023
+2026-10-27 11:28:07 INFO isolation_forest {'max_features': 1.0, 'max_samples': 1024, 'n_estimators': 200}: mean recall 0.368 (spike 0.59, burst 0.16, dormant 0.36), stability 0.85, flag rate 0.034
+2026-10-27 11:28:45 INFO isolation_forest {'max_features': 1.0, 'max_samples': 1024, 'n_estimators': 500}: mean recall 0.404 (spike 0.58, burst 0.16, dormant 0.46), stability 0.89, flag rate 0.031
+2026-10-27 11:28:59 INFO isolation_forest {'max_features': 1.0, 'max_samples': 'auto', 'n_estimators': 200}: mean recall 0.332 (spike 0.52, burst 0.16, dormant 0.31), stability 0.69, flag rate 0.021
+2026-10-27 11:29:34 INFO isolation_forest {'max_features': 1.0, 'max_samples': 'auto', 'n_estimators': 500}: mean recall 0.305 (spike 0.48, burst 0.15, dormant 0.28), stability 0.78, flag rate 0.023
+2026-10-27 11:29:49 INFO isolation_forest {'max_features': 0.75, 'max_samples': 256, 'n_estimators': 200}: mean recall 0.302 (spike 0.46, burst 0.16, dormant 0.28), stability 0.73, flag rate 0.026
+2026-10-27 11:30:25 INFO isolation_forest {'max_features': 0.75, 'max_samples': 256, 'n_estimators': 500}: mean recall 0.284 (spike 0.40, burst 0.17, dormant 0.28), stability 0.78, flag rate 0.026
+2026-10-27 11:30:42 INFO isolation_forest {'max_features': 0.75, 'max_samples': 1024, 'n_estimators': 200}: mean recall 0.364 (spike 0.37, burst 0.15, dormant 0.58), stability 0.82, flag rate 0.034
+2026-10-27 11:31:22 INFO isolation_forest {'max_features': 0.75, 'max_samples': 1024, 'n_estimators': 500}: mean recall 0.402 (spike 0.46, burst 0.17, dormant 0.57), stability 0.85, flag rate 0.034
+2026-10-27 11:31:37 INFO isolation_forest {'max_features': 0.75, 'max_samples': 'auto', 'n_estimators': 200}: mean recall 0.302 (spike 0.46, burst 0.16, dormant 0.28), stability 0.73, flag rate 0.026
+2026-10-27 11:32:13 INFO isolation_forest {'max_features': 0.75, 'max_samples': 'auto', 'n_estimators': 500}: mean recall 0.284 (spike 0.40, burst 0.17, dormant 0.28), stability 0.78, flag rate 0.026
+2026-10-27 11:32:21 INFO lof {'n_neighbors': 10}: mean recall 0.136 (spike 0.07, burst 0.06, dormant 0.28), stability 0.26, flag rate 0.038
+2026-10-27 11:32:32 INFO lof {'n_neighbors': 20}: mean recall 0.310 (spike 0.08, burst 0.07, dormant 0.78), stability 0.61, flag rate 0.044
+2026-10-27 11:32:45 INFO lof {'n_neighbors': 35}: mean recall 0.327 (spike 0.08, burst 0.06, dormant 0.83), stability 0.72, flag rate 0.041
+2026-10-27 11:33:02 INFO lof {'n_neighbors': 50}: mean recall 0.335 (spike 0.10, burst 0.07, dormant 0.84), stability 0.80, flag rate 0.040
+2026-10-27 11:33:09 INFO isolation_forest: chose {'max_features': 1.0, 'max_samples': 1024, 'n_estimators': 500} (highest mean tuning recall among stable configurations) -> models/isolation_forest.joblib
+2026-10-27 11:33:18 INFO lof: chose {'n_neighbors': 50} (highest mean tuning recall among stable configurations) -> models/lof.joblib
+2026-10-27 11:33:18 INFO Wrote /tmp/COS30049A2/reports/tables/tuning_outliers.csv
+2026-10-27 11:33:18 INFO Step outliers finished in 377 s (exit 0)

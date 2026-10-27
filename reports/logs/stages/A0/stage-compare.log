@@ -1,0 +1,11 @@
+2026-10-27 11:54:43 INFO Step stage-compare started: /tmp/COS30049A2/explorer/cli.py stage-compare --before M0 --after A0 --stage A0
+2026-10-27 11:54:45 INFO baseline             A0: +0.000 [+0.000, +0.000] -> rejected difference interval reaches +0.0000 (not above 0)
+2026-10-27 11:54:45 INFO dbscan               A0: +0.165 [+0.127, +0.198] -> rejected largest address share rose 0.377 -> 0.434
+2026-10-27 11:54:45 INFO fusion               A0: +0.018 [-0.025, +0.075] -> rejected difference interval reaches -0.0251 (not above 0)
+2026-10-27 11:54:45 INFO isolation_forest     A0: -0.041 [-0.114, +0.033] -> rejected difference interval reaches -0.1138 (not above 0); case spike fell 0.0960 (> its M0 seed spread 0.0656); case dormant fell 0.0720 (> its M0 seed spread 0.0715)
+2026-10-27 11:54:45 INFO kmeans               A0: -0.030 [-0.079, -0.001] -> rejected difference interval reaches -0.0793 (not above 0); case dormant fell 0.0760 (> its M0 seed spread 0.0659)
+2026-10-27 11:54:45 INFO lof                  A0: -0.002 [-0.010, +0.004] -> rejected difference interval reaches -0.0102 (not above 0)
+2026-10-27 11:54:45 INFO regression           A0: -0.087 [-0.131, -0.053] -> rejected difference interval reaches -0.1308 (not above 0); case spike fell 0.0400 (> its M0 seed spread 0.0345); case burst fell 0.1808 (> its M0 seed spread 0.0318)
+2026-10-27 11:54:45 INFO regression_interval  A0: -0.030 [-0.068, +0.004] -> rejected difference interval reaches -0.0684 (not above 0); case burst fell 0.1500 (> its M0 seed spread 0.0347)
+2026-10-27 11:54:45 INFO txgpt_method         A0: +0.000 [+0.000, +0.000] -> rejected difference interval reaches +0.0000 (not above 0)
+2026-10-27 11:54:45 INFO Step stage-compare finished in 2 s (exit 0)

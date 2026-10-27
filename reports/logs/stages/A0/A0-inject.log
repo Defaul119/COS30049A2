@@ -1,0 +1,12 @@
+2026-10-27 11:23:32 INFO Step inject started: /tmp/COS30049A2/explorer/cli.py inject
+2026-10-27 11:23:57 INFO tuning seed 40000: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/tuning_40000.json
+2026-10-27 11:24:17 INFO tuning seed 40001: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/tuning_40001.json
+2026-10-27 11:24:36 INFO tuning seed 40002: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/tuning_40002.json
+2026-10-27 11:24:56 INFO tuning seed 40003: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/tuning_40003.json
+2026-10-27 11:25:18 INFO tuning seed 40004: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/tuning_40004.json
+2026-10-27 11:25:38 INFO reporting seed 30049: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/reporting_30049.json
+2026-10-27 11:25:57 INFO reporting seed 30050: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/reporting_30050.json
+2026-10-27 11:26:15 INFO reporting seed 30051: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/reporting_30051.json
+2026-10-27 11:26:36 INFO reporting seed 30052: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/reporting_30052.json
+2026-10-27 11:26:55 INFO reporting seed 30053: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/reporting_30053.json
+2026-10-27 11:26:55 INFO Step inject finished in 203 s (exit 0)

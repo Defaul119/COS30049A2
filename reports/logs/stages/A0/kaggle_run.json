@@ -1,0 +1,28 @@
+{
+  "commit": "f0e7b70b42b6ed6e18063cfa314661985492b0e6",
+  "stage": "A0",
+  "before": "M0",
+  "overrides": {
+    "features.pace.enabled": true
+  },
+  "steps": [
+    "features",
+    "features --as-written",
+    "split",
+    "inject",
+    "baseline",
+    "outliers",
+    "clustering",
+    "regression",
+    "fusion"
+  ],
+  "hours": 1.12,
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.17.1",
+    "pyarrow": "20.0.0",
+    "joblib": "1.4.2"
+  }
+}

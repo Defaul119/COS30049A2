@@ -1,0 +1,16 @@
+2026-10-27 11:33:19 INFO Step clustering started: /tmp/COS30049A2/explorer/cli.py clustering
+2026-10-27 11:33:20 INFO Fit period: 5308 rows, inputs ['zc_F1', 'zc_F2', 'zc_F3', 'zc_F4', 'zc_F9', 'dir_in', 'dir_out']
+2026-10-27 11:33:21 INFO K-Means k=2: silhouette 0.633, Davies-Bouldin 0.964, inertia 71730
+2026-10-27 11:33:21 INFO K-Means k=3: silhouette 0.570, Davies-Bouldin 0.918, inertia 60527
+2026-10-27 11:33:22 INFO K-Means k=4: silhouette 0.232, Davies-Bouldin 1.192, inertia 51517
+2026-10-27 11:33:22 INFO K-Means k=5: silhouette 0.251, Davies-Bouldin 1.088, inertia 45068
+2026-10-27 11:33:23 INFO K-Means k=6: silhouette 0.271, Davies-Bouldin 1.043, inertia 40689
+2026-10-27 11:33:24 INFO K-Means k=7: silhouette 0.276, Davies-Bouldin 1.052, inertia 37606
+2026-10-27 11:33:24 INFO K-Means k=8: silhouette 0.264, Davies-Bouldin 1.063, inertia 34952
+2026-10-27 11:33:25 INFO K-Means k=9: silhouette 0.246, Davies-Bouldin 1.031, inertia 32529
+2026-10-27 11:33:25 INFO K-Means k=10: silhouette 0.244, Davies-Bouldin 1.087, inertia 30328
+2026-10-27 11:33:40 INFO DBSCAN: eps0 2.435 (knee, MinPts 14); chose eps 2.069, MinPts 8, noise 0.047 (best silhouette among settings with 1%-5% noise)
+2026-10-27 11:33:41 INFO Cluster 0 (245 fit rows): in a busier week than usual, a quick follow-up; mostly incoming
+2026-10-27 11:33:41 INFO Cluster 1 (5063 fit rows): typical for the address; mostly outgoing
+2026-10-27 11:33:41 INFO Wrote tuning_kmeans.csv, kmeans_clusters.csv, tuning_dbscan.csv and models/{kmeans,dbscan}.joblib
+2026-10-27 11:33:41 INFO Step clustering finished in 22 s (exit 0)
