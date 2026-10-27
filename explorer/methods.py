@@ -24,12 +24,14 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import average_precision_score
 
-from .features import FEATURE_IDS
+from .features import FEATURE_IDS, PACE_ID
 from .settings import SETTINGS
 from .split import EVAL, FIT
 
 DIRECTIONS = ("in", "out")  # one-hot; "none" (received == sent) is both zero
-INPUT_COLUMNS = [f"zc_{f}" for f in FEATURE_IDS] + [f"dir_{d}" for d in DIRECTIONS]
+# Stage A0: F9 (burst on the address's own clock) joins the pooled models' inputs when features.pace.enabled.
+MODEL_FEATURES = FEATURE_IDS + ((PACE_ID,) if SETTINGS["features"]["pace"]["enabled"] else ())
+INPUT_COLUMNS = [f"zc_{f}" for f in MODEL_FEATURES] + [f"dir_{d}" for d in DIRECTIONS]
 
 
 class Method(Protocol):
@@ -40,9 +42,9 @@ class Method(Protocol):
 
 def model_inputs(frame: pd.DataFrame) -> np.ndarray:
     """The pooled models' input (plan §6.2): own-history z-scores clipped to +/- zClip, plus a
-    direction one-hot, D = 6. A z that cannot be computed (too few comparable earlier values) is
+    direction one-hot, D = 6 (7 with F9, stage A0). A z that cannot be computed (too few comparable earlier values) is
     0, "no evidence of being unusual"; such rows are often unscorable and never flagged anyway."""
-    z = frame[[f"zc_{f}" for f in FEATURE_IDS]].astype("float64").fillna(0.0).to_numpy()
+    z = frame[[f"zc_{f}" for f in MODEL_FEATURES]].astype("float64").fillna(0.0).to_numpy()
     d = np.stack([(frame["direction"] == x).to_numpy(dtype="float64") for x in DIRECTIONS], axis=1)
     return np.hstack([z, d])
 

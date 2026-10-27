@@ -12,6 +12,7 @@ account's name in a copy that is pushed (`kaggle kernels push -p <copy>`, run fr
     text150m_stages     T4x2  chat and explanation stages, then every 152M evaluation    (with the 152M chain)
     distribution        CPU   every scoring method over many plant seeds                 (any account)
     class_distribution  CPU   classifier metrics over seeds and a test bootstrap         (any account)
+    stage_cpu           CPU   one TRAINING_PLAN stage: refit before / after, dev gate    (any account)
 
 Only models the team trains from scratch are trained here (the tutor, 27 Oct 2026); the Qwen 3B notebooks of
 26-27 Oct are on the qwen-archive branch.
@@ -20,13 +21,14 @@ The 152M notebooks run on whichever account holds cos30049a2-text150m-base and t
 notebook's output cannot be read from another account (26 Oct: the teammate's account needs phone verification
 first, so they run on the user's).
 
-Usage:  python tools/kaggle_notebooks.py <commit>      (the full hash of a commit already on GitHub)
+Usage:  python tools/kaggle_notebooks.py <commit> [folder ...]   (the full hash of a commit already on GitHub;
+        with folders, only those notebooks are rewritten, so the others keep their pins)
 """
 import json
 import sys
 from pathlib import Path
 
-REPO_DIR, COMMIT = Path(__file__).resolve().parents[1], sys.argv[1]
+REPO_DIR, COMMIT, ONLY = Path(__file__).resolve().parents[1], sys.argv[1], set(sys.argv[2:])
 
 
 def nb(cells):
@@ -532,6 +534,77 @@ for name in ("stats_classifiers_seeds.csv", "stats_classifiers_summary.csv", "st
 ]
 
 
+STAGE_CPU_NB = [
+    ("markdown", r'''
+# COS30049 A2 - One training stage of the DS1 scoring methods, with its dev gate (Kaggle CPU session)
+
+Serves `docs/TRAINING_PLAN.md` (sections 3-5). From the repository at a fixed commit, the DS1 pipeline that fits
+every scoring method (`STEPS`) runs twice in this one session: first with `config/settings.json` as committed (the
+last accepted stage, `BEFORE`), then with the stage's `OVERRIDES` applied. After each pass, `stage-dev` scores
+every method on the **tuning** plants only (seeds 40000-40004; the reporting seeds are never read), and
+`stage-compare` applies the gate fixed in advance and writes `reports/tables/stages.csv`. Both passes run on
+the same machine and package versions, so the difference is the stage alone. CPU only, so no GPU quota.
+
+**Settings:** Accelerator **None**, **Internet on**. Set `STAGE` and `OVERRIDES` below (or let the push copy set
+them), then **Save Version -> Save & Run All (Commit)**.
+'''),
+    ("code", f'''
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code this run uses
+STAGE = "A0"           # the stage's name in stages.csv
+BEFORE = "M0"          # the last accepted stage (what settings.json holds at COMMIT)
+OVERRIDES = {{"features.pace.enabled": True}}  # dotted settings.json paths -> the stage's values
+STEPS = ["features", "split", "inject", "baseline", "outliers", "clustering", "regression", "fusion"]
+PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2"]
+'''),
+    ("code", SETUP + CLONE),
+    ("code", r'''
+def cli(*args, log):
+    sh(sys.executable, "-m", "explorer.cli", *args, log=log)
+
+
+def run_pass(name):
+    for step in STEPS:
+        cli(step, log=f"{name}-{step}.log")
+    cli("stage-dev", "--stage", name, log=f"{name}-stage-dev.log")
+
+
+def override(settings_path, overrides):
+    """Set each dotted path (e.g. features.pace.enabled) in settings.json; every path must exist already."""
+    settings = json.loads(settings_path.read_text(encoding="utf-8"))
+    for dotted, value in overrides.items():
+        *parents, leaf = dotted.split(".")
+        node = settings
+        for key in parents:
+            node = node[key]
+        assert leaf in node, f"{dotted} is not in settings.json"
+        node[leaf] = value
+    settings_path.write_text(json.dumps(settings, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+run_pass(BEFORE)
+override(SRC / "config" / "settings.json", OVERRIDES)
+run_pass(STAGE)
+cli("stage-compare", "--before", BEFORE, "--after", STAGE, "--stage", STAGE, log="stage-compare.log")
+'''),
+    ("code", r'''
+# The stage's tables, models and features (to commit if the stage is accepted), its settings, and the logs.
+for rel in ["reports/tables", "models", "reports/logs", "data/processed/esplora/features.csv", "config/settings.json"]:
+    src = SRC / rel
+    dest = WORK / "stage" / rel
+    if src.is_dir():
+        shutil.copytree(src, dest, dirs_exist_ok=True, ignore=shutil.ignore_patterns("*.pt", "assistant"))
+    elif src.exists():
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(src, dest)
+(WORK / "kaggle_run.json").write_text(json.dumps({"commit": COMMIT, "stage": STAGE, "before": BEFORE,
+    "overrides": OVERRIDES, "steps": STEPS, "hours": round((time.time() - T0) / 3600, 2),
+    "packages": {p.split("==")[0]: version(p.split("==")[0]) for p in PINS}}, indent=2), encoding="utf-8")
+print((SRC / "reports" / "tables" / "stages.csv").read_text(encoding="utf-8"))
+'''),
+]
+
+
 def metadata(slug, code_file, gpu, kernel_sources, dataset_sources=()):
     return {"id": f"KAGGLE_USERNAME/{slug}", "title": slug, "code_file": code_file, "language": "python",
             "kernel_type": "notebook", "is_private": True, "enable_gpu": gpu, "enable_tpu": False,
@@ -550,7 +623,10 @@ for folder, slug, cells, gpu, sources, datasets in [
         ("text150m_stages", "cos30049a2-text150m-stages", STAGES_NB, True,
          ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data", "KAGGLE_USERNAME/cos30049a2-text150m-train"], BASE),
         ("distribution", "cos30049a2-distribution", DIST_NB, False, [], []),
-        ("class_distribution", "cos30049a2-class-distribution", CLASS_NB, False, [], ["ellipticco/elliptic-data-set"])]:
+        ("class_distribution", "cos30049a2-class-distribution", CLASS_NB, False, [], ["ellipticco/elliptic-data-set"]),
+        ("stage_cpu", "cos30049a2-stage-cpu", STAGE_CPU_NB, False, [], [])]:
+    if ONLY and folder not in ONLY:
+        continue
     out = REPO_DIR / "kaggle" / folder
     out.mkdir(parents=True, exist_ok=True)
     (out / f"{folder}.ipynb").write_text(json.dumps(nb(cells), indent=1, ensure_ascii=False) + "\n", encoding="utf-8")

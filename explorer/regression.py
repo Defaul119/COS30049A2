@@ -60,6 +60,8 @@ INPUTS = [
     "prev_log_size", "prev_dir_in", "prev_dir_out", "age_log_hours", "in_share_prior", "F8_sin", "F8_cos",
     "weekday_sin", "weekday_cos",
 ]
+if SETTINGS["features"]["pace"]["enabled"]:  # stage A0: F9 beside F2 (burst on the address's own clock)
+    INPUTS.append("F9")
 TARGETS = {"size": "center_F1", "gap": "center_F3"}  # target -> its naive prediction (the window median)
 
 

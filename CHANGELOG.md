@@ -5,6 +5,20 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 27 October 2026 (afternoon)
 
+**Stage A0 prepared: F9, burst on the address's own clock** (docs/TRAINING_PLAN.md; option 1, the user's choice).
+- *F9:* strictly earlier transactions inside the last `features.pace.windowGaps` (3) x the address's own median gap
+  over its timing window (at least `minGapHours`, 1), with its robust z against the same window (spread floor
+  `minScale`, 1). F2 counts a fixed 7 days, so ten transactions in a day barely move it on a busy address.
+- *Scope:* an input to the pooled scikit-learn methods (`zc_F9` in `methods.INPUT_COLUMNS`) and to regression
+  (`F9` beside F2) only. The baseline, the explanations, the A1 prototype parity and DS7 keep F1-F4.
+- *Switch:* `features.pace.enabled` is false as committed, so every saved model and result is unchanged; the stage
+  run sets it true. It is committed as true only if A0 passes the gate.
+- *Gate tooling:* `stage-dev` (every saved method on the tuning plants, seeds 40000-40004, plus the sanity rule on
+  real evaluation rows), `stage-compare` (address-level paired bootstrap of the mean pattern recall; per-pattern drop
+  against M0's seed SD from `stats_methods_seeds.csv`) -> `reports/tables/stages.csv`. Kaggle CPU notebook
+  `kaggle/stage_cpu` runs both passes (before and after the overrides) in one session (the user: CPU stages on
+  Kaggle only). `tools/kaggle_notebooks.py <commit> [folder ...]` now rewrites only the named notebooks.
+
 **152M continued pretraining, session 1 done** (`honglquanganh/cos30049a2-text150m-train` v1, T4 x2, commit
 `028ec4c`, 11.46 h).
 - *fp16 check:* round 1's weights give validation loss 3.1304 in fp16 (bf16 on the 3060: 3.1305; tolerance 0.01). Pass.

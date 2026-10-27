@@ -41,6 +41,7 @@ log = logging.getLogger(__name__)
 TRANSACTIONS_PATH = MANIFEST_PATH.parent / "transactions.csv"
 
 FEATURE_IDS = ("F1", "F2", "F3", "F4")
+PACE_ID = "F9"  # stage A0: burst against the address's own pace; pooled models only (settings features.pace)
 SIZE_FEATURES = ("F1", "F4")
 HOUR = 3600
 DAY = 86_400
@@ -246,7 +247,38 @@ def score_address(input_txs: list[RawTx], cfg: FeatureConfig) -> list[dict[str, 
             "timing_window": describe(txs, timing[i], "all"),
             "size_window": describe(txs, size[i], dirs[i] if cfg.same_direction else "all"),
             "flagged": scored and score >= cfg.flag_abs_z, "score": score,
+            "timing_idx": timing[i][0],
         })
+    return out
+
+
+def pace_features(scored: list[dict[str, Any]], cfg: FeatureConfig) -> list[dict[str, float | None]]:
+    """F9 and its robust z (stage A0, settings.json -> features.pace), per transaction of `scored` (time order).
+
+    F2 counts the previous 7 days, so ten transactions in one day barely move it on an address that is busy
+    anyway. F9 measures the same thing on the address's own clock: how many strictly earlier transactions fall in
+    the last `windowGaps` x its median gap, the gaps taken between the transactions of its timing window (DR-02:
+    strictly earlier only; minGapHours keeps a same-block history from giving a zero window). Its z compares it
+    with F9 over the same timing window. Not used by the baseline or the explanations.
+    """
+    p = SETTINGS["features"]["pace"]
+    times = [s["time"] for s in scored]
+    f9: list[float | None] = []
+    for s in scored:
+        idx = s["timing_idx"]  # newest first
+        gaps = [times[a] - times[b] for a, b in zip(idx, idx[1:])]
+        if not gaps:
+            f9.append(None)
+            continue
+        window = p["windowGaps"] * max(median(gaps), p["minGapHours"] * HOUR)
+        f9.append(float(sum(1 for j in idx if times[j] >= s["time"] - window)))
+    out = []
+    for s, own in zip(scored, f9):
+        sample = [f9[j] for j in s["timing_idx"] if f9[j] is not None]
+        z = (None if own is None or len(sample) < cfg.min_comparison_values
+             else robust_z(own, sample, p["minScale"], cfg.mad_scale)[0])
+        out.append({PACE_ID: own, f"z_{PACE_ID}": z,
+                    f"zc_{PACE_ID}": None if z is None else max(-cfg.z_clip, min(cfg.z_clip, z))})
     return out
 
 
@@ -286,7 +318,7 @@ def build_features(transactions: pd.DataFrame, cfg: FeatureConfig) -> pd.DataFra
              for r in group.itertuples(index=False)],
             cfg,
         )
-        for s, history in zip(scored, history_inputs(scored)):
+        for s, history, pace in zip(scored, history_inputs(scored), pace_features(scored, cfg)):
             src = extra.loc[s["txid"]]
             row = {
                 "address": address, "role": src["role"], "txid": s["txid"], "block_height": s["block_height"],
@@ -311,6 +343,7 @@ def build_features(transactions: pd.DataFrame, cfg: FeatureConfig) -> pd.DataFra
             row["flag_baseline"] = s["flagged"]
             row.update(extended_features(row))
             row.update(history)
+            row.update(pace)
             rows.append(row)
     return pd.DataFrame(rows)
 

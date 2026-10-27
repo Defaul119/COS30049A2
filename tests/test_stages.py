@@ -84,3 +84,30 @@ def check_record(table: Path) -> None:
 
 def test_frozen_files_exist():
     assert stages.frozen_paths()  # every pattern in settings.json matches a file in the repository
+
+
+def test_compare_accepts_a_clear_gain_and_records_it(monkeypatch):
+    with tempfile.TemporaryDirectory() as tmp:
+        check_compare(Path(tmp), monkeypatch)
+
+
+def check_compare(tmp: Path, monkeypatch) -> None:
+    rng = np.random.default_rng(1)
+    rows = [{"method": "baseline", "seed": 40000, "pattern": p, "plant_id": f"{p}{i}", "address": f"a{i % 20}"}
+            for p in ("spike", "burst", "dormant") for i in range(60)]
+    before = pd.DataFrame(rows).assign(max=rng.random(180) < 0.5)
+    before["mean"] = before["max"].astype(float)
+    after = before.copy()
+    after.loc[after["pattern"] == "burst", ["max", "mean"]] = [True, 1.0]  # burst fixed, nothing else moves
+    monkeypatch.setattr(stages, "DEV_DIR", tmp)
+    for name, hits in (("M0", before), ("A0", after)):
+        hits.to_csv(tmp / f"{name}_hits.csv", index=False)
+        recalls = {p: hits.loc[hits["pattern"] == p, "max"].mean() for p in ("spike", "burst", "dormant")}
+        pd.DataFrame([{"method": "baseline", **{f"recall_{p}": r for p, r in recalls.items()},
+                       "mean_recall": np.mean(list(recalls.values())), "max_address_share": 0.1}]).to_csv(
+            tmp / f"{name}_summary.csv", index=False)
+    table = tmp / "stages.csv"
+    monkeypatch.setitem(stages.SETTINGS, "stages", {**stages.SETTINGS["stages"], "table": str(table)})
+    stages.run_compare("M0", "A0", "A0")
+    row = pd.read_csv(table).iloc[-1]
+    assert row["stage"] == "A0" and bool(row["accepted"]) and row["diff_previous_ci_low"] > 0

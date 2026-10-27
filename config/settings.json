@@ -94,7 +94,14 @@
     "sizeComparison": "same-direction",
     "_sizeComparisonOptions": "same-direction (proposed CR-04: size features compared only with earlier transactions in the same direction) or all (report §2.3 as written)",
     "zClip": 20,
-    "_zClip": "own-history z-scores are clipped to +/- this before pooled models (plan §6.2), so one extreme value cannot dominate"
+    "_zClip": "own-history z-scores are clipped to +/- this before pooled models (plan §6.2), so one extreme value cannot dominate",
+    "pace": {
+      "_about": "Stage A0 (docs/TRAINING_PLAN.md): F9 = strictly earlier transactions inside the last windowGaps x the address's own median gap (over its timing window; at least minGapHours), and its robust z against the same timing window (spread floor minScale). An input to the pooled scikit-learn methods only; the baseline, explanations and the A1 prototype keep F1-F4.",
+      "enabled": false,
+      "windowGaps": 3,
+      "minGapHours": 1,
+      "minScale": 1
+    }
   },
 
   "featuresAsWritten": {

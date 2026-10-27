@@ -19,6 +19,8 @@ Before any test-tier or final-tier evaluation, `check_frozen()` compares every f
 recorded by `freeze()` at milestone M0; a mismatch stops the run, so no test set changes during the campaign.
 
 Usage:  python -m explorer.cli stages-freeze      # once, at M0: record the frozen files' SHA-256
+        python -m explorer.cli stage-dev --stage A0   # dev tier of every saved DS1 scoring method
+        python -m explorer.cli stage-compare --before M0 --after A0 --stage A0   # the gate -> stages.csv
 """
 from __future__ import annotations
 
@@ -181,6 +183,101 @@ def last_accepted(family: str, model: str, table: Path | None = None) -> pd.Seri
     t = pd.read_csv(table)
     t = t[(t["family"] == family) & (t["model"] == model) & (t["accepted"].astype(str) == "True")]
     return t.iloc[-1] if len(t) else None
+
+
+DEV_DIR = TABLES_DIR / "stage_dev"
+PATTERN_MEASURES = {"spike": "max", "burst": "mean", "dormant": "max"}  # = significance.MEAN_OF's three recalls
+
+
+def dev_hits(methods: dict, copies: pd.DataFrame) -> pd.DataFrame:
+    """One row per (method, tuning plant): flagged at all (max) and the share flagged (mean); a method that
+    cannot score these copies (TxGPT keeps scores for the reporting plants only) is left out and logged."""
+    from .significance import plant_hits
+
+    parts = []
+    for name, method in methods.items():
+        try:
+            parts.append(plant_hits({name: method}, copies))
+        except (KeyError, ValueError) as e:
+            log.info("%s skipped on the dev plants: %s", name, e)
+    return pd.concat(parts, ignore_index=True)
+
+
+def run_dev(stage: str) -> int:
+    """Dev tier for the DS1 scoring methods: every saved method on the TUNING plants (seeds 40000-40004, never
+    the reporting seeds), plus the sanity rule on the real evaluation rows. Writes stage_dev/<stage>_hits.csv
+    and <stage>_summary.csv; `run_compare` turns two stages' hits into stages.csv rows."""
+    from .baseline import load_copies
+    from .methods import real_metrics
+    from .scores import saved_methods
+    from .snapshot import MANIFEST_PATH
+
+    methods = saved_methods()
+    hits = dev_hits(methods, load_copies("refined", "tuning"))
+    features = pd.read_csv(MANIFEST_PATH.parent / "features.csv")
+    rows = []
+    for name, part in hits.groupby("method"):
+        recalls = {p: float(part.loc[part["pattern"] == p, m].mean()) for p, m in PATTERN_MEASURES.items()}
+        rows.append({"stage": stage, "method": name, **{f"recall_{p}": r for p, r in recalls.items()},
+                     "mean_recall": float(np.mean(list(recalls.values()))), **real_metrics(methods[name], features)})
+    DEV_DIR.mkdir(parents=True, exist_ok=True)
+    hits.assign(stage=stage).to_csv(DEV_DIR / f"{stage}_hits.csv", index=False)
+    summary = pd.DataFrame(rows).sort_values("mean_recall", ascending=False)
+    summary.to_csv(DEV_DIR / f"{stage}_summary.csv", index=False)
+    for r in summary.itertuples():
+        log.info("%-20s dev mean recall %.3f (spike %.3f, burst %.3f, dormant %.3f); max address share %.3f",
+                 r.method, r.mean_recall, r.recall_spike, r.recall_burst, r.recall_dormant, r.max_address_share)
+    return 0
+
+
+def pattern_mean_draws(hits: pd.DataFrame, weights: np.ndarray, addresses: list[str]) -> np.ndarray:
+    """Mean of the three pattern recalls under each row of address weights (row 0 = the point estimate)."""
+    where = {a: i for i, a in enumerate(addresses)}
+    per_pattern = []
+    for pattern, measure in PATTERN_MEASURES.items():
+        rows = hits[hits["pattern"] == pattern]
+        idx = rows["address"].map(where).to_numpy()
+        sums, counts = np.zeros(len(addresses)), np.zeros(len(addresses))
+        np.add.at(sums, idx, rows[measure].to_numpy(dtype="float64"))
+        np.add.at(counts, idx, 1.0)
+        per_pattern.append((weights @ sums) / (weights @ counts))
+    return np.mean(per_pattern, axis=0)
+
+
+def m0_spread(method: str) -> dict[str, float]:
+    """Each pattern recall's seed spread (one SD over the 100 distribution seeds on DS1) at M0."""
+    seeds = pd.read_csv(TABLES_DIR / "stats_methods_seeds.csv")
+    seeds = seeds[(seeds["dataset"] == "DS1") & (seeds["method"] == method)]
+    names = {"spike": "recall_spike", "burst": "recall_burst_tx", "dormant": "recall_dormant"}
+    return {p: float(seeds[c].std()) for p, c in names.items()} if len(seeds) else {}
+
+
+def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True) -> int:
+    """Gate every DS1 scoring method of stage `after` against stage `before` (both from run_dev), paired on the
+    same tuning plants with an address-level bootstrap; one stages.csv row per method."""
+    s = SETTINGS["stages"]
+    hb, ha = (pd.read_csv(DEV_DIR / f"{x}_hits.csv") for x in (before, after))
+    sb, sa = (pd.read_csv(DEV_DIR / f"{x}_summary.csv").set_index("method") for x in (before, after))
+    key = ["seed", "pattern", "plant_id", "address"]
+    for method in sorted(set(ha["method"]) & set(hb["method"])):
+        a, b = (h[h["method"] == method].sort_values(key).reset_index(drop=True) for h in (ha, hb))
+        if not a[key].equals(b[key]):
+            raise RuntimeError(f"{method}: the two stages were scored on different plants")
+        addresses = sorted(a["address"].unique())
+        weights, _ = group_draws(np.array(addresses), s["bootstrapResamples"], s["seed"])
+        diff = pattern_mean_draws(a, weights, addresses) - pattern_mean_draws(b, weights, addresses)
+        low, high = interval(diff[1:], s["ciLevel"])
+        recalls_b = {p: float(sb.loc[method, f"recall_{p}"]) for p in PATTERN_MEASURES}
+        recalls_a = {p: float(sa.loc[method, f"recall_{p}"]) for p in PATTERN_MEASURES}
+        result = decide(low, recalls_b, recalls_a, m0_spread(method), loss_agrees,
+                        flagged_share=float(sa.loc[method, "max_address_share"]))
+        record({"family": "scoring", "model": method, "stage": stage, "tier": "dev", "metric": "mean planted recall",
+                "value": float(sa.loc[method, "mean_recall"]), "previous_stage": before, "diff_previous": float(diff[0]),
+                "diff_previous_ci_low": low, "diff_previous_ci_high": high, "accepted": result.accepted,
+                "reasons": "; ".join(result.reasons), "seeds": "tuning 40000-40004"})
+        log.info("%-20s %s: %+.3f [%+.3f, %+.3f] -> %s %s", method, stage, diff[0], low, high,
+                 "ACCEPTED" if result.accepted else "rejected", "; ".join(result.reasons))
+    return 0
 
 
 def run_freeze() -> int:

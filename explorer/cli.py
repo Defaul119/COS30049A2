@@ -221,6 +221,18 @@ def cmd_stages_freeze(args: argparse.Namespace) -> int:
     return run_freeze()
 
 
+def cmd_stage_dev(args: argparse.Namespace) -> int:
+    from .stages import run_dev
+
+    return run_dev(args.stage)
+
+
+def cmd_stage_compare(args: argparse.Namespace) -> int:
+    from .stages import run_compare
+
+    return run_compare(args.before, args.after, args.stage)
+
+
 def cmd_predict(args: argparse.Namespace) -> int:
     import json
 
@@ -469,6 +481,14 @@ def build_parser() -> argparse.ArgumentParser:
                      ).set_defaults(func=cmd_significance)
     steps.add_parser("stages-freeze", help="M0: record the SHA-256 of every frozen test and final file (once)"
                      ).set_defaults(func=cmd_stages_freeze)
+    stage_dev = steps.add_parser("stage-dev", help="dev tier: every saved DS1 method on the tuning plants (TRAINING_PLAN)")
+    stage_dev.add_argument("--stage", required=True, help="the stage's name, e.g. M0 or A0")
+    stage_dev.set_defaults(func=cmd_stage_dev)
+    stage_compare = steps.add_parser("stage-compare", help="the strict gate between two stages' dev results -> stages.csv")
+    stage_compare.add_argument("--before", required=True, help="the last accepted stage (its stage-dev name)")
+    stage_compare.add_argument("--after", required=True, help="the new stage's stage-dev name")
+    stage_compare.add_argument("--stage", required=True, help="the name recorded in stages.csv")
+    stage_compare.set_defaults(func=cmd_stage_compare)
     steps.add_parser("sensitivity", help="DS1: recall of every method against plant strength").set_defaults(
         func=cmd_sensitivity)
     steps.add_parser("ds2-check", help="DS2: the frozen DS1 methods on ~2,900 more address histories").set_defaults(

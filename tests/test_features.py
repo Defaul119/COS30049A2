@@ -130,3 +130,28 @@ class AsWrittenTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PaceTests(unittest.TestCase):
+    """F9 (stage A0): burst on the address's own clock; strictly earlier transactions only (DR-02)."""
+
+    def history(self, extra_times: list[int] = ()) -> list[RawTx]:
+        day = 86_400
+        times = [i * day for i in range(40)] + list(extra_times)  # one a day, then whatever is added
+        return [RawTx(f"t{i:03d}", t, i, 1000, 0) for i, t in enumerate(times)]
+
+    def pace(self, txs: list[RawTx]) -> list[dict]:
+        from explorer.features import pace_features
+        cfg = FeatureConfig.refined()
+        return pace_features(score_address(txs, cfg), cfg)
+
+    def test_later_transactions_never_change_earlier_values(self):
+        base = self.pace(self.history())
+        more = self.pace(self.history([40 * 86_400 + 60 * k for k in range(10)]))
+        self.assertEqual(base, more[:len(base)])
+
+    def test_a_burst_stands_out_on_the_address_clock(self):
+        start = 40 * 86_400
+        out = self.pace(self.history([start + 3600 * k for k in range(10)]))
+        self.assertLessEqual(abs(out[39]["z_F9"]), 1)       # an ordinary day
+        self.assertGreater(out[-1]["z_F9"], 3)              # the tenth transaction of a ten-in-ten-hours burst
