@@ -85,10 +85,13 @@ TRAINING PLAN (user, 27 Oct): docs/TRAINING_PLAN.md on branch from-scratch. Mile
 after Qwen's removal). Every stage passes a dev gate fixed in advance; test once per frozen candidate; DS10 once.
 
 NEXT, IN ORDER
-1. Ask the tutor (the user is in class 27 Oct): is DS6 (smol-smoltalk, AI-written conversations) acceptable for the
-   from-scratch 152M model's chat stage? Are the glossary pairs drafted with Claude's help acceptable as training
-   data, or must they be team-written / code-generated? Should Qwen appear in the report at all? If DS6 is not
-   acceptable: skip the chat stage, train the explanation stage straight from the pretrained model.
+1. ANSWERED (user, 27 Oct ~12:00): DS6 is acceptable for the 152M chat stage; the Claude-drafted glossary is
+   acceptable training data; Qwen is NOT mentioned in the report at all. So the stages run as planned (pretrain ->
+   chat on DS6 -> explanation on DS7 v2 with the 152M-only glossary).
+   MORE ACCOUNTS (27 Oct ~11:35): kainetyson (Minh Khang Nguyen) and dansns (Cam Dan Bui); tokens in
+   C:\Users\ADMIN\.kaggle\accounts\<username>.token (never in the repo; both should be regenerated after the
+   project). Phone verification unknown until a notebook runs. Khang also sent a Modal token ID (ak-...) but not
+   its secret (as-...), so Modal is not usable yet.
 2. 152M session 2 when session 1 ends, with the user's option; ds7_data -> stage_data rebuild before the stages.
 3. Report: docs/REPORT_PLAN.md. The user wants the content-structure outline first (no LaTeX for the final report
    until asked); then LaTeX with the A1 preamble (docs/a1/main.tex), <= 3,000 words (aim 2,850), Harvard numbered,
@@ -111,7 +114,7 @@ NEXT, IN ORDER
    teammate reads it).
 
 WAITING ON THE USER / TEAM
-- The tutor's answers to NEXT 1.
+- Modal: the token secret (as-...) that goes with Khang's token ID, if Modal is wanted.
 - 152M: option 2 chosen 27 Oct ~11:30 (done).
 - features.csv written with float_format="%.12g" (MAC REPLICATION; needs a rerun + results-v1.1). Release-asset OK.
 - Team: Canvas upload limit; the zip exclusions (tools/package.py EXCLUDE = CLAUDE.md, context.txt,

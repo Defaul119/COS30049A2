@@ -11,8 +11,8 @@ project up to this point"; full decision rights overnight). Due Sun 8 Nov 23:59;
 
 - [x] Qwen dropped on the tutor's ruling (only models trained from scratch): removed from main, kept on the
       `qwen-archive` branch; glossary topic fixed; tables, cards, PDF rebuilt; pytest 218 passed (27 Oct). [Claude]
-- [ ] Ask the tutor: DS6 (AI-written conversations) for the 152M chat stage? Claude-drafted glossary as training
-      data? Qwen in the report at all? [Cao, in class]
+- [x] Tutor's answers (user, 27 Oct ~12:00): DS6 acceptable for the chat stage; the Claude-drafted glossary is
+      acceptable training data; Qwen is not mentioned in the report at all. [Cao]
 - [ ] 152M pretraining length: (1) stop at this week's quota (~1.3B more tokens, done ~Thu 29 Oct), (2) 50 h across
       both accounts (~Fri 30 Oct; Claude's recommendation now that the 152M model is the only writer), (3) as
       planned (Sun 1 Nov). [Cao]

@@ -68,7 +68,7 @@ section can now quote and the order to write it in.
   not "labelled illicit", the report's central caution.
 - Assistant: the 152M model (trained from scratch) passes the guardrail on 99.3% of DS7 test prompts and is
   fully correct on 87.0% (pooled over 12 test sets: 72.7%); round 2 results replace these if they pass the
-  adoption rule. The Qwen 3B fine-tune was dropped on the tutor's ruling (27 Oct; CHANGELOG).
+  adoption rule. The report does not mention Qwen at all (user, 27 Oct, after the tutor's ruling).
 
 ## Before writing: freeze the results (M2)
 
