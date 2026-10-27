@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-27 ~08:45 GMT+7, on the Mac)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-27 ~12:25 GMT+7, on the PC)
 Layout: PART 1 is the live state (read all of it). PART 2 is reference (look things up). PART 3 is the dated
 history of finished work (kept for the report, the AI declaration and the CHANGELOG cross-check).
 Other files: CHANGELOG.md (every change with its numbers), docs/TODO.md (checklist), docs/KAGGLE_LM_PLAN.md (LM round
@@ -11,6 +11,54 @@ every GPU step runs on Kaggle.
 
 PART 1 - LIVE STATE
 ===================
+
+START HERE (hand-off, 27 Oct ~12:25; the PC conversation was closed to save tokens)
+- Branch: work on `from-scratch` (git checkout from-scratch; git pull). `main` = Qwen removed; `qwen-archive` = Qwen
+  kept. Everything is pushed; nothing uncommitted. pytest: 218 passed.
+- Tutor's answers (user, 27 Oct ~12:00): DS6 acceptable for the 152M chat stage; the Claude-drafted glossary is
+  acceptable training data; the report must NOT mention Qwen at all.
+- 152M schedule: OPTION 2 chosen (full GPU_HOURS 50, alternate accounts; target pretraining done ~Fri 30 Oct).
+  Open (user's call, any time before the decay = last 15%): use all 3.0B prepared tokens instead of the gate's ~2.2B
+  (about one more session; ~Fri 30 / Sat 31 Oct).
+- Kaggle accounts (tokens ONLY in C:\Users\ADMIN\.kaggle\accounts\<username>.token, never in the repo; the user's
+  own is ~/.kaggle/access_token = tritran72, the CLI default; NEVER overwrite it):
+    tritran72 (user)          ~8 GPU h left this week (Qwen runs used the rest); free for the 152M chain
+    honglquanganh (Hoang Anh) ~18 h left after session 1; runs the 152M chain now
+    kainetyson (Minh Khang)   ~30 h, phone verification unknown until a notebook runs
+    dansns (Cam Dan)          ~30 h, phone verification unknown until a notebook runs
+  Quota resets Sat 31 Oct ~07:00 GMT+7 (~30 h per account per week; exact figure: Kaggle Settings). All four tokens
+  were pasted into chat: the teammates regenerate them after the project. Modal: Khang sent only the token ID
+  (ak-...), not the secret (as-...); unusable until both arrive.
+- CLI: C:\Users\ADMIN\miniforge3\envs\cos30049-a2-gpu\Scripts\kaggle.exe; another account via
+  KAGGLE_API_TOKEN=$(cat C:/Users/ADMIN/.kaggle/accounts/<username>.token) kaggle ... ; push from INSIDE the folder
+  (cd <folder> && kaggle kernels push -p . --accelerator NvidiaTeslaT4), never with a C:/ path for -p.
+- RUNNING: honglquanganh/cos30049a2-text150m-train version 1 = 152M continued pretraining, session 1 (T4 x2, pushed
+  27 Oct 01:10, notebook pinned to commit 028ec4c). It stops itself at 11.75 h (~12:55) and saves its output. The PC
+  watcher died with the conversation: check with `kaggle kernels status honglquanganh/cos30049a2-text150m-train`.
+- NEXT STEP 1, when session 1 is COMPLETE:
+  a. Read its output: KAGGLE_API_TOKEN=... kaggle kernels output honglquanganh/cos30049a2-text150m-train -p <scratch
+     dir> (or list the files on the notebook page). Record from gate.json / kaggle_run.json / the log: fp16 check
+     (validation loss vs round 1's 3.1305, tolerance 0.01), bench (tok/s, micro_batch, one T4 vs two), the gate
+     (total_tokens), tokens trained, last validation loss. Note the path of runs/text-150m-cont/ (ckpt_last.pt).
+  b. Session 2 (same account, a new version of the same notebook): copy kaggle/text150m_train/ to a scratch folder;
+     in kernel-metadata.json replace KAGGLE_USERNAME with honglquanganh and set
+       "kernel_sources": ["honglquanganh/cos30049a2-text150m-data", "honglquanganh/cos30049a2-text150m-train"];
+     in the notebook's parameter cell set
+       RESUME_FROM = "/kaggle/input/cos30049a2-text150m-train/runs/text-150m-cont"
+     (check this against the output listing in a.; if the path is wrong the notebook's copytree fails at once, it
+     never silently restarts from the base weights). Keep COMMIT 028ec4c, GPU_HOURS 50, TOTAL_TOKENS None (session
+     1's gate.json decides) unless the user picks the 3.0B option. Push with --accelerator NvidiaTeslaT4.
+  c. Record the session-1 numbers in CHANGELOG.md and this file; pytest; commit; push.
+- NEXT STEP 2: session 3 needs ~11.75 h; honglquanganh will have ~6 h left, so move to tritran72 (has
+  cos30049a2-text150m-data and -base): download ckpt_last.pt (~1.8 GB) + gate.json + log from session 2's output,
+  upload them as a private dataset on tritran72, push the train notebook there with that dataset as input and
+  RESUME_FROM pointing at it. (Or use kainetyson/dansns once they show they have GPU access.) Continue session by
+  session until the gate total is trained.
+- NEXT STEP 3 (before the 152M stages): ds7_data (CPU) -> text150m_stage_data (CPU, ds7_data as input) ->
+  text150m_stages (GPU), on the account that runs the stages; these three notebooks are pinned to e52bcf1 (the
+  152M-only glossary). Then evaluation, adoption rule, lm.eval_stats, tools/test_report.py, tools/cards.py.
+- Also open: the report outline (docs/REPORT_PLAN.md; no Qwen), packaging (tools/package.py; Canvas limit), the
+  team items in WAITING ON THE USER / TEAM below.
 
 NOW (27 Oct ~10:30)
 - QWEN IS GONE (tutor's ruling, confirmed by the user in class 27 Oct ~09:30: "its the tutor himself"). The tutor's
