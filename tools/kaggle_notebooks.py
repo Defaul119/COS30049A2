@@ -13,6 +13,7 @@ account's name in a copy that is pushed (`kaggle kernels push -p <copy>`, run fr
     distribution        CPU   every scoring method over many plant seeds                 (any account)
     class_distribution  CPU   classifier metrics over seeds and a test bootstrap         (any account)
     stage_cpu           CPU   one TRAINING_PLAN stage: refit before / after, dev gate    (any account)
+    stage_search        CPU   TRAINING_PLAN stages C1-C6: each method's grid, then the gate (any account)
 
 Only models the team trains from scratch are trained here (the tutor, 27 Oct 2026); the Qwen 3B notebooks of
 26-27 Oct are on the qwen-archive branch.
@@ -605,6 +606,61 @@ print((SRC / "reports" / "tables" / "stages.csv").read_text(encoding="utf-8"))
 ]
 
 
+STAGE_SEARCH_NB = [
+    ("markdown", r'''
+# COS30049 A2 - Training stages C1-C6 of the DS1 scoring methods, with their dev gate (Kaggle CPU session)
+
+Serves `docs/TRAINING_PLAN.md` (sections 3-4). From the repository at a fixed commit, this rebuilds the DS1 features
+and the tuning plants, then `stage-search` searches each scoring method's grid (`config/settings.json ->
+stageSearch`) at the method's own M0 flag budget: candidates are ranked on tuning seeds 40000-40002, and the winner is
+gated against M0 on tuning seeds 40003-40004 (`explorer/stage_search.py`). The reporting seeds are never read. Each
+stage runs as its own step, so one failing stage does not stop the others. CPU only, so no GPU quota.
+
+**Settings:** Accelerator **None**, **Internet on**. Then **Save Version -> Save & Run All (Commit)**. About an hour.
+'''),
+    ("code", f'''
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code this run uses
+STAGES = ["C1", "C2", "C3", "C4", "C5", "C6"]
+STEPS = ["features", "split", "inject"]   # the data the search reads (M0's dev tables are committed)
+PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2"]
+'''),
+    ("code", SETUP + CLONE),
+    ("code", r'''
+def cli(*args, log):
+    sh(sys.executable, "-m", "explorer.cli", *args, log=log)
+
+
+for step in STEPS:
+    cli(*step.split(), log=f"{step}.log")
+failed = {}
+for stage in STAGES:
+    t = time.time()
+    try:
+        cli("stage-search", "--stages", stage, log=f"stage-search-{stage}.log")
+    except subprocess.CalledProcessError as e:
+        failed[stage] = str(e)
+    print(f"{stage}: {(time.time() - t) / 60:.1f} min{' FAILED' if stage in failed else ''}")
+'''),
+    ("code", r'''
+# The searches, the winners, the dev tables and stages.csv (to commit), the settings and the logs.
+for rel in ["reports/tables/stage_search", "reports/tables/stage_dev", "reports/tables/stages.csv", "models/stage",
+            "reports/logs", "config/settings.json"]:
+    src = SRC / rel
+    dest = WORK / "stage" / rel
+    if src.is_dir():
+        shutil.copytree(src, dest, dirs_exist_ok=True)
+    elif src.exists():
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(src, dest)
+(WORK / "kaggle_run.json").write_text(json.dumps({"commit": COMMIT, "stages": STAGES, "failed": failed,
+    "steps": STEPS, "hours": round((time.time() - T0) / 3600, 2),
+    "packages": {p.split("==")[0]: version(p.split("==")[0]) for p in PINS}}, indent=2), encoding="utf-8")
+print((SRC / "reports" / "tables" / "stages.csv").read_text(encoding="utf-8"))
+'''),
+]
+
+
 def metadata(slug, code_file, gpu, kernel_sources, dataset_sources=()):
     return {"id": f"KAGGLE_USERNAME/{slug}", "title": slug, "code_file": code_file, "language": "python",
             "kernel_type": "notebook", "is_private": True, "enable_gpu": gpu, "enable_tpu": False,
@@ -624,7 +680,8 @@ for folder, slug, cells, gpu, sources, datasets in [
          ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data", "KAGGLE_USERNAME/cos30049a2-text150m-train"], BASE),
         ("distribution", "cos30049a2-distribution", DIST_NB, False, [], []),
         ("class_distribution", "cos30049a2-class-distribution", CLASS_NB, False, [], ["ellipticco/elliptic-data-set"]),
-        ("stage_cpu", "cos30049a2-stage-cpu", STAGE_CPU_NB, False, [], [])]:
+        ("stage_cpu", "cos30049a2-stage-cpu", STAGE_CPU_NB, False, [], []),
+        ("stage_search", "cos30049a2-stage-search", STAGE_SEARCH_NB, False, [], [])]:
     if ONLY and folder not in ONLY:
         continue
     out = REPO_DIR / "kaggle" / folder

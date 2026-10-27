@@ -3,6 +3,19 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 28 October 2026
+
+**152M session 2 finished; session 3 started.** honglquanganh v2 (11.47 h): step 5,616 (~1.47B of the 3.0B new
+tokens), validation loss 3.1262 at step 5,600, now below round 1's 3.1304. The overnight handover had been stopped
+by Claude Code for low memory before it did anything, so session 3 was pushed by hand at 06:35 on kainetyson
+(checkpoint dataset kainetyson/cos30049a2-s3-text-150m-cont; data manifests identical).
+
+**Stages C1-C6 prepared (`explorer/stage_search.py`, settings `stageSearch`, Kaggle notebook `stage_search`).** Each
+DS1 scoring method's grid is searched at the method's M0 flag budget (its M0 dev flag rate of the real evaluation
+rows, capped at 20%), ranked on tuning seeds 40000-40002, and only the winner is gated against M0 on seeds
+40003-40004; `stage-compare` takes the seeds to use. Rules fixed before any result (TRAINING_PLAN section 4). F9
+returns as a candidate input (stage A0 was rejected for raising DBSCAN's flag rate, which the budget now rules out).
+
 ## 27 October 2026 (afternoon)
 
 **Stage A0 rejected by the gate (Kaggle CPU, tritran72 cos30049a2-stage-cpu v2, commit f0e7b70, ~1 h).** Both passes

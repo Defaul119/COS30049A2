@@ -223,6 +223,35 @@
                     "data/processed/random_test/*.jsonl"]
   },
 
+  "stageSearch": {
+    "_about": "explorer/stage_search.py: training stages C1-C6 (docs/TRAINING_PLAN.md section 4). Every candidate's threshold flags at most the method's M0 dev flag rate (capped at sanity.maxFlaggedShare) of the real evaluation rows; candidates are ranked on searchSeeds and the winner is gated against M0 on gateSeeds (both tuning seeds; the reporting seeds are never read).",
+    "searchSeeds": [40000, 40001, 40002],
+    "gateSeeds": [40003, 40004],
+    "stabilityChecks": 10,
+    "_stabilityChecks": "Isolation Forest and LOF: the ranked candidates whose stability is measured (25 refits each) until one reaches model.stabilityTarget, as at M0",
+    "inputSets": {
+      "F1-F4+dir": {"features": ["F1", "F2", "F3", "F4"], "direction": true},
+      "F1-F4": {"features": ["F1", "F2", "F3", "F4"], "direction": false},
+      "F1-F4+F9+dir": {"features": ["F1", "F2", "F3", "F4", "F9"], "direction": true},
+      "F1-F4+F9": {"features": ["F1", "F2", "F3", "F4", "F9"], "direction": false}
+    },
+    "_inputSets": "the pooled methods' inputs: clipped own-history z-scores, with or without the direction one-hot; M0 is F1-F4+dir",
+    "baseline": {"combine": ["max", "top2", "l2", "sum"]},
+    "_baseline": "how |z| over F1-F4 becomes one score: the largest (A1, M0), the two largest added, the Euclidean norm, or the sum; the baseline keeps F1-F4 (stage A0 decision)",
+    "isolationForest": {"n_estimators": [200, 500], "max_samples": [256, 1024, "auto"], "max_features": [1.0, 0.75, 0.5]},
+    "lof": {"n_neighbors": [5, 10, 20, 35, 50, 75, 100], "metric": ["euclidean", "manhattan"], "scaler": ["none", "standard", "robust"]},
+    "kmeans": {"k": [2, 3, 4, 5, 6, 7, 8, 9, 10, 12], "init": ["k-means++", "random"], "score": ["distance", "scaled"]},
+    "_kmeans": "score: distance to the nearest centroid, or that distance over the cluster's median fit-period distance",
+    "dbscan": {"eps_factor": [0.5, 0.7, 0.85, 1.0, 1.15, 1.3, 1.6, 2.0], "min_samples": [4, 8, 12, 16, 24]},
+    "hdbscan": {"min_cluster_size": [5, 10, 20, 40, 80]},
+    "_hdbscan": "scikit-learn's HDBSCAN as a candidate in DBSCAN's stage (C5); a new point's score is its distance to the nearest clustered fit-period point",
+    "regression": {"inputSets": {"base": [], "+F9": ["F9"]}, "families": ["ridge", "randomForest", "histGradientBoosting"],
+                   "residualFloor": [0.02, 0.05, 0.1, 0.2]},
+    "_regression": "per input set and target, each family's parameters are chosen by validation MAE (as at M0); candidates are the size model's family x the gap model's family x the residual floor",
+    "regressionInterval": {"quantiles": [[0.005, 0.995], [0.01, 0.99], [0.025, 0.975]], "calibrationShare": [0.1, 0.2, 0.3]},
+    "_regressionInterval": "the range variant: quantile pair x the share of each address's fit period used for conformal calibration (CQR)"
+  },
+
   "explorerMethod": "baseline",
   "_explorerMethod": "the DS1 method the Explorer and predict.py use (plan §11.4): the robust-z baseline, as models/selection.json recommends; recorded 23 Oct by Cao Tri Tran with the team's delegation",
 

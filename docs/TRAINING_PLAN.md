@@ -83,6 +83,15 @@ into `config/settings.json`; every search is written to `reports/tables/tuning_*
 | C9 | Fusion | every accepted method as a candidate (TxGPT included); weights, rank vs z averaging, flag budget |
 | C10 | Selection | the existing selection rule picks the Explorer's method from the accepted stages |
 
+How C1-C6 run (`explorer/stage_search.py`, Kaggle notebook `stage_search`; set 28 Oct before any result):
+every candidate's threshold flags at most the method's M0 dev flag rate of the real evaluation rows (capped at the
+20% sanity limit), so recall measures ranking, not how much a method flags; candidates are ranked on tuning seeds
+40000-40002 and only the winner is gated against M0, on tuning seeds 40003-40004, so the gate does not judge the
+best of many candidates on the plants that chose it. Candidates that would break the sanity or per-pattern rule
+are filtered before ranking. The comparison window, minimum history and spread floor change every method's input,
+so they are a shared feature stage like A0 (A1), not part of C1. Per-address Isolation Forests are left out:
+they cannot score an address they were not fitted on.
+
 ### D. The classifiers (labelled data: accuracy, precision, recall, F1)
 
 Validation is time-safe: Elliptic tunes on its later training steps (inside 1-34), BitcoinHeist on its later

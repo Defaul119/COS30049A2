@@ -258,11 +258,14 @@ def m0_spread(method: str) -> dict[str, float]:
     return {p: float(seeds[c].std()) for p, c in names.items()} if len(seeds) else {}
 
 
-def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True) -> int:
-    """Gate every DS1 scoring method of stage `after` against stage `before` (both from run_dev), paired on the
-    same tuning plants with an address-level bootstrap; one stages.csv row per method."""
+def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True, seeds: list[int] | None = None) -> int:
+    """Gate every DS1 scoring method of stage `after` against stage `before` (both from run_dev or a stage search),
+    paired on the same tuning plants with an address-level bootstrap; one stages.csv row per method. `seeds` keeps
+    only those tuning seeds' plants (a stage search gates on seeds it did not rank its candidates on)."""
     s = SETTINGS["stages"]
     hb, ha = (pd.read_csv(DEV_DIR / f"{x}_hits.csv") for x in (before, after))
+    if seeds is not None:
+        hb, ha = (h[h["seed"].isin(seeds)] for h in (hb, ha))
     sb, sa = (pd.read_csv(DEV_DIR / f"{x}_summary.csv").set_index("method") for x in (before, after))
     key = ["seed", "pattern", "plant_id", "address"]
     for method in sorted(set(ha["method"]) & set(hb["method"])):
@@ -273,16 +276,18 @@ def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True) -
         weights, _ = group_draws(np.array(addresses), s["bootstrapResamples"], s["seed"])
         diff = pattern_mean_draws(a, weights, addresses) - pattern_mean_draws(b, weights, addresses)
         low, high = interval(diff[1:], s["ciLevel"])
-        recalls_b = {p: float(sb.loc[method, f"recall_{p}"]) for p in PATTERN_MEASURES}
-        recalls_a = {p: float(sa.loc[method, f"recall_{p}"]) for p in PATTERN_MEASURES}
+        recalls_b, recalls_a = ({p: float(h.loc[h["pattern"] == p, m].mean()) for p, m in PATTERN_MEASURES.items()}
+                                for h in (b, a))
         result = decide(low, recalls_b, recalls_a, m0_spread(method), loss_agrees,
                         flagged_share=float(sa.loc[method, "flag_rate"]),
                         address_share_before=float(sb.loc[method, "max_address_share"]),
                         address_share_after=float(sa.loc[method, "max_address_share"]))
+        used = sorted(a["seed"].unique())
         record({"family": "scoring", "model": method, "stage": stage, "tier": "dev", "metric": "mean planted recall",
-                "value": float(sa.loc[method, "mean_recall"]), "previous_stage": before, "diff_previous": float(diff[0]),
-                "diff_previous_ci_low": low, "diff_previous_ci_high": high, "accepted": result.accepted,
-                "reasons": "; ".join(result.reasons), "seeds": "tuning 40000-40004"})
+                "value": float(np.mean(list(recalls_a.values()))), "previous_stage": before,
+                "diff_previous": float(diff[0]), "diff_previous_ci_low": low, "diff_previous_ci_high": high,
+                "accepted": result.accepted, "reasons": "; ".join(result.reasons),
+                "seeds": f"tuning {used[0]}-{used[-1]}" if seeds is None else "gate " + " ".join(map(str, used))})
         log.info("%-20s %s: %+.3f [%+.3f, %+.3f] -> %s %s", method, stage, diff[0], low, high,
                  "ACCEPTED" if result.accepted else "rejected", "; ".join(result.reasons))
     return 0

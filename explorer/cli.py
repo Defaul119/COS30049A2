@@ -24,6 +24,7 @@ Usage (from the repository root):
     python -m explorer.cli evaluate               # every DS1 check and the recommended method
     python -m explorer.cli significance           # bootstrap intervals: which recall differences are real
     python -m explorer.cli stages-freeze          # M0: SHA-256 of the frozen test files (TRAINING_PLAN gate)
+    python -m explorer.cli stage-search --stages C1 C2  # each method's grid at its flag budget, then the gate
     python -m explorer.cli sensitivity            # recall against plant strength (spike size, burst size, dormancy)
     python -m explorer.cli ds2-check              # the frozen DS1 methods on DS2's ~2,900 comparable histories
     python -m explorer.cli walk-forward           # every method at several fit/evaluation cut-offs
@@ -231,6 +232,12 @@ def cmd_stage_compare(args: argparse.Namespace) -> int:
     from .stages import run_compare
 
     return run_compare(args.before, args.after, args.stage)
+
+
+def cmd_stage_search(args: argparse.Namespace) -> int:
+    from .stage_search import run_search
+
+    return run_search(args.stages)
 
 
 def cmd_predict(args: argparse.Namespace) -> int:
@@ -489,6 +496,9 @@ def build_parser() -> argparse.ArgumentParser:
     stage_compare.add_argument("--after", required=True, help="the new stage's stage-dev name")
     stage_compare.add_argument("--stage", required=True, help="the name recorded in stages.csv")
     stage_compare.set_defaults(func=cmd_stage_compare)
+    stage_search = steps.add_parser("stage-search", help="stages C1-C6: each scoring method's grid at its M0 flag budget, gated")
+    stage_search.add_argument("--stages", nargs="+", required=True, help="e.g. C1 C2 C3 C4 C5 C6")
+    stage_search.set_defaults(func=cmd_stage_search)
     steps.add_parser("sensitivity", help="DS1: recall of every method against plant strength").set_defaults(
         func=cmd_sensitivity)
     steps.add_parser("ds2-check", help="DS2: the frozen DS1 methods on ~2,900 more address histories").set_defaults(
