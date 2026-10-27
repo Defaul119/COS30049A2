@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-27 ~12:25 GMT+7, on the PC)
+SESSION CONTEXT - read this first (kept up to date by Claude; last update 2026-10-27 ~13:30 GMT+7, on the PC)
 Layout: PART 1 is the live state (read all of it). PART 2 is reference (look things up). PART 3 is the dated
 history of finished work (kept for the report, the AI declaration and the CHANGELOG cross-check).
 Other files: CHANGELOG.md (every change with its numbers), docs/TODO.md (checklist), docs/KAGGLE_LM_PLAN.md (LM round
@@ -11,6 +11,23 @@ every GPU step runs on Kaggle.
 
 PART 1 - LIVE STATE
 ===================
+
+LATEST (27 Oct ~13:30)
+- 152M session 1 DONE (honglquanganh v1): fp16 3.1304 (pass); bench 22,765 tok/s, measured ~18,550; the gate took
+  all 3.0B prepared tokens (~5.0B in all), so the "3.0B option" is settled; 0.755B trained (step 2881); val loss
+  3.1304 -> 3.1913 (re-warm-up) -> 3.1650, falling. ~2.25B left = 3 more sessions; decay starts at 2.55B
+  (session 4). Details: CHANGELOG 27 Oct (afternoon).
+- Session 2 RUNNING: honglquanganh v2, pushed 13:15, RESUME_FROM "auto" (new: finds .../text-150m-cont/ckpt_last.pt
+  under /kaggle/input wherever it is mounted). Ends ~01:00 Wed 28 Oct.
+- kainetyson and dansns are phone-verified (T4 x2 + internet, checked 13:10 with cos30049a2-gpucheck). Both now
+  have dataset cos30049a2-text150m-base and notebook cos30049a2-text150m-data (CPU, pushed ~13:20).
+- HANDOVER RUNNING in the background on the PC (Claude session, scratchpad handover.sh; log handover.log):
+  waits for session 2 -> downloads its checkpoint -> checks kainetyson's data_manifest == honglquanganh's -> uploads
+  dataset kainetyson/cos30049a2-s3-text-150m-cont -> pushes session 3 on kainetyson; then the same from kainetyson
+  to dansns for session 4. If the Claude session closed, do it by hand: same steps (see the script's header).
+  Expected: s3 ~01:30-13:30 Wed, s4 ~13:45 Wed - ~01:45 Thu; then a short s5 if not finished (kainetyson).
+- Stage gate built: explorer/stages.py (+ tests, settings "stages"), frozen test files recorded in
+  data/processed/frozen_tests.json (14 files, = m0). Next: stage A0 (features), then C1-C6 / D1-D7.
 
 START HERE (hand-off, 27 Oct ~12:25; the PC conversation was closed to save tokens)
 - Branch: work on `from-scratch` (git checkout from-scratch; git pull). `main` = Qwen removed; `qwen-archive` = Qwen
