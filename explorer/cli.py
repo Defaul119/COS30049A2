@@ -23,6 +23,7 @@ Usage (from the repository root):
     python -m explorer.cli fusion                 # two complementary methods fused at the same flag budget
     python -m explorer.cli evaluate               # every DS1 check and the recommended method
     python -m explorer.cli significance           # bootstrap intervals: which recall differences are real
+    python -m explorer.cli stages-freeze          # M0: SHA-256 of the frozen test files (TRAINING_PLAN gate)
     python -m explorer.cli sensitivity            # recall against plant strength (spike size, burst size, dormancy)
     python -m explorer.cli ds2-check              # the frozen DS1 methods on DS2's ~2,900 comparable histories
     python -m explorer.cli walk-forward           # every method at several fit/evaluation cut-offs
@@ -212,6 +213,12 @@ def cmd_significance(args: argparse.Namespace) -> int:
     from .significance import run_significance
 
     return run_significance()
+
+
+def cmd_stages_freeze(args: argparse.Namespace) -> int:
+    from .stages import run_freeze
+
+    return run_freeze()
 
 
 def cmd_predict(args: argparse.Namespace) -> int:
@@ -460,6 +467,8 @@ def build_parser() -> argparse.ArgumentParser:
         func=cmd_evaluate)
     steps.add_parser("significance", help="DS1: address-level bootstrap intervals for recall and method differences"
                      ).set_defaults(func=cmd_significance)
+    steps.add_parser("stages-freeze", help="M0: record the SHA-256 of every frozen test and final file (once)"
+                     ).set_defaults(func=cmd_stages_freeze)
     steps.add_parser("sensitivity", help="DS1: recall of every method against plant strength").set_defaults(
         func=cmd_sensitivity)
     steps.add_parser("ds2-check", help="DS2: the frozen DS1 methods on ~2,900 more address histories").set_defaults(

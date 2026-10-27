@@ -204,6 +204,17 @@
     "ciLevel": 0.95,
     "seed": 30049
   },
+  "stages": {
+    "_about": "explorer/stages.py: the strict gate after every training stage (docs/TRAINING_PLAN.md section 3); group-level paired bootstrap of the difference between the last accepted stage and the new one, and the SHA-256 check of the frozen test and final files.",
+    "table": "stages.csv",
+    "bootstrapResamples": 2000,
+    "ciLevel": 0.95,
+    "seed": 73000,
+    "frozenManifest": "data/processed/frozen_tests.json",
+    "frozenFiles": ["data/processed/ds10/histories.json.gz", "data/processed/ds10/transactions.csv",
+                    "data/processed/ds10/explain.jsonl", "data/processed/ds7/test.jsonl",
+                    "data/processed/random_test/*.jsonl"]
+  },
 
   "explorerMethod": "baseline",
   "_explorerMethod": "the DS1 method the Explorer and predict.py use (plan §11.4): the robust-z baseline, as models/selection.json recommends; recorded 23 Oct by Cao Tri Tran with the team's delegation",

@@ -1,0 +1,16 @@
+{
+  "data/processed/ds10/histories.json.gz": "dfc1c4f91687b1d3a76db8f6d82ba90c442eb74fe044a0c1aabe6636e1bf953b",
+  "data/processed/ds10/transactions.csv": "2178de9cde9dd5828f39c6b2595227523baada9a05b7d53a9a10631652dbf8b5",
+  "data/processed/ds10/explain.jsonl": "483138d415c2d3be0ff0faac7ae3295413cf94578c881925213df4a0ccca6e92",
+  "data/processed/ds7/test.jsonl": "c2f1be1d519ad6abe88d051d68e3ecf45369c964578f3eab8c3a723de068f266",
+  "data/processed/random_test/balanced.jsonl": "6fc75de02e15cc2ddff4fb9120e3fc8a9e5ecec36fad65c9a94ff3b9981dad15",
+  "data/processed/random_test/close_calls.jsonl": "e4d5033bddd11f8de546e18c8aeabc03fe1cd278d9289d2b8c3637537eb96ee0",
+  "data/processed/random_test/crawl_ds1.jsonl": "9bae7b91267f75b5b81ba409d024bf08421c45dd855f068c7e5d4121f72bcc6c",
+  "data/processed/random_test/crawl_ds10.jsonl": "be770aa91aad9c29903720c5f57281ad66327e6ff7b4f40364b78f724254634e",
+  "data/processed/random_test/crawl_ds2.jsonl": "399455158235021ba041ef97bdba1126eca8cb9564e5a629e3e839c726ac0eba",
+  "data/processed/random_test/extreme.jsonl": "00b58f9f819d811209d54345a688c1af73a9e282aa08f67e26e462aa97b9859b",
+  "data/processed/random_test/hard.jsonl": "75ae3ec52fe3f602519737a771150cea4ce2799c7cbdc27f00095e8f0efe9a3d",
+  "data/processed/random_test/max_shift.jsonl": "a9cd63afe8908dfb1241fcda96b7f4672a281f2ad4cd632b3eea635913e72696",
+  "data/processed/random_test/real.jsonl": "2a2a0ca9912df2fe32302c6e378626744d2e28cfeaa0e89440ec83103a9f0930",
+  "data/processed/random_test/synthetic.jsonl": "b0410fbbcb38d69590b69699c066536b3a8417fad3aa534a29b48c77b71dae7b"
+}
