@@ -554,7 +554,7 @@ COMMIT = "{COMMIT}"   # the code this run uses
 STAGE = "A0"           # the stage's name in stages.csv
 BEFORE = "M0"          # the last accepted stage (what settings.json holds at COMMIT)
 OVERRIDES = {{"features.pace.enabled": True}}  # dotted settings.json paths -> the stage's values
-STEPS = ["features", "split", "inject", "baseline", "outliers", "clustering", "regression", "fusion"]
+STEPS = ["features", "features --as-written", "split", "inject", "baseline", "outliers", "clustering", "regression", "fusion"]
 PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2"]
 '''),
     ("code", SETUP + CLONE),
@@ -565,7 +565,7 @@ def cli(*args, log):
 
 def run_pass(name):
     for step in STEPS:
-        cli(step, log=f"{name}-{step}.log")
+        cli(*step.split(), log=f"{name}-{step.replace(' --', '-')}.log")
     cli("stage-dev", "--stage", name, log=f"{name}-stage-dev.log")
 
 

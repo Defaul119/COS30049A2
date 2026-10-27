@@ -6,8 +6,10 @@ model is retrained one stage at a time, and a stage is kept only if it passes ru
 1. the primary metric rises against the last accepted stage, and the bootstrap interval of the paired
    difference lies above 0;
 2. no case (plant pattern, writer test case) falls by more than its own seed spread at M0;
-3. the writer's guardrail pass rate and number faithfulness do not fall; a scoring method's flagged share stays
-   inside the sanity limit (settings.json -> sanity.maxFlaggedShare);
+3. the writer's guardrail pass rate and number faithfulness do not fall; a scoring method's flag rate stays
+   inside the sanity limit (settings.json -> sanity.maxFlaggedShare), and its largest per-address share does not
+   rise above both that limit and its value before the stage (at M0 some addresses are over the limit already,
+   for every method: their behaviour changed after the 70/30 cut, eval_sanity_addresses.csv);
 4. training loss and dev metric agree (no dev gain with a rising validation loss).
 
 Differences are paired: the previous and the new candidate are scored on the same units (plants, prompts, rows),
@@ -135,7 +137,8 @@ class GateResult:
 
 def decide(diff_ci_low: float, case_before: dict[str, float], case_after: dict[str, float],
            case_spread: dict[str, float], loss_agrees: bool, guardrail_before: float | None = None,
-           guardrail_after: float | None = None, flagged_share: float | None = None) -> GateResult:
+           guardrail_after: float | None = None, flagged_share: float | None = None,
+           address_share_before: float | None = None, address_share_after: float | None = None) -> GateResult:
     """Apply the four rules of TRAINING_PLAN section 3; every failed rule is listed in `reasons`."""
     reasons = []
     if not diff_ci_low > 0:
@@ -148,7 +151,10 @@ def decide(diff_ci_low: float, case_before: dict[str, float], case_after: dict[s
         reasons.append(f"guardrail pass rate fell {guardrail_before:.4f} -> {guardrail_after:.4f}")
     limit = SETTINGS["sanity"]["maxFlaggedShare"]
     if flagged_share is not None and flagged_share > limit:
-        reasons.append(f"flagged share {flagged_share:.3f} over the sanity limit {limit}")
+        reasons.append(f"flag rate {flagged_share:.3f} over the sanity limit {limit}")
+    if (address_share_before is not None and address_share_after is not None
+            and address_share_after > max(limit, address_share_before)):
+        reasons.append(f"largest address share rose {address_share_before:.3f} -> {address_share_after:.3f}")
     if not loss_agrees:
         reasons.append("dev metric rose while the validation loss rose")
     return GateResult(not reasons, reasons)
@@ -270,7 +276,9 @@ def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True) -
         recalls_b = {p: float(sb.loc[method, f"recall_{p}"]) for p in PATTERN_MEASURES}
         recalls_a = {p: float(sa.loc[method, f"recall_{p}"]) for p in PATTERN_MEASURES}
         result = decide(low, recalls_b, recalls_a, m0_spread(method), loss_agrees,
-                        flagged_share=float(sa.loc[method, "max_address_share"]))
+                        flagged_share=float(sa.loc[method, "flag_rate"]),
+                        address_share_before=float(sb.loc[method, "max_address_share"]),
+                        address_share_after=float(sa.loc[method, "max_address_share"]))
         record({"family": "scoring", "model": method, "stage": stage, "tier": "dev", "metric": "mean planted recall",
                 "value": float(sa.loc[method, "mean_recall"]), "previous_stage": before, "diff_previous": float(diff[0]),
                 "diff_previous_ci_low": low, "diff_previous_ci_high": high, "accepted": result.accepted,

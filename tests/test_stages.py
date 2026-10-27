@@ -44,8 +44,12 @@ def test_decide_lists_every_failed_rule():
                        guardrail_before=0.9, guardrail_after=0.9, flagged_share=0.1)
     assert ok.accepted and not ok.reasons
     bad = stages.decide(-0.01, {"spike": 0.8}, {"spike": 0.7}, {"spike": 0.02}, loss_agrees=False,
-                        guardrail_before=0.9, guardrail_after=0.8, flagged_share=0.5)
-    assert not bad.accepted and len(bad.reasons) == 5
+                        guardrail_before=0.9, guardrail_after=0.8, flagged_share=0.5,
+                        address_share_before=0.45, address_share_after=0.5)
+    assert not bad.accepted and len(bad.reasons) == 6
+    already_over = stages.decide(0.01, {}, {}, {}, loss_agrees=True, address_share_before=0.45,
+                                 address_share_after=0.45)
+    assert already_over.accepted  # an address over the limit at M0 does not block a stage that leaves it there
 
 
 def test_freeze_then_check(monkeypatch):
@@ -104,7 +108,8 @@ def check_compare(tmp: Path, monkeypatch) -> None:
         hits.to_csv(tmp / f"{name}_hits.csv", index=False)
         recalls = {p: hits.loc[hits["pattern"] == p, "max"].mean() for p in ("spike", "burst", "dormant")}
         pd.DataFrame([{"method": "baseline", **{f"recall_{p}": r for p, r in recalls.items()},
-                       "mean_recall": np.mean(list(recalls.values())), "max_address_share": 0.1}]).to_csv(
+                       "mean_recall": np.mean(list(recalls.values())), "flag_rate": 0.02,
+                       "max_address_share": 0.45}]).to_csv(
             tmp / f"{name}_summary.csv", index=False)
     table = tmp / "stages.csv"
     monkeypatch.setitem(stages.SETTINGS, "stages", {**stages.SETTINGS["stages"], "table": str(table)})
