@@ -75,6 +75,9 @@ NOW (27 Oct ~10:30)
   of the effort: the full 152M run (option 2), a TxGPT scaling study (sizes x data fractions: why bigger does not
   help), more DS2 data if a bigger TxGPT is wanted, and the report.
 
+TRAINING PLAN (user, 27 Oct): docs/TRAINING_PLAN.md on branch from-scratch. Milestone M0 = tag m0 (= ba72063, main
+after Qwen's removal). Every stage passes a dev gate fixed in advance; test once per frozen candidate; DS10 once.
+
 NEXT, IN ORDER
 1. Ask the tutor (the user is in class 27 Oct): is DS6 (smol-smoltalk, AI-written conversations) acceptable for the
    from-scratch 152M model's chat stage? Are the glossary pairs drafted with Claude's help acceptable as training

@@ -6,6 +6,9 @@ project up to this point"; full decision rights overnight). Due Sun 8 Nov 23:59;
 
 ## Decide now (27 Oct)
 
+- [ ] Follow docs/TRAINING_PLAN.md (branch from-scratch): stages A1-A6 and B1-B6, a strict dev gate after every
+      stage, comparison against milestone M0 (tag m0) in reports/tables/stages.csv. [Claude, Cao]
+
 - [x] Qwen dropped on the tutor's ruling (only models trained from scratch): removed from main, kept on the
       `qwen-archive` branch; glossary topic fixed; tables, cards, PDF rebuilt; pytest 218 passed (27 Oct). [Claude]
 - [ ] Ask the tutor: DS6 (AI-written conversations) for the 152M chat stage? Claude-drafted glossary as training
