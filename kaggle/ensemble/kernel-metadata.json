@@ -1,0 +1,17 @@
+{
+  "id": "KAGGLE_USERNAME/cos30049a2-ensemble",
+  "title": "cos30049a2-ensemble",
+  "code_file": "ensemble.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [
+    "ellipticco/elliptic-data-set"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
