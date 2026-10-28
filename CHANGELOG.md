@@ -16,6 +16,12 @@ rows, capped at 20%), ranked on tuning seeds 40000-40002, and only the winner is
 40003-40004; `stage-compare` takes the seeds to use. Rules fixed before any result (TRAINING_PLAN section 4). F9
 returns as a candidate input (stage A0 was rejected for raising DBSCAN's flag rate, which the budget now rules out).
 
+**Stage D6 prepared (`explorer/ensemble.py`, settings `ensemble`, Kaggle notebook `ensemble`; the user, 28 Oct).**
+Soft voting (weights 0/1/2/4 per member, at least two members) or stacking (logistic regression on the members'
+log-odds) of the four Elliptic classifiers; chosen on validation steps 27-30, gated against the random forest on
+steps 31-34, tested once on steps 35-49 only if accepted. D1-D5 skipped (validation F1 already 0.95-0.99) and D7
+reported as a data limit (TRAINING_PLAN section 4).
+
 ## 27 October 2026 (afternoon)
 
 **Stage A0 rejected by the gate (Kaggle CPU, tritran72 cos30049a2-stage-cpu v2, commit f0e7b70, ~1 h).** Both passes

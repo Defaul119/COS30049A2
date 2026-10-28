@@ -419,6 +419,17 @@
     "bootstrapDraws": 1000
   },
 
+  "ensemble": {
+    "_about": "explorer/ensemble.py, stage D6 (docs/TRAINING_PLAN.md): soft voting or stacking of the four Elliptic classifiers. The members are fitted on the fit steps; steps up to weightLastStep choose the weights and threshold, the remaining validation steps gate the ensemble against the random forest; the test steps are used once, only if it is accepted.",
+    "featureSet": "AF",
+    "weightLastStep": 30,
+    "weights": [0, 1, 2, 4],
+    "_weights": "every weight vector over (logistic, knn, randomForest, histGradientBoosting) with at least two non-zero weights",
+    "stackC": [0.01, 0.1, 1, 10],
+    "_stackC": "the stacking logistic regression's inverse regularisation strength, on the members' log-odds",
+    "probabilityClip": 1e-6
+  },
+
   "distribution": {
     "_about": "explorer/distribution.py (user, 27 Oct: distributions and mean accuracy over many tests): the three planted patterns replanted with many seeds on DS1, DS2 and DS10, every frozen method scored on each. The seed block starts above every tuning, reporting and test-set seed, so no reported number moves. DS2 is ~30x DS1's size, so it gets fewer seeds.",
     "firstSeed": 70000,

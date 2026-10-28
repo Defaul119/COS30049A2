@@ -14,6 +14,7 @@ account's name in a copy that is pushed (`kaggle kernels push -p <copy>`, run fr
     class_distribution  CPU   classifier metrics over seeds and a test bootstrap         (any account)
     stage_cpu           CPU   one TRAINING_PLAN stage: refit before / after, dev gate    (any account)
     stage_search        CPU   TRAINING_PLAN stages C1-C6: each method's grid, then the gate (any account)
+    ensemble            CPU   TRAINING_PLAN stage D6: Elliptic classifier ensemble, gated (any account)
 
 Only models the team trains from scratch are trained here (the tutor, 27 Oct 2026); the Qwen 3B notebooks of
 26-27 Oct are on the qwen-archive branch.
@@ -661,6 +662,44 @@ print((SRC / "reports" / "tables" / "stages.csv").read_text(encoding="utf-8"))
 ]
 
 
+ENSEMBLE_NB = [
+    ("markdown", r'''
+# COS30049 A2 - Training stage D6: an ensemble of the Elliptic classifiers, with its gate (Kaggle CPU session)
+
+Runs `python -m explorer.cli ensemble` (`explorer/ensemble.py`, `docs/TRAINING_PLAN.md` section 4): the four reported
+all-feature classifiers are fitted on Elliptic's fit steps (1-26); steps 27-30 choose a soft-voting or stacking
+ensemble and its threshold; steps 31-34 gate it against the random forest (paired bootstrap of F1, McNemar's test,
+no time step falling by more than the random forest's seed spread). Only an accepted ensemble is scored on the test
+steps (35-49), once. Elliptic comes from the attached Kaggle dataset (its licence forbids sharing processed rows);
+only metrics are written. CPU only.
+
+**Settings:** Accelerator **None**, **Internet on**. **Input:** dataset `ellipticco/elliptic-data-set`.
+'''),
+    ("code", f'''
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code this run uses
+PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2"]
+'''),
+    ("code", SETUP + CLONE + FIND),
+    ("code", r'''
+raw = SRC / "data" / "external" / "elliptic"
+raw.mkdir(parents=True, exist_ok=True)
+for name in ("elliptic_txs_features.csv", "elliptic_txs_classes.csv", "elliptic_txs_edgelist.csv"):
+    shutil.copy(find_input(name), raw / name)
+sh(sys.executable, "-c", "import logging, sys; logging.basicConfig(level=logging.INFO); "
+   "from explorer.labelled import run_process_elliptic; sys.exit(run_process_elliptic())", log="process-elliptic.log")
+sh(sys.executable, "-m", "explorer.cli", "ensemble", log="ensemble.log")
+tables = WORK / "reports" / "tables"
+tables.mkdir(parents=True, exist_ok=True)
+for name in ("ensemble_search.csv", "ensemble_results.csv", "stages.csv"):
+    shutil.copy(SRC / "reports" / "tables" / name, tables / name)
+(WORK / "kaggle_run.json").write_text(json.dumps({"commit": COMMIT, "hours": round((time.time() - T0) / 3600, 2),
+    "packages": {p.split("==")[0]: version(p.split("==")[0]) for p in PINS}}, indent=2), encoding="utf-8")
+print((SRC / "reports" / "tables" / "stages.csv").read_text(encoding="utf-8"))
+'''),
+]
+
+
 def metadata(slug, code_file, gpu, kernel_sources, dataset_sources=()):
     return {"id": f"KAGGLE_USERNAME/{slug}", "title": slug, "code_file": code_file, "language": "python",
             "kernel_type": "notebook", "is_private": True, "enable_gpu": gpu, "enable_tpu": False,
@@ -681,7 +720,8 @@ for folder, slug, cells, gpu, sources, datasets in [
         ("distribution", "cos30049a2-distribution", DIST_NB, False, [], []),
         ("class_distribution", "cos30049a2-class-distribution", CLASS_NB, False, [], ["ellipticco/elliptic-data-set"]),
         ("stage_cpu", "cos30049a2-stage-cpu", STAGE_CPU_NB, False, [], []),
-        ("stage_search", "cos30049a2-stage-search", STAGE_SEARCH_NB, False, [], [])]:
+        ("stage_search", "cos30049a2-stage-search", STAGE_SEARCH_NB, False, [], []),
+        ("ensemble", "cos30049a2-ensemble", ENSEMBLE_NB, False, [], ["ellipticco/elliptic-data-set"])]:
     if ONLY and folder not in ONLY:
         continue
     out = REPO_DIR / "kaggle" / folder

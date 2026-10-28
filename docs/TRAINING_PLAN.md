@@ -107,6 +107,13 @@ training period; `year` and `day` are never features.
 | D6 | Ensemble | soft voting / stacking of the accepted classifiers |
 | D7 | BitcoinHeist | D1-D6 again; leave-one-family-out kept as the hardest check (a data limit is reported as one) |
 
+D1-D5 are not run (user, 28 Oct): Elliptic's validation F1 is already 0.95-0.99, so a tuning gain cannot show on
+dev, and D7 (BitcoinHeist near chance across time) is reported as a data limit. D6 (`explorer/ensemble.py`, Kaggle
+notebook `ensemble`; set 28 Oct before any result): the members are fitted on steps 1-26, steps 27-30 choose the
+weights or stacker and the threshold, steps 31-34 gate the ensemble against the random forest (its threshold also
+from steps 27-30); the cases of the per-case rule are the gate's time steps, each with the random forest's seed
+spread. The test steps are used once, only if the ensemble is accepted.
+
 ### B. The 152M model (Kaggle GPU)
 
 | Stage | What | Gate data |
