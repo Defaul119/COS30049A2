@@ -12,6 +12,21 @@ every GPU step runs on Kaggle.
 PART 1 - LIVE STATE
 ===================
 
+LATEST (28 Oct ~07:30)
+- 152M session 2 DONE (honglquanganh v2, 11.47 h): step 5,616 (~1.47B of 3.0B new tokens), val loss 3.1262 at step
+  5,600 (below round 1's 3.1304). ~1.53B left = ~2 sessions; the decay (last 15%, from 2.55B) falls in session 4.
+- The overnight handover was killed by Claude Code (low memory) before doing anything; session 3 was pushed by hand
+  at 06:35 on kainetyson (dataset kainetyson/cos30049a2-s3-text-150m-cont; manifests identical). Ends ~18:15 Wed.
+  NEXT: when kainetyson/cos30049a2-text150m-train is COMPLETE, run handover.sh kainetyson dansns 4 (scratchpad
+  script; the same steps by hand if it is gone: header of the script = this file's 27 Oct block below).
+- Stage A0 REJECTED (F9 stays off; CHANGELOG 27 Oct). Stages C1-C6 built (explorer/stage_search.py, notebook
+  stage_search on tritran72): every candidate at its method's M0 flag budget, ranked on seeds 40000-40002, gated on
+  40003-40004. Run v1 (d1fd31e) had a bug (an address share equal to M0's, read back from CSV one bit lower, counted
+  as a rise; 44 DBSCAN and 15 LOF candidates wrongly filtered): fixed in 34fdf6c, v2 running. Not yet committed: the
+  results (copy WORK/stage/* into the repo when v2 finishes).
+- Open with the user: D6 (soft voting / stacking of the classifiers) only, D1-D5 have no room on Elliptic validation
+  (F1 0.95-0.99); D7 BitcoinHeist reported as a data limit.
+
 LATEST (27 Oct ~13:30)
 - 152M session 1 DONE (honglquanganh v1): fp16 3.1304 (pass); bench 22,765 tok/s, measured ~18,550; the gate took
   all 3.0B prepared tokens (~5.0B in all), so the "3.0B option" is settled; 0.755B trained (step 2881); val loss
