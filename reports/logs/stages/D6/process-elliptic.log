@@ -1,0 +1,3 @@
+INFO:numexpr.utils:NumExpr defaulting to 4 threads.
+INFO:explorer.labelled:Read Elliptic: 203769 transactions, 203769 classes, 234355 edges
+INFO:explorer.labelled:Elliptic: 46564 labelled (4545 illicit); fit 24717, val 5177, test 16670 labelled rows

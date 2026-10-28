@@ -1,0 +1,2 @@
+stage,method,recall_spike,recall_burst,recall_dormant,mean_recall,flag_rate,flagged,eval_rows,max_address_share,addresses_over_limit,budget,params,rule
+C1,baseline,0.784,0.3468,0.804,0.6449333333333334,0.1043212570929725,239,2291,0.4528301886792453,4,0.1043212570929725,{'combine': 'max'},highest search recall among candidates passing the sanity and per-pattern rules

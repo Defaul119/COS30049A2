@@ -1,0 +1,2 @@
+stage,method,recall_spike,recall_burst,recall_dormant,mean_recall,flag_rate,flagged,eval_rows,max_address_share,addresses_over_limit,budget,params,rule
+C4,kmeans,0.688,0.0636,0.708,0.4865333333333333,0.0379746835443038,87,2291,0.4339622641509434,2,0.0379746835443038,"{'input_set': 'F1-F4+F9+dir', 'model': 'kmeans', 'init': 'k-means++', 'k': 2, 'score': 'distance'}",highest search recall among candidates passing the sanity and per-pattern rules

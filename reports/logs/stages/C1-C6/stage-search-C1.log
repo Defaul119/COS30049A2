@@ -1,0 +1,10 @@
+2026-10-28 00:19:28 INFO Step stage-search started: /tmp/COS30049A2/explorer/cli.py stage-search --stages C1
+2026-10-28 00:19:32 INFO Fit 5308 rows, real evaluation 2291 rows, tuning copies 90418 evaluation rows (52985 on the search seeds)
+2026-10-28 00:19:32 INFO C1 baseline: 4 candidates at a flag budget of 0.1043
+2026-10-28 00:19:32 INFO baseline {'combine': 'max'}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453
+2026-10-28 00:19:32 INFO baseline {'combine': 'top2'}: mean recall 0.633 (spike 0.827, burst 0.298, dormant 0.773), flag rate 0.104, max share 0.453
+2026-10-28 00:19:32 INFO baseline {'combine': 'l2'}: mean recall 0.632 (spike 0.813, burst 0.301, dormant 0.780), flag rate 0.104, max share 0.453
+2026-10-28 00:19:32 INFO baseline {'combine': 'sum'}: mean recall 0.637 (spike 0.840, burst 0.304, dormant 0.767), flag rate 0.104, max share 0.453
+2026-10-28 00:19:32 INFO C1 baseline: chose {'combine': 'max'} (highest search recall among candidates passing the sanity and per-pattern rules); search recall 0.637 vs M0 0.643
+2026-10-28 00:19:33 INFO baseline             C1: -0.001 [-0.002, +0.000] -> rejected difference interval reaches -0.0017 (not above 0)
+2026-10-28 00:19:33 INFO Step stage-search finished in 4 s (exit 0)

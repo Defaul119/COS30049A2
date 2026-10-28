@@ -1,0 +1,6 @@
+2026-10-28 00:36:39 INFO Step ensemble started: /tmp/COS30049A2/explorer/cli.py ensemble
+2026-10-28 00:36:42 INFO Elliptic: fit 24717 rows, choose (steps 27-30) 2188, gate (steps 31-34) 2989, test 16670
+2026-10-28 00:37:31 INFO Chose mean (3 members) at threshold 0.4239: F1 0.9758 on steps up to 30
+2026-10-28 00:40:01 INFO D6 dev: ensemble F1 0.9551 vs randomForest 0.9699, difference -0.0149 [-0.0249, -0.0051], McNemar p 0.00249 -> rejected difference interval reaches -0.0249 (not above 0); case step 31 fell 0.0178 (> its M0 seed spread 0.0032); case step 32 fell 0.0127 (> its M0 seed spread 0.0019); case step 33 fell 0.0408 (> its M0 seed spread 0.0066)
+2026-10-28 00:40:01 INFO Wrote ensemble_search.csv, ensemble_results.csv and stages.csv rows
+2026-10-28 00:40:01 INFO Step ensemble finished in 202 s (exit 0)

@@ -1,0 +1,26 @@
+{
+  "commit": "34fdf6c7f1ba061d9a72a08dcff9d8a4ab4fa60f",
+  "stages": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+  ],
+  "failed": {},
+  "steps": [
+    "features",
+    "split",
+    "inject"
+  ],
+  "hours": 0.42,
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.17.1",
+    "pyarrow": "20.0.0",
+    "joblib": "1.4.2"
+  }
+}

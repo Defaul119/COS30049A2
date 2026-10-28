@@ -1,0 +1,12 @@
+{
+  "commit": "051d3d29652d7f4f7a2f7380cdec502911898da9",
+  "hours": 0.07,
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.17.1",
+    "pyarrow": "20.0.0",
+    "joblib": "1.4.2"
+  }
+}

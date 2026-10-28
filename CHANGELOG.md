@@ -16,6 +16,27 @@ rows, capped at 20%), ranked on tuning seeds 40000-40002, and only the winner is
 40003-40004; `stage-compare` takes the seeds to use. Rules fixed before any result (TRAINING_PLAN section 4). F9
 returns as a candidate input (stage A0 was rejected for raising DBSCAN's flag rate, which the budget now rules out).
 
+**Stages C1-C6 gated (Kaggle CPU, tritran72 cos30049a2-stage-search v2, commit 34fdf6c, 0.42 h).** Dev mean
+planted recall on gate seeds 40003-40004, winner vs M0 (paired address bootstrap, 95%), every candidate at its
+method's M0 flag budget:
+- ACCEPTED: DBSCAN (C5) +0.067 [+0.025, +0.103] (eps 1.3 x knee, MinPts 12, F1-F4 + direction; threshold at the
+  budget instead of "noise"); the regression range variant (C6) +0.038 [+0.006, +0.075] (1%-99% range, conformal
+  share 0.1); LOF (C3) +0.010 [+0.0004, +0.020] (75 neighbours) and K-Means (C4) +0.036 [+0.0003, +0.102] (k = 2,
+  F9 added) by a hair.
+- REJECTED: baseline (C1; the max of |z| stays), Isolation Forest (C2; M0's settings win again), regression (C6:
+  recall 0.69 -> 0.87 at a lower flag rate, but no candidate passed the sanity rule; flags pile onto a few
+  addresses, largest share 0.58 -> 0.69, and burst falls 0.049 > its seed spread 0.032).
+Run v1 (d1fd31e) is not used: an address share equal to M0's, read back from a CSV one bit lower, counted as a rise
+(44 DBSCAN and 15 LOF candidates wrongly filtered), and floor(0.04452 x 2291) gave 101 flags instead of LOF's 102;
+both fixed in 34fdf6c. The budget threshold sits at the top of its gap (never above the budget), slightly against
+every candidate; kept as written rather than changed after seeing results.
+
+**Stage D6 rejected (Kaggle CPU, tritran72 cos30049a2-ensemble v1, commit 051d3d2).** Chosen on steps 27-30: soft
+voting of logistic regression, KNN and random forest (weights 1:2:4; F1 0.976 there). On gate steps 31-34 it falls
+below the random forest: F1 0.955 vs 0.970, difference -0.015 [-0.025, -0.005], McNemar p 0.0025 (27 false
+positives vs 6), and steps 31 and 32 fall by more than the random forest's seed spread. Not run on the test steps
+(only accepted stages are); the random forest stays Elliptic's classifier.
+
 **Stage D6 prepared (`explorer/ensemble.py`, settings `ensemble`, Kaggle notebook `ensemble`; the user, 28 Oct).**
 Soft voting (weights 0/1/2/4 per member, at least two members) or stacking (logistic regression on the members'
 log-odds) of the four Elliptic classifiers; chosen on validation steps 27-30, gated against the random forest on
