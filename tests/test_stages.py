@@ -50,6 +50,9 @@ def test_decide_lists_every_failed_rule():
     already_over = stages.decide(0.01, {}, {}, {}, loss_agrees=True, address_share_before=0.45,
                                  address_share_after=0.45)
     assert already_over.accepted  # an address over the limit at M0 does not block a stage that leaves it there
+    tied = stages.decide(0.01, {}, {}, {}, loss_agrees=True, address_share_before=float("0.3773584905660377"),
+                         address_share_after=20 / 53)
+    assert tied.accepted  # the same share, read back from a CSV one bit lower, has not risen
 
 
 def test_freeze_then_check(monkeypatch):

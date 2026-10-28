@@ -52,7 +52,7 @@ from .regression import INPUTS, TARGETS, conformal_margin, grids, make_model, ta
 from .settings import SETTINGS
 from .snapshot import MANIFEST_PATH
 from .split import EVAL
-from .stages import DEV_DIR, PATTERN_MEASURES, TABLES_DIR, dev_hits, m0_spread, run_compare
+from .stages import DEV_DIR, PATTERN_MEASURES, SHARE_TOLERANCE, TABLES_DIR, dev_hits, m0_spread, run_compare
 
 log = logging.getLogger(__name__)
 
@@ -102,7 +102,7 @@ def budget_cut(scores: np.ndarray, scorable: np.ndarray, budget: float) -> float
     """The lowest threshold that flags at most floor(budget x rows) scorable rows; rows tied at the cut are all left
     out rather than letting the budget be exceeded."""
     s = np.where(scorable, np.nan_to_num(scores, nan=-np.inf), -np.inf)
-    k = int(np.floor(budget * len(s)))
+    k = int(np.floor(budget * len(s) + 1e-9))  # 239 / 2291 x 2291 must give 239, not 238.99999999999997
     values = np.sort(s[np.isfinite(s)])[::-1]
     if k == 0 or not len(values):
         return float("inf")
@@ -154,7 +154,8 @@ def evaluate(data: Data, real_scores: np.ndarray, search_scores: np.ndarray, ref
            "max_address_share": float(share.max()), **{f"recall_{p}": r for p, r in rec.items()},
            "mean_recall": float(np.mean(list(rec.values()))),
            "pr_auc": float(average_precision_score(data.search["is_synthetic"], ranked))}
-    row["passes_sanity"] = row["flag_rate"] <= limit and row["max_address_share"] <= max(limit, ref["max_address_share"])
+    row["passes_sanity"] = (row["flag_rate"] <= limit
+                            and row["max_address_share"] <= max(limit, ref["max_address_share"]) + SHARE_TOLERANCE)
     row["passes_patterns"] = all(ref["recalls"][p] - rec[p] <= ref["spread"].get(p, 0.0) for p in PATTERN_MEASURES)
     return row
 

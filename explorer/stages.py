@@ -46,6 +46,9 @@ TABLES_DIR = PROJECT_ROOT / "reports" / "tables"
 COLUMNS = ["time_utc", "commit", "family", "model", "stage", "tier", "metric", "value", "ci_low", "ci_high",
            "previous_stage", "diff_previous", "diff_previous_ci_low", "diff_previous_ci_high", "diff_m0",
            "diff_m0_ci_low", "diff_m0_ci_high", "mcnemar_p", "accepted", "reasons", "seeds"]
+# Shares read back from a CSV can differ from the same share computed again in the last bit (0.37735849056603776 is
+# written as 0.3773584905660377), so "rose" means rose by more than this.
+SHARE_TOLERANCE = 1e-9
 
 
 def sha256(path: Path) -> str:
@@ -153,7 +156,7 @@ def decide(diff_ci_low: float, case_before: dict[str, float], case_after: dict[s
     if flagged_share is not None and flagged_share > limit:
         reasons.append(f"flag rate {flagged_share:.3f} over the sanity limit {limit}")
     if (address_share_before is not None and address_share_after is not None
-            and address_share_after > max(limit, address_share_before)):
+            and address_share_after > max(limit, address_share_before) + SHARE_TOLERANCE):
         reasons.append(f"largest address share rose {address_share_before:.3f} -> {address_share_after:.3f}")
     if not loss_agrees:
         reasons.append("dev metric rose while the validation loss rose")
