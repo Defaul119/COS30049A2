@@ -21,8 +21,9 @@ class PackageTests(unittest.TestCase):
             self.assertFalse(package.included(path), path)
 
     def test_code_data_and_cards_go_in(self) -> None:
+        # docs/archive/LM_TRAINING.md is README section 7's guide to retraining the 152M model
         for path in ("README.md", "explorer/cli.py", "data/processed/corpus/ds2.parquet", "DATA_CARD.md", "LICENSES.md",
-                     "docs/AI_USE_LOG.md"):
+                     "docs/AI_USE_LOG.md", "docs/archive/LM_TRAINING.md", "docs/REFERENCES.md"):
             self.assertTrue(package.included(path), path)
 
     def test_a_prefix_is_not_a_folder_match(self) -> None:

@@ -11,6 +11,10 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Zip exclusion corrected.** The clean-up had made the zip leave out all of docs/archive/, which would have dropped
+docs/archive/LM_TRAINING.md, README section 7's guide to retraining the 152M model. Only the hand-off note
+(docs/archive/HANDOFF.md) is left out now; tests/test_package.py checks both.
+
 **MODEL_CARD.md brought up to the promoted methods.** The models table named the first-round files and settings for
 LOF, K-Means and DBSCAN; it now names the stage winners (models/stage/C3-C5, their settings and flag budgets) and says
 which methods passed the training stages. The generated clustering table keeps the M0 fits with their silhouette

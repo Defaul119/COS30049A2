@@ -34,7 +34,7 @@ Due Sun 8 Nov 23:59 GMT+7; the team submits Sat 7 Nov. Results freeze Tue 3 Nov;
 - [x] DS4 model: kept (best by the rule), out of the zip, rebuilt by the README; clear message if missing. [Claude]
 - [ ] fp16 export of the 152M model (~305 MB); weights as a release asset only with the user's OK. [Claude, Cao]
 - [ ] Canvas upload limit (decides `--with-models`); confirm the zip leaves out CLAUDE.md, context.txt,
-      docs/archive/, docs/brief/. [team]
+      docs/archive/HANDOFF.md, docs/brief/. [team]
 - [ ] `python tools/package.py --tag v1.0`; README test count and timings checked. [Claude]
 - [ ] A licence for our own code (LICENSES.md says ask the group). [team decides]
 - [ ] M4: a teammate rebuilds everything from the README on a fresh clone; tag `v1.0`. [teammate]

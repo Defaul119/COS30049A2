@@ -44,7 +44,7 @@ schedule")
 WAITING ON THE USER / TEAM
 - References: docs/REFERENCES.md (all 2020+, verified); one decision left: the Elliptic dataset record (2019).
 - Canvas upload limit (decides --with-models); release-asset OK for the 152M weights; a licence for our own code;
-  the zip exclusions (tools/package.py EXCLUDE = CLAUDE.md, context.txt, docs/archive/, docs/brief/).
+  the zip exclusions (tools/package.py EXCLUDE = CLAUDE.md, context.txt, docs/archive/HANDOFF.md, docs/brief/).
 - Blind reviewer check (Minh Khang, Cam Dan): reports/reviewer/sheet.csv + INSTRUCTIONS.md, then
   `python -m explorer.cli reviewer-score --ratings ratings_<a>.csv ratings_<b>.csv`.
 - Glossary: a human read-through of the 65 topics. One DS1 transaction checked by hand on a block explorer.
