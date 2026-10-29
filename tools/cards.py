@@ -69,6 +69,10 @@ FILES: dict[str, tuple[str, str]] = {
                                                   "must state (frozen)"),
     "data/processed/random_test/manifest.json": ("Random tests", "seeds, draws and composition of every randomized set"),
     "data/processed/random_test/*.jsonl": ("Random tests", "one randomized Assistant test set per file"),
+    "data/processed/weak_cases/manifest.json": ("DS7 (B3)", "seeds, settings, excluded test prompts, cases per file"),
+    "data/processed/weak_cases/train.jsonl": ("DS7 (B3)", "8,000 weak-case explanation examples for the 152M "
+                                              "explanation stage (other methods, own rewordings, shuffled facts)"),
+    "data/processed/weak_cases/dev.jsonl": ("DS7 (B3)", "600 held-out weak-case prompts: the writer's dev tier"),
     "data/processed/bitcoinheist/download.json": ("DS4", "source, citation, licence, archive and file checksums"),
     "data/processed/bitcoinheist/processing.json": ("DS4", "skewness, transforms, split rules and exclusions"),
     "data/processed/elliptic/download.json": ("DS3", "source, citation, licence, archive and file checksums"),

@@ -206,6 +206,9 @@ Written by `python tools/cards.py`. Types are as pandas reads them; "Missing" co
 | `data/processed/random_test/max_shift.jsonl` | Random tests | 300 | 550 kB | `a9cd63afe8908dfb` | as above |
 | `data/processed/random_test/real.jsonl` | Random tests | 500 | 866 kB | `2a2a0ca9912df2fe` | as above |
 | `data/processed/random_test/synthetic.jsonl` | Random tests | 500 | 894 kB | `b0410fbbcb38d695` | as above |
+| `data/processed/weak_cases/manifest.json` | DS7 (B3) |  | 3 kB | `12bab47f227c580b` | seeds, settings, excluded test prompts, cases per file |
+| `data/processed/weak_cases/train.jsonl` | DS7 (B3) | 8,000 | 14.9 MB | `55bd99743838d66f` | 8,000 weak-case explanation examples for the 152M explanation stage (other methods, own rewordings, shuffled facts) |
+| `data/processed/weak_cases/dev.jsonl` | DS7 (B3) | 600 | 1.1 MB | `6381feb37d9e8099` | 600 held-out weak-case prompts: the writer's dev tier |
 | `data/processed/bitcoinheist/download.json` | DS4 |  | 1 kB | `61e6cd3578c6b8ff` | source, citation, licence, archive and file checksums |
 | `data/processed/bitcoinheist/processing.json` | DS4 |  | 1 kB | `37c31a5dc01a963b` | skewness, transforms, split rules and exclusions |
 | `data/processed/elliptic/download.json` | DS3 |  | 2 kB | `434318b1cb3477fa` | source, citation, licence, archive and file checksums |
@@ -500,17 +503,17 @@ Written by `python tools/cards.py`. Types are as pandas reads them; "Missing" co
 
 | Field | In | Meaning |
 |---|---|---|
-| `id` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/` | address (DS1) or its salted hash (DS2) |
-| `source` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/` | where the prompt came from: DS1, DS2, DS10 (their test splits in the random sets), glossary, or the generator (synthetic, hard, extreme, max_shift) |
-| `kind` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/` | flagged, not_flagged, unscored or glossary |
-| `phrasing` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/` | which of the five user-question phrasings was used (0-4; empty for glossary prompts) |
-| `template` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/` | the template's answer to the same prompt (what the measures compare with) |
-| `messages` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/` | the conversation: system prompt, user question with the facts as JSON, and the reference reply |
+| `id` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/`, `data/processed/weak_cases/` | address (DS1) or its salted hash (DS2) |
+| `source` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/`, `data/processed/weak_cases/` | where the prompt came from: DS1, DS2, DS10 (their test splits in the random sets), glossary, or the generator (synthetic, hard, extreme, max_shift) |
+| `kind` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/`, `data/processed/weak_cases/` | flagged, not_flagged, unscored or glossary |
+| `phrasing` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/`, `data/processed/weak_cases/` | which of the five user-question phrasings was used (0-4; empty for glossary prompts) |
+| `template` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/`, `data/processed/weak_cases/` | the template's answer to the same prompt (what the measures compare with) |
+| `messages` | `data/processed/ds10/`, `data/processed/ds7/`, `data/processed/ds7_v2/`, `data/processed/random_test/`, `data/processed/weak_cases/` | the conversation: system prompt, user question with the facts as JSON, and the reference reply |
 | `topic` | `data/processed/ds7/`, `data/processed/ds7_v2/` | glossary topic |
 | `question` | `data/processed/ds7/`, `data/processed/ds7_v2/` | the question as a user would ask it |
 | `answer` | `data/processed/ds7/`, `data/processed/ds7_v2/` | the reference answer |
 | `status` | `data/processed/ds7/`, `data/processed/ds7_v2/` | review status of the answer |
 | `split` | `data/processed/ds7_v2/` | train, val or test (glossary v2 splits by question, not by topic) |
 | `key_facts` | `data/processed/ds7_v2/` | facts a correct glossary answer must state |
-| `variant` | `data/processed/random_test/` | how a made-up prompt was varied: the method named, a reworded question (index) and shuffled facts |
+| `variant` | `data/processed/random_test/`, `data/processed/weak_cases/` | how a made-up prompt was varied: the method named, a reworded question (index) and shuffled facts |
 <!-- /generated:files -->
