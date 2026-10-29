@@ -738,7 +738,7 @@ print((SRC / "reports" / "tables" / "stages.csv").read_text(encoding="utf-8"))
 
 STAGE_SEARCH_NB = [
     ("markdown", r'''
-# COS30049 A2 - Training stages C1-C6 of the DS1 scoring methods, with their dev gate (Kaggle CPU session)
+# COS30049 A2 - Training stages C1-C6 and C9 of the DS1 scoring methods, with their dev gate (Kaggle CPU session)
 
 Serves `docs/TRAINING_PLAN.md` (sections 3-4). From the repository at a fixed commit, this rebuilds the DS1 features
 and the tuning plants, then `stage-search` searches each scoring method's grid (`config/settings.json ->
@@ -751,7 +751,7 @@ stage runs as its own step, so one failing stage does not stop the others. CPU o
     ("code", f'''
 REPO = "https://github.com/Defaul119/COS30049A2.git"
 COMMIT = "{COMMIT}"   # the code this run uses
-STAGES = ["C1", "C2", "C3", "C4", "C5", "C6"]
+STAGES = ["C9"]        # C1-C6 ran 28 Oct (commit 34fdf6c); C9 fuses the methods at their accepted stages
 STEPS = ["features", "split", "inject"]   # the data the search reads (M0's dev tables are committed)
 PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2"]
 '''),

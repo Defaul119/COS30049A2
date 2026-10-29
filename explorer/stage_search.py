@@ -21,7 +21,8 @@ Each candidate is fitted on the real fit period and scored as arrays; the winner
 
 Candidates (settings.json -> stageSearch): how the baseline combines |z| (C1); Isolation Forest, LOF, K-Means and
 DBSCAN / HDBSCAN hyperparameters and input sets, F9 included as an option (C2-C5); regression's model family per
-target, input set and residual floor, and the range variant's quantiles and calibration share (C6). Per-address
+target, input set and residual floor, and the range variant's quantiles and calibration share (C6); the fusion of
+every pair of the current methods, each at its last accepted stage, with a weight ratio (C9). Per-address
 Isolation Forests are left out: they cannot score an address they were not fitted on (criterion C3).
 
 Writes reports/tables/stage_search/<stage>_<method>.csv (every candidate), models/stage/<stage>_<method>.joblib
@@ -32,6 +33,7 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass
+from itertools import combinations
 from typing import Any, Callable, Iterator
 
 import joblib
@@ -59,8 +61,8 @@ log = logging.getLogger(__name__)
 SEARCH_DIR = TABLES_DIR / "stage_search"
 STAGE_MODELS_DIR = MODELS_DIR / "stage"
 STAGES = {"C1": ("baseline",), "C2": ("isolation_forest",), "C3": ("lof",), "C4": ("kmeans",), "C5": ("dbscan",),
-          "C6": ("regression", "regression_interval")}
-STABLE = {"isolation_forest", "lof"}  # methods whose M0 choice also needed the stability target
+          "C6": ("regression", "regression_interval"), "C9": ("fusion",)}
+STABLE = {"isolation_forest", "lof", "fusion"}  # methods whose M0 choice also needed the stability target
 REGRESSION_BASE = [c for c in INPUTS if c != PACE_ID]  # regression.INPUTS without stage A0's F9
 
 
@@ -394,7 +396,39 @@ def interval_candidates(data: Data, fits: dict[tuple[str, str, str], dict[str, A
                                 IntervalCandidate(extra, pair, share, hgb, seed).fit(data.fit))
 
 
+def fusion_candidates(data: Data) -> Iterator[Candidate]:
+    """C9: every pair of the current methods (scores.saved_methods: each at its last accepted stage) with a positive
+    threshold, fused as fusion.FusionMethod at each weight ratio of settings stageSearch.fusion. Each component is
+    scored once; a candidate's scores are computed from those arrays, its Method only for the winner."""
+    from .fusion import FusionMethod
+    from .predict import PRECOMPUTED_ONLY
+    from .scores import saved_methods
+
+    current = {n: m for n, m in saved_methods().items()
+               if n not in PRECOMPUTED_ONLY and n != "fusion" and m.threshold > 0 and np.isfinite(m.threshold)}
+    cached = {n: (m.score(data.real), m.score(data.search)) for n, m in current.items()}
+    for a, b in combinations(sorted(current), 2):
+        for ratio in SETTINGS["stageSearch"]["fusion"]["ratios"]:
+            def scores(a=a, b=b, ratio=ratio):
+                # FusionMethod.score's arithmetic exactly (np.max propagates a missing score), so the winner's
+                # Method flags what its search row counted
+                ta, tb = current[a].threshold, current[b].threshold
+                return tuple(np.maximum(cached[a][i] / (1.0 * ta), cached[b][i] / (ratio * tb)) for i in (0, 1))
+
+            def refit(seed: int, rows: pd.DataFrame, a=a, b=b, ratio=ratio) -> FusionMethod:
+                from .evaluate import refit as refit_method  # evaluate imports this module
+
+                fused = FusionMethod({a: current[a], b: current[b]}, {a: 1.0, b: ratio})
+                return refit_method("fusion", fused, rows, seed)
+
+            yield Candidate({"components": [a, b], "ratio": ratio},
+                            make=lambda a=a, b=b, ratio=ratio: FusionMethod({a: current[a], b: current[b]}, {a: 1.0, b: ratio}),
+                            scores=scores, refit=refit)
+
+
 def candidates(method: str, data: Data, fits: dict | None) -> list[Candidate]:
+    if method == "fusion":
+        return list(fusion_candidates(data))
     if method == "baseline":
         return [Candidate({"combine": rule}, make=lambda rule=rule: Combined(rule))
                 for rule in SETTINGS["stageSearch"]["baseline"]["combine"]]

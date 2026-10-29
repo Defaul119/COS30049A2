@@ -249,7 +249,9 @@
                    "residualFloor": [0.02, 0.05, 0.1, 0.2]},
     "_regression": "per input set and target, each family's parameters are chosen by validation MAE (as at M0); candidates are the size model's family x the gap model's family x the residual floor",
     "regressionInterval": {"quantiles": [[0.005, 0.995], [0.01, 0.99], [0.025, 0.975]], "calibrationShare": [0.1, 0.2, 0.3]},
-    "_regressionInterval": "the range variant: quantile pair x the share of each address's fit period used for conformal calibration (CQR)"
+    "_regressionInterval": "the range variant: quantile pair x the share of each address's fit period used for conformal calibration (CQR)",
+    "fusion": {"ratios": [0.5, 0.7, 1.0, 1.4, 2.0]},
+    "_fusion": "stage C9 (set 29 Oct before any result): every pair of the current methods (each at its last accepted stage, settings stageModels; TxGPT scores only the reporting plants, so it cannot join), fused as fusion.py fuses (max of score / (weight x the component's threshold)); the budget's cut sets the level, so only the second component's weight relative to the first (these ratios) matters. Rank averaging is not a candidate: a rank needs the whole frame, so a single what-if transaction could not be scored."
   },
 
   "stageModels": {

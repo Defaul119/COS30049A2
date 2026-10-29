@@ -134,3 +134,24 @@ def test_saved_methods_loads_the_accepted_stage(monkeypatch):
         monkeypatch.setitem(scores.SETTINGS, "stageModels", {"lof": "C3"})  # accepted, but its winner is missing
         with pytest.raises(FileNotFoundError):
             scores.saved_methods(models)
+
+
+def test_fusion_candidates_score_as_their_method(monkeypatch):
+    # C9: the cached arrays used for ranking must equal the winner's FusionMethod scores bit for bit.
+    from explorer import scores as scores_module
+    from explorer.fusion import FusionMethod
+
+    rows = frame(400)
+    data = ss.Data(fit=rows, real=rows.iloc[:200].reset_index(drop=True), copies=rows, search=rows.iloc[200:].reset_index(drop=True))
+    a = ss.Pooled("kmeans", {"k": 2, "init": "k-means++", "score": "distance"}, "F1-F4+dir", 1).fit(rows)
+    b = ss.Pooled("lof", {"n_neighbors": 20, "metric": "euclidean", "scaler": "none"}, "F1-F4", 1).fit(rows)
+    a.threshold, b.threshold = 1.2, 1.7
+    monkeypatch.setattr(scores_module, "saved_methods", lambda: {"kmeans": a, "lof": b})
+    pool = list(ss.fusion_candidates(data))
+    assert len(pool) == len(ss.SETTINGS["stageSearch"]["fusion"]["ratios"])
+    c = pool[2]
+    real, search = c.scores()
+    method = c.make()
+    assert isinstance(method, FusionMethod)
+    assert np.array_equal(real, method.score(data.real), equal_nan=True)
+    assert np.array_equal(search, method.score(data.search), equal_nan=True)

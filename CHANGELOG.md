@@ -11,6 +11,14 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Stage C9 prepared: fusion of the current methods (set before any result).** `stage-search --stages C9` searches
+every pair of the current methods (each at its last accepted stage via stageModels; TxGPT cannot join, it scores
+only the reporting plants) fused as fusion.py fuses, at weight ratios 0.5-2 for the second component, at the M0
+fusion's dev flag budget (0.104), ranked on seeds 40000-40002, stability-checked like M0's fusion, gated against M0's
+fusion on 40003-40004. Rank averaging is not a candidate: a rank needs the whole frame, so one what-if transaction
+could not be scored. A fusion's refit (evaluate) and DS2 adaptation now keep its threshold (a C9 winner's is the
+budget's cut; M0's stays 1).
+
 **Accepted stages promoted; test tier prepared (stage C10's inputs).** `config/settings.json -> stageModels` names each
 DS1 method's last accepted stage (lof C3, kmeans C4, dbscan C5, regression_interval C6); `scores.saved_methods` loads
 that stage's winner (models/stage/) instead of the M0 model, everywhere the methods are used, and stops if an

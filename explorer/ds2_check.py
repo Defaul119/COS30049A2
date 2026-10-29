@@ -86,7 +86,9 @@ def adapt(method: Method, fit: pd.DataFrame) -> Method:
             scales[t], _ = residual_scales(model, fit[keep], y[keep], floor)
         return RegressionMethod(method.models, scales, method.default_scale)
     if isinstance(method, FusionMethod):
-        return FusionMethod({n: adapt(m, fit) for n, m in method.components.items()}, method.multipliers)
+        fused = FusionMethod({n: adapt(m, fit) for n, m in method.components.items()}, method.multipliers)
+        fused.threshold = method.threshold  # 1 at M0; a stage C9 winner's is its flag budget's cut
+        return fused
     return method
 
 

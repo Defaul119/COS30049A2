@@ -88,7 +88,9 @@ def refit(name: str, method: Method, rows: pd.DataFrame, seed: int) -> Method:
     if isinstance(method, FusionMethod):
         # Each fitted component is refitted (fixed ones stay); the tuned multipliers are part of the configuration.
         parts = {n: m if n in FIXED else refit(n, m, rows, seed) for n, m in method.components.items()}
-        return FusionMethod(parts, method.multipliers)
+        fused = FusionMethod(parts, method.multipliers)
+        fused.threshold = method.threshold  # 1 at M0; a stage C9 winner's is its flag budget's cut
+        return fused
     if isinstance(method, (Pooled, IntervalCandidate)):
         # A training stage's winner (settings stageModels): the same model, inputs and calibration share fitted
         # again; its threshold, set at the method's flag budget by the stage search, is part of the configuration.
