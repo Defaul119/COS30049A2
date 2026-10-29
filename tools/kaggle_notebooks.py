@@ -377,6 +377,32 @@ for p in sorted(WORK.rglob("*")):
 '''),
 ]
 
+DEV_EVAL = r'''
+# The writer's dev tier (TRAINING_PLAN section 2; settings weakCases): the weak-case dev slice and devVal prompts of
+# DS7 v2's validation split. Never the test sets: those are scored once per frozen candidate.
+WEAK_SETTINGS = json.loads((SRC / "config" / "settings.json").read_text(encoding="utf-8"))["weakCases"]
+DEV = [(STAGE / "dev" / "weak_dev.jsonl", "devweak", 100000), (STAGE / "dev" / "ds7v2_val.jsonl", "devval", WEAK_SETTINGS["devVal"])]
+
+
+def dev_jobs(model, checkpoint):
+    return [(model, checkpoint, test, tag, n, WEAK_SETTINGS["devValSeed"]) for test, tag, n in DEV]
+
+
+def run_queue(gpu, queue):
+    for model, checkpoint, test, tag, n, seed in queue:
+        sh(sys.executable, "-m", "lm.eval_explain", "--model", model, "--checkpoint", str(checkpoint), "--test", str(test),
+           "--tag", tag, "--n", str(n), "--seed", str(seed), log=f"eval-{model}-{tag}.log",
+           env=dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu)))
+
+
+def run_queues(queues):
+    threads = [threading.Thread(target=run_queue, args=(gpu, q)) for gpu, q in enumerate(queues)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+'''
+
 STAGES_NB = [
     ("markdown", r'''
 # COS30049 A2 - Round 2: the 152M model's chat and explanation stages, then every evaluation (T4 x2)
@@ -476,32 +502,6 @@ if (EXPLAIN / "model.pt").exists():
 '''),
 ]
 
-
-DEV_EVAL = r'''
-# The writer's dev tier (TRAINING_PLAN section 2; settings weakCases): the weak-case dev slice and devVal prompts of
-# DS7 v2's validation split. Never the test sets: those are scored once per frozen candidate.
-WEAK_SETTINGS = json.loads((SRC / "config" / "settings.json").read_text(encoding="utf-8"))["weakCases"]
-DEV = [(STAGE / "dev" / "weak_dev.jsonl", "devweak", 100000), (STAGE / "dev" / "ds7v2_val.jsonl", "devval", WEAK_SETTINGS["devVal"])]
-
-
-def dev_jobs(model, checkpoint):
-    return [(model, checkpoint, test, tag, n, WEAK_SETTINGS["devValSeed"]) for test, tag, n in DEV]
-
-
-def run_queue(gpu, queue):
-    for model, checkpoint, test, tag, n, seed in queue:
-        sh(sys.executable, "-m", "lm.eval_explain", "--model", model, "--checkpoint", str(checkpoint), "--test", str(test),
-           "--tag", tag, "--n", str(n), "--seed", str(seed), log=f"eval-{model}-{tag}.log",
-           env=dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu)))
-
-
-def run_queues(queues):
-    threads = [threading.Thread(target=run_queue, args=(gpu, q)) for gpu, q in enumerate(queues)]
-    for t in threads:
-        t.start()
-    for t in threads:
-        t.join()
-'''
 
 B3_TRIAL_NB = [
     ("markdown", r'''
