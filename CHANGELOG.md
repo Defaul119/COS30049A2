@@ -3,6 +3,18 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 29 October 2026
+
+**152M session 3 finished; session 4 (the last) started on dansns.** kainetyson v1 (11.43 h, ended 28 Oct ~18:05):
+step 8,730 (~2.29B of the 3.0B new tokens), validation loss 3.0967 at step 8,600 (s2 3.1262, round 1 3.1304). The
+hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the background script), so the chain stood
+idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
+dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
+
+**Context files cleaned up** (the user, 29 Oct): context.txt rewritten as bullet points (live state, reference
+tables for Kaggle accounts, the 152M chain and the training stages, one-line history); CLAUDE.md brought to 29 Oct
+(training stages as decision 5, the from-scratch rule, key dates); docs/TODO.md rewritten around the stages left.
+
 ## 28 October 2026
 
 **152M session 2 finished; session 3 started.** honglquanganh v2 (11.47 h): step 5,616 (~1.47B of the 3.0B new
