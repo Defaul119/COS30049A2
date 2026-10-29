@@ -261,7 +261,7 @@ GitHub's 100 MB limit and are not in the repository; without them the template w
 | DS4 | BitcoinHeist | UCI repository 526, CC BY 4.0 | Classification |
 | DS5 | FineWeb-Edu | Hugging Face, ODC-By 1.0 | 152M pretraining |
 | DS6 | smol-smoltalk | Hugging Face, Apache 2.0 | Chat fine-tuning |
-| DS7 | Our explanation pairs from DS1 and DS2 (v1; v2 adds DS2 coverage and a glossary) | Built by `explorer/ds7.py` | Teaching and testing the Assistant |
+| DS7 | Our explanation pairs from DS1 and DS2 (v1; v2 adds DS2 coverage and a glossary; stage B3 adds 8,000 weak-case examples in `data/processed/weak_cases/`) | Built by `explorer/ds7.py` and `explorer/weak_cases.py` | Teaching and testing the Assistant |
 | DS10 | A teammate's independent 27-address snapshot | Esplora API; refetched and cross-checked | Held-out test of every model |
 | Random tests | Ten randomized Assistant test sets (real, crawled, made-up, balanced, close calls, extremes) | Built by `explorer/random_test.py` from DS1, DS2 and DS10 | Testing the Assistant on prompts it never saw |
 
