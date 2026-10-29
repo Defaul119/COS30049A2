@@ -11,6 +11,12 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**The adoption rule as code (`lm/adopt.py`, settings assistant.adoption; tests).** docs/KAGGLE_LM_PLAN.md section 3
+(fixed 26 Oct) was only text. `python -m lm.adopt` now applies it to lm.eval_explain's summary tables: on the DS7 v1
+test and DS10, guardrail pass rate and number faithfulness no lower and direction errors no more than round 1; on the
+glossary test, key-fact accuracy at least 10 points higher. It writes reports/tables/adoption.csv and never changes
+settings.
+
 **Zip exclusion corrected.** The clean-up had made the zip leave out all of docs/archive/, which would have dropped
 docs/archive/LM_TRAINING.md, README section 7's guide to retraining the 152M model. Only the hand-off note
 (docs/archive/HANDOFF.md) is left out now; tests/test_package.py checks both.

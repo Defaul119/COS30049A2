@@ -34,7 +34,7 @@ date order.
 
 ## 3. Tests
 
-- Suite: 259 passed (was 252 this morning). New: the fusion search over M0 models, a stage winner's refit, the C9
+- Suite: 260 passed (was 252 this morning); the adoption rule is now code too (lm/adopt.py). New: the fusion search over M0 models, a stage winner's refit, the C9
   candidates' arithmetic, event-level scores, the comparison tool, the writer statistics, every Kaggle notebook
   compiling and pinned to a full commit, a dev row judged against its reference reply, the zip's contents.
 - Modules no test touches: walk-forward (it reuses the tested refit rules), the interactive chat, the smoke test,

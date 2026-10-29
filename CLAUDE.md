@@ -129,7 +129,7 @@ configs/         training configs (text_150m_*, txgpt_s/m/l)
 config/          settings.json: every threshold, window, grid and seed
 kaggle/          Kaggle notebooks, pinned to a commit by tools/kaggle_notebooks.py
 tools/           status, supervise, run_queue, cards, package, test_report, make_glossary, kaggle_notebooks
-tests/           pytest suite (259 passed on 29 Oct)
+tests/           pytest suite (260 passed on 29 Oct)
 data/ models/ reports/{figures,tables,logs}/   committed outputs (large files git-ignored)
 notebooks/       01_eda.ipynb (only calls the package)
 reference/       the A1 prototype's TypeScript (scoring and JSON shapes predict.py follows)

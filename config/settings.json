@@ -497,7 +497,13 @@
     "_writerOrder": "Only models trained from scratch by the team (the tutor, 27 Oct; CHANGELOG): the 152M model, which runs on a CPU. The Qwen 3B fine-tune was dropped; it is kept on the qwen-archive branch.",
     "text150mCheckpoint": "models/assistant/model.pt",
     "_text150mCheckpoint": "the explanation stage's model_best.pt, with its tokenizer.json in the same folder",
-    "maxNewTokens": 256
+    "maxNewTokens": 256,
+  "adoption": {
+    "_about": "lm/adopt.py: docs/KAGGLE_LM_PLAN.md section 3, fixed 26 Oct before any round-2 result. On each frozen test (tag of lm.eval_explain's summary table) the round-2 writer's guardrail pass rate and number faithfulness must be no lower and its direction errors no more than round 1's; on the glossary test its key-fact accuracy must be at least keyFactGain higher.",
+    "frozenTests": {"DS7 v1 test": "", "DS10": "ds10"},
+    "glossaryTag": "glossary",
+    "keyFactGain": 0.10
+  }
   },
 
   "sanity": {

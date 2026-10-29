@@ -52,7 +52,7 @@ conda activate cos30049-a2
 python -m pytest -q
 ```
 
-Expected: `259 passed` in about three minutes (the first run takes longer while the new libraries load).
+Expected: `260 passed` in about three minutes (the first run takes longer while the new libraries load).
 Run every later command from the repository folder with `cos30049-a2` active. On Windows, run
 `set PYTHONUTF8=1` first in each new terminal (Command Prompt) so the logs print correctly; macOS and Linux
 need nothing.
@@ -217,6 +217,7 @@ conda activate cos30049-a2-gpu
 | 152M text model | `docs/archive/LM_TRAINING.md`: pretraining (2B tokens), chat stage, explanation stage (`configs/text_150m_explain.json`) | about 3 days in all |
 | 152M round 2 | `kaggle/text150m_data/`, `kaggle/text150m_train/` (continued pretraining on two Kaggle T4s), `kaggle/ds7_data/`, `kaggle/text150m_stage_data/`, `kaggle/text150m_stages/` (chat and explanation stages, then every evaluation) | about 2 days of Kaggle sessions |
 | Explanation evaluation | `python -m lm.eval_explain --model template`, `--model text150m --checkpoint models/assistant/model.pt` | 5 min (152M) |
+| Round 2 against round 1 | `python -m lm.adopt` applies the rule fixed before any round-2 result (docs/KAGGLE_LM_PLAN.md section 3) to the evaluation tables and writes `reports/tables/adoption.csv` | seconds |
 
 `tools/run_queue.py --plan configs/queue_after_pretraining.json` runs the whole GPU sequence unattended and
 resumes after an interruption. `python tools/kaggle_notebooks.py <commit>` regenerates the Kaggle notebooks,
