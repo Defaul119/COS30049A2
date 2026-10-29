@@ -3,6 +3,30 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 30 October 2026
+
+**Fresh-clone rebuild finished; its DS1 results replace the committed ones.** tritran72 `cos30049a2-rebuild`
+(commit 0aded70, Kaggle Linux, 9.5 h): pytest 255 passed; compare_tables 110 same, 10 within, 26 different.
+The inputs are identical; the committed DS1 tables were stale (features at full precision before the
+12-significant-digit change, the regression's tuning from 24 Oct, eval tables from three different days). Copied
+from the rebuild: features.csv, features_as_written.csv, scores.csv, the 10 DS1 model files and 28 DS1 tables
+(stages.csv untouched); figures, eda_tests.csv and the cards regenerated here. Changes that matter:
+- Regression re-tuned: size keeps the random forest, its gradient-boosting settings changed; mean planted recall
+  0.673 -> 0.626; the conformal range 0.268 -> 0.310.
+- Fusion: the same search now chooses regression x2.0 + Isolation Forest x0.9 (was baseline x1.1 + regression x3.0);
+  0.682 against the baseline's 0.655, p = 0.324 (was 0.684, p = 0.063).
+- Promoted stage models now appear in every table (DBSCAN 0.406 -> 0.476, K-Means 0.446 -> 0.470, LOF 0.320 ->
+  0.331 on the reporting plants).
+- No conclusion changes: the baseline stays the Explorer's method (runner-up fusion); DS1-DS2 ranking Spearman
+  0.929 (was 0.905).
+Kept as committed: Elliptic and BitcoinHeist. Only logistic regression and KNN differ there, a platform effect (this
+PC reproduces the committed logistic fit exactly; Linux's solver stops elsewhere; README section 11 now says so).
+Full trace: docs/AUDIT.md section 5; evidence in reports/logs/rebuild/.
+
+**152M pretraining finished.** dansns session 4: step 11,447 (3.0B new tokens, ~5.0B in all), final validation loss
+3.0014 (session 3 3.0967, round 1 3.1304). The chain pushed `cos30049a2-text150m-stages` on dansns at 01:01 with
+WEAK_CASES = True.
+
 ## 29 October 2026
 
 **152M session 3 finished; session 4 (the last) started on dansns.** kainetyson v1 (11.43 h, ended 28 Oct ~18:05):

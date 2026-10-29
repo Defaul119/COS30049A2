@@ -296,6 +296,11 @@ dataset, file and column; `MODEL_CARD.md` every model and its metrics (both refr
   different fits. Models that use several threads (gradient boosting, random forests) can still differ in the
   last decimal places; `python tools/compare_tables.py` reports any difference larger than 0.01 in a recall or a
   rate, which is worth reporting as a bug.
+- Two exceptions, both on the labelled datasets: logistic regression's solver (C = 100 on Elliptic) and KNN's
+  distance ties can settle differently on another operating system, which moves their rows of
+  `elliptic_*.csv` and `heist_*.csv` (the committed tables are from Windows; on Linux, Elliptic's AF logistic
+  test F1 is 0.532 instead of 0.598). The tree models and every DS1 table are not affected
+  (`docs/AUDIT.md` section 5).
 - `CHANGELOG.md` records every decision and measured result; `docs/AI_USE_LOG.md` records how generative AI was
   used, for the AI declaration the tutor asked for.
 

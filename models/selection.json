@@ -5,17 +5,17 @@
   "no_method_stable": false,
   "combination": {
     "methods": "baseline + fusion",
-    "recall_spike": 0.756,
-    "recall_dormant": 0.84,
-    "recall_burst_tx": 0.5312,
-    "recall_burst_event": 0.916,
-    "precision_lower_bound": 0.13751094832391114,
-    "pr_auc": 0.09387042996360774,
+    "recall_spike": 0.796,
+    "recall_dormant": 0.864,
+    "recall_burst_tx": 0.5708,
+    "recall_burst_event": 0.936,
+    "precision_lower_bound": 0.13182566378014743,
+    "pr_auc": 0.09432205300820258,
     "plant_prevalence": 0.03466605038132656,
-    "flag_rate": 0.11567001309471846,
-    "flagged": 265,
+    "flag_rate": 0.1313836752509821,
+    "flagged": 301,
     "eval_rows": 2291,
     "max_address_share": 0.4528301886792453,
-    "addresses_over_limit": 4
+    "addresses_over_limit": 5
   }
 }

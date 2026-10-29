@@ -30,3 +30,7 @@
 2026-10-25 07:57:19 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict address NOTANADDRESS
 2026-10-25 07:57:21 INFO Not in the snapshot: NOTANADDRESS is not in the snapshot; try one of ['1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz', '1FXYsQcjByFQz2RvWNCWiP7YQsdCW5XSyT', '1GABHZfEcFEZEYWQNsnq9HFEwEzV6CT4Ku']
 2026-10-25 07:57:21 INFO Step predict finished in 2 s (exit 2)
+2026-10-30 03:35:35 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict what-if --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz --amount 0.05 --direction out --time 2026-10-20T12:00Z
+2026-10-30 03:35:37 INFO Step predict finished in 2 s (exit 0)
+2026-10-30 03:35:42 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz
+2026-10-30 03:35:44 INFO Step predict finished in 2 s (exit 0)

@@ -27,7 +27,7 @@ date order.
 | Check | How | Result |
 |---|---|---|
 | Saved models match the tables | loaded every saved method and re-scored the committed features | all 9 methods reproduce eval_sanity.csv's flag rates and scores.csv's scores exactly |
-| Live configuration | settings and model files | stageModels = LOF C3, K-Means C4, DBSCAN C5; fusion = baseline x1.1 + regression x3.0 (M0); selection = baseline |
+| Live configuration | settings and model files | stageModels = LOF C3, K-Means C4, DBSCAN C5; fusion = regression x2.0 + Isolation Forest x0.9 (the M0 procedure re-run in the fresh-clone rebuild; section 5); selection = baseline |
 | Core functionality (README section 3) | ran every command | totals 377 / 367 / 3 / 3; unknown address exit 2; what-if 5.98 (F1 z 5.88); template explanation; DS4 prediction: all as documented |
 | Training stages | stages.csv | A0, C1, C2, C6 regression, C7, C9, D6 rejected; C3-C5 kept on dev and on the test tier; C6's range variant kept on dev, rejected on test |
 | MODEL_CARD.md | read against the live models | it described the first-round LOF, K-Means and DBSCAN; it now names the stage winners, their files and settings |
@@ -57,7 +57,33 @@ cite the Elliptic dataset record (2019).
 
 ## 5. Results of the long checks (filled in as they finish)
 
-- **Fresh-clone rebuild** (tritran72 `cos30049a2-rebuild`, commit 0aded70): pending.
+- **Fresh-clone rebuild** (tritran72 `cos30049a2-rebuild`, commit 0aded70, Kaggle Linux, Python 3.13, the pinned
+  numpy/pandas/scikit-learn; 9.5 h): pytest 255 passed there. `tools/compare_tables.py`: 146 tables, 110 same,
+  10 within tolerance, 26 different. Every difference was traced:
+  - **Inputs are identical.** transactions.csv has the same values (its bytes differ only in line endings);
+    features.csv differs only in rounding: the committed one had been written at full precision, before the
+    12-significant-digit change, and the tables built from it were older still (the regression's tuning dated from
+    24 Oct). Refitting one random-forest configuration on this PC gives the committed number (0.208802) on the
+    24 Oct features and Kaggle's number (0.204786) on Kaggle's features: the platform is not the cause.
+  - **DS1 tables (21): stale, now replaced.** The rebuild is the first set built in one run from the current code
+    and the promoted stage models (the committed eval tables mixed 24, 27 and 29 Oct runs). The rebuilt models
+    load and re-score scores.csv exactly on Windows. The regression's tuning now chooses different gradient-boosting
+    settings for size (the random forest it uses for size is unchanged), so its scores moved (mean planted recall
+    0.673 -> 0.626) and the fusion search chose a new pair: regression x2.0 + Isolation Forest x0.9 (was baseline
+    x1.1 + regression x3.0), 0.682 against the baseline's 0.655, p = 0.324 (was 0.684, p = 0.063). **No conclusion
+    changes:** the baseline stays the Explorer's method (fusion runner-up); on DS10 the baseline still leads the
+    pooled methods; the DS2 ranking agrees with DS1 (Spearman 0.929, was 0.905).
+  - **Elliptic and BitcoinHeist (5 tables): platform, kept as committed.** Only logistic regression and KNN differ
+    (the tree models match to 1e-8). Refitting Elliptic's AF logistic model (C = 100) on this PC reproduces the
+    committed numbers exactly; on Linux the solver stops at another point of a flat optimum (AF test F1 0.598 ->
+    0.532, LF 0.726 -> 0.750). KNN's distance ties fall the other way (one BitcoinHeist threshold). The committed
+    Windows results stay; README section 11 tells a rebuilder that these two models may differ by platform.
+  - eda_tests.csv and the figures were regenerated from the new tables (`figures`); MODEL_CARD/DATA_CARD by
+    tools/cards.py; the README quick check still gives 377 / 367 / 3 / 3 and what-if 5.98.
+  - Evidence: reports/logs/rebuild/ (compare.csv, compare.log, kaggle_run.json, pytest.log), reports/logs/all.log.
+  - Open: the glossary (tools/make_glossary.py, DS7) still says fusion combines the baseline and regression; the
+    152M writers learned that sentence. Decision for the team: correct the glossary topic for A3, or describe
+    fusion without naming its pair.
 - **Stage B3 gate** (weak-case examples for the 152M explanation stage): ACCEPTED. On both dev files, fully correct
   0.708 (A) -> 0.942 (B), +0.234 [+0.204, +0.266], every case higher; on DS7 v2's ordinary validation prompts
   A 0.961 and B 0.963 (round 1 0.859). The planned recipe without B3 (A) was rejected by the same gate. Round 2's

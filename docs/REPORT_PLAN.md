@@ -58,10 +58,10 @@ section can now quote and the order to write it in.
 
 ## Headline results to build the story on (quote the CSVs, never these lines)
 
-- DS1: the robust-z baseline is the Explorer's method (mean planted recall 0.655; the fusion's 0.684 is
-  not significantly better, p = 0.063). TxGPT is the most precise (PR-AUC 0.333 against 0.109) but
+- DS1: the robust-z baseline is the Explorer's method (mean planted recall 0.655; the fusion's 0.682 is
+  not significantly better, p = 0.324). TxGPT is the most precise (PR-AUC 0.333 against 0.109) but
   flags only 1.5%.
-- External tests of the frozen methods: DS2 (2,933 histories) keeps the ranking (Spearman 0.905); on
+- External tests of the frozen methods: DS2 (2,933 histories) keeps the ranking (Spearman 0.929); on
   DS10, data no model saw, TxGPT ranks first (0.598) and the baseline second (0.431); bursts are hard to
   find there because DS10's addresses are busier and less even (`ds10_activity.csv`).
 - Labelled data: unsupervised scores do not match "illicit" labels (`label_check.csv`): "unusual" is

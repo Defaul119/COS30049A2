@@ -1,0 +1,721 @@
+2026-10-29 10:57:25 INFO Step all started: /tmp/COS30049A2/explorer/cli.py all --offline
+2026-10-29 10:57:26 INFO Skipping txgpt: keeping models/txgpt_method.joblib (re-tuning needs python -m lm.tx_score --plants)
+2026-10-29 10:57:26 INFO == transactions
+2026-10-29 10:57:26 INFO Read /tmp/COS30049A2/data/processed/esplora/histories.json.gz: 28 addresses
+2026-10-29 10:57:26 INFO parse every saved page: 7966 -> 7966 rows (0 removed)
+2026-10-29 10:57:26 INFO keep confirmed transactions: 7966 -> 7966 rows (0 removed)
+2026-10-29 10:57:27 INFO remove duplicate (address, txid) pairs: 7966 -> 7966 rows (0 removed)
+2026-10-29 10:57:27 INFO drop transactions that neither pay nor spend from the address: 7966 -> 7966 rows (0 removed)
+2026-10-29 10:57:27 INFO sort by address, block time and txid: 7966 -> 7966 rows (0 removed)
+2026-10-29 10:57:27 INFO Wrote /tmp/COS30049A2/data/processed/esplora/transactions.csv: 7966 rows, 28 addresses, directions {'in': 4750, 'out': 3216}
+2026-10-29 10:57:27 INFO Wrote /tmp/COS30049A2/reports/tables/cleaning_ds1.csv
+2026-10-29 10:57:27 INFO == transactions finished in 0 s (exit 0)
+2026-10-29 10:57:27 INFO == features
+2026-10-29 10:57:30 INFO Refined method: 7966 transactions, 7599 scorable, 1060 flagged by the baseline (13.9% of scorable)
+2026-10-29 10:57:30 INFO Wrote /tmp/COS30049A2/data/processed/esplora/features.csv
+2026-10-29 10:57:30 INFO == features finished in 3 s (exit 0)
+2026-10-29 10:57:30 INFO == features --as-written
+2026-10-29 10:57:33 INFO As-written method: 7966 transactions, 7599 scorable, 2644 flagged by the baseline (34.8% of scorable)
+2026-10-29 10:57:33 INFO Wrote /tmp/COS30049A2/data/processed/esplora/features_as_written.csv
+2026-10-29 10:57:33 INFO == features --as-written finished in 3 s (exit 0)
+2026-10-29 10:57:33 INFO == split
+2026-10-29 10:57:35 INFO Periods: {'fit': 5308, 'eval': 2291, 'history': 367}
+2026-10-29 10:57:35 INFO Wrote the period column of /tmp/COS30049A2/data/processed/esplora/features.csv and features_as_written.csv and /tmp/COS30049A2/reports/tables/split_ds1.csv
+2026-10-29 10:57:35 INFO == split finished in 2 s (exit 0)
+2026-10-29 10:57:35 INFO == inject
+2026-10-29 10:58:01 INFO tuning seed 40000: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/tuning_40000.json
+2026-10-29 10:58:23 INFO tuning seed 40001: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/tuning_40001.json
+2026-10-29 10:58:44 INFO tuning seed 40002: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/tuning_40002.json
+2026-10-29 10:59:06 INFO tuning seed 40003: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/tuning_40003.json
+2026-10-29 10:59:30 INFO tuning seed 40004: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/tuning_40004.json
+2026-10-29 10:59:52 INFO reporting seed 30049: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/reporting_30049.json
+2026-10-29 11:00:13 INFO reporting seed 30050: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/reporting_30050.json
+2026-10-29 11:00:34 INFO reporting seed 30051: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/reporting_30051.json
+2026-10-29 11:00:56 INFO reporting seed 30052: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/reporting_30052.json
+2026-10-29 11:01:17 INFO reporting seed 30053: 150 plants (spike 50, burst 50, dormant 50) -> /tmp/COS30049A2/data/processed/esplora/injections/reporting_30053.json
+2026-10-29 11:01:17 INFO == inject finished in 222 s (exit 0)
+2026-10-29 11:01:17 INFO == baseline
+2026-10-29 11:01:18 INFO refined |z| >= 2.5: recall spike 0.88, burst 0.61/0.93, dormant 0.89; flag rate 0.235; 12 addresses over the limit
+2026-10-29 11:01:18 INFO refined |z| >= 3.0: recall spike 0.87, burst 0.54/0.89, dormant 0.89; flag rate 0.184; 9 addresses over the limit
+2026-10-29 11:01:18 INFO refined |z| >= 3.5: recall spike 0.84, burst 0.48/0.85, dormant 0.82; flag rate 0.149; 7 addresses over the limit
+2026-10-29 11:01:18 INFO refined |z| >= 4.0: recall spike 0.84, burst 0.46/0.82, dormant 0.82; flag rate 0.133; 5 addresses over the limit
+2026-10-29 11:01:18 INFO refined |z| >= 4.5: recall spike 0.82, burst 0.40/0.78, dormant 0.80; flag rate 0.120; 5 addresses over the limit
+2026-10-29 11:01:19 INFO refined |z| >= 5.0: recall spike 0.79, burst 0.35/0.74, dormant 0.80; flag rate 0.104; 4 addresses over the limit
+2026-10-29 11:01:19 INFO as_written |z| >= 2.5: recall spike 0.90, burst 0.69/0.99, dormant 0.00; flag rate 0.460; 23 addresses over the limit
+2026-10-29 11:01:19 INFO as_written |z| >= 3.0: recall spike 0.89, burst 0.62/0.98, dormant 0.00; flag rate 0.412; 22 addresses over the limit
+2026-10-29 11:01:20 INFO as_written |z| >= 3.5: recall spike 0.89, burst 0.56/0.98, dormant 0.00; flag rate 0.373; 21 addresses over the limit
+2026-10-29 11:01:20 INFO as_written |z| >= 4.0: recall spike 0.88, burst 0.54/0.94, dormant 0.00; flag rate 0.351; 20 addresses over the limit
+2026-10-29 11:01:20 INFO as_written |z| >= 4.5: recall spike 0.86, burst 0.49/0.91, dormant 0.00; flag rate 0.333; 20 addresses over the limit
+2026-10-29 11:01:20 INFO as_written |z| >= 5.0: recall spike 0.85, burst 0.44/0.87, dormant 0.00; flag rate 0.313; 19 addresses over the limit
+2026-10-29 11:01:20 INFO refined: chosen |z| >= 5.0 (no threshold met the sanity rule; fewest addresses over the limit); differs from A1's 3.5, so this is CR-03 for the team
+2026-10-29 11:01:20 INFO as_written: chosen |z| >= 5.0 (no threshold met the sanity rule; fewest addresses over the limit); differs from A1's 3.5, so this is CR-03 for the team
+2026-10-29 11:01:20 INFO Wrote /tmp/COS30049A2/reports/tables/tuning_baseline.csv and /tmp/COS30049A2/models/baseline.json
+2026-10-29 11:01:20 INFO == baseline finished in 3 s (exit 0)
+2026-10-29 11:01:20 INFO == outliers
+2026-10-29 11:01:36 INFO isolation_forest {'max_features': 1.0, 'max_samples': 256, 'n_estimators': 200}: mean recall 0.343 (spike 0.63, burst 0.11, dormant 0.28), stability 0.78, flag rate 0.034
+2026-10-29 11:02:14 INFO isolation_forest {'max_features': 1.0, 'max_samples': 256, 'n_estimators': 500}: mean recall 0.340 (spike 0.64, burst 0.10, dormant 0.28), stability 0.85, flag rate 0.035
+2026-10-29 11:02:31 INFO isolation_forest {'max_features': 1.0, 'max_samples': 1024, 'n_estimators': 200}: mean recall 0.406 (spike 0.66, burst 0.14, dormant 0.42), stability 0.90, flag rate 0.036
+2026-10-29 11:03:14 INFO isolation_forest {'max_features': 1.0, 'max_samples': 1024, 'n_estimators': 500}: mean recall 0.436 (spike 0.69, burst 0.13, dormant 0.49), stability 0.92, flag rate 0.036
+2026-10-29 11:03:29 INFO isolation_forest {'max_features': 1.0, 'max_samples': 'auto', 'n_estimators': 200}: mean recall 0.343 (spike 0.63, burst 0.11, dormant 0.28), stability 0.78, flag rate 0.034
+2026-10-29 11:04:07 INFO isolation_forest {'max_features': 1.0, 'max_samples': 'auto', 'n_estimators': 500}: mean recall 0.340 (spike 0.64, burst 0.10, dormant 0.28), stability 0.85, flag rate 0.035
+2026-10-29 11:04:24 INFO isolation_forest {'max_features': 0.75, 'max_samples': 256, 'n_estimators': 200}: mean recall 0.356 (spike 0.65, burst 0.11, dormant 0.31), stability 0.81, flag rate 0.035
+2026-10-29 11:05:02 INFO isolation_forest {'max_features': 0.75, 'max_samples': 256, 'n_estimators': 500}: mean recall 0.361 (spike 0.66, burst 0.11, dormant 0.31), stability 0.87, flag rate 0.034
+2026-10-29 11:05:21 INFO isolation_forest {'max_features': 0.75, 'max_samples': 1024, 'n_estimators': 200}: mean recall 0.443 (spike 0.68, burst 0.11, dormant 0.53), stability 0.86, flag rate 0.038
+2026-10-29 11:06:05 INFO isolation_forest {'max_features': 0.75, 'max_samples': 1024, 'n_estimators': 500}: mean recall 0.445 (spike 0.68, burst 0.12, dormant 0.54), stability 0.88, flag rate 0.036
+2026-10-29 11:06:21 INFO isolation_forest {'max_features': 0.75, 'max_samples': 'auto', 'n_estimators': 200}: mean recall 0.356 (spike 0.65, burst 0.11, dormant 0.31), stability 0.81, flag rate 0.035
+2026-10-29 11:07:01 INFO isolation_forest {'max_features': 0.75, 'max_samples': 'auto', 'n_estimators': 500}: mean recall 0.361 (spike 0.66, burst 0.11, dormant 0.31), stability 0.87, flag rate 0.034
+2026-10-29 11:07:08 INFO lof {'n_neighbors': 10}: mean recall 0.220 (spike 0.07, burst 0.09, dormant 0.50), stability 0.29, flag rate 0.054
+2026-10-29 11:07:16 INFO lof {'n_neighbors': 20}: mean recall 0.334 (spike 0.08, burst 0.07, dormant 0.84), stability 0.64, flag rate 0.045
+2026-10-29 11:07:28 INFO lof {'n_neighbors': 35}: mean recall 0.329 (spike 0.08, burst 0.07, dormant 0.84), stability 0.75, flag rate 0.044
+2026-10-29 11:07:42 INFO lof {'n_neighbors': 50}: mean recall 0.336 (spike 0.10, burst 0.07, dormant 0.84), stability 0.79, flag rate 0.045
+2026-10-29 11:07:51 INFO isolation_forest: chose {'max_features': 0.75, 'max_samples': 1024, 'n_estimators': 500} (highest mean tuning recall among stable configurations) -> models/isolation_forest.joblib
+2026-10-29 11:08:00 INFO lof: chose {'n_neighbors': 50} (highest mean tuning recall among stable configurations) -> models/lof.joblib
+2026-10-29 11:08:00 INFO Wrote /tmp/COS30049A2/reports/tables/tuning_outliers.csv
+2026-10-29 11:08:00 INFO == outliers finished in 400 s (exit 0)
+2026-10-29 11:08:00 INFO == clustering
+2026-10-29 11:08:00 INFO Fit period: 5308 rows, inputs ['zc_F1', 'zc_F2', 'zc_F3', 'zc_F4', 'dir_in', 'dir_out']
+2026-10-29 11:08:01 INFO K-Means k=2: silhouette 0.657, Davies-Bouldin 0.834, inertia 63421
+2026-10-29 11:08:01 INFO K-Means k=3: silhouette 0.599, Davies-Bouldin 0.858, inertia 52233
+2026-10-29 11:08:02 INFO K-Means k=4: silhouette 0.229, Davies-Bouldin 1.172, inertia 44942
+2026-10-29 11:08:02 INFO K-Means k=5: silhouette 0.251, Davies-Bouldin 1.047, inertia 38409
+2026-10-29 11:08:03 INFO K-Means k=6: silhouette 0.270, Davies-Bouldin 1.011, inertia 34134
+2026-10-29 11:08:03 INFO K-Means k=7: silhouette 0.278, Davies-Bouldin 0.995, inertia 30966
+2026-10-29 11:08:04 INFO K-Means k=8: silhouette 0.261, Davies-Bouldin 1.013, inertia 28549
+2026-10-29 11:08:05 INFO K-Means k=9: silhouette 0.267, Davies-Bouldin 0.937, inertia 26233
+2026-10-29 11:08:05 INFO K-Means k=10: silhouette 0.267, Davies-Bouldin 0.937, inertia 24442
+2026-10-29 11:08:20 INFO DBSCAN: eps0 2.020 (knee, MinPts 12); chose eps 2.626, MinPts 8, noise 0.020 (best silhouette among settings with 1%-5% noise)
+2026-10-29 11:08:20 INFO Cluster 0 (5089 fit rows): typical for the address; mostly incoming
+2026-10-29 11:08:20 INFO Cluster 1 (219 fit rows): in a busier week than usual, a quick follow-up; mostly outgoing
+2026-10-29 11:08:20 INFO Wrote tuning_kmeans.csv, kmeans_clusters.csv, tuning_dbscan.csv and models/{kmeans,dbscan}.joblib
+2026-10-29 11:08:20 INFO == clustering finished in 21 s (exit 0)
+2026-10-29 11:08:20 INFO == regression
+2026-10-29 11:08:21 INFO size / ridge: best validation MAE 0.1513 with {'alpha': 0.001} (naive 0.1591)
+2026-10-29 11:09:39 INFO size / randomForest: best validation MAE 0.1498 with {'max_depth': 10, 'max_features': 1.0, 'min_samples_leaf': 20, 'n_estimators': 300} (naive 0.1591)
+2026-10-29 11:09:45 INFO size / histGradientBoosting: best validation MAE 0.1650 with {'l2_regularization': 0, 'learning_rate': 0.1, 'max_leaf_nodes': 31} (naive 0.1591)
+2026-10-29 11:09:58 INFO size: chose randomForest (validation MAE 0.1498); range coverage raw -> conformal: 90% 0.784 -> 0.875, 98% 0.898 -> 0.972
+2026-10-29 11:09:58 INFO gap / ridge: best validation MAE 0.3158 with {'alpha': 0.001} (naive 0.5169)
+2026-10-29 11:11:13 INFO gap / randomForest: best validation MAE 0.2066 with {'max_depth': None, 'max_features': 1.0, 'min_samples_leaf': 5, 'n_estimators': 300} (naive 0.5169)
+2026-10-29 11:11:19 INFO gap / histGradientBoosting: best validation MAE 0.2040 with {'l2_regularization': 0, 'learning_rate': 0.1, 'max_leaf_nodes': 31} (naive 0.5169)
+2026-10-29 11:11:34 INFO gap: chose histGradientBoosting (validation MAE 0.2040); range coverage raw -> conformal: 90% 0.813 -> 0.887, 98% 0.937 -> 0.979
+2026-10-29 11:11:35 INFO Wrote tuning_regression.csv, regression_results.csv, models/regression.joblib and regression_interval.joblib
+2026-10-29 11:11:35 INFO == regression finished in 194 s (exit 0)
+2026-10-29 11:11:35 INFO == profiles
+2026-10-29 11:11:38 INFO Profiles: 25 DS1 and 4012 DS2 addresses
+2026-10-29 11:11:39 INFO Profiles k=3: silhouette 0.182, Davies-Bouldin 1.788
+2026-10-29 11:11:39 INFO Profiles k=4: silhouette 0.187, Davies-Bouldin 1.645
+2026-10-29 11:11:39 INFO Profiles k=5: silhouette 0.185, Davies-Bouldin 1.541
+2026-10-29 11:11:40 INFO Profiles k=6: silhouette 0.189, Davies-Bouldin 1.531
+2026-10-29 11:11:40 INFO Profiles k=7: silhouette 0.179, Davies-Bouldin 1.488
+2026-10-29 11:11:41 INFO Profiles k=8: silhouette 0.191, Davies-Bouldin 1.422
+2026-10-29 11:11:41 INFO Profile 0 (8 DS1, 323 DS2): steady, long history, many outputs per transaction
+2026-10-29 11:11:41 INFO Profile 1 (4 DS1, 750 DS2): few outputs per transaction
+2026-10-29 11:11:41 INFO Profile 2 (1 DS1, 533 DS2): mostly receives, many outputs per transaction
+2026-10-29 11:11:41 INFO Profile 3 (1 DS1, 894 DS2): short history, bursty
+2026-10-29 11:11:41 INFO Profile 4 (1 DS1, 124 DS2): many transactions per day, steady, few outputs per transaction
+2026-10-29 11:11:41 INFO Profile 5 (9 DS1, 852 DS2): many outputs per transaction
+2026-10-29 11:11:41 INFO Profile 6 (1 DS1, 175 DS2): irregular gaps, long history
+2026-10-29 11:11:41 INFO Profile 7 (0 DS1, 361 DS2): high fee rates, large amounts, few outputs per transaction
+2026-10-29 11:11:41 INFO Wrote profiles.csv, profiles_tuning.csv, profiles.csv, ds2_coverage.csv and models/profiles.joblib
+2026-10-29 11:11:41 INFO == profiles finished in 6 s (exit 0)
+2026-10-29 11:11:41 INFO == fusion
+2026-10-29 11:11:42 INFO Flag budget: 0.1043, the flag rate of explorerMethod (baseline) on the real evaluation period
+2026-10-29 11:11:45 INFO Reference baseline alone: best within the budget 0.649 (multiplier 1.0, flag rate 0.1043)
+2026-10-29 11:11:49 INFO Reference regression alone: best within the budget 0.510 (multiplier 1.5, flag rate 0.0986)
+2026-10-29 11:11:55 INFO Reference isolation_forest alone: best within the budget 0.604 (multiplier 0.9, flag rate 0.0594)
+2026-10-29 11:14:59 INFO baseline + regression [1.1, 2.5]: tuning mean recall 0.665 (spike 0.78, burst 0.42, dormant 0.79), flag rate 0.1039, stability 0.90
+2026-10-29 11:17:25 INFO baseline + regression [1.2, 2.5]: tuning mean recall 0.655 (spike 0.78, burst 0.41, dormant 0.78), flag rate 0.1013, stability 0.91
+2026-10-29 11:19:52 INFO baseline + regression [1.1, 3.0]: tuning mean recall 0.647 (spike 0.77, burst 0.38, dormant 0.79), flag rate 0.1000, stability 0.91
+2026-10-29 11:21:09 INFO baseline + isolation_forest [1.1, 0.9]: tuning mean recall 0.658 (spike 0.80, burst 0.32, dormant 0.85), flag rate 0.0978, stability 1.00
+2026-10-29 11:21:48 INFO baseline + isolation_forest [1.2, 0.9]: tuning mean recall 0.653 (spike 0.80, burst 0.32, dormant 0.85), flag rate 0.0952, stability 1.00
+2026-10-29 11:22:25 INFO baseline + isolation_forest [1.0, 1.0]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-29 11:23:06 INFO baseline + kmeans [1.0, 0.8]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-29 11:23:08 INFO baseline + kmeans [1.0, 0.9]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-29 11:23:10 INFO baseline + kmeans [1.0, 1.0]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-29 11:23:59 INFO baseline + lof [1.0, 3.0]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-29 11:24:06 INFO baseline + lof [1.0, 4.0]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-29 11:24:13 INFO baseline + lof [1.0, 2.5]: tuning mean recall 0.649 (spike 0.79, burst 0.35, dormant 0.80), flag rate 0.1043, stability 1.00
+2026-10-29 11:28:00 INFO regression + isolation_forest [2.0, 0.9]: tuning mean recall 0.680 (spike 0.81, burst 0.44, dormant 0.79), flag rate 0.0943, stability 0.74
+2026-10-29 11:31:03 INFO regression + isolation_forest [2.5, 0.9]: tuning mean recall 0.659 (spike 0.80, burst 0.38, dormant 0.79), flag rate 0.0799, stability 0.73
+2026-10-29 11:34:10 INFO regression + isolation_forest [3.0, 0.9]: tuning mean recall 0.641 (spike 0.80, burst 0.34, dormant 0.79), flag rate 0.0746, stability 0.66
+2026-10-29 11:34:11 INFO Chose regression + isolation_forest with multipliers {'regression': 2.0, 'isolation_forest': 0.9} (highest mean tuning recall within the flag budget among stable configurations (the explorerMethod's real evaluation flag rate is the budget; ties by PR-AUC; across settings.fusion.candidates)) -> models/fusion.joblib; wrote /tmp/COS30049A2/reports/tables/tuning_fusion.csv
+2026-10-29 11:34:11 INFO == fusion finished in 1350 s (exit 0)
+2026-10-29 11:34:11 INFO == scores
+2026-10-29 11:34:12 INFO baseline: 681 flagged of 7966 (239 of 2291 in the evaluation period); threshold 5
+2026-10-29 11:34:12 INFO isolation_forest: 190 flagged of 7966 (83 of 2291 in the evaluation period); threshold 0.5886
+2026-10-29 11:34:13 INFO lof: 208 flagged of 7966 (102 of 2291 in the evaluation period); threshold 1.855
+2026-10-29 11:34:13 INFO kmeans: 207 flagged of 7966 (86 of 2291 in the evaluation period); threshold 9.978
+2026-10-29 11:34:13 INFO dbscan: 200 flagged of 7966 (89 of 2291 in the evaluation period); threshold 2.821
+2026-10-29 11:34:14 INFO regression: 920 flagged of 7966 (400 of 2291 in the evaluation period); threshold 3.5
+2026-10-29 11:34:14 INFO regression_interval: 148 flagged of 7966 (109 of 2291 in the evaluation period); threshold 0
+2026-10-29 11:34:15 INFO fusion: 529 flagged of 7966 (216 of 2291 in the evaluation period); threshold 1
+2026-10-29 11:34:16 INFO txgpt_method: 141 flagged of 7966 (34 of 2291 in the evaluation period); threshold 12.2
+2026-10-29 11:34:16 INFO Wrote /tmp/COS30049A2/data/processed/esplora/scores.csv
+2026-10-29 11:34:16 INFO == scores finished in 5 s (exit 0)
+2026-10-29 11:34:16 INFO == evaluate
+2026-10-29 11:34:17 INFO Evaluating ['baseline', 'isolation_forest', 'lof', 'kmeans', 'dbscan', 'regression', 'regression_interval', 'fusion', 'txgpt_method'] on 750 reporting plants
+2026-10-29 11:43:18 INFO fusion               mean recall 0.682 (spike 0.78, burst 0.50, dormant 0.77), stability 0.74, flag rate 0.094, max address share 0.45
+2026-10-29 11:43:18 INFO baseline             mean recall 0.655 (spike 0.74, burst 0.38, dormant 0.84), stability 1.00, flag rate 0.104, max address share 0.45
+2026-10-29 11:43:18 INFO regression           mean recall 0.626 (spike 0.86, burst 0.69, dormant 0.32), stability 0.74, flag rate 0.175, max address share 0.53
+2026-10-29 11:43:18 INFO txgpt_method         mean recall 0.547 (spike 0.74, burst 0.17, dormant 0.74), stability 1.00, flag rate 0.015, max address share 0.11
+2026-10-29 11:43:18 INFO dbscan               mean recall 0.476 (spike 0.54, burst 0.11, dormant 0.78), stability 0.91, flag rate 0.039, max address share 0.38
+2026-10-29 11:43:18 INFO kmeans               mean recall 0.470 (spike 0.62, burst 0.05, dormant 0.74), stability 1.00, flag rate 0.038, max address share 0.43
+2026-10-29 11:43:18 INFO isolation_forest     mean recall 0.429 (spike 0.60, burst 0.12, dormant 0.56), stability 0.88, flag rate 0.036, max address share 0.43
+2026-10-29 11:43:18 INFO lof                  mean recall 0.331 (spike 0.12, burst 0.07, dormant 0.81), stability 0.85, flag rate 0.045, max address share 0.41
+2026-10-29 11:43:18 INFO regression_interval  mean recall 0.310 (spike 0.71, burst 0.17, dormant 0.04), stability 0.51, flag rate 0.048, max address share 0.32
+2026-10-29 11:43:18 INFO Recommended method: baseline (runner-up fusion). Record it as explorerMethod in settings.json to adopt it.
+2026-10-29 11:43:18 INFO == evaluate finished in 542 s (exit 0)
+2026-10-29 11:43:18 INFO == significance
+2026-10-29 11:43:20 INFO 750 plants on 25 addresses, 2000 address-level bootstrap draws, 95% intervals; reference baseline
+2026-10-29 11:43:20 INFO fusion               mean recall 0.682 [0.573, 0.781]; minus baseline +0.027 [-0.030, +0.080], p = 0.324
+2026-10-29 11:43:20 INFO baseline             mean recall 0.655 [0.546, 0.753]; minus baseline +0.000 [+0.000, +0.000], p = -
+2026-10-29 11:43:20 INFO regression           mean recall 0.626 [0.526, 0.722]; minus baseline -0.029 [-0.117, +0.063], p = 0.533
+2026-10-29 11:43:20 INFO txgpt_method         mean recall 0.547 [0.442, 0.638]; minus baseline -0.108 [-0.270, +0.048], p = 0.177
+2026-10-29 11:43:20 INFO dbscan               mean recall 0.476 [0.366, 0.571]; minus baseline -0.179 [-0.228, -0.132], p = 0.000
+2026-10-29 11:43:20 INFO kmeans               mean recall 0.470 [0.359, 0.567]; minus baseline -0.185 [-0.243, -0.136], p = 0.000
+2026-10-29 11:43:20 INFO isolation_forest     mean recall 0.429 [0.321, 0.534]; minus baseline -0.227 [-0.304, -0.156], p = 0.000
+2026-10-29 11:43:20 INFO lof                  mean recall 0.331 [0.262, 0.392]; minus baseline -0.324 [-0.390, -0.248], p = 0.000
+2026-10-29 11:43:20 INFO regression_interval  mean recall 0.310 [0.246, 0.373]; minus baseline -0.345 [-0.426, -0.254], p = 0.000
+2026-10-29 11:43:20 INFO Wrote /tmp/COS30049A2/reports/tables/eval_significance.csv and /tmp/COS30049A2/reports/tables/eval_plant_hits.csv
+2026-10-29 11:43:20 INFO == significance finished in 3 s (exit 0)
+2026-10-29 11:43:20 INFO == sensitivity
+2026-10-29 11:43:46 INFO spike 2x: 250 plants; baseline 0.17, isolation_forest 0.07, lof 0.02, kmeans 0.04, dbscan 0.09, regression 0.71, regression_interval 0.16, fusion 0.46
+2026-10-29 11:44:08 INFO spike 3x: 250 plants; baseline 0.36, isolation_forest 0.09, lof 0.05, kmeans 0.00, dbscan 0.11, regression 0.78, regression_interval 0.30, fusion 0.65
+2026-10-29 11:44:29 INFO spike 5x: 250 plants; baseline 0.63, isolation_forest 0.34, lof 0.12, kmeans 0.41, dbscan 0.20, regression 0.82, regression_interval 0.40, fusion 0.67
+2026-10-29 11:44:51 INFO spike 10x: 250 plants; baseline 0.74, isolation_forest 0.60, lof 0.12, kmeans 0.62, dbscan 0.54, regression 0.86, regression_interval 0.71, fusion 0.78
+2026-10-29 11:45:12 INFO spike 20x: 250 plants; baseline 0.81, isolation_forest 0.67, lof 0.57, kmeans 0.68, dbscan 0.58, regression 0.96, regression_interval 0.85, fusion 0.85
+2026-10-29 11:45:34 INFO spike 50x: 250 plants; baseline 0.92, isolation_forest 0.78, lof 0.64, kmeans 0.77, dbscan 0.71, regression 0.99, regression_interval 0.95, fusion 0.94
+2026-10-29 11:45:56 INFO burst 3 in 24 h: 250 plants; baseline 0.30, isolation_forest 0.07, lof 0.09, kmeans 0.04, dbscan 0.08, regression 0.64, regression_interval 0.11, fusion 0.41
+2026-10-29 11:46:18 INFO burst 5 in 24 h: 250 plants; baseline 0.31, isolation_forest 0.08, lof 0.09, kmeans 0.06, dbscan 0.08, regression 0.63, regression_interval 0.11, fusion 0.42
+2026-10-29 11:46:41 INFO burst 10 in 24 h: 250 plants; baseline 0.38, isolation_forest 0.12, lof 0.07, kmeans 0.05, dbscan 0.11, regression 0.69, regression_interval 0.17, fusion 0.50
+2026-10-29 11:47:06 INFO burst 20 in 24 h: 250 plants; baseline 0.42, isolation_forest 0.16, lof 0.12, kmeans 0.16, dbscan 0.18, regression 0.70, regression_interval 0.21, fusion 0.52
+2026-10-29 11:47:28 INFO dormant 7-14 days: 250 plants; baseline 0.69, isolation_forest 0.34, lof 0.59, kmeans 0.47, dbscan 0.53, regression 0.24, regression_interval 0.04, fusion 0.56
+2026-10-29 11:47:50 INFO dormant 14-30 days: 250 plants; baseline 0.79, isolation_forest 0.42, lof 0.66, kmeans 0.61, dbscan 0.62, regression 0.36, regression_interval 0.17, fusion 0.62
+2026-10-29 11:48:11 INFO dormant 30-60 days: 250 plants; baseline 0.83, isolation_forest 0.48, lof 0.80, kmeans 0.74, dbscan 0.73, regression 0.38, regression_interval 0.04, fusion 0.68
+2026-10-29 11:48:33 INFO dormant 60-120 days: 250 plants; baseline 0.84, isolation_forest 0.56, lof 0.81, kmeans 0.74, dbscan 0.78, regression 0.32, regression_interval 0.04, fusion 0.77
+2026-10-29 11:48:55 INFO dormant 120-240 days: 250 plants; baseline 0.84, isolation_forest 0.56, lof 0.81, kmeans 0.74, dbscan 0.78, regression 0.67, regression_interval 0.76, fusion 0.81
+2026-10-29 11:49:17 INFO dormant 240-480 days: 250 plants; baseline 0.84, isolation_forest 0.56, lof 0.81, kmeans 0.75, dbscan 0.78, regression 0.96, regression_interval 1.00, fusion 0.81
+2026-10-29 11:49:17 INFO Wrote /tmp/COS30049A2/reports/tables/eval_sensitivity.csv
+2026-10-29 11:49:17 INFO check baseline spike at the default strength: 0.744 here, 0.744 in eval_injection.csv
+2026-10-29 11:49:17 INFO check isolation_forest spike at the default strength: 0.600 here, 0.600 in eval_injection.csv
+2026-10-29 11:49:17 INFO check lof spike at the default strength: 0.116 here, 0.116 in eval_injection.csv
+2026-10-29 11:49:17 INFO check kmeans spike at the default strength: 0.624 here, 0.624 in eval_injection.csv
+2026-10-29 11:49:17 INFO check dbscan spike at the default strength: 0.544 here, 0.544 in eval_injection.csv
+2026-10-29 11:49:17 INFO check regression spike at the default strength: 0.864 here, 0.864 in eval_injection.csv
+2026-10-29 11:49:17 INFO check regression_interval spike at the default strength: 0.712 here, 0.712 in eval_injection.csv
+2026-10-29 11:49:17 INFO check fusion spike at the default strength: 0.780 here, 0.780 in eval_injection.csv
+2026-10-29 11:49:17 INFO check baseline burst at the default strength: 0.381 here, 0.381 in eval_injection.csv
+2026-10-29 11:49:17 INFO check isolation_forest burst at the default strength: 0.122 here, 0.122 in eval_injection.csv
+2026-10-29 11:49:17 INFO check lof burst at the default strength: 0.066 here, 0.066 in eval_injection.csv
+2026-10-29 11:49:17 INFO check kmeans burst at the default strength: 0.050 here, 0.050 in eval_injection.csv
+2026-10-29 11:49:17 INFO check dbscan burst at the default strength: 0.109 here, 0.109 in eval_injection.csv
+2026-10-29 11:49:17 INFO check regression burst at the default strength: 0.695 here, 0.695 in eval_injection.csv
+2026-10-29 11:49:17 INFO check regression_interval burst at the default strength: 0.174 here, 0.174 in eval_injection.csv
+2026-10-29 11:49:17 INFO check fusion burst at the default strength: 0.498 here, 0.498 in eval_injection.csv
+2026-10-29 11:49:17 INFO check baseline dormant at the default strength: 0.840 here, 0.840 in eval_injection.csv
+2026-10-29 11:49:17 INFO check isolation_forest dormant at the default strength: 0.564 here, 0.564 in eval_injection.csv
+2026-10-29 11:49:17 INFO check lof dormant at the default strength: 0.812 here, 0.812 in eval_injection.csv
+2026-10-29 11:49:17 INFO check kmeans dormant at the default strength: 0.736 here, 0.736 in eval_injection.csv
+2026-10-29 11:49:17 INFO check dbscan dormant at the default strength: 0.776 here, 0.776 in eval_injection.csv
+2026-10-29 11:49:17 INFO check regression dormant at the default strength: 0.320 here, 0.320 in eval_injection.csv
+2026-10-29 11:49:17 INFO check regression_interval dormant at the default strength: 0.044 here, 0.044 in eval_injection.csv
+2026-10-29 11:49:17 INFO check fusion dormant at the default strength: 0.768 here, 0.768 in eval_injection.csv
+2026-10-29 11:49:17 INFO == sensitivity finished in 356 s (exit 0)
+2026-10-29 11:49:17 INFO == walk-forward
+2026-10-29 11:51:25 INFO fit fraction 0.50: 3793 fit rows, 3806 evaluation rows, 750 plants; fusion 0.69, baseline 0.65, regression 0.64, dbscan 0.50, kmeans 0.47, isolation_forest 0.42, lof 0.41, regression_interval 0.30
+2026-10-29 11:53:22 INFO fit fraction 0.60: 4548 fit rows, 3051 evaluation rows, 750 plants; fusion 0.68, baseline 0.66, regression 0.64, kmeans 0.47, dbscan 0.45, isolation_forest 0.39, lof 0.34, regression_interval 0.33
+2026-10-29 11:55:09 INFO fit fraction 0.70: 5308 fit rows, 2291 evaluation rows, 750 plants; fusion 0.68, baseline 0.66, regression 0.63, dbscan 0.48, kmeans 0.47, isolation_forest 0.43, regression_interval 0.36, lof 0.33
+2026-10-29 11:56:48 INFO fit fraction 0.80: 6071 fit rows, 1528 evaluation rows, 750 plants; fusion 0.67, baseline 0.65, regression 0.63, dbscan 0.50, kmeans 0.48, isolation_forest 0.42, lof 0.34, regression_interval 0.30
+2026-10-29 11:56:48 INFO Wrote /tmp/COS30049A2/reports/tables/eval_walkforward.csv
+2026-10-29 11:56:48 INFO == walk-forward finished in 451 s (exit 0)
+2026-10-29 11:56:48 INFO == ds2-check
+2026-10-29 11:59:23 INFO DS2: 2933 addresses meet DS1's main rule; 827291 transactions; periods {'fit': 549071, 'eval': 237705, 'history': 40515}
+2026-10-29 12:04:24 INFO seed 30049: 3000 plants on 1583 addresses
+2026-10-29 12:09:08 INFO seed 30050: 3000 plants on 1583 addresses
+2026-10-29 12:13:55 INFO seed 30051: 3000 plants on 1583 addresses
+2026-10-29 12:18:32 INFO seed 30052: 3000 plants on 1613 addresses
+2026-10-29 12:23:08 INFO seed 30053: 3000 plants on 1582 addresses
+2026-10-29 12:24:13 INFO baseline             DS2 mean recall 0.494 [0.479, 0.508] (DS1 0.655); DS2 flag rate 0.075, 10% of addresses over the sanity limit
+2026-10-29 12:24:13 INFO fusion               DS2 mean recall 0.458 [0.444, 0.472] (DS1 0.682); DS2 flag rate 0.062, 8% of addresses over the sanity limit
+2026-10-29 12:24:13 INFO regression           DS2 mean recall 0.426 [0.413, 0.439] (DS1 0.626); DS2 flag rate 0.096, 15% of addresses over the sanity limit
+2026-10-29 12:24:13 INFO kmeans               DS2 mean recall 0.336 [0.323, 0.349] (DS1 0.470); DS2 flag rate 0.021, 2% of addresses over the sanity limit
+2026-10-29 12:24:13 INFO dbscan               DS2 mean recall 0.317 [0.305, 0.330] (DS1 0.476); DS2 flag rate 0.021, 3% of addresses over the sanity limit
+2026-10-29 12:24:13 INFO isolation_forest     DS2 mean recall 0.305 [0.293, 0.317] (DS1 0.429); DS2 flag rate 0.017, 2% of addresses over the sanity limit
+2026-10-29 12:24:13 INFO regression_interval  DS2 mean recall 0.189 [0.181, 0.197] (DS1 0.310); DS2 flag rate 0.063, 7% of addresses over the sanity limit
+2026-10-29 12:24:13 INFO lof                  DS2 mean recall 0.188 [0.178, 0.199] (DS1 0.331); DS2 flag rate 0.023, 2% of addresses over the sanity limit
+2026-10-29 12:24:13 INFO Wrote /tmp/COS30049A2/reports/tables/eval_ds2.csv, eval_ds2_plant_hits.csv and split_ds2.csv
+2026-10-29 12:24:14 INFO == ds2-check finished in 1646 s (exit 0)
+2026-10-29 12:24:14 INFO == ds10-check
+2026-10-29 12:24:15 INFO DS10: 27 addresses, 5785 transactions; periods {'fit': 3780, 'eval': 1646, 'history': 359}
+2026-10-29 12:24:25 INFO seed 30049: 150 plants on 24 addresses
+2026-10-29 12:24:33 INFO seed 30050: 150 plants on 24 addresses
+2026-10-29 12:24:41 INFO seed 30051: 150 plants on 24 addresses
+2026-10-29 12:24:50 INFO seed 30052: 150 plants on 23 addresses
+2026-10-29 12:24:59 INFO seed 30053: 150 plants on 22 addresses
+2026-10-29 14:46:09 INFO TxGPT: raw score, DS1 threshold 12.203, 238807 rows scored
+2026-10-29 14:46:12 INFO Activity, DS1 vs DS10:
+source  main_addresses  median_gap_hours  median_window_count  window_count_iqr
+   DS1              25             23.07                  7.0               4.0
+  DS10              24             13.13                  5.5               6.0
+2026-10-29 14:46:12 INFO txgpt_method         DS10 mean recall 0.598 [0.534, 0.657] (DS1 0.547, DS2 -); flag rate 0.038, 4% of addresses over the sanity limit
+2026-10-29 14:46:12 INFO baseline             DS10 mean recall 0.431 [0.334, 0.528] (DS1 0.655, DS2 0.494); flag rate 0.036, 0% of addresses over the sanity limit
+2026-10-29 14:46:12 INFO fusion               DS10 mean recall 0.367 [0.279, 0.473] (DS1 0.682, DS2 0.458); flag rate 0.055, 4% of addresses over the sanity limit
+2026-10-29 14:46:12 INFO regression           DS10 mean recall 0.346 [0.250, 0.452] (DS1 0.626, DS2 0.426); flag rate 0.085, 11% of addresses over the sanity limit
+2026-10-29 14:46:12 INFO regression_interval  DS10 mean recall 0.168 [0.111, 0.244] (DS1 0.310, DS2 0.189); flag rate 0.095, 7% of addresses over the sanity limit
+2026-10-29 14:46:12 INFO kmeans               DS10 mean recall 0.165 [0.096, 0.249] (DS1 0.470, DS2 0.336); flag rate 0.006, 0% of addresses over the sanity limit
+2026-10-29 14:46:12 INFO isolation_forest     DS10 mean recall 0.151 [0.085, 0.226] (DS1 0.429, DS2 0.305); flag rate 0.004, 0% of addresses over the sanity limit
+2026-10-29 14:46:12 INFO dbscan               DS10 mean recall 0.149 [0.079, 0.242] (DS1 0.476, DS2 0.317); flag rate 0.007, 0% of addresses over the sanity limit
+2026-10-29 14:46:12 INFO lof                  DS10 mean recall 0.122 [0.054, 0.202] (DS1 0.331, DS2 0.188); flag rate 0.010, 0% of addresses over the sanity limit
+2026-10-29 14:46:12 INFO Wrote /tmp/COS30049A2/reports/tables/eval_ds10.csv, eval_ds10_plant_hits.csv and split_ds10.csv
+2026-10-29 14:46:12 INFO Kept the frozen explanation test set /tmp/COS30049A2/data/processed/ds10/explain.jsonl
+2026-10-29 14:46:12 INFO == ds10-check finished in 8519 s (exit 0)
+2026-10-29 14:46:12 INFO == process-external (DS4)
+2026-10-29 14:46:19 INFO Read /tmp/COS30049A2/data/external/bitcoinheist/BitcoinHeistData.csv: 2916697 rows
+2026-10-29 14:46:32 INFO Temporal split: train to 2016, test after; leave-out families ['paduaCryptoWall', 'montrealCryptoLocker', 'princetonCerber', 'princetonLocky', 'montrealCryptXXX']
+2026-10-29 14:46:32 INFO Transforms: {'length': 'none', 'weight': 'log1p', 'count': 'log1p', 'looped': 'log1p', 'neighbors': 'log1p', 'income': 'log10'}
+2026-10-29 14:46:32 INFO Wrote /tmp/COS30049A2/data/processed/bitcoinheist/rows.parquet, processing.json and reports/tables/heist_*.csv
+2026-10-29 14:46:32 INFO == process-external (DS4) finished in 20 s (exit 0)
+2026-10-29 14:46:32 INFO == classify --dataset heist
+2026-10-29 14:46:33 INFO BitcoinHeist: 2916697 rows, features ['length', 'log1p_weight', 'log1p_count', 'log1p_looped', 'log1p_neighbors', 'log10_income']
+2026-10-29 14:46:33 INFO Scheme temporal: fit 245223, val 380631, train 417164, test 698489 rows
+2026-10-29 14:46:34 INFO   logistic {'C': 0.001, 'class_weight': None}: validation F1 0.0906, PR-AUC 0.0364 (1 s)
+2026-10-29 14:46:35 INFO   logistic {'C': 0.001, 'class_weight': 'balanced'}: validation F1 0.0901, PR-AUC 0.0363 (1 s)
+2026-10-29 14:46:35 INFO   logistic {'C': 0.01, 'class_weight': None}: validation F1 0.0908, PR-AUC 0.0365 (1 s)
+2026-10-29 14:46:36 INFO   logistic {'C': 0.01, 'class_weight': 'balanced'}: validation F1 0.0902, PR-AUC 0.0363 (1 s)
+2026-10-29 14:46:37 INFO   logistic {'C': 0.1, 'class_weight': None}: validation F1 0.0908, PR-AUC 0.0365 (1 s)
+2026-10-29 14:46:38 INFO   logistic {'C': 0.1, 'class_weight': 'balanced'}: validation F1 0.0902, PR-AUC 0.0363 (1 s)
+2026-10-29 14:46:39 INFO   logistic {'C': 1, 'class_weight': None}: validation F1 0.0908, PR-AUC 0.0365 (1 s)
+2026-10-29 14:46:40 INFO   logistic {'C': 1, 'class_weight': 'balanced'}: validation F1 0.0902, PR-AUC 0.0363 (1 s)
+2026-10-29 14:46:41 INFO   logistic {'C': 10, 'class_weight': None}: validation F1 0.0908, PR-AUC 0.0365 (1 s)
+2026-10-29 14:46:42 INFO   logistic {'C': 10, 'class_weight': 'balanced'}: validation F1 0.0902, PR-AUC 0.0363 (1 s)
+2026-10-29 14:46:43 INFO   logistic {'C': 100, 'class_weight': None}: validation F1 0.0908, PR-AUC 0.0365 (1 s)
+2026-10-29 14:46:44 INFO   logistic {'C': 100, 'class_weight': 'balanced'}: validation F1 0.0902, PR-AUC 0.0363 (1 s)
+2026-10-29 14:46:46 INFO temporal/logistic: test F1 0.0116, precision 0.0058, recall 0.9762, PR-AUC 0.0050
+2026-10-29 14:47:15 INFO   knn {'n_neighbors': 3, 'p': 1, 'weights': 'uniform'}: validation F1 0.0789, PR-AUC 0.0430 (28 s)
+2026-10-29 14:47:51 INFO   knn {'n_neighbors': 3, 'p': 1, 'weights': 'distance'}: validation F1 0.0789, PR-AUC 0.0443 (36 s)
+2026-10-29 14:48:14 INFO   knn {'n_neighbors': 3, 'p': 2, 'weights': 'uniform'}: validation F1 0.0789, PR-AUC 0.0427 (23 s)
+2026-10-29 14:48:45 INFO   knn {'n_neighbors': 3, 'p': 2, 'weights': 'distance'}: validation F1 0.0789, PR-AUC 0.0440 (31 s)
+2026-10-29 14:49:15 INFO   knn {'n_neighbors': 5, 'p': 1, 'weights': 'uniform'}: validation F1 0.0793, PR-AUC 0.0442 (30 s)
+2026-10-29 14:49:54 INFO   knn {'n_neighbors': 5, 'p': 1, 'weights': 'distance'}: validation F1 0.0792, PR-AUC 0.0458 (40 s)
+2026-10-29 14:50:19 INFO   knn {'n_neighbors': 5, 'p': 2, 'weights': 'uniform'}: validation F1 0.0789, PR-AUC 0.0442 (25 s)
+2026-10-29 14:50:52 INFO   knn {'n_neighbors': 5, 'p': 2, 'weights': 'distance'}: validation F1 0.0791, PR-AUC 0.0458 (33 s)
+2026-10-29 14:51:25 INFO   knn {'n_neighbors': 9, 'p': 1, 'weights': 'uniform'}: validation F1 0.0820, PR-AUC 0.0463 (33 s)
+2026-10-29 14:52:09 INFO   knn {'n_neighbors': 9, 'p': 1, 'weights': 'distance'}: validation F1 0.0835, PR-AUC 0.0476 (44 s)
+2026-10-29 14:52:37 INFO   knn {'n_neighbors': 9, 'p': 2, 'weights': 'uniform'}: validation F1 0.0816, PR-AUC 0.0462 (27 s)
+2026-10-29 14:53:12 INFO   knn {'n_neighbors': 9, 'p': 2, 'weights': 'distance'}: validation F1 0.0832, PR-AUC 0.0475 (35 s)
+2026-10-29 14:53:50 INFO   knn {'n_neighbors': 15, 'p': 1, 'weights': 'uniform'}: validation F1 0.0882, PR-AUC 0.0487 (38 s)
+2026-10-29 14:54:38 INFO   knn {'n_neighbors': 15, 'p': 1, 'weights': 'distance'}: validation F1 0.0897, PR-AUC 0.0497 (48 s)
+2026-10-29 14:55:07 INFO   knn {'n_neighbors': 15, 'p': 2, 'weights': 'uniform'}: validation F1 0.0870, PR-AUC 0.0482 (30 s)
+2026-10-29 14:55:45 INFO   knn {'n_neighbors': 15, 'p': 2, 'weights': 'distance'}: validation F1 0.0891, PR-AUC 0.0493 (38 s)
+2026-10-29 14:56:26 INFO   knn {'n_neighbors': 25, 'p': 1, 'weights': 'uniform'}: validation F1 0.0912, PR-AUC 0.0512 (41 s)
+2026-10-29 14:57:20 INFO   knn {'n_neighbors': 25, 'p': 1, 'weights': 'distance'}: validation F1 0.0965, PR-AUC 0.0519 (54 s)
+2026-10-29 14:57:52 INFO   knn {'n_neighbors': 25, 'p': 2, 'weights': 'uniform'}: validation F1 0.0904, PR-AUC 0.0502 (32 s)
+2026-10-29 14:58:35 INFO   knn {'n_neighbors': 25, 'p': 2, 'weights': 'distance'}: validation F1 0.0943, PR-AUC 0.0514 (43 s)
+2026-10-29 14:59:23 INFO   knn {'n_neighbors': 41, 'p': 1, 'weights': 'uniform'}: validation F1 0.0931, PR-AUC 0.0532 (48 s)
+2026-10-29 15:00:26 INFO   knn {'n_neighbors': 41, 'p': 1, 'weights': 'distance'}: validation F1 0.1002, PR-AUC 0.0539 (62 s)
+2026-10-29 15:01:03 INFO   knn {'n_neighbors': 41, 'p': 2, 'weights': 'uniform'}: validation F1 0.0921, PR-AUC 0.0524 (37 s)
+2026-10-29 15:01:52 INFO   knn {'n_neighbors': 41, 'p': 2, 'weights': 'distance'}: validation F1 0.0984, PR-AUC 0.0533 (49 s)
+2026-10-29 15:03:29 INFO temporal/knn: test F1 0.0209, precision 0.0107, recall 0.4523, PR-AUC 0.0246
+2026-10-29 15:04:55 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.1170, PR-AUC 0.0603 (86 s)
+2026-10-29 15:06:43 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.1640, PR-AUC 0.0909 (108 s)
+2026-10-29 15:08:07 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.1100, PR-AUC 0.0601 (85 s)
+2026-10-29 15:09:11 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.1086, PR-AUC 0.0612 (64 s)
+2026-10-29 15:10:31 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.1498, PR-AUC 0.0811 (80 s)
+2026-10-29 15:11:53 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.1167, PR-AUC 0.0599 (82 s)
+2026-10-29 15:12:35 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.1160, PR-AUC 0.0597 (41 s)
+2026-10-29 15:13:10 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.1182, PR-AUC 0.0689 (35 s)
+2026-10-29 15:13:59 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.1159, PR-AUC 0.0597 (49 s)
+2026-10-29 15:14:42 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.1096, PR-AUC 0.0600 (43 s)
+2026-10-29 15:15:58 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.1204, PR-AUC 0.0703 (76 s)
+2026-10-29 15:17:20 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1501, PR-AUC 0.0812 (82 s)
+2026-10-29 15:18:55 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1512, PR-AUC 0.0817 (95 s)
+2026-10-29 15:19:35 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1516, PR-AUC 0.0813 (40 s)
+2026-10-29 15:20:47 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.1184, PR-AUC 0.0634 (72 s)
+2026-10-29 15:21:55 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.1089, PR-AUC 0.0602 (68 s)
+2026-10-29 15:22:42 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1619, PR-AUC 0.0900 (47 s)
+2026-10-29 15:23:19 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.1196, PR-AUC 0.0633 (37 s)
+2026-10-29 15:24:49 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1610, PR-AUC 0.0897 (90 s)
+2026-10-29 15:26:11 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.1106, PR-AUC 0.0614 (82 s)
+2026-10-29 15:26:46 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.1083, PR-AUC 0.0598 (34 s)
+2026-10-29 15:27:39 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1624, PR-AUC 0.0899 (54 s)
+2026-10-29 15:28:52 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.1191, PR-AUC 0.0633 (72 s)
+2026-10-29 15:29:36 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.1207, PR-AUC 0.0692 (44 s)
+2026-10-29 15:30:21 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.1189, PR-AUC 0.0635 (45 s)
+2026-10-29 15:31:14 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.1639, PR-AUC 0.0909 (53 s)
+2026-10-29 15:32:54 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.1168, PR-AUC 0.0599 (100 s)
+2026-10-29 15:33:40 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.1213, PR-AUC 0.0701 (46 s)
+2026-10-29 15:34:30 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': None}: validation F1 0.1155, PR-AUC 0.0601 (50 s)
+2026-10-29 15:36:08 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': None}: validation F1 0.1155, PR-AUC 0.0602 (99 s)
+2026-10-29 15:38:47 INFO temporal/randomForest: test F1 0.0700, precision 0.0381, recall 0.4357, PR-AUC 0.0523
+2026-10-29 15:38:52 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.1057, PR-AUC 0.0600 (5 s)
+2026-10-29 15:38:58 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.1117, PR-AUC 0.0624 (6 s)
+2026-10-29 15:39:06 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.1133, PR-AUC 0.0643 (8 s)
+2026-10-29 15:39:10 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.1099, PR-AUC 0.0632 (5 s)
+2026-10-29 15:39:16 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.1135, PR-AUC 0.0652 (5 s)
+2026-10-29 15:39:21 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.1145, PR-AUC 0.0659 (5 s)
+2026-10-29 15:39:26 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.1065, PR-AUC 0.0602 (5 s)
+2026-10-29 15:39:33 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.1121, PR-AUC 0.0626 (6 s)
+2026-10-29 15:39:40 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.1136, PR-AUC 0.0645 (8 s)
+2026-10-29 15:39:45 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.1099, PR-AUC 0.0638 (5 s)
+2026-10-29 15:39:50 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.1123, PR-AUC 0.0637 (5 s)
+2026-10-29 15:39:57 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.1141, PR-AUC 0.0653 (7 s)
+2026-10-29 15:40:03 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.1058, PR-AUC 0.0597 (5 s)
+2026-10-29 15:40:09 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.1094, PR-AUC 0.0615 (6 s)
+2026-10-29 15:40:17 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.1131, PR-AUC 0.0622 (8 s)
+2026-10-29 15:40:21 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.1127, PR-AUC 0.0631 (5 s)
+2026-10-29 15:40:27 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.1138, PR-AUC 0.0649 (6 s)
+2026-10-29 15:40:33 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.1137, PR-AUC 0.0637 (6 s)
+2026-10-29 15:40:38 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.1054, PR-AUC 0.0599 (5 s)
+2026-10-29 15:40:44 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.1111, PR-AUC 0.0625 (6 s)
+2026-10-29 15:40:52 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.1129, PR-AUC 0.0625 (8 s)
+2026-10-29 15:40:57 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.1098, PR-AUC 0.0622 (5 s)
+2026-10-29 15:41:02 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.1119, PR-AUC 0.0640 (5 s)
+2026-10-29 15:41:08 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.1136, PR-AUC 0.0640 (6 s)
+2026-10-29 15:41:19 INFO temporal/histGradientBoosting: test F1 0.0239, precision 0.0121, recall 0.7217, PR-AUC 0.0415
+2026-10-29 15:41:19 INFO Scheme random: fit 327987, val 233336, train 364430, test 583340 rows
+2026-10-29 15:41:20 INFO   logistic {'C': 0.001, 'class_weight': None}: validation F1 0.0381, PR-AUC 0.0175 (1 s)
+2026-10-29 15:41:21 INFO   logistic {'C': 0.001, 'class_weight': 'balanced'}: validation F1 0.0385, PR-AUC 0.0175 (1 s)
+2026-10-29 15:41:22 INFO   logistic {'C': 0.01, 'class_weight': None}: validation F1 0.0381, PR-AUC 0.0175 (1 s)
+2026-10-29 15:41:23 INFO   logistic {'C': 0.01, 'class_weight': 'balanced'}: validation F1 0.0385, PR-AUC 0.0174 (1 s)
+2026-10-29 15:41:24 INFO   logistic {'C': 0.1, 'class_weight': None}: validation F1 0.0381, PR-AUC 0.0175 (1 s)
+2026-10-29 15:41:25 INFO   logistic {'C': 0.1, 'class_weight': 'balanced'}: validation F1 0.0385, PR-AUC 0.0174 (1 s)
+2026-10-29 15:41:25 INFO   logistic {'C': 1, 'class_weight': None}: validation F1 0.0381, PR-AUC 0.0175 (1 s)
+2026-10-29 15:41:26 INFO   logistic {'C': 1, 'class_weight': 'balanced'}: validation F1 0.0385, PR-AUC 0.0174 (1 s)
+2026-10-29 15:41:27 INFO   logistic {'C': 10, 'class_weight': None}: validation F1 0.0381, PR-AUC 0.0175 (1 s)
+2026-10-29 15:41:28 INFO   logistic {'C': 10, 'class_weight': 'balanced'}: validation F1 0.0385, PR-AUC 0.0174 (1 s)
+2026-10-29 15:41:29 INFO   logistic {'C': 100, 'class_weight': None}: validation F1 0.0381, PR-AUC 0.0175 (1 s)
+2026-10-29 15:41:30 INFO   logistic {'C': 100, 'class_weight': 'balanced'}: validation F1 0.0385, PR-AUC 0.0174 (1 s)
+2026-10-29 15:41:31 INFO random/logistic: test F1 0.0385, precision 0.0198, recall 0.6908, PR-AUC 0.0174
+2026-10-29 15:41:49 INFO   knn {'n_neighbors': 3, 'p': 1, 'weights': 'uniform'}: validation F1 0.1000, PR-AUC 0.0320 (18 s)
+2026-10-29 15:42:12 INFO   knn {'n_neighbors': 3, 'p': 1, 'weights': 'distance'}: validation F1 0.0971, PR-AUC 0.0377 (23 s)
+2026-10-29 15:42:27 INFO   knn {'n_neighbors': 3, 'p': 2, 'weights': 'uniform'}: validation F1 0.0991, PR-AUC 0.0318 (15 s)
+2026-10-29 15:42:46 INFO   knn {'n_neighbors': 3, 'p': 2, 'weights': 'distance'}: validation F1 0.0967, PR-AUC 0.0374 (19 s)
+2026-10-29 15:43:06 INFO   knn {'n_neighbors': 5, 'p': 1, 'weights': 'uniform'}: validation F1 0.1123, PR-AUC 0.0400 (20 s)
+2026-10-29 15:43:30 INFO   knn {'n_neighbors': 5, 'p': 1, 'weights': 'distance'}: validation F1 0.1115, PR-AUC 0.0464 (24 s)
+2026-10-29 15:43:45 INFO   knn {'n_neighbors': 5, 'p': 2, 'weights': 'uniform'}: validation F1 0.1075, PR-AUC 0.0377 (15 s)
+2026-10-29 15:44:06 INFO   knn {'n_neighbors': 5, 'p': 2, 'weights': 'distance'}: validation F1 0.1071, PR-AUC 0.0446 (20 s)
+2026-10-29 15:44:27 INFO   knn {'n_neighbors': 9, 'p': 1, 'weights': 'uniform'}: validation F1 0.1253, PR-AUC 0.0505 (21 s)
+2026-10-29 15:44:53 INFO   knn {'n_neighbors': 9, 'p': 1, 'weights': 'distance'}: validation F1 0.1218, PR-AUC 0.0532 (26 s)
+2026-10-29 15:45:12 INFO   knn {'n_neighbors': 9, 'p': 2, 'weights': 'uniform'}: validation F1 0.1195, PR-AUC 0.0476 (19 s)
+2026-10-29 15:45:34 INFO   knn {'n_neighbors': 9, 'p': 2, 'weights': 'distance'}: validation F1 0.1181, PR-AUC 0.0517 (22 s)
+2026-10-29 15:45:58 INFO   knn {'n_neighbors': 15, 'p': 1, 'weights': 'uniform'}: validation F1 0.1268, PR-AUC 0.0582 (24 s)
+2026-10-29 15:46:29 INFO   knn {'n_neighbors': 15, 'p': 1, 'weights': 'distance'}: validation F1 0.1264, PR-AUC 0.0580 (30 s)
+2026-10-29 15:46:47 INFO   knn {'n_neighbors': 15, 'p': 2, 'weights': 'uniform'}: validation F1 0.1200, PR-AUC 0.0537 (18 s)
+2026-10-29 15:47:12 INFO   knn {'n_neighbors': 15, 'p': 2, 'weights': 'distance'}: validation F1 0.1239, PR-AUC 0.0561 (25 s)
+2026-10-29 15:47:38 INFO   knn {'n_neighbors': 25, 'p': 1, 'weights': 'uniform'}: validation F1 0.1279, PR-AUC 0.0592 (26 s)
+2026-10-29 15:48:11 INFO   knn {'n_neighbors': 25, 'p': 1, 'weights': 'distance'}: validation F1 0.1297, PR-AUC 0.0615 (33 s)
+2026-10-29 15:48:32 INFO   knn {'n_neighbors': 25, 'p': 2, 'weights': 'uniform'}: validation F1 0.1237, PR-AUC 0.0561 (21 s)
+2026-10-29 15:48:59 INFO   knn {'n_neighbors': 25, 'p': 2, 'weights': 'distance'}: validation F1 0.1270, PR-AUC 0.0598 (27 s)
+2026-10-29 15:49:30 INFO   knn {'n_neighbors': 41, 'p': 1, 'weights': 'uniform'}: validation F1 0.1306, PR-AUC 0.0612 (31 s)
+2026-10-29 15:50:08 INFO   knn {'n_neighbors': 41, 'p': 1, 'weights': 'distance'}: validation F1 0.1358, PR-AUC 0.0656 (38 s)
+2026-10-29 15:50:31 INFO   knn {'n_neighbors': 41, 'p': 2, 'weights': 'uniform'}: validation F1 0.1218, PR-AUC 0.0563 (23 s)
+2026-10-29 15:51:02 INFO   knn {'n_neighbors': 41, 'p': 2, 'weights': 'distance'}: validation F1 0.1325, PR-AUC 0.0633 (30 s)
+2026-10-29 15:52:18 INFO random/knn: test F1 0.1429, precision 0.0994, recall 0.2541, PR-AUC 0.0709
+2026-10-29 15:53:37 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.1994, PR-AUC 0.1285 (80 s)
+2026-10-29 15:55:23 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.1582, PR-AUC 0.1026 (105 s)
+2026-10-29 15:56:49 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.2213, PR-AUC 0.1524 (86 s)
+2026-10-29 15:57:54 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.1992, PR-AUC 0.1280 (65 s)
+2026-10-29 15:59:12 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.1774, PR-AUC 0.1106 (78 s)
+2026-10-29 16:00:33 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.1985, PR-AUC 0.1277 (81 s)
+2026-10-29 16:01:13 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.1967, PR-AUC 0.1274 (40 s)
+2026-10-29 16:01:48 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.1732, PR-AUC 0.1012 (36 s)
+2026-10-29 16:02:37 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.2191, PR-AUC 0.1451 (48 s)
+2026-10-29 16:03:22 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.2202, PR-AUC 0.1523 (45 s)
+2026-10-29 16:04:42 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.1698, PR-AUC 0.0939 (81 s)
+2026-10-29 16:06:05 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1786, PR-AUC 0.1098 (82 s)
+2026-10-29 16:07:43 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1892, PR-AUC 0.1268 (99 s)
+2026-10-29 16:08:23 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1768, PR-AUC 0.1101 (40 s)
+2026-10-29 16:09:33 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.2052, PR-AUC 0.1358 (70 s)
+2026-10-29 16:10:41 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.2012, PR-AUC 0.1277 (68 s)
+2026-10-29 16:11:25 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1475, PR-AUC 0.0927 (44 s)
+2026-10-29 16:12:01 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.2040, PR-AUC 0.1358 (36 s)
+2026-10-29 16:13:28 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1475, PR-AUC 0.0924 (87 s)
+2026-10-29 16:14:51 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.2217, PR-AUC 0.1528 (84 s)
+2026-10-29 16:15:27 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.1994, PR-AUC 0.1272 (35 s)
+2026-10-29 16:16:20 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.1586, PR-AUC 0.1034 (53 s)
+2026-10-29 16:17:31 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.2070, PR-AUC 0.1364 (72 s)
+2026-10-29 16:18:18 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.1892, PR-AUC 0.1277 (47 s)
+2026-10-29 16:19:03 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.2255, PR-AUC 0.1564 (44 s)
+2026-10-29 16:19:55 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.1582, PR-AUC 0.1029 (53 s)
+2026-10-29 16:21:34 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.2193, PR-AUC 0.1453 (99 s)
+2026-10-29 16:22:21 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.1834, PR-AUC 0.1123 (47 s)
+2026-10-29 16:23:09 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': None}: validation F1 0.2184, PR-AUC 0.1465 (48 s)
+2026-10-29 16:24:45 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': None}: validation F1 0.2207, PR-AUC 0.1470 (96 s)
+2026-10-29 16:25:45 INFO random/randomForest: test F1 0.2440, precision 0.2496, recall 0.2387, PR-AUC 0.1773
+2026-10-29 16:25:50 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.2002, PR-AUC 0.1250 (5 s)
+2026-10-29 16:25:56 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.2086, PR-AUC 0.1330 (6 s)
+2026-10-29 16:26:03 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.2155, PR-AUC 0.1388 (7 s)
+2026-10-29 16:26:08 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.2038, PR-AUC 0.1302 (4 s)
+2026-10-29 16:26:13 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.2106, PR-AUC 0.1376 (5 s)
+2026-10-29 16:26:19 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.2140, PR-AUC 0.1397 (6 s)
+2026-10-29 16:26:24 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.1998, PR-AUC 0.1258 (5 s)
+2026-10-29 16:26:30 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.2066, PR-AUC 0.1325 (6 s)
+2026-10-29 16:26:37 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.2127, PR-AUC 0.1383 (7 s)
+2026-10-29 16:26:42 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.2032, PR-AUC 0.1308 (4 s)
+2026-10-29 16:26:47 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.2122, PR-AUC 0.1367 (5 s)
+2026-10-29 16:26:54 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.2131, PR-AUC 0.1411 (6 s)
+2026-10-29 16:26:59 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.1929, PR-AUC 0.1161 (5 s)
+2026-10-29 16:27:05 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.2023, PR-AUC 0.1276 (6 s)
+2026-10-29 16:27:13 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.2072, PR-AUC 0.1331 (8 s)
+2026-10-29 16:27:17 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.1994, PR-AUC 0.1215 (5 s)
+2026-10-29 16:27:23 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.2039, PR-AUC 0.1305 (5 s)
+2026-10-29 16:27:29 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.2078, PR-AUC 0.1343 (7 s)
+2026-10-29 16:27:35 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.1924, PR-AUC 0.1151 (5 s)
+2026-10-29 16:27:41 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.2036, PR-AUC 0.1277 (6 s)
+2026-10-29 16:27:48 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.2051, PR-AUC 0.1331 (8 s)
+2026-10-29 16:27:53 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.2005, PR-AUC 0.1213 (5 s)
+2026-10-29 16:27:59 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.2029, PR-AUC 0.1302 (6 s)
+2026-10-29 16:28:04 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.2070, PR-AUC 0.1340 (6 s)
+2026-10-29 16:28:16 INFO random/histGradientBoosting: test F1 0.2222, precision 0.1989, recall 0.2517, PR-AUC 0.1512
+2026-10-29 16:28:18 INFO Leave out paduaCryptoWall, logistic: recall 0.3027 on 12390 positives
+2026-10-29 16:28:20 INFO Leave out montrealCryptoLocker, logistic: recall 0.5289 on 9315 positives
+2026-10-29 16:28:22 INFO Leave out princetonCerber, logistic: recall 0.4361 on 9223 positives
+2026-10-29 16:28:23 INFO Leave out princetonLocky, logistic: recall 0.2405 on 6625 positives
+2026-10-29 16:28:25 INFO Leave out montrealCryptXXX, logistic: recall 0.8871 on 2419 positives
+2026-10-29 16:29:04 INFO Leave out paduaCryptoWall, knn: recall 0.0113 on 12390 positives
+2026-10-29 16:29:38 INFO Leave out montrealCryptoLocker, knn: recall 0.0228 on 9315 positives
+2026-10-29 16:30:16 INFO Leave out princetonCerber, knn: recall 0.0413 on 9223 positives
+2026-10-29 16:30:54 INFO Leave out princetonLocky, knn: recall 0.0306 on 6625 positives
+2026-10-29 16:31:29 INFO Leave out montrealCryptXXX, knn: recall 0.0294 on 2419 positives
+2026-10-29 16:32:59 INFO Leave out paduaCryptoWall, randomForest: recall 0.0141 on 12390 positives
+2026-10-29 16:34:21 INFO Leave out montrealCryptoLocker, randomForest: recall 0.0330 on 9315 positives
+2026-10-29 16:35:46 INFO Leave out princetonCerber, randomForest: recall 0.0027 on 9223 positives
+2026-10-29 16:37:13 INFO Leave out princetonLocky, randomForest: recall 0.0261 on 6625 positives
+2026-10-29 16:38:40 INFO Leave out montrealCryptXXX, randomForest: recall 0.0079 on 2419 positives
+2026-10-29 16:38:52 INFO Leave out paduaCryptoWall, histGradientBoosting: recall 0.0201 on 12390 positives
+2026-10-29 16:39:04 INFO Leave out montrealCryptoLocker, histGradientBoosting: recall 0.0324 on 9315 positives
+2026-10-29 16:39:16 INFO Leave out princetonCerber, histGradientBoosting: recall 0.0034 on 9223 positives
+2026-10-29 16:39:28 INFO Leave out princetonLocky, histGradientBoosting: recall 0.0273 on 6625 positives
+2026-10-29 16:39:40 INFO Leave out montrealCryptXXX, histGradientBoosting: recall 0.0083 on 2419 positives
+2026-10-29 16:40:15 INFO Best temporal model: randomForest (validation F1 0.1640) -> models/heist_best.joblib
+2026-10-29 16:40:15 INFO Wrote reports/tables/heist_results.csv (8 rows), heist_tuning.csv, heist_lofo.csv (20 rows)
+2026-10-29 16:40:15 INFO == classify --dataset heist finished in 6823 s (exit 0)
+2026-10-29 16:40:15 INFO == process-external (DS3)
+2026-10-29 16:40:26 INFO Read Elliptic: 203769 transactions, 203769 classes, 234355 edges
+2026-10-29 16:40:30 INFO Elliptic: 46564 labelled (4545 illicit); fit 24717, val 5177, test 16670 labelled rows
+2026-10-29 16:40:30 INFO == process-external (DS3) finished in 15 s (exit 0)
+2026-10-29 16:40:30 INFO == classify --dataset elliptic
+2026-10-29 16:40:31 INFO Elliptic: fit 24717, val 5177, train 29894, test 16670 labelled rows
+2026-10-29 16:40:31 INFO   logistic {'C': 0.001, 'class_weight': None}: validation F1 0.6078, PR-AUC 0.4059 (0 s)
+2026-10-29 16:40:32 INFO   logistic {'C': 0.001, 'class_weight': 'balanced'}: validation F1 0.5988, PR-AUC 0.3943 (0 s)
+2026-10-29 16:40:32 INFO   logistic {'C': 0.01, 'class_weight': None}: validation F1 0.6431, PR-AUC 0.4732 (1 s)
+2026-10-29 16:40:33 INFO   logistic {'C': 0.01, 'class_weight': 'balanced'}: validation F1 0.6231, PR-AUC 0.4435 (1 s)
+2026-10-29 16:40:34 INFO   logistic {'C': 0.1, 'class_weight': None}: validation F1 0.6390, PR-AUC 0.4862 (1 s)
+2026-10-29 16:40:36 INFO   logistic {'C': 0.1, 'class_weight': 'balanced'}: validation F1 0.6178, PR-AUC 0.4594 (2 s)
+2026-10-29 16:40:38 INFO   logistic {'C': 1, 'class_weight': None}: validation F1 0.6565, PR-AUC 0.5631 (2 s)
+2026-10-29 16:40:41 INFO   logistic {'C': 1, 'class_weight': 'balanced'}: validation F1 0.6755, PR-AUC 0.5667 (3 s)
+2026-10-29 16:40:46 INFO   logistic {'C': 10, 'class_weight': None}: validation F1 0.8026, PR-AUC 0.7992 (5 s)
+2026-10-29 16:40:52 INFO   logistic {'C': 10, 'class_weight': 'balanced'}: validation F1 0.8277, PR-AUC 0.7733 (7 s)
+2026-10-29 16:41:03 INFO   logistic {'C': 100, 'class_weight': None}: validation F1 0.8931, PR-AUC 0.8862 (11 s)
+2026-10-29 16:41:17 INFO   logistic {'C': 100, 'class_weight': 'balanced'}: validation F1 0.8823, PR-AUC 0.8489 (14 s)
+2026-10-29 16:41:28 INFO LF/logistic: test F1 0.7497, precision 0.9014, recall 0.6417, PR-AUC 0.6483
+2026-10-29 16:41:40 INFO   knn {'n_neighbors': 3, 'p': 1, 'weights': 'uniform'}: validation F1 0.9243, PR-AUC 0.9199 (12 s)
+2026-10-29 16:41:52 INFO   knn {'n_neighbors': 3, 'p': 1, 'weights': 'distance'}: validation F1 0.9288, PR-AUC 0.9231 (12 s)
+2026-10-29 16:41:53 INFO   knn {'n_neighbors': 3, 'p': 2, 'weights': 'uniform'}: validation F1 0.9154, PR-AUC 0.9118 (1 s)
+2026-10-29 16:41:54 INFO   knn {'n_neighbors': 3, 'p': 2, 'weights': 'distance'}: validation F1 0.9240, PR-AUC 0.9168 (1 s)
+2026-10-29 16:42:06 INFO   knn {'n_neighbors': 5, 'p': 1, 'weights': 'uniform'}: validation F1 0.9287, PR-AUC 0.9352 (12 s)
+2026-10-29 16:42:18 INFO   knn {'n_neighbors': 5, 'p': 1, 'weights': 'distance'}: validation F1 0.9298, PR-AUC 0.9392 (12 s)
+2026-10-29 16:42:19 INFO   knn {'n_neighbors': 5, 'p': 2, 'weights': 'uniform'}: validation F1 0.9209, PR-AUC 0.9223 (1 s)
+2026-10-29 16:42:19 INFO   knn {'n_neighbors': 5, 'p': 2, 'weights': 'distance'}: validation F1 0.9246, PR-AUC 0.9264 (1 s)
+2026-10-29 16:42:32 INFO   knn {'n_neighbors': 9, 'p': 1, 'weights': 'uniform'}: validation F1 0.9288, PR-AUC 0.9504 (12 s)
+2026-10-29 16:42:44 INFO   knn {'n_neighbors': 9, 'p': 1, 'weights': 'distance'}: validation F1 0.9309, PR-AUC 0.9547 (12 s)
+2026-10-29 16:42:45 INFO   knn {'n_neighbors': 9, 'p': 2, 'weights': 'uniform'}: validation F1 0.9198, PR-AUC 0.9357 (1 s)
+2026-10-29 16:42:46 INFO   knn {'n_neighbors': 9, 'p': 2, 'weights': 'distance'}: validation F1 0.9254, PR-AUC 0.9403 (1 s)
+2026-10-29 16:42:58 INFO   knn {'n_neighbors': 15, 'p': 1, 'weights': 'uniform'}: validation F1 0.9209, PR-AUC 0.9546 (12 s)
+2026-10-29 16:43:10 INFO   knn {'n_neighbors': 15, 'p': 1, 'weights': 'distance'}: validation F1 0.9262, PR-AUC 0.9594 (12 s)
+2026-10-29 16:43:11 INFO   knn {'n_neighbors': 15, 'p': 2, 'weights': 'uniform'}: validation F1 0.9113, PR-AUC 0.9439 (1 s)
+2026-10-29 16:43:12 INFO   knn {'n_neighbors': 15, 'p': 2, 'weights': 'distance'}: validation F1 0.9210, PR-AUC 0.9508 (1 s)
+2026-10-29 16:43:24 INFO   knn {'n_neighbors': 25, 'p': 1, 'weights': 'uniform'}: validation F1 0.9148, PR-AUC 0.9565 (12 s)
+2026-10-29 16:43:36 INFO   knn {'n_neighbors': 25, 'p': 1, 'weights': 'distance'}: validation F1 0.9203, PR-AUC 0.9625 (12 s)
+2026-10-29 16:43:37 INFO   knn {'n_neighbors': 25, 'p': 2, 'weights': 'uniform'}: validation F1 0.9021, PR-AUC 0.9458 (1 s)
+2026-10-29 16:43:37 INFO   knn {'n_neighbors': 25, 'p': 2, 'weights': 'distance'}: validation F1 0.9167, PR-AUC 0.9535 (1 s)
+2026-10-29 16:43:49 INFO   knn {'n_neighbors': 41, 'p': 1, 'weights': 'uniform'}: validation F1 0.9035, PR-AUC 0.9573 (12 s)
+2026-10-29 16:44:02 INFO   knn {'n_neighbors': 41, 'p': 1, 'weights': 'distance'}: validation F1 0.9146, PR-AUC 0.9640 (13 s)
+2026-10-29 16:44:03 INFO   knn {'n_neighbors': 41, 'p': 2, 'weights': 'uniform'}: validation F1 0.8905, PR-AUC 0.9431 (1 s)
+2026-10-29 16:44:04 INFO   knn {'n_neighbors': 41, 'p': 2, 'weights': 'distance'}: validation F1 0.9050, PR-AUC 0.9536 (1 s)
+2026-10-29 16:44:47 INFO LF/knn: test F1 0.7446, precision 0.7919, recall 0.7027, PR-AUC 0.7408
+2026-10-29 16:46:05 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.9525, PR-AUC 0.9868 (78 s)
+2026-10-29 16:46:30 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.9585, PR-AUC 0.9893 (25 s)
+2026-10-29 16:46:55 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.9583, PR-AUC 0.9893 (25 s)
+2026-10-29 16:48:09 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.9545, PR-AUC 0.9868 (74 s)
+2026-10-29 16:49:15 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.9339, PR-AUC 0.9800 (66 s)
+2026-10-29 16:50:31 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.9525, PR-AUC 0.9868 (77 s)
+2026-10-29 16:51:15 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.9514, PR-AUC 0.9863 (44 s)
+2026-10-29 16:51:52 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.9316, PR-AUC 0.9782 (37 s)
+2026-10-29 16:52:04 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.9594, PR-AUC 0.9886 (12 s)
+2026-10-29 16:52:17 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.9588, PR-AUC 0.9890 (12 s)
+2026-10-29 16:53:24 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.9360, PR-AUC 0.9810 (67 s)
+2026-10-29 16:54:30 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9339, PR-AUC 0.9800 (66 s)
+2026-10-29 16:54:54 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9590, PR-AUC 0.9883 (24 s)
+2026-10-29 16:55:27 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9326, PR-AUC 0.9792 (33 s)
+2026-10-29 16:56:40 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.9545, PR-AUC 0.9868 (73 s)
+2026-10-29 16:57:56 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.9525, PR-AUC 0.9870 (76 s)
+2026-10-29 16:58:29 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9349, PR-AUC 0.9810 (33 s)
+2026-10-29 16:59:06 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.9546, PR-AUC 0.9863 (37 s)
+2026-10-29 17:00:14 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9359, PR-AUC 0.9814 (68 s)
+2026-10-29 17:00:39 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.9572, PR-AUC 0.9890 (25 s)
+2026-10-29 17:01:18 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.9514, PR-AUC 0.9867 (39 s)
+2026-10-29 17:01:31 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9577, PR-AUC 0.9890 (12 s)
+2026-10-29 17:02:46 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.9545, PR-AUC 0.9868 (75 s)
+2026-10-29 17:02:58 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.9570, PR-AUC 0.9888 (12 s)
+2026-10-29 17:03:11 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.9562, PR-AUC 0.9884 (12 s)
+2026-10-29 17:03:23 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.9577, PR-AUC 0.9890 (13 s)
+2026-10-29 17:03:48 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.9584, PR-AUC 0.9891 (25 s)
+2026-10-29 17:04:01 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.9584, PR-AUC 0.9890 (13 s)
+2026-10-29 17:04:14 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': None}: validation F1 0.9594, PR-AUC 0.9886 (12 s)
+2026-10-29 17:04:38 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': None}: validation F1 0.9584, PR-AUC 0.9891 (25 s)
+2026-10-29 17:04:55 INFO LF/randomForest: test F1 0.7590, precision 0.8010, recall 0.7211, PR-AUC 0.7805
+2026-10-29 17:04:58 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9362, PR-AUC 0.9812 (2 s)
+2026-10-29 17:05:00 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9333, PR-AUC 0.9800 (3 s)
+2026-10-29 17:05:05 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9348, PR-AUC 0.9796 (4 s)
+2026-10-29 17:05:07 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9375, PR-AUC 0.9831 (2 s)
+2026-10-29 17:05:10 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9382, PR-AUC 0.9838 (3 s)
+2026-10-29 17:05:14 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9362, PR-AUC 0.9830 (3 s)
+2026-10-29 17:05:16 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9386, PR-AUC 0.9814 (2 s)
+2026-10-29 17:05:19 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9381, PR-AUC 0.9827 (3 s)
+2026-10-29 17:05:22 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9373, PR-AUC 0.9819 (4 s)
+2026-10-29 17:05:25 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9414, PR-AUC 0.9837 (2 s)
+2026-10-29 17:05:28 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9411, PR-AUC 0.9838 (3 s)
+2026-10-29 17:05:31 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9377, PR-AUC 0.9844 (3 s)
+2026-10-29 17:05:33 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9336, PR-AUC 0.9806 (2 s)
+2026-10-29 17:05:36 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9301, PR-AUC 0.9721 (3 s)
+2026-10-29 17:05:41 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9293, PR-AUC 0.9625 (4 s)
+2026-10-29 17:05:43 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9396, PR-AUC 0.9857 (2 s)
+2026-10-29 17:05:45 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9339, PR-AUC 0.9804 (2 s)
+2026-10-29 17:05:48 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9329, PR-AUC 0.9775 (3 s)
+2026-10-29 17:05:51 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9320, PR-AUC 0.9812 (2 s)
+2026-10-29 17:05:54 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9327, PR-AUC 0.9741 (3 s)
+2026-10-29 17:05:58 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9305, PR-AUC 0.9726 (4 s)
+2026-10-29 17:06:00 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9336, PR-AUC 0.9830 (2 s)
+2026-10-29 17:06:03 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9352, PR-AUC 0.9813 (3 s)
+2026-10-29 17:06:06 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9328, PR-AUC 0.9782 (3 s)
+2026-10-29 17:06:08 INFO LF/histGradientBoosting: test F1 0.7296, precision 0.7382, recall 0.7211, PR-AUC 0.7842
+2026-10-29 17:06:09 INFO   logistic {'C': 0.001, 'class_weight': None}: validation F1 0.6058, PR-AUC 0.5740 (0 s)
+2026-10-29 17:06:09 INFO   logistic {'C': 0.001, 'class_weight': 'balanced'}: validation F1 0.5681, PR-AUC 0.5232 (0 s)
+2026-10-29 17:06:10 INFO   logistic {'C': 0.01, 'class_weight': None}: validation F1 0.6065, PR-AUC 0.5680 (1 s)
+2026-10-29 17:06:11 INFO   logistic {'C': 0.01, 'class_weight': 'balanced'}: validation F1 0.5552, PR-AUC 0.5018 (1 s)
+2026-10-29 17:06:12 INFO   logistic {'C': 0.1, 'class_weight': None}: validation F1 0.6103, PR-AUC 0.5682 (2 s)
+2026-10-29 17:06:14 INFO   logistic {'C': 0.1, 'class_weight': 'balanced'}: validation F1 0.5662, PR-AUC 0.5127 (2 s)
+2026-10-29 17:06:16 INFO   logistic {'C': 1, 'class_weight': None}: validation F1 0.6376, PR-AUC 0.6143 (2 s)
+2026-10-29 17:06:19 INFO   logistic {'C': 1, 'class_weight': 'balanced'}: validation F1 0.6334, PR-AUC 0.5694 (3 s)
+2026-10-29 17:06:24 INFO   logistic {'C': 10, 'class_weight': None}: validation F1 0.7820, PR-AUC 0.7263 (5 s)
+2026-10-29 17:06:32 INFO   logistic {'C': 10, 'class_weight': 'balanced'}: validation F1 0.7676, PR-AUC 0.6723 (8 s)
+2026-10-29 17:06:41 INFO   logistic {'C': 100, 'class_weight': None}: validation F1 0.8881, PR-AUC 0.8444 (8 s)
+2026-10-29 17:06:53 INFO   logistic {'C': 100, 'class_weight': 'balanced'}: validation F1 0.8541, PR-AUC 0.7589 (12 s)
+2026-10-29 17:07:05 INFO AF/logistic: test F1 0.5321, precision 0.5277, recall 0.5365, PR-AUC 0.3647
+2026-10-29 17:07:28 INFO   knn {'n_neighbors': 3, 'p': 1, 'weights': 'uniform'}: validation F1 0.8602, PR-AUC 0.8685 (23 s)
+2026-10-29 17:07:51 INFO   knn {'n_neighbors': 3, 'p': 1, 'weights': 'distance'}: validation F1 0.8837, PR-AUC 0.8833 (23 s)
+2026-10-29 17:07:52 INFO   knn {'n_neighbors': 3, 'p': 2, 'weights': 'uniform'}: validation F1 0.7832, PR-AUC 0.7670 (1 s)
+2026-10-29 17:07:53 INFO   knn {'n_neighbors': 3, 'p': 2, 'weights': 'distance'}: validation F1 0.7967, PR-AUC 0.7960 (1 s)
+2026-10-29 17:08:16 INFO   knn {'n_neighbors': 5, 'p': 1, 'weights': 'uniform'}: validation F1 0.8806, PR-AUC 0.9002 (23 s)
+2026-10-29 17:08:40 INFO   knn {'n_neighbors': 5, 'p': 1, 'weights': 'distance'}: validation F1 0.8935, PR-AUC 0.9151 (23 s)
+2026-10-29 17:08:41 INFO   knn {'n_neighbors': 5, 'p': 2, 'weights': 'uniform'}: validation F1 0.7908, PR-AUC 0.8105 (1 s)
+2026-10-29 17:08:42 INFO   knn {'n_neighbors': 5, 'p': 2, 'weights': 'distance'}: validation F1 0.8060, PR-AUC 0.8373 (1 s)
+2026-10-29 17:09:05 INFO   knn {'n_neighbors': 9, 'p': 1, 'weights': 'uniform'}: validation F1 0.8871, PR-AUC 0.9228 (23 s)
+2026-10-29 17:09:28 INFO   knn {'n_neighbors': 9, 'p': 1, 'weights': 'distance'}: validation F1 0.8954, PR-AUC 0.9349 (23 s)
+2026-10-29 17:09:30 INFO   knn {'n_neighbors': 9, 'p': 2, 'weights': 'uniform'}: validation F1 0.8022, PR-AUC 0.8355 (1 s)
+2026-10-29 17:09:31 INFO   knn {'n_neighbors': 9, 'p': 2, 'weights': 'distance'}: validation F1 0.8109, PR-AUC 0.8558 (1 s)
+2026-10-29 17:09:54 INFO   knn {'n_neighbors': 15, 'p': 1, 'weights': 'uniform'}: validation F1 0.8837, PR-AUC 0.9263 (23 s)
+2026-10-29 17:10:17 INFO   knn {'n_neighbors': 15, 'p': 1, 'weights': 'distance'}: validation F1 0.8904, PR-AUC 0.9370 (23 s)
+2026-10-29 17:10:18 INFO   knn {'n_neighbors': 15, 'p': 2, 'weights': 'uniform'}: validation F1 0.7816, PR-AUC 0.8405 (1 s)
+2026-10-29 17:10:20 INFO   knn {'n_neighbors': 15, 'p': 2, 'weights': 'distance'}: validation F1 0.7946, PR-AUC 0.8575 (1 s)
+2026-10-29 17:10:43 INFO   knn {'n_neighbors': 25, 'p': 1, 'weights': 'uniform'}: validation F1 0.8751, PR-AUC 0.9223 (23 s)
+2026-10-29 17:11:06 INFO   knn {'n_neighbors': 25, 'p': 1, 'weights': 'distance'}: validation F1 0.8838, PR-AUC 0.9314 (23 s)
+2026-10-29 17:11:07 INFO   knn {'n_neighbors': 25, 'p': 2, 'weights': 'uniform'}: validation F1 0.7869, PR-AUC 0.8215 (2 s)
+2026-10-29 17:11:09 INFO   knn {'n_neighbors': 25, 'p': 2, 'weights': 'distance'}: validation F1 0.7958, PR-AUC 0.8373 (1 s)
+2026-10-29 17:11:32 INFO   knn {'n_neighbors': 41, 'p': 1, 'weights': 'uniform'}: validation F1 0.8637, PR-AUC 0.9124 (23 s)
+2026-10-29 17:11:55 INFO   knn {'n_neighbors': 41, 'p': 1, 'weights': 'distance'}: validation F1 0.8722, PR-AUC 0.9234 (23 s)
+2026-10-29 17:11:56 INFO   knn {'n_neighbors': 41, 'p': 2, 'weights': 'uniform'}: validation F1 0.7749, PR-AUC 0.8128 (1 s)
+2026-10-29 17:11:57 INFO   knn {'n_neighbors': 41, 'p': 2, 'weights': 'distance'}: validation F1 0.7879, PR-AUC 0.8271 (1 s)
+2026-10-29 17:13:21 INFO AF/knn: test F1 0.6502, precision 0.6840, recall 0.6196, PR-AUC 0.6592
+2026-10-29 17:16:03 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.9633, PR-AUC 0.9812 (162 s)
+2026-10-29 17:16:36 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.9657, PR-AUC 0.9887 (32 s)
+2026-10-29 17:17:10 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.9676, PR-AUC 0.9879 (34 s)
+2026-10-29 17:19:48 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.9634, PR-AUC 0.9822 (158 s)
+2026-10-29 17:21:58 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.9579, PR-AUC 0.9786 (130 s)
+2026-10-29 17:24:41 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.9633, PR-AUC 0.9812 (163 s)
+2026-10-29 17:26:05 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.9636, PR-AUC 0.9806 (84 s)
+2026-10-29 17:27:15 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.9578, PR-AUC 0.9785 (70 s)
+2026-10-29 17:27:32 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.9672, PR-AUC 0.9876 (18 s)
+2026-10-29 17:27:50 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.9677, PR-AUC 0.9877 (18 s)
+2026-10-29 17:30:04 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.9615, PR-AUC 0.9800 (134 s)
+2026-10-29 17:32:15 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9579, PR-AUC 0.9786 (131 s)
+2026-10-29 17:32:46 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9651, PR-AUC 0.9890 (31 s)
+2026-10-29 17:33:52 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9587, PR-AUC 0.9789 (65 s)
+2026-10-29 17:36:28 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': None, 'class_weight': None}: validation F1 0.9630, PR-AUC 0.9824 (156 s)
+2026-10-29 17:39:11 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.9629, PR-AUC 0.9810 (163 s)
+2026-10-29 17:40:18 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9581, PR-AUC 0.9792 (68 s)
+2026-10-29 17:41:40 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.9631, PR-AUC 0.9821 (81 s)
+2026-10-29 17:43:56 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9597, PR-AUC 0.9795 (136 s)
+2026-10-29 17:44:29 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': None}: validation F1 0.9661, PR-AUC 0.9884 (34 s)
+2026-10-29 17:45:51 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 0.3, 'max_depth': 20, 'class_weight': None}: validation F1 0.9640, PR-AUC 0.9807 (82 s)
+2026-10-29 17:46:07 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': 'balanced_subsample'}: validation F1 0.9649, PR-AUC 0.9888 (16 s)
+2026-10-29 17:48:45 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 3, 'max_features': 0.3, 'max_depth': 40, 'class_weight': None}: validation F1 0.9630, PR-AUC 0.9824 (158 s)
+2026-10-29 17:49:01 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.9659, PR-AUC 0.9896 (16 s)
+2026-10-29 17:49:17 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 3, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.9667, PR-AUC 0.9882 (17 s)
+2026-10-29 17:49:34 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': 'balanced_subsample'}: validation F1 0.9649, PR-AUC 0.9887 (16 s)
+2026-10-29 17:50:08 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': None, 'class_weight': None}: validation F1 0.9672, PR-AUC 0.9876 (34 s)
+2026-10-29 17:50:24 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 20, 'class_weight': 'balanced_subsample'}: validation F1 0.9654, PR-AUC 0.9885 (16 s)
+2026-10-29 17:50:41 INFO   randomForest {'n_estimators': 300, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': None}: validation F1 0.9672, PR-AUC 0.9876 (17 s)
+2026-10-29 17:51:15 INFO   randomForest {'n_estimators': 600, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'max_depth': 40, 'class_weight': None}: validation F1 0.9672, PR-AUC 0.9876 (34 s)
+2026-10-29 17:51:37 INFO AF/randomForest: test F1 0.8151, precision 0.9281, recall 0.7267, PR-AUC 0.7917
+2026-10-29 17:51:41 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9469, PR-AUC 0.9865 (4 s)
+2026-10-29 17:51:46 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9546, PR-AUC 0.9862 (5 s)
+2026-10-29 17:51:52 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9568, PR-AUC 0.9818 (7 s)
+2026-10-29 17:51:56 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9564, PR-AUC 0.9895 (4 s)
+2026-10-29 17:52:00 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9586, PR-AUC 0.9894 (4 s)
+2026-10-29 17:52:06 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': None}: validation F1 0.9597, PR-AUC 0.9889 (6 s)
+2026-10-29 17:52:10 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9438, PR-AUC 0.9816 (4 s)
+2026-10-29 17:52:14 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9534, PR-AUC 0.9858 (5 s)
+2026-10-29 17:52:20 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9558, PR-AUC 0.9843 (6 s)
+2026-10-29 17:52:24 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9502, PR-AUC 0.9854 (4 s)
+2026-10-29 17:52:29 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9581, PR-AUC 0.9883 (5 s)
+2026-10-29 17:52:35 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': None}: validation F1 0.9564, PR-AUC 0.9863 (6 s)
+2026-10-29 17:52:38 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9318, PR-AUC 0.9795 (4 s)
+2026-10-29 17:52:43 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9394, PR-AUC 0.9704 (5 s)
+2026-10-29 17:52:50 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9310, PR-AUC 0.9642 (7 s)
+2026-10-29 17:52:54 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9508, PR-AUC 0.9857 (4 s)
+2026-10-29 17:52:58 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9528, PR-AUC 0.9869 (4 s)
+2026-10-29 17:53:04 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 0, 'class_weight': 'balanced'}: validation F1 0.9513, PR-AUC 0.9848 (6 s)
+2026-10-29 17:53:08 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9326, PR-AUC 0.9793 (4 s)
+2026-10-29 17:53:12 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9462, PR-AUC 0.9790 (5 s)
+2026-10-29 17:53:18 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.05, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9474, PR-AUC 0.9784 (6 s)
+2026-10-29 17:53:21 INFO   histGradientBoosting {'max_leaf_nodes': 31, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9393, PR-AUC 0.9834 (3 s)
+2026-10-29 17:53:26 INFO   histGradientBoosting {'max_leaf_nodes': 63, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9630, PR-AUC 0.9884 (4 s)
+2026-10-29 17:53:31 INFO   histGradientBoosting {'max_leaf_nodes': 127, 'learning_rate': 0.1, 'l2_regularization': 1, 'class_weight': 'balanced'}: validation F1 0.9550, PR-AUC 0.9858 (5 s)
+2026-10-29 17:53:35 INFO AF/histGradientBoosting: test F1 0.7692, precision 0.8079, recall 0.7341, PR-AUC 0.8033
+2026-10-29 17:57:47 INFO Best Elliptic model: AF randomForest (validation F1 0.9677, test F1 0.8151); wrote elliptic_results.csv, elliptic_tuning.csv, elliptic_f1_by_step.csv, elliptic_importance.csv
+2026-10-29 17:57:47 INFO == classify --dataset elliptic finished in 4637 s (exit 0)
+2026-10-29 17:57:47 INFO == label-check
+2026-10-29 17:57:49 INFO elliptic_AF: fitting on 10000 of 136265 training rows, 167 features; 16670 test rows (1083 positive)
+2026-10-29 17:57:57 INFO K-Means k=2: silhouette 0.538, Davies-Bouldin 1.805, inertia 1543663
+2026-10-29 17:58:02 INFO K-Means k=3: silhouette 0.064, Davies-Bouldin 3.119, inertia 1487342
+2026-10-29 17:58:08 INFO K-Means k=4: silhouette 0.070, Davies-Bouldin 2.695, inertia 1434077
+2026-10-29 17:58:14 INFO K-Means k=5: silhouette 0.072, Davies-Bouldin 2.248, inertia 1379387
+2026-10-29 17:58:19 INFO K-Means k=6: silhouette 0.060, Davies-Bouldin 2.280, inertia 1338593
+2026-10-29 17:58:26 INFO K-Means k=7: silhouette 0.065, Davies-Bouldin 2.282, inertia 1311253
+2026-10-29 17:58:32 INFO K-Means k=8: silhouette 0.063, Davies-Bouldin 2.353, inertia 1288284
+2026-10-29 17:58:38 INFO K-Means k=9: silhouette 0.064, Davies-Bouldin 2.141, inertia 1266112
+2026-10-29 17:58:45 INFO K-Means k=10: silhouette 0.069, Davies-Bouldin 2.143, inertia 1239719
+2026-10-29 18:00:06 INFO DBSCAN: eps0 19.248 (knee, MinPts 334); chose eps 22.135, MinPts 8, noise 0.011 (best silhouette among settings with 1%-5% noise)
+2026-10-29 18:00:10 INFO elliptic_AF isolation_forest: PR-AUC 0.0367 (prevalence 0.0650), precision in top 2% 0.0000, recall 0.0000
+2026-10-29 18:00:12 INFO elliptic_AF lof: PR-AUC 0.0472 (prevalence 0.0650), precision in top 2% 0.0180, recall 0.0055
+2026-10-29 18:00:12 INFO elliptic_AF kmeans: PR-AUC 0.0377 (prevalence 0.0650), precision in top 2% 0.0030, recall 0.0009
+2026-10-29 18:00:14 INFO elliptic_AF dbscan: PR-AUC 0.0379 (prevalence 0.0650), precision in top 2% 0.0030, recall 0.0009
+2026-10-29 18:00:15 INFO heist_temporal: fitting on 10000 of 2218208 training rows, 6 features; 698489 test rows (3489 positive)
+2026-10-29 18:00:18 INFO K-Means k=2: silhouette 0.468, Davies-Bouldin 1.093, inertia 38202
+2026-10-29 18:00:20 INFO K-Means k=3: silhouette 0.436, Davies-Bouldin 0.940, inertia 32035
+2026-10-29 18:00:22 INFO K-Means k=4: silhouette 0.335, Davies-Bouldin 1.184, inertia 26061
+2026-10-29 18:00:23 INFO K-Means k=5: silhouette 0.347, Davies-Bouldin 1.066, inertia 21134
+2026-10-29 18:00:25 INFO K-Means k=6: silhouette 0.325, Davies-Bouldin 1.044, inertia 18298
+2026-10-29 18:00:27 INFO K-Means k=7: silhouette 0.328, Davies-Bouldin 1.087, inertia 16851
+2026-10-29 18:00:29 INFO K-Means k=8: silhouette 0.326, Davies-Bouldin 1.066, inertia 15619
+2026-10-29 18:00:31 INFO K-Means k=9: silhouette 0.331, Davies-Bouldin 1.132, inertia 14399
+2026-10-29 18:00:33 INFO K-Means k=10: silhouette 0.343, Davies-Bouldin 1.109, inertia 13588
+2026-10-29 18:01:10 INFO DBSCAN: eps0 1.277 (knee, MinPts 12); chose eps 0.894, MinPts 16, noise 0.047 (best silhouette among settings with 1%-5% noise)
+2026-10-29 18:01:38 INFO heist_temporal isolation_forest: PR-AUC 0.0038 (prevalence 0.0050), precision in top 2% 0.0006, recall 0.0023
+2026-10-29 18:02:16 INFO heist_temporal lof: PR-AUC 0.0040 (prevalence 0.0050), precision in top 2% 0.0031, recall 0.0123
+2026-10-29 18:02:16 INFO heist_temporal kmeans: PR-AUC 0.0038 (prevalence 0.0050), precision in top 2% 0.0008, recall 0.0032
+2026-10-29 18:02:26 INFO heist_temporal dbscan: PR-AUC 0.0040 (prevalence 0.0050), precision in top 2% 0.0007, recall 0.0029
+2026-10-29 18:02:26 INFO Wrote /tmp/COS30049A2/reports/tables/label_check.csv and label_check_tuning.csv
+2026-10-29 18:02:26 INFO == label-check finished in 279 s (exit 0)
+2026-10-29 18:02:26 INFO Step all finished in 25502 s (exit 0)

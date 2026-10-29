@@ -34,7 +34,7 @@ first-round models (`config/settings.json -> stageModels`); every other method s
 | DBSCAN | `models/stage/C5_dbscan.joblib` | distance to the nearest core point | eps 1.3 x the k-distance knee, min_samples 12; flags at its first-round flag rate (stage C5) |
 | Regression residual | `models/regression.joblib` | predicts each transaction's size (random forest) and gap (histogram gradient boosting) from earlier history; scores the miss | section 3 |
 | Conformal regression range | `models/regression_interval.joblib` | quantile models (1% and 99%) widened by conformal calibration; scores how far outside the range | section 3 |
-| Fusion | `models/fusion.joblib` | baseline and regression scores, scaled and combined at the baseline's flag budget | multipliers 1.1 and 3.0 |
+| Fusion | `models/fusion.joblib` | regression and Isolation Forest scores, scaled and combined at the baseline's flag budget | multipliers 2.0 and 0.9 (the pair the `fusion` step chose in the fresh-clone rebuild, 29 Oct) |
 | TxGPT surprisal | `models/txgpt_method.joblib` | TxGPT's surprisal of each transaction given its history (section 5) | flag at 12.2 nats |
 
 **Selection** (`models/selection.json`): the highest mean planted-pattern recall among stable methods, and within
@@ -44,13 +44,13 @@ five points, the easier one to explain. That picked the baseline, with fusion as
 | Method | DS1 mean recall (5 reporting seeds) | DS1, 100 seeds: mean (sd) | DS1 precision, lower bound | DS2 mean recall [95% CI] | DS10 mean recall [95% CI] |
 |---|---|---|---|---|---|
 | The robust-z baseline | 0.655 | 0.661 (0.035) | 0.125 | 0.494 [0.479, 0.508] | 0.431 [0.334, 0.528] |
-| DBSCAN | 0.476 | 0.415 (0.034) | 0.157 | 0.317 [0.305, 0.330] | 0.138 [0.070, 0.232] |
-| Fusion | 0.684 | 0.685 (0.034) | 0.141 | 0.471 [0.456, 0.486] | 0.398 [0.311, 0.489] |
+| DBSCAN | 0.476 | 0.481 (0.032) | 0.157 | 0.317 [0.305, 0.330] | 0.149 [0.079, 0.242] |
+| Fusion | 0.682 | 0.679 (0.030) | 0.161 | 0.458 [0.444, 0.472] | 0.367 [0.279, 0.473] |
 | Isolation Forest | 0.429 | 0.452 (0.036) | 0.168 | 0.305 [0.293, 0.317] | 0.151 [0.085, 0.226] |
-| K-Means distance | 0.470 | 0.463 (0.034) | 0.134 | 0.336 [0.323, 0.349] | 0.157 [0.091, 0.239] |
-| LOF | 0.331 | 0.316 (0.023) | 0.101 | 0.188 [0.178, 0.199] | 0.149 [0.074, 0.226] |
-| The regression residual | 0.673 | 0.673 (0.024) | 0.098 | 0.425 [0.412, 0.438] | 0.345 [0.248, 0.451] |
-| The conformal regression range | 0.268 | 0.252 (0.026) | 0.231 | 0.193 [0.184, 0.202] | 0.158 [0.101, 0.230] |
+| K-Means distance | 0.470 | 0.479 (0.033) | 0.134 | 0.336 [0.323, 0.349] | 0.165 [0.096, 0.249] |
+| LOF | 0.331 | 0.329 (0.025) | 0.101 | 0.188 [0.178, 0.199] | 0.122 [0.054, 0.202] |
+| The regression residual | 0.626 | 0.638 (0.025) | 0.111 | 0.426 [0.413, 0.439] | 0.346 [0.250, 0.452] |
+| The conformal regression range | 0.310 | 0.306 (0.023) | 0.131 | 0.189 [0.181, 0.197] | 0.168 [0.111, 0.244] |
 | TxGPT surprisal | 0.547 | -- | 0.421 | -- | 0.598 [0.534, 0.657] |
 <!-- /generated:methods -->
 
@@ -93,19 +93,19 @@ quantile gradient boosting with split-conformal calibration.
 | size | Naive (the usual value) | 0.186 | 0.730 | 0.000 |  |
 | size | Ridge | 0.181 | 0.783 | 0.027 |  |
 | size | Random forest | 0.168 | 0.788 | 0.099 |  |
-| size | Histogram gradient boosting | 0.181 | 0.771 | 0.025 |  |
-| size | quantile [0.05, 0.95] |  |  |  | 89.7% (90.0%) |
-| size | quantile [0.05, 0.95] conformal |  |  |  | 89.7% (90.0%) |
-| size | quantile [0.01, 0.99] |  |  |  | 97.3% (98.0%) |
-| size | quantile [0.01, 0.99] conformal |  |  |  | 98.8% (98.0%) |
+| size | Histogram gradient boosting | 0.189 | 0.764 | -0.015 |  |
+| size | quantile [0.05, 0.95] |  |  |  | 78.4% (90.0%) |
+| size | quantile [0.05, 0.95] conformal |  |  |  | 87.5% (90.0%) |
+| size | quantile [0.01, 0.99] |  |  |  | 89.8% (98.0%) |
+| size | quantile [0.01, 0.99] conformal |  |  |  | 97.2% (98.0%) |
 | gap | Naive (the usual value) | 0.476 | 0.039 | 0.000 |  |
 | gap | Ridge | 0.279 | 0.635 | 0.414 |  |
 | gap | Random forest | 0.189 | 0.803 | 0.603 |  |
-| gap | Histogram gradient boosting | 0.191 | 0.803 | 0.599 |  |
-| gap | quantile [0.05, 0.95] |  |  |  | 78.7% (90.0%) |
-| gap | quantile [0.05, 0.95] conformal |  |  |  | 89.4% (90.0%) |
-| gap | quantile [0.01, 0.99] |  |  |  | 89.4% (98.0%) |
-| gap | quantile [0.01, 0.99] conformal |  |  |  | 97.6% (98.0%) |
+| gap | Histogram gradient boosting | 0.192 | 0.807 | 0.597 |  |
+| gap | quantile [0.05, 0.95] |  |  |  | 81.3% (90.0%) |
+| gap | quantile [0.05, 0.95] conformal |  |  |  | 88.7% (90.0%) |
+| gap | quantile [0.01, 0.99] |  |  |  | 93.7% (98.0%) |
+| gap | quantile [0.01, 0.99] conformal |  |  |  | 97.9% (98.0%) |
 <!-- /generated:regression -->
 
 **Limitations.** Size barely beats the naive usual value (the skill column), so the size residual adds little

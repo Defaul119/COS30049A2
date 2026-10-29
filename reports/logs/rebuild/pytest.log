@@ -1,0 +1,112 @@
+........................................................................ [ 28%]
+........................................................................ [ 56%]
+........................................................................ [ 84%]
+.......................................                                  [100%]
+=============================== warnings summary ===============================
+../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:64
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85: 6 warnings
+tests/test_plots.py: 25 warnings
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89: 6 warnings
+tests/test_plots.py: 25 warnings
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+../../usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:45
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+tests/test_assistant.py::StrictMeasureTests::test_balanced_set_has_at_most_n_per_case_and_no_other_test_prompt
+tests/test_assistant.py::StrictMeasureTests::test_balanced_set_has_at_most_n_per_case_and_no_other_test_prompt
+tests/test_assistant.py::StrictMeasureTests::test_balanced_set_has_at_most_n_per_case_and_no_other_test_prompt
+  /usr/local/lib/python3.13/dist-packages/joblib/externals/loky/backend/fork_exec.py:38: DeprecationWarning: This process (pid=65) is multi-threaded, use of fork() may lead to deadlocks in the child.
+    pid = os.fork()
+
+tests/test_assistant.py::StrictMeasureTests::test_balanced_set_has_at_most_n_per_case_and_no_other_test_prompt
+tests/test_assistant.py::MoreTestSetsTests::test_new_sets_repeat_no_earlier_test_prompt
+tests/test_extensions.py::DistributionTests::test_two_seeds_on_ds1_give_one_row_per_seed_and_method_and_a_summary
+  /tmp/COS30049A2/explorer/ds2_check.py:69: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+    return pd.concat(parts, ignore_index=True)
+
+tests/test_ensemble.py: 8 warnings
+tests/test_labelled.py: 13 warnings
+  /usr/local/lib/python3.13/dist-packages/sklearn/linear_model/_logistic.py:451: DeprecationWarning: scipy.optimize: The `disp` and `iprint` options of the L-BFGS-B solver are deprecated and will be removed in SciPy 1.18.0.
+    opt_res = optimize.minimize(
+
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2010: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    p.space          = oneOf(self._space_widths)("space")
+
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2012: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    p.style_literal  = oneOf(
+
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2020: PyparsingDeprecationWarning: 'leaveWhitespace' deprecated - use 'leave_whitespace'
+    )("sym").leaveWhitespace()
+
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2024: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    p.start_group    = Optional(r"\math" + oneOf(self._fontnames)("font")) + "{"
+
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2027: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    p.delim          = oneOf(self._delims)
+
+tests/test_plots.py: 47 warnings
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:1984: PyparsingDeprecationWarning: 'setName' deprecated - use 'set_name'
+    val.setName(key)
+
+tests/test_plots.py: 44 warnings
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:1987: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+    val.setParseAction(getattr(self, key))
+
+tests/test_plots.py: 16 warnings
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:1748: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+    return Empty().setParseAction(raise_error)
+
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2088: PyparsingDeprecationWarning: 'endQuoteChar' argument is deprecated, use 'end_quote_char'
+    p.text = cmd(r"\text", QuotedString('{', '\\', endQuoteChar="}"))
+
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2097: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    + OneOrMore(oneOf(["_", "^"]) - p.placeable)("subsuper")
+
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2146: PyparsingDeprecationWarning: 'unquoteResults' argument is deprecated, use 'unquote_results'
+    p.math_string   = QuotedString('$', '\\', unquoteResults=False)
+
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2147: PyparsingDeprecationWarning: 'leaveWhitespace' deprecated - use 'leave_whitespace'
+    p.non_math      = Regex(r"(?:(?:\\[$])|[^$])*").leaveWhitespace()
+
+tests/test_plots.py: 16 warnings
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2170: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    result = self._expression.parseString(s)
+
+tests/test_plots.py: 16 warnings
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2197: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    return self._math_expression.parseString(toks[0][1:-1], parseAll=True)
+
+tests/test_plots.py: 16 warnings
+  /usr/local/lib/python3.13/dist-packages/pyparsing/util.py:466: PyparsingDeprecationWarning: 'parseAll' argument is deprecated, use 'parse_all'
+    return fn(self, *args, **kwargs)
+
+tests/test_plots.py: 16 warnings
+  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:2178: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    ParserElement.resetCache()
+
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+tests/test_plots.py::FigureTests::test_every_available_figure_builds_titled_with_statistics
+  /tmp/COS30049A2/explorer/plots.py:880: PendingDeprecationWarning: vert: bool will be deprecated in a future version. Use orientation: {'vertical', 'horizontal'} instead.
+    box = ax.boxplot(data, vert=False, widths=0.55, patch_artist=True, showfliers=False,
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+255 passed, 274 warnings in 204.94s (0:03:24)

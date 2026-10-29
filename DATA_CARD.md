@@ -163,9 +163,9 @@ Written by `python tools/cards.py`. Types are as pandas reads them; "Missing" co
 | `data/processed/esplora/manifest.json` | DS1 |  | 178 kB | `2f564d94d3e787e4` | source, selection rule, blocks, candidate pool, per-address checks, terms of use, rebuild steps |
 | `data/processed/esplora/histories.json.gz` | DS1 | 28 addresses | 795 kB | `2bf7f2c16d8bc42f` | every kept address's history as the API returned it (address -> role, chain statistics, transactions) |
 | `data/processed/esplora/transactions.csv` | DS1 | 7,966 | 1.3 MB | `bf06fd90ddbf53d7` | one row per address and transaction: the cleaned table every model starts from |
-| `data/processed/esplora/features.csv` | DS1 | 7,966 | 7.0 MB | `e899e5347caf601e` | the transactions with features F1-F8, own-history z-scores, the comparison windows, the baseline flag and the fit/evaluation period |
-| `data/processed/esplora/features_as_written.csv` | DS1 | 7,966 | 6.8 MB | `9ac74703e0760eda` | the same, computed exactly as A1 section 2.3 wrote the method (for the refinement ablation) |
-| `data/processed/esplora/scores.csv` | DS1 | 7,966 | 2.8 MB | `6123cad9abf5fe59` | every saved method's score and flag per transaction |
+| `data/processed/esplora/features.csv` | DS1 | 7,966 | 6.0 MB | `391d06c37f83c20a` | the transactions with features F1-F8, own-history z-scores, the comparison windows, the baseline flag and the fit/evaluation period |
+| `data/processed/esplora/features_as_written.csv` | DS1 | 7,966 | 5.8 MB | `a67d08ba4646d9b1` | the same, computed exactly as A1 section 2.3 wrote the method (for the refinement ablation) |
+| `data/processed/esplora/scores.csv` | DS1 | 7,966 | 2.8 MB | `4e8c978c44f98a21` | every saved method's score and flag per transaction |
 | `data/processed/esplora/txgpt_scores.csv` | DS1 | 7,966 | 1.5 MB | `055bd9a53df73a82` | TxGPT's surprisal per transaction and per token field |
 | `data/processed/esplora/injections/reporting_30049.json` | DS1 |  | 258 kB | `8e9af9fa1bfb4249` | planted transactions, one seed per file (150 planted spike, burst and dormant patterns each); tuning seeds 40000-40004, reporting seeds 30049-30053 |
 | `data/processed/esplora/injections/reporting_30050.json` | DS1 |  | 259 kB | `536137bb7b1ce4f2` | as above |
@@ -294,8 +294,8 @@ Written by `python tools/cards.py`. Types are as pandas reads them; "Missing" co
 | `F8_sin` | number | 0 | hour of day as sin(2 pi hour / 24) (ablation and TxGPT only) |
 | `F8_cos` | number | 0 | hour of day as cos(2 pi hour / 24) |
 | `prev_log_size` | number | 30 | log10(1 + |net_sats|) of the previous transaction; empty for the first |
-| `prev_dir_in` | number | 0 | 1 if the previous transaction was incoming, else 0 |
-| `prev_dir_out` | number | 0 | 1 if the previous transaction was outgoing, else 0 |
+| `prev_dir_in` | integer | 0 | 1 if the previous transaction was incoming, else 0 |
+| `prev_dir_out` | integer | 0 | 1 if the previous transaction was outgoing, else 0 |
 | `age_log_hours` | number | 0 | log10(1 + hours since the address's first transaction) |
 | `in_share_prior` | number | 30 | share of earlier transactions that were incoming; empty for the first |
 | `weekday_sin` | number | 0 | weekday as sin(2 pi day / 7), Monday = 0 |
@@ -368,8 +368,8 @@ Written by `python tools/cards.py`. Types are as pandas reads them; "Missing" co
 | `F8_sin` | number | 0 | hour of day as sin(2 pi hour / 24) (ablation and TxGPT only) |
 | `F8_cos` | number | 0 | hour of day as cos(2 pi hour / 24) |
 | `prev_log_size` | number | 30 | log10(1 + |net_sats|) of the previous transaction; empty for the first |
-| `prev_dir_in` | number | 0 | 1 if the previous transaction was incoming, else 0 |
-| `prev_dir_out` | number | 0 | 1 if the previous transaction was outgoing, else 0 |
+| `prev_dir_in` | integer | 0 | 1 if the previous transaction was incoming, else 0 |
+| `prev_dir_out` | integer | 0 | 1 if the previous transaction was outgoing, else 0 |
 | `age_log_hours` | number | 0 | log10(1 + hours since the address's first transaction) |
 | `in_share_prior` | number | 30 | share of earlier transactions that were incoming; empty for the first |
 | `weekday_sin` | number | 0 | weekday as sin(2 pi day / 7), Monday = 0 |

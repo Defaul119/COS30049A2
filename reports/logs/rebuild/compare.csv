@@ -1,0 +1,147 @@
+table,result,worst
+assistant_eval.csv,same,0.0
+assistant_eval_by_case.csv,same,0.0
+assistant_eval_by_case_ds10.csv,same,0.0
+assistant_eval_by_case_glossary.csv,same,0.0
+assistant_eval_by_case_random_balanced.csv,same,0.0
+assistant_eval_by_case_random_close_calls.csv,same,0.0
+assistant_eval_by_case_random_crawl_ds1.csv,same,0.0
+assistant_eval_by_case_random_crawl_ds10.csv,same,0.0
+assistant_eval_by_case_random_crawl_ds2.csv,same,0.0
+assistant_eval_by_case_random_extreme.csv,same,0.0
+assistant_eval_by_case_random_hard.csv,same,0.0
+assistant_eval_by_case_random_max_shift.csv,same,0.0
+assistant_eval_by_case_random_real.csv,same,0.0
+assistant_eval_by_case_random_synthetic.csv,same,0.0
+assistant_eval_ds10.csv,same,0.0
+assistant_eval_random_balanced.csv,same,0.0
+assistant_eval_random_close_calls.csv,same,0.0
+assistant_eval_random_crawl_ds1.csv,same,0.0
+assistant_eval_random_crawl_ds10.csv,same,0.0
+assistant_eval_random_crawl_ds2.csv,same,0.0
+assistant_eval_random_extreme.csv,same,0.0
+assistant_eval_random_hard.csv,same,0.0
+assistant_eval_random_max_shift.csv,same,0.0
+assistant_eval_random_real.csv,same,0.0
+assistant_eval_random_synthetic.csv,same,0.0
+assistant_eval_template.csv,same,0.0
+assistant_eval_template_ds10.csv,same,0.0
+assistant_eval_template_random_balanced.csv,same,0.0
+assistant_eval_template_random_close_calls.csv,same,0.0
+assistant_eval_template_random_crawl_ds1.csv,same,0.0
+assistant_eval_template_random_crawl_ds10.csv,same,0.0
+assistant_eval_template_random_crawl_ds2.csv,same,0.0
+assistant_eval_template_random_extreme.csv,same,0.0
+assistant_eval_template_random_hard.csv,same,0.0
+assistant_eval_template_random_max_shift.csv,same,0.0
+assistant_eval_template_random_real.csv,same,0.0
+assistant_eval_template_random_synthetic.csv,same,0.0
+assistant_eval_text150m.csv,same,0.0
+assistant_eval_text150m_ds10.csv,same,0.0
+assistant_eval_text150m_random_balanced.csv,same,0.0
+assistant_eval_text150m_random_close_calls.csv,same,0.0
+assistant_eval_text150m_random_crawl_ds1.csv,same,0.0
+assistant_eval_text150m_random_crawl_ds10.csv,same,0.0
+assistant_eval_text150m_random_crawl_ds2.csv,same,0.0
+assistant_eval_text150m_random_extreme.csv,same,0.0
+assistant_eval_text150m_random_hard.csv,same,0.0
+assistant_eval_text150m_random_max_shift.csv,same,0.0
+assistant_eval_text150m_random_real.csv,same,0.0
+assistant_eval_text150m_random_synthetic.csv,same,0.0
+cleaning_ds1.csv,same,0.0
+ds10_activity.csv,same,0.0
+ds10_crosscheck.csv,same,0.0
+ds2_coverage.csv,same,0.0
+ds7_summary.csv,same,0.0
+eda_tests.csv,differs: statistic: text differs; value: text differs; note: text differs,0.0
+elliptic_f1_by_step.csv,differs: f1: up to 0.2584,0.2584416717563913
+elliptic_importance.csv,within,3.196494536002008e-07
+elliptic_results.csv,differs: threshold: up to 0.02076; accuracy: up to 0.0108; precision: up to 0.09149; recall: up to 0.04155 ...,0.42857142857142855
+elliptic_steps.csv,same,0.0
+elliptic_summary.csv,same,0.0
+elliptic_tuning.csv,differs: val_f1: up to 0.02268; val_pr_auc: up to 0.03052; threshold: up to 0.06021,0.060206739031093304
+ensemble_results.csv,same,0.0
+ensemble_search.csv,same,0.0
+eval_ablation.csv,same,0.0
+eval_agreement.csv,differs: jaccard: up to 0.2921; only_count: up to 2; flagged: up to 0.3625,2.0
+eval_ds10.csv,differs: method: text differs; ds10_recall_spike: up to 0.24; ds10_recall_spike_ci_low: up to 0.1399; ds10_recall_spike_ci_high: up to 0.3484 ...,0.7
+eval_ds10_plant_hits.csv,differs: max: up to 1; mean: up to 1,1.0
+eval_ds2.csv,differs: ds2_recall_spike: up to 0.0578; ds2_recall_spike_ci_low: up to 0.05558; ds2_recall_spike_ci_high: up to 0.05958; ds2_recall_burst_tx: up to 0.0701 ...,0.5
+eval_ds2_plant_hits.csv,differs: max: up to 1; mean: up to 1,1.0
+eval_injection.csv,differs: recall_spike_mean: up to 0.252; recall_spike_std: up to 0.02221; recall_burst_tx_mean: up to 0.1056; recall_burst_event_mean: up to 0.12 ...,1.0
+eval_injection_by_seed.csv,differs: recall_spike: up to 0.34; recall_dormant: up to 0.18; recall_burst_tx: up to 0.124; recall_burst_event: up to 0.14 ...,0.34
+eval_plant_hits.csv,differs: max: up to 1; mean: up to 1,1.0
+eval_sanity.csv,differs: flag_rate: up to 0.04976; flagged: up to 0.3625; max_address_share: up to 0.1874; addresses_over_limit: up to 2,2.0
+eval_sanity_addresses.csv,differs: address: text differs; eval_rows: up to 1.77; flagged: up to 9; share: up to 0.3689 ...,12.669403520130444
+eval_selection.csv,differs: recall_spike_mean: up to 0.252; recall_spike_std: up to 0.02221; recall_burst_tx_mean: up to 0.1056; recall_burst_event_mean: up to 0.12 ...,2.0
+eval_sensitivity.csv,differs: recall: up to 0.496; recall_event: up to 0.496,0.49599999999999994
+eval_significance.csv,differs: method: text differs; recall_spike: up to 0.252; recall_spike_ci_low: up to 0.2638; recall_spike_ci_high: up to 0.205 ...,1.0
+eval_stability.csv,differs: stability: up to 0.1547,0.1546557256304173
+eval_walkforward.csv,differs: recall_spike: up to 0.292; recall_dormant: up to 0.14; recall_burst_tx: up to 0.0708; recall_burst_event: up to 0.124 ...,2.0
+heist_families.csv,same,0.0
+heist_lofo.csv,differs: family: text differs; threshold: up to 0.113; positives: up to 2.851; recall: up to 0.3582,2.850764778834229
+heist_results.csv,within,0.0009510223490252021
+heist_skew.csv,same,0.0
+heist_splits.csv,same,0.0
+heist_tuning.csv,differs: threshold: up to 0.06667,0.06666666666666665
+heist_years.csv,same,0.0
+kmeans_clusters.csv,within,8.303080445415389e-13
+label_check.csv,within,2.453754966991184e-07
+label_check_tuning.csv,within,3.442810950527725e-15
+profiles.csv,within,1.2227230630762453e-15
+profiles_tuning.csv,within,1.8140217394709515e-15
+regression_results.csv,differs: params: text differs; skill_vs_naive: up to 0.0398; coverage: up to 0.1122; mean_width: up to 0.5211 ...,0.521135278608713
+split_ds1.csv,same,0.0
+split_ds10.csv,same,0.0
+split_ds2.csv,same,0.0
+stage_dev/A0_hits.csv,same,0.0
+stage_dev/A0_summary.csv,same,0.0
+stage_dev/C1_hits.csv,same,0.0
+stage_dev/C1_summary.csv,same,0.0
+stage_dev/C2_hits.csv,same,0.0
+stage_dev/C2_summary.csv,same,0.0
+stage_dev/C3_hits.csv,same,0.0
+stage_dev/C3_summary.csv,same,0.0
+stage_dev/C4_hits.csv,same,0.0
+stage_dev/C4_summary.csv,same,0.0
+stage_dev/C5_hits.csv,same,0.0
+stage_dev/C5_summary.csv,same,0.0
+stage_dev/C6_hits.csv,same,0.0
+stage_dev/C6_summary.csv,same,0.0
+stage_dev/C7_hits.csv,same,0.0
+stage_dev/C7_summary.csv,same,0.0
+stage_dev/C9_hits.csv,same,0.0
+stage_dev/C9_summary.csv,same,0.0
+stage_dev/M0_hits.csv,same,0.0
+stage_dev/M0_summary.csv,same,0.0
+stage_search/C1_baseline.csv,same,0.0
+stage_search/C2_isolation_forest.csv,same,0.0
+stage_search/C3_lof.csv,same,0.0
+stage_search/C4_kmeans.csv,same,0.0
+stage_search/C5_dbscan.csv,same,0.0
+stage_search/C6_regression.csv,same,0.0
+stage_search/C6_regression_interval.csv,same,0.0
+stage_search/C7_txgpt_method.csv,same,0.0
+stage_search/C9_fusion.csv,same,0.0
+stage_test/C_hits.csv,same,0.0
+stage_test/C_summary.csv,same,0.0
+stage_test/M0_hits.csv,same,0.0
+stage_test/M0_summary.csv,same,0.0
+stages.csv,same,0.0
+stats_classifiers_paired.csv,same,0.0
+stats_classifiers_seeds.csv,same,0.0
+stats_classifiers_summary.csv,same,0.0
+stats_methods_seeds.csv,differs: recall_spike: up to 0.42; recall_burst_tx: up to 0.148; recall_burst_event: up to 0.22; recall_dormant: up to 0.36 ...,0.42000000000000004
+stats_methods_summary.csv,differs: method: text differs; mean: up to 0.05346; sd: up to 0.01057; ci_low: up to 0.05715 ...,0.59
+stats_writers_paired.csv,same,0.0
+stats_writers_summary.csv,same,0.0
+tuning_baseline.csv,same,0.0
+tuning_dbscan.csv,within,2.471202287850986e-12
+tuning_fusion.csv,differs: recall_spike: up to 0.04; recall_dormant: up to 0.076; recall_burst_tx: up to 0.0888; recall_burst_event: up to 0.112 ...,1.0
+tuning_kmeans.csv,within,4.2964733860096767e-13
+tuning_outliers.csv,within,4.865490544000983e-07
+tuning_regression.csv,differs: val_mae: up to 0.01123,0.01122584721244968
+tuning_txgpt.csv,same,0.0
+txgpt_nll.csv,same,0.0
+txgpt_runs.csv,same,0.0
+txgpt_sizes.csv,same,0.0
