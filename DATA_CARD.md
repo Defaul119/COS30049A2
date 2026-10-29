@@ -163,9 +163,9 @@ Written by `python tools/cards.py`. Types are as pandas reads them; "Missing" co
 | `data/processed/esplora/manifest.json` | DS1 |  | 178 kB | `2f564d94d3e787e4` | source, selection rule, blocks, candidate pool, per-address checks, terms of use, rebuild steps |
 | `data/processed/esplora/histories.json.gz` | DS1 | 28 addresses | 795 kB | `2bf7f2c16d8bc42f` | every kept address's history as the API returned it (address -> role, chain statistics, transactions) |
 | `data/processed/esplora/transactions.csv` | DS1 | 7,966 | 1.3 MB | `bf06fd90ddbf53d7` | one row per address and transaction: the cleaned table every model starts from |
-| `data/processed/esplora/features.csv` | DS1 | 7,966 | 6.8 MB | `74c4d7fde6679032` | the transactions with features F1-F8, own-history z-scores, the comparison windows, the baseline flag and the fit/evaluation period |
-| `data/processed/esplora/features_as_written.csv` | DS1 | 7,966 | 6.6 MB | `991ffa60ff16b8cc` | the same, computed exactly as A1 section 2.3 wrote the method (for the refinement ablation) |
-| `data/processed/esplora/scores.csv` | DS1 | 7,966 | 2.8 MB | `6577ba8666094939` | every saved method's score and flag per transaction |
+| `data/processed/esplora/features.csv` | DS1 | 7,966 | 7.0 MB | `e899e5347caf601e` | the transactions with features F1-F8, own-history z-scores, the comparison windows, the baseline flag and the fit/evaluation period |
+| `data/processed/esplora/features_as_written.csv` | DS1 | 7,966 | 6.8 MB | `9ac74703e0760eda` | the same, computed exactly as A1 section 2.3 wrote the method (for the refinement ablation) |
+| `data/processed/esplora/scores.csv` | DS1 | 7,966 | 2.8 MB | `6123cad9abf5fe59` | every saved method's score and flag per transaction |
 | `data/processed/esplora/txgpt_scores.csv` | DS1 | 7,966 | 1.5 MB | `055bd9a53df73a82` | TxGPT's surprisal per transaction and per token field |
 | `data/processed/esplora/injections/reporting_30049.json` | DS1 |  | 258 kB | `8e9af9fa1bfb4249` | planted transactions, one seed per file (150 planted spike, burst and dormant patterns each); tuning seeds 40000-40004, reporting seeds 30049-30053 |
 | `data/processed/esplora/injections/reporting_30050.json` | DS1 |  | 259 kB | `536137bb7b1ce4f2` | as above |
@@ -297,6 +297,9 @@ Written by `python tools/cards.py`. Types are as pandas reads them; "Missing" co
 | `in_share_prior` | number | 30 | share of earlier transactions that were incoming; empty for the first |
 | `weekday_sin` | number | 0 | weekday as sin(2 pi day / 7), Monday = 0 |
 | `weekday_cos` | number | 0 | weekday as cos(2 pi day / 7) |
+| `F9` | number | 58 | Pace burst (stage A0): strictly earlier transactions within features.pace.windowGaps x the address's own median gap; an input of the pooled methods only when a stage chose it (the K-Means winner) |
+| `z_F9` | number | 192 | robust z-score of F9: (value - center) / spread; empty without enough history |
+| `zc_F9` | number | 192 | z_F9 clipped to +/- features.zClip, for the pooled models |
 | `period` | text | 0 | fit (earlier 70% of the scorable history), eval (the rest) or history (not scorable) |
 
 **`data/processed/esplora/features_as_written.csv`** (7,966 rows)
@@ -368,6 +371,9 @@ Written by `python tools/cards.py`. Types are as pandas reads them; "Missing" co
 | `in_share_prior` | number | 30 | share of earlier transactions that were incoming; empty for the first |
 | `weekday_sin` | number | 0 | weekday as sin(2 pi day / 7), Monday = 0 |
 | `weekday_cos` | number | 0 | weekday as cos(2 pi day / 7) |
+| `F9` | number | 196 | Pace burst (stage A0): strictly earlier transactions within features.pace.windowGaps x the address's own median gap; an input of the pooled methods only when a stage chose it (the K-Means winner) |
+| `z_F9` | number | 626 | robust z-score of F9: (value - center) / spread; empty without enough history |
+| `zc_F9` | number | 626 | z_F9 clipped to +/- features.zClip, for the pooled models |
 | `period` | text | 0 | fit (earlier 70% of the scorable history), eval (the rest) or history (not scorable) |
 
 **`data/processed/esplora/scores.csv`** (7,966 rows)

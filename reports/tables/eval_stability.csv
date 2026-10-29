@@ -1,10 +1,10 @@
 method,stability,by_construction
 baseline,1.0,True
 isolation_forest,0.8763513054997882,False
-lof,0.7907950166005183,False
+lof,0.8463587591229915,False
 kmeans,1.0,False
-dbscan,0.9021552859658669,False
-regression,0.6050855990943464,False
-regression_interval,0.5167566954340373,False
+dbscan,0.9120020193343578,False
+regression,0.6061049194521634,False
+regression_interval,0.5161042212448607,False
 fusion,0.890743844815247,False
 txgpt_method,1.0,True

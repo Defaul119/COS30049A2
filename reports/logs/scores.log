@@ -42,3 +42,15 @@
 2026-10-24 23:57:44 INFO txgpt_method: 141 flagged of 7966 (34 of 2291 in the evaluation period); threshold 12.2
 2026-10-24 23:57:44 INFO Wrote C:\Users\ADMIN\COS30049A2\data\processed\esplora\scores.csv
 2026-10-24 23:57:44 INFO Step scores finished in 7 s (exit 0)
+2026-10-29 09:09:42 INFO Step scores started: /tmp/COS30049A2/explorer/cli.py scores
+2026-10-29 09:09:46 INFO baseline: 681 flagged of 7966 (239 of 2291 in the evaluation period); threshold 5
+2026-10-29 09:09:47 INFO isolation_forest: 190 flagged of 7966 (83 of 2291 in the evaluation period); threshold 0.5886
+2026-10-29 09:09:47 INFO lof: 208 flagged of 7966 (102 of 2291 in the evaluation period); threshold 1.855
+2026-10-29 09:09:47 INFO kmeans: 208 flagged of 7966 (87 of 2291 in the evaluation period); threshold 9.978
+2026-10-29 09:09:47 INFO dbscan: 200 flagged of 7966 (89 of 2291 in the evaluation period); threshold 2.821
+2026-10-29 09:09:48 INFO regression: 1002 flagged of 7966 (514 of 2291 in the evaluation period); threshold 3.5
+2026-10-29 09:09:48 INFO regression_interval: 125 flagged of 7966 (80 of 2291 in the evaluation period); threshold 0
+2026-10-29 09:09:49 INFO fusion: 634 flagged of 7966 (239 of 2291 in the evaluation period); threshold 1
+2026-10-29 09:09:49 INFO txgpt_method: 141 flagged of 7966 (34 of 2291 in the evaluation period); threshold 12.2
+2026-10-29 09:09:50 INFO Wrote /tmp/COS30049A2/data/processed/esplora/scores.csv
+2026-10-29 09:09:50 INFO Step scores finished in 7 s (exit 0)

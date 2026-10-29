@@ -11,6 +11,13 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Every DS1 table rebuilt with the live methods (Kaggle CPU, tritran72 cos30049a2-stage-test v2, commit ccc5c35,
+rebuild-only).** features.csv (now with the F9 columns, an input of the K-Means winner), features_as_written.csv,
+scores.csv, eval_* tables, eval_ds2*, selection.json: only the promoted DBSCAN, K-Means and LOF rows change (reporting
+mean recall 0.406 -> 0.476, 0.446 -> 0.470, 0.320 -> 0.331); the baseline stays recommended. Regression's
+stability moves 0.605 -> 0.606 and its PR-AUC in the 6th decimal: features computed on Kaggle's Linux differ from
+the PC's in the last bits (the Mac replication's cause), which the gap model amplifies; its recall is unchanged.
+
 **Test tier of C3-C6 and stage C10 (Kaggle CPU, tritran72 cos30049a2-stage-test v1, commit 41fa89e, 0.39 h).**
 Reporting plants (seeds 30049-30053), each promoted method against M0's snapshot, paired by plant with an address
 bootstrap: DBSCAN +0.071 [+0.036, +0.107], K-Means +0.024 [+0.001, +0.071] and LOF +0.011 [+0.001, +0.025] ACCEPTED;

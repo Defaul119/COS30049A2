@@ -119,6 +119,8 @@ COLUMNS: dict[str, str] = {
     "F7": "log10(1 + fee rate in sat/vB) (ablation and TxGPT only)",
     "F8_sin": "hour of day as sin(2 pi hour / 24) (ablation and TxGPT only)",
     "F8_cos": "hour of day as cos(2 pi hour / 24)",
+    "F9": "Pace burst (stage A0): strictly earlier transactions within features.pace.windowGaps x the address's own "
+          "median gap; an input of the pooled methods only when a stage chose it (the K-Means winner)",
     "prev_log_size": "log10(1 + |net_sats|) of the previous transaction; empty for the first",
     "prev_dir_in": "1 if the previous transaction was incoming, else 0",
     "prev_dir_out": "1 if the previous transaction was outgoing, else 0",

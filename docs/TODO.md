@@ -15,7 +15,7 @@ Due Sun 8 Nov 23:59 GMT+7; the team submits Sat 7 Nov. Results freeze Tue 3 Nov;
 - [ ] C8 TxGPT scaling study: not planned (needs a longer DS2 crawl and GPU hours); user may override. [Cao]
 - [x] C9 fusion of the current methods: rejected (best pair unstable; interval reaches below 0). [Kaggle]
 - [x] Test tier of C3-C6: DBSCAN, K-Means, LOF kept; the regression range variant back to M0. C10: baseline stays.
-- [ ] Rebuild-only stage_test run (tables match the live methods), bring home, commit. [Kaggle, Claude]
+- [x] Rebuild-only stage_test run: every DS1 table matches the live methods (29 Oct).
 - [ ] B1 152M pretraining: s1-s3 done (2.29B of 3.0B, val 3.0967); s4 on dansns to 3.0B. [Kaggle]
 - [x] B3 weak-case examples built (8,000 train / 600 dev; own seeds and wordings); writer gate. [Claude]
 - [ ] B3 trial on the round-1 model (kainetyson, chain running 29 Oct) -> WEAK_CASES for round 2. [Kaggle]

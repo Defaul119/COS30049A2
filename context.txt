@@ -21,15 +21,10 @@ RUNNING
   (round 1's chat model, SHA-256 81645aa0...) + ds7_data -> text150m_stage_data -> text150m_b3_trial (T4 x2: A =
   DS7 v2 + glossary, B = A + weak cases, from round 1's chat model; then dev tier for r1, A, B). dansns:
   ds7_data -> text150m_stage_data (ready for text150m_stages after session 4).
-- tritran72/cos30049a2-stage-test v2 (CPU): rebuild-only run (METHODS []) so features, scores and every eval table
-  match the live methods (C3-C5 promoted); bring home its stage/ folder (tables, selection.json, esplora data).
 
 NEXT, IN ORDER (the user, 29 Oct: "continue with training, don't work on reports yet, start on everything behind
 schedule")
-1. Bring home stage_test v2 (kaggle kernels output tritran72/cos30049a2-stage-test -p <scratch>): copy its
-   stage/reports/tables (not stages.csv: append only new rows), models/selection.json and stage/data/processed/
-   esplora/{features,features_as_written,scores}.csv over the repo; pytest; commit. Scoring stages are then done
-   (C7, C9 rejected; C8 not run).
+1. DONE 29 Oct: scoring stages finished (C3-C5 promoted; C6, C7, C9 rejected; C8 not run); tables rebuilt.
 2. B3 trial done -> `python -m explorer.cli writer-gate --before <r1 devweak/devval tables> --after <b3b tables>
    --stage B3 --model text150m --previous r1-recipe` style: B vs A decides WEAK_CASES; A vs r1 recorded too.
 3. Session 4 done -> record its losses; push text150m_stages on dansns (kernel_sources stage-data + train) with
