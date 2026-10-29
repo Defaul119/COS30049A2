@@ -20,7 +20,7 @@ reports/               figures (PDF), tables (CSV, the source of every number in
 tests/                 unit tests (pytest)
 kaggle/                the notebooks that trained and tested the language models on Kaggle
 tools/                 helpers: job status, the Kaggle notebook generator, the test-report PDF
-docs/                  the delivery plan, the brief, the report plan, the AI use log, LM_TRAINING.md
+docs/                  the delivery plan, the brief, the report plan, the AI use log, archive/LM_TRAINING.md
 CHANGELOG.md           every decision and measured result, newest first
 DATA_CARD.md           every dataset: source, licence, collection, biases, and every file and column
 MODEL_CARD.md          every final model: purpose, data, parameters, metrics, limits, intended use
@@ -52,7 +52,7 @@ conda activate cos30049-a2
 python -m pytest -q
 ```
 
-Expected: `218 passed` in about two minutes (the first run takes longer while the new libraries load).
+Expected: `252 passed` in about three minutes (the first run takes longer while the new libraries load).
 Run every later command from the repository folder with `cos30049-a2` active. On Windows, run
 `set PYTHONUTF8=1` first in each new terminal (Command Prompt) so the logs print correctly; macOS and Linux
 need nothing.
@@ -194,7 +194,7 @@ conda activate cos30049-a2-gpu
 | Model | Commands | Time on our RTX 3060 |
 |---|---|---|
 | TxGPT (3 sizes x 3 seeds) | `python -m lm.prepare_tx`, then `python -m lm.train --config configs/txgpt_s.json --seed 1` (and `_m`, `_l`, seeds 1-3), `python -m lm.tx_select`, `python -m lm.tx_score --plants`, `python -m explorer.cli txgpt` | 6-30 min per run |
-| 152M text model | `docs/LM_TRAINING.md`: pretraining (2B tokens), chat stage, explanation stage (`configs/text_150m_explain.json`) | about 3 days in all |
+| 152M text model | `docs/archive/LM_TRAINING.md`: pretraining (2B tokens), chat stage, explanation stage (`configs/text_150m_explain.json`) | about 3 days in all |
 | 152M round 2 | `kaggle/text150m_data/`, `kaggle/text150m_train/` (continued pretraining on two Kaggle T4s), `kaggle/ds7_data/`, `kaggle/text150m_stage_data/`, `kaggle/text150m_stages/` (chat and explanation stages, then every evaluation) | about 2 days of Kaggle sessions |
 | Explanation evaluation | `python -m lm.eval_explain --model template`, `--model text150m --checkpoint models/assistant/model.pt` | 5 min (152M) |
 

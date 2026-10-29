@@ -38,7 +38,7 @@ WAITING ON THE USER / TEAM
 - features.csv with float_format="%.12g" (Mac and PC give identical features; changes regression / fusion
   slightly): Cao decides; if yes, apply before the freeze rerun.
 - Canvas upload limit (decides --with-models); release-asset OK for the 152M weights; a licence for our own code;
-  the zip exclusions (tools/package.py EXCLUDE = CLAUDE.md, context.txt, docs/HANDOFF.md, docs/brief/).
+  the zip exclusions (tools/package.py EXCLUDE = CLAUDE.md, context.txt, docs/archive/, docs/brief/).
 - Blind reviewer check (Minh Khang, Cam Dan): reports/reviewer/sheet.csv + INSTRUCTIONS.md, then
   `python -m explorer.cli reviewer-score --ratings ratings_<a>.csv ratings_<b>.csv`.
 - Glossary: a human read-through of the 65 topics. One DS1 transaction checked by hand on a block explorer.
@@ -166,7 +166,8 @@ MODELS INSTALLED (git-ignored, SHA-256)
 - models/assistant/model.pt (152M round 1 explanation, fp32 610 MB):
   086b9d157343e73578c5acff12f9f871104c01eed56692402e5a2499130684ab; tokenizer.json c8f4509c...e5d45.
 - models/heist_best.joblib: DS4 final model, 263 MB (too big for the zip).
-- models/qwen3b_adapter, models/qwen3b_adapter_v2: dropped 27 Oct; unused local files, never ship.
+- Dropped Qwen weights and runs (models/qwen3b_adapter*, runs/qwen3b-*) and the 24 Oct runner logs were moved out of
+  the repo on 29 Oct to C:\Users\ADMIN\COS30049A2_archive\ (1.4 GB; delete when the project is over).
 - predict.py: Predictor.explain(tx, use_assistant) = guarded cascade, writerOrder ["text150m"], template last;
   default template-only (plan risk 26).
 

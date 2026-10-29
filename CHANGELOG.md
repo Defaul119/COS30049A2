@@ -11,6 +11,11 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Files cleaned up.** docs/HANDOFF.md and docs/LM_TRAINING.md moved to docs/archive/ (historical; the zip leaves out
+docs/archive/); references updated (README, CLAUDE.md, tools/package.py, tests). Outside git: the dropped Qwen
+weights and runs and the 24 Oct runner logs moved out of the repository to C:/Users/ADMIN/COS30049A2_archive/
+(1.4 GB, kept until the project ends); Python caches cleared. README's expected test count: 252.
+
 **Every DS1 table rebuilt with the live methods (Kaggle CPU, tritran72 cos30049a2-stage-test v2, commit ccc5c35,
 rebuild-only).** features.csv (now with the F9 columns, an input of the K-Means winner), features_as_written.csv,
 scores.csv, eval_* tables, eval_ds2*, selection.json: only the promoted DBSCAN, K-Means and LOF rows change (reporting

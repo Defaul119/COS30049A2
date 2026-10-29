@@ -17,7 +17,7 @@ spec.loader.exec_module(package)
 
 class PackageTests(unittest.TestCase):
     def test_working_notes_and_course_material_stay_out(self) -> None:
-        for path in ("CLAUDE.md", "context.txt", "docs/HANDOFF.md", "docs/brief/assignment2_description.pdf"):
+        for path in ("CLAUDE.md", "context.txt", "docs/archive/HANDOFF.md", "docs/brief/assignment2_description.pdf"):
             self.assertFalse(package.included(path), path)
 
     def test_code_data_and_cards_go_in(self) -> None:
