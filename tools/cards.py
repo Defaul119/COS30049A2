@@ -13,6 +13,7 @@ Usage:  python tools/cards.py           rewrite the generated blocks
 from __future__ import annotations
 
 import argparse
+import ast
 import gzip
 import hashlib
 import json
@@ -346,8 +347,18 @@ def regression_block() -> str:
     return "\n".join(lines)
 
 
+def stage_row(stage: str, method: str, label: str) -> str:
+    """A kept training stage's winner (docs/TRAINING_PLAN.md): its search setting and its dev result."""
+    row = pd.read_csv(TABLES / "stage_dev" / f"{stage}_summary.csv").set_index("method").loc[method]
+    params = ast.literal_eval(row["params"])
+    setting = ", ".join(f"{k} {v}" for k, v in params.items() if k != "model")
+    return (f"| {label}, stage {stage} (**in use**) | {setting} | dev mean planted recall {row['mean_recall']:.3f} "
+            f"at a flag budget of {pct(row['budget'])} |")
+
+
 def clustering_block() -> str:
-    """The chosen K-Means and DBSCAN settings with their internal quality measures."""
+    """The first-round (M0) K-Means and DBSCAN settings with their internal quality measures, and the training
+    stages' winners that replaced them (settings stageModels)."""
     km = pd.read_csv(TABLES / "tuning_kmeans.csv")
     km = km[km["chosen"]].iloc[0]
     db = pd.read_csv(TABLES / "tuning_dbscan.csv")
@@ -356,11 +367,13 @@ def clustering_block() -> str:
     pr = pr[pr["chosen"]].iloc[0]
     return "\n".join([
         "| Model | Chosen setting | Quality |", "|---|---|---|",
-        f"| K-Means (transactions) | k = {int(km['k'])} | silhouette {km['silhouette']:.3f}, "
+        f"| K-Means (transactions, M0) | k = {int(km['k'])} | silhouette {km['silhouette']:.3f}, "
         f"Davies-Bouldin {km['davies_bouldin']:.3f} |",
-        f"| DBSCAN (transactions) | eps = {db['eps']:.3f}, min_samples = {int(db['min_samples'])} | "
+        stage_row("C4", "kmeans", "K-Means (transactions)"),
+        f"| DBSCAN (transactions, M0) | eps = {db['eps']:.3f}, min_samples = {int(db['min_samples'])} | "
         f"{int(db['clusters'])} clusters, noise share {pct(db['noise_share'])}, silhouette (non-noise) "
         f"{db['silhouette_non_noise']:.3f} |",
+        stage_row("C5", "dbscan", "DBSCAN (transactions)"),
         f"| K-Means (address profiles) | k = {int(pr['k'])} | silhouette {pr['silhouette']:.3f}, "
         f"Davies-Bouldin {pr['davies_bouldin']:.3f} |"])
 

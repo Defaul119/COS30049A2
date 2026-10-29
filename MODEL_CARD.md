@@ -20,15 +20,18 @@ labels: DS3 and DS4, against the datasets' own labels.
 All of them fit on each DS1 address's earlier 70% and are evaluated on the rest (DR-02). The pooled models take
 six inputs per transaction: the four own-history z-scores (F1 size, F2 burst, F3 gap, F4 relative size) clipped to
 ±`features.zClip`, and the direction. Every threshold, grid and seed is in `config/settings.json`; every search is
-in `reports/tables/tuning_*.csv`.
+in `reports/tables/tuning_*.csv`. After the first round (milestone M0) every method was retrained one stage at a time
+under a gate fixed in advance (`docs/TRAINING_PLAN.md`, decisions in `reports/tables/stages.csv`): LOF, K-Means and
+DBSCAN passed it on the development plants and again on the reporting plants, so their stage winners replace the
+first-round models (`config/settings.json -> stageModels`); every other method stays at M0.
 
 | Model | File | What it is | Chosen setting |
 |---|---|---|---|
 | Robust-z baseline (**used by the Explorer**) | `models/baseline.json` | A1's method: max \|z\| over F1-F4 against the address's own median and MAD | flag at \|z\| ≥ 5.0 (A1 had 3.5; no threshold met the sanity rule, 5.0 put the fewest addresses over the limit) |
 | Isolation Forest | `models/isolation_forest.joblib` | random isolation trees on the pooled inputs | 500 trees, 1,024 samples, 75% of features |
-| LOF (novelty mode) | `models/lof.joblib` | local density against the fit period | 50 neighbours |
-| K-Means | `models/kmeans.joblib` | distance to the nearest centre | k = 2 |
-| DBSCAN | `models/dbscan.joblib` | distance to the nearest core point | see section 2 |
+| LOF (novelty mode) | `models/stage/C3_lof.joblib` | local density against the fit period | 75 neighbours, Euclidean; flags at its first-round flag rate (training stage C3) |
+| K-Means | `models/stage/C4_kmeans.joblib` | distance to the nearest centre | k = 2 on the pooled inputs plus F9 (burst on the address's own clock); flags at its first-round flag rate (stage C4) |
+| DBSCAN | `models/stage/C5_dbscan.joblib` | distance to the nearest core point | eps 1.3 x the k-distance knee, min_samples 12; flags at its first-round flag rate (stage C5) |
 | Regression residual | `models/regression.joblib` | predicts each transaction's size (random forest) and gap (histogram gradient boosting) from earlier history; scores the miss | section 3 |
 | Conformal regression range | `models/regression_interval.joblib` | quantile models (1% and 99%) widened by conformal calibration; scores how far outside the range | section 3 |
 | Fusion | `models/fusion.joblib` | baseline and regression scores, scaled and combined at the baseline's flag budget | multipliers 1.1 and 3.0 |
@@ -67,8 +70,10 @@ length, fee rate) and describes each group in words (Assignment 3's optional act
 <!-- generated:clustering -->
 | Model | Chosen setting | Quality |
 |---|---|---|
-| K-Means (transactions) | k = 2 | silhouette 0.657, Davies-Bouldin 0.834 |
-| DBSCAN (transactions) | eps = 2.626, min_samples = 8 | 2 clusters, noise share 2.0%, silhouette (non-noise) 0.786 |
+| K-Means (transactions, M0) | k = 2 | silhouette 0.657, Davies-Bouldin 0.834 |
+| K-Means (transactions), stage C4 (**in use**) | input_set F1-F4+F9+dir, init k-means++, k 2, score distance | dev mean planted recall 0.487 at a flag budget of 3.8% |
+| DBSCAN (transactions, M0) | eps = 2.626, min_samples = 8 | 2 clusters, noise share 2.0%, silhouette (non-noise) 0.786 |
+| DBSCAN (transactions), stage C5 (**in use**) | input_set F1-F4+dir, eps_factor 1.3, min_samples 12 | dev mean planted recall 0.493 at a flag budget of 3.9% |
 | K-Means (address profiles) | k = 8 | silhouette 0.191, Davies-Bouldin 1.422 |
 <!-- /generated:clustering -->
 
