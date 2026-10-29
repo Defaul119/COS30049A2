@@ -80,6 +80,10 @@ cite the Elliptic dataset record (2019).
     Windows results stay; README section 11 tells a rebuilder that these two models may differ by platform.
   - eda_tests.csv and the figures were regenerated from the new tables (`figures`); MODEL_CARD/DATA_CARD by
     tools/cards.py; the README quick check still gives 377 / 367 / 3 / 3 and what-if 5.98.
+  - **Cross-platform check (this PC, Windows, Python 3.11):** features, split, regression, inject and fusion re-run
+    from the adopted commit in a separate worktree. The regression chose the same models and settings (tables within
+    0.001 of Kaggle's), and the fusion search chose the same pair and multipliers (regression x2.0 + Isolation
+    Forest x0.9). A teammate's M4 rebuild should therefore match within compare_tables' tolerance.
   - Evidence: reports/logs/rebuild/ (compare.csv, compare.log, kaggle_run.json, pytest.log), reports/logs/all.log.
   - Open: the glossary (tools/make_glossary.py, DS7) still says fusion combines the baseline and regression; the
     152M writers learned that sentence. Decision for the team: correct the glossary topic for A3, or describe
