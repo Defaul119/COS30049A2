@@ -11,6 +11,7 @@ account's name in a copy that is pushed (`kaggle kernels push -p <copy>`, run fr
     text150m_stage_data CPU   DS6 and DS7 v2 tokenized for the 152M stages               (with the 152M chain)
     text150m_stages     T4x2  chat and explanation stages, then every 152M evaluation    (with the 152M chain)
     text150m_b3_trial   T4x2  stage B3 on round 1: explanation stage with and without weak cases, dev tier
+    text150m_b3_dev_eval T4   stage B3: the trial's writers on DS7 v2's validation prompts (the dev tier's second part)
     distribution        CPU   every scoring method over many plant seeds                 (any account)
     class_distribution  CPU   classifier metrics over seeds and a test bootstrap         (any account)
     stage_cpu           CPU   one TRAINING_PLAN stage: refit before / after, dev gate    (any account)
@@ -601,6 +602,52 @@ for f in (SRC / "reports" / "tables").glob("assistant_eval*_dev*.csv"):
 ]
 
 
+B3_DEV_EVAL_NB = [
+    ("markdown", r"""
+# COS30049 A2 - Stage B3: the dev tier on DS7 v2's validation prompts for round 1, A and B (T4)
+
+The B3 trial (`cos30049a2-text150m-b3-trial`) scored its three writers on the weak-case dev slice, but its run on DS7
+v2's validation prompts stopped: those rows carry no template. `lm/eval_explain.py` now judges such rows against
+their reference reply (same reasons in the same order; every strict measure identical on all 1,637 DS7 v2 test
+rows). This notebook runs only those evaluations, one after another on one GPU, with the trial's saved models.
+
+**Settings:** Accelerator **GPU T4 x2** (one is used), **Internet on**. **Inputs:** this account's dataset
+`cos30049a2-text150m-base` and notebooks `cos30049a2-text150m-stage-data` and `cos30049a2-text150m-b3-trial`.
+"""),
+    ("code", f"""
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code this run uses; recorded in kaggle_run.json
+PINS = ["tokenizers==0.21.1", "numpy==2.2.6"]  # environment.yml; torch is Kaggle's own (recorded)
+"""),
+    ("code", SETUP + r"""
+if shutil.which("nvidia-smi") is None:
+    raise SystemExit("No GPU in this session: Settings panel -> Accelerator -> GPU T4 x2 (needs a verified phone).")
+""" + CLONE + FIND),
+    ("code", r"""
+base = check_base()
+stage_manifest_path = find_input("stage_manifest.json")
+for rel, digest in json.loads(stage_manifest_path.read_text(encoding="utf-8"))["files"].items():
+    assert sha256(stage_manifest_path.parent / rel) == digest, f"{rel} differs from stage_manifest.json"
+STAGE = stage_manifest_path.parent / "stage"
+WRITERS = [("text150m_r1", base / "text150m_explain_v1.pt"),
+           ("text150m_b3a", find_input("runs/text-150m-explain-b3a/model_best.pt")),
+           ("text150m_b3b", find_input("runs/text-150m-explain-b3b/model_best.pt"))]
+"""),
+    ("code", DEV_EVAL + r"""
+# Only DS7 v2's validation prompts (the weak-case slice was scored by the trial); one queue, so the writers never
+# write the shared summary table at the same time.
+run_queue(0, [job for name, ckpt in WRITERS for job in dev_jobs(name, ckpt) if job[3] == "devval"])
+tables = WORK / "reports" / "tables"
+tables.mkdir(parents=True, exist_ok=True)
+for f in (SRC / "reports" / "tables").glob("assistant_eval*_devval.csv"):
+    shutil.copy(f, tables)
+(WORK / "kaggle_run.json").write_text(json.dumps({"commit": COMMIT, "python": sys.version.split()[0],
+    "packages": {p: version(p) for p in ("torch", "numpy", "tokenizers")},
+    "hours": round((time.time() - T0) / 3600, 2)}, indent=2), encoding="utf-8")
+"""),
+]
+
+
 DIST_NB = [
     ("markdown", r'''
 # COS30049 A2 - Distributions of the scoring methods' recall over many plant seeds (Kaggle CPU session)
@@ -867,7 +914,7 @@ REPO = "https://github.com/Defaul119/COS30049A2.git"
 COMMIT = "{COMMIT}"   # the code and data this rebuild uses
 # environment.yml's versions (torch is Kaggle's own, recorded; TxGPT only scores DS10 with it)
 PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2",
-        "matplotlib==3.10.1", "seaborn==0.13.2", "tokenizers==0.21.1", "huggingface_hub==0.30.2", "pytest==8.3.5"]
+        "matplotlib==3.10.1", "tokenizers==0.21.1", "huggingface_hub==0.30.2", "pytest==8.3.5"]
 """),
     ("code", SETUP + CLONE + FIND),
     ("code", r"""
@@ -982,6 +1029,8 @@ for folder, slug, cells, gpu, sources, datasets in [
          ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data", "KAGGLE_USERNAME/cos30049a2-text150m-train"], BASE),
         ("text150m_b3_trial", "cos30049a2-text150m-b3-trial", B3_TRIAL_NB, True,
          ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data"], BASE + ["KAGGLE_USERNAME/cos30049a2-text150m-chat-v1"]),
+        ("text150m_b3_dev_eval", "cos30049a2-text150m-b3-dev-eval", B3_DEV_EVAL_NB, True,
+         ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data", "KAGGLE_USERNAME/cos30049a2-text150m-b3-trial"], BASE),
         ("distribution", "cos30049a2-distribution", DIST_NB, False, [], []),
         ("class_distribution", "cos30049a2-class-distribution", CLASS_NB, False, [], ["ellipticco/elliptic-data-set"]),
         ("stage_cpu", "cos30049a2-stage-cpu", STAGE_CPU_NB, False, [], []),

@@ -98,6 +98,8 @@ def load_writers() -> tuple[list[tuple[str, Generator]], dict[str, str]]:
 
 @dataclass
 class Predictor:
+    """Everything predict.py serves: an address's timeline, a what-if transaction, one transaction's explanation
+    (template, or a guarded language model) and the DS3/DS4 classifiers."""
     features: pd.DataFrame
     transactions: pd.DataFrame
     scores: pd.DataFrame
@@ -147,6 +149,7 @@ class Predictor:
         return rows.sort_values(["block_time_utc", "txid"])
 
     def feature_details(self, row: pd.Series) -> list[dict[str, Any]]:
+        """F1-F4 of one transaction as the Explorer shows them: value, usual value, z and role (sizes in BTC)."""
         out = []
         for fid in FEATURE_IDS:
             z = finite(row[f"z_{fid}"])
@@ -161,6 +164,7 @@ class Predictor:
         return out
 
     def comparison(self, row: pd.Series) -> list[dict[str, Any]]:
+        """What each feature was compared with: the size and timing windows' transaction counts and dates."""
         basis = []
         for prefix, fids, label in (("size_window", ["F1", "F4"], "Earlier transactions in the same direction"),
                                     ("timing_window", ["F2", "F3"], "All earlier transactions")):
@@ -196,6 +200,8 @@ class Predictor:
     # -- the prediction API ------------------------------------------------------------
 
     def score_address(self, address: str) -> dict[str, Any]:
+        """The A1 timeline of one snapshot address: every transaction's scores, flags and features, per-day counts
+        and totals; raises InsufficientHistory when nothing can be scored."""
         rows = self.history_of(address)
         scored = rows[rows["scorable"]]
         if scored.empty:
@@ -257,6 +263,8 @@ class Predictor:
 
     def classify_heist(self, length: float, weight: float, count: float, looped: float, neighbors: float,
                        income: float) -> dict[str, Any]:
+        """BitcoinHeist's chosen classifier on one address-day's six graph features: the probability that it
+        resembles the labelled ransomware rows, with the limits stated."""
         path = MODELS_DIR / "heist_best.joblib"
         if not path.exists():
             # The chosen DS4 model (a random forest, best temporal validation F1) is ~263 MB, so it is not in the

@@ -94,17 +94,17 @@ def main() -> int:
     if glossary:
         ids = sorted(set.intersection(*(set(g["id"]) for g in glossary.values())))
         gdraws = rng.integers(0, len(ids), (p["bootstrapDraws"], len(ids)))
-        gboot = {}
+        gboot, gmean = {}, {}
         for w, g in glossary.items():
             x = g.set_index("id").loc[ids, "key_facts"].to_numpy(dtype=float)
-            gboot[w] = x[gdraws].mean(axis=1)
+            gboot[w], gmean[w] = x[gdraws].mean(axis=1), float(x.mean())
             low, high = interval(gboot[w], level)
             summary.append({"test_set": "glossary (key facts)", "writer": w, "prompts": len(ids), "fully_correct": x.mean(),
                             "ci_low": low, "ci_high": high})
         for a, b in combinations(glossary, 2):
             low, high = interval(gboot[a] - gboot[b], level)
             paired.append({"test_set": "glossary (key facts)", "writer_a": a, "writer_b": b, "prompts": len(ids),
-                           "diff": float(gboot[a].mean() - gboot[b].mean()), "ci_low": low, "ci_high": high})
+                           "diff": gmean[a] - gmean[b], "ci_low": low, "ci_high": high})  # observed, as above
     pd.DataFrame(summary).to_csv(TABLES / "stats_writers_summary.csv", index=False)
     # With one writer there is nothing to pair; the header is still written so readers find the columns.
     pd.DataFrame(paired, columns=PAIRED_COLUMNS).to_csv(TABLES / "stats_writers_paired.csv", index=False)

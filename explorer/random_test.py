@@ -359,6 +359,8 @@ def run_build_more_tests(out_dir: Path = OUT_DIR, n_jobs: int = SETTINGS["classi
 
 
 def run_build_random_test(ds7_v2_test: Path = DS7_V2_TEST, out_dir: Path = OUT_DIR) -> int:
+    """Step `build-random-test`: real.jsonl (held-out DS7 v2 prompts), synthetic.jsonl and hard.jsonl, each
+    with its own seed, and their manifest."""
     p = SETTINGS["randomTest"]
     rng = random.Random(p["seed"])
     if not ds7_v2_test.exists():

@@ -146,6 +146,8 @@ def elliptic_parts(rows: pd.DataFrame, train_last: int) -> tuple[pd.DataFrame, p
 
 
 def run_label_check(tables_dir: Path = TABLES_DIR) -> int:
+    """Step `label-check`: the unsupervised methods' scores against DS3's and DS4's labels (PR-AUC against
+    prevalence), next to a supervised reference; writes label_check.csv and label_check_tuning.csv."""
     results, tuning = [], []
     heist_path, elliptic_path = HEIST_DIR / "rows.parquet", ELLIPTIC_DIR / "rows.parquet"
 

@@ -93,6 +93,8 @@ def adapt(method: Method, fit: pd.DataFrame) -> Method:
 
 
 def run_ds2_check(n_jobs: int = SETTINGS["classification"]["nJobs"]) -> int:
+    """Step `ds2-check`: the frozen DS1 methods on the DS2 histories that meet DS1's selection rule, with plants;
+    writes eval_ds2.csv, eval_ds2_plant_hits.csv and split_ds2.csv."""
     d = SETTINGS["ds2Check"]
     tx = ds2_transactions(pd.read_parquet(CORPUS_DIR / "ds2.parquet"))
     cfg = FeatureConfig.refined()

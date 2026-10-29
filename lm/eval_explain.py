@@ -80,7 +80,10 @@ def prompt_key(row: dict) -> str:
 
 def measure(answer: str, row: dict) -> dict:
     """Every measure of one answer to one test row (its prompt, template, own reply and key facts)."""
-    prompt, template = row["messages"][:-1], row["template"]
+    # DS7's train and val rows carry no template (only its test rows do). Their reference reply names the same reasons
+    # in the same order (checked 29 Oct on all 1,637 DS7 v2 test rows: every strict measure identical with either
+    # reference), so it stands in for the dev tier; ROUGE-L and copy are then measured against that reply.
+    prompt, template = row["messages"][:-1], row.get("template", row["messages"][-1]["content"])
     facts = facts_of(prompt)
     out = assistant.check(answer, prompt, facts)
     out["wrong_direction"] = ", ".join(assistant.wrong_directions(answer, facts))

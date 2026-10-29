@@ -169,6 +169,8 @@ def heist_parts(rows: pd.DataFrame, scheme: str) -> tuple[pd.DataFrame, pd.DataF
 
 
 def run_classify_heist(schemes: list[str], force: bool = False, rows_path: Path = HEIST_DIR / "rows.parquet") -> int:
+    """Step `classify --dataset heist`: the four classifiers on DS4's temporal and random splits and the
+    leave-one-family-out check; results in data/interim/heist/, tables by write_heist_tables."""
     cfg, heist = SETTINGS["classification"], SETTINGS["bitcoinheist"]
     rows = pd.read_parquet(rows_path)
     features = [c for c in rows.columns if c not in HEIST_META]
@@ -225,6 +227,8 @@ def run_heist_lofo(rows: pd.DataFrame, features: list[str], families: list[str],
 
 
 def write_heist_tables(out_dir: Path, features: list[str], tables_dir: Path = TABLES_DIR) -> int:
+    """DS4's result tables (heist_results.csv, heist_tuning.csv, heist_lofo.csv) and the model predict.py uses
+    (models/heist_best.joblib: the best temporal validation F1)."""
     results = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(out_dir.glob("*_*.json"))
                if not p.name.startswith("lofo_")]
     tables_dir.mkdir(parents=True, exist_ok=True)
@@ -284,6 +288,7 @@ def run_classify_elliptic(force: bool = False, rows_path: Path = ELLIPTIC_DIR / 
 
 
 def write_elliptic_tables(out_dir: Path, test: pd.DataFrame, tables_dir: Path = TABLES_DIR) -> int:
+    """DS3's result tables: per-model results, tuning, F1 per test time step and feature importance."""
     results = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(out_dir.glob("*_*.json"))]
     table = pd.DataFrame(results)
     table["params"] = table["params"].map(json.dumps)

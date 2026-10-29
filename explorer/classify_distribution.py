@@ -74,6 +74,8 @@ def bootstrap(y: np.ndarray, p: dict[str, np.ndarray], thresholds: dict[str, flo
 
 
 def run_classifier_distribution() -> int:
+    """Step `class-distribution`: every reported classifier refitted over the seeds of settings classDistribution,
+    with a bootstrap of its test set; writes stats_classifiers_{seeds,summary,paired}.csv."""
     d, cfg = SETTINGS["classDistribution"], SETTINGS["classification"]
     level = SETTINGS["significance"]["ciLevel"]
     tail = 100 * (1 - level) / 2

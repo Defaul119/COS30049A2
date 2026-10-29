@@ -127,6 +127,8 @@ def coverage(ds1: pd.DataFrame, ds2: pd.DataFrame) -> pd.DataFrame:
 
 
 def run_profiles() -> int:
+    """Step `profiles`: per-address activity profiles of DS1 and DS2, clustered with K-Means, and DS2's coverage of
+    DS1's profiles; writes profiles*.csv, ds2_coverage.csv and models/profiles.joblib."""
     seed = SETTINGS["model"]["seed"]
     ds1_tx = pd.read_csv(MANIFEST_PATH.parent / "transactions.csv")
     ds1_tx = ds1_tx[ds1_tx["role"] == "main"]

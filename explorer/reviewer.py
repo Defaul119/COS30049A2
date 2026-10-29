@@ -96,6 +96,8 @@ def sheet_columns(chosen: pd.DataFrame, features: pd.DataFrame) -> pd.DataFrame:
 
 def run_reviewer_sheet(scores_path: Path = SCORES_PATH, features_path: Path = MANIFEST_PATH.parent / "features.csv",
                        sheet_path: Path = SHEET_PATH, key_path: Path = KEY_PATH) -> int:
+    """Step `reviewer-sheet`: a shuffled blind sheet of flagged and unflagged DS1 rows for the reviewer check,
+    and its key (kept out of the repository)."""
     p = SETTINGS["reviewer"]
     method = selected_method()
     scores, features = pd.read_csv(scores_path), pd.read_csv(features_path)

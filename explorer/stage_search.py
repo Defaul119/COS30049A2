@@ -364,6 +364,8 @@ def regression_fits(data: Data) -> dict[tuple[str, str, str], dict[str, Any]]:
 
 
 def regression_candidates(data: Data, fits: dict[tuple[str, str, str], dict[str, Any]]) -> Iterator[Candidate]:
+    """C6: every pair of fitted families (size, gap) per input set and residual floor, scored from the fits'
+    cached predictions."""
     s = SETTINGS["stageSearch"]["regression"]
     for name, extra in s["inputSets"].items():
         for size_family in s["families"]:
@@ -441,6 +443,7 @@ def txgpt_candidates() -> list[Candidate]:
 
 
 def candidates(method: str, data: Data, fits: dict | None) -> list[Candidate]:
+    """The candidate pool of one method's stage (C1-C7, C9)."""
     if method == "txgpt_method":
         return txgpt_candidates()
     if method == "fusion":

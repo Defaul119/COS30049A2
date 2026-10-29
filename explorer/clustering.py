@@ -49,6 +49,8 @@ PHRASES = {  # how a centroid's mean z reads in words, by feature and sign
 
 
 class KMeansMethod:
+    """K-Means on the pooled inputs: the score is the distance to the nearest centroid; flagged above the top
+    fraction of fit-period scores."""
     def __init__(self, k: int, seed: int):
         self.k, self.seed = k, seed
 
@@ -67,6 +69,8 @@ class KMeansMethod:
 
 
 class DBSCANMethod:
+    """DBSCAN fitted on the fit period: the score is the distance to the nearest core sample; flagged beyond eps
+    (no core sample within reach, i.e. noise)."""
     def __init__(self, eps: float, min_samples: int):
         self.eps, self.min_samples = eps, min_samples
 
@@ -167,6 +171,8 @@ def tune_dbscan(x: np.ndarray, seed: int) -> tuple[pd.DataFrame, dict[str, Any]]
 
 
 def run_clustering() -> int:
+    """Step `clustering`: K-Means (k chosen on the fit period) and DBSCAN (eps from the k-distance knee); writes
+    models/{kmeans,dbscan}.joblib and tuning_kmeans.csv, tuning_dbscan.csv, kmeans_clusters.csv."""
     seed = SETTINGS["model"]["seed"]
     features = pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES["refined"])
     rows = fit_rows(features)

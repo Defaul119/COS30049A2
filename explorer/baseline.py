@@ -66,6 +66,8 @@ def choose_threshold(rows: list[dict[str, Any]]) -> tuple[float, str]:
 
 
 def run_baseline_sweep(processed_dir: Path = MANIFEST_PATH.parent) -> int:
+    """Step `baseline`: every threshold of settings baselineSweep on the tuning plants, for both feature variants;
+    writes reports/tables/tuning_baseline.csv and the chosen threshold to models/baseline.json."""
     rows = []
     for method, filename in FEATURE_FILES.items():
         features = pd.read_csv(processed_dir / filename)

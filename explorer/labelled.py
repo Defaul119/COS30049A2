@@ -165,6 +165,8 @@ def split_sizes(out: pd.DataFrame) -> pd.DataFrame:
 
 
 def run_process_heist(csv_path: Path = HEIST_CSV, out_dir: Path = HEIST_DIR, tables_dir: Path = TABLES_DIR) -> int:
+    """Step `process-external` for DS4: clean, transform and split BitcoinHeist; writes rows.parquet and the
+    processing decisions (processing.json)."""
     params = SETTINGS["bitcoinheist"]
     df = pd.read_csv(csv_path)
     log.info("Read %s: %d rows", csv_path, len(df))
@@ -241,6 +243,8 @@ def process_elliptic(features: pd.DataFrame, classes: pd.DataFrame, edges: pd.Da
 
 
 def run_process_elliptic(raw: Path = ELLIPTIC_RAW, out_dir: Path = ELLIPTIC_DIR, tables_dir: Path = TABLES_DIR) -> int:
+    """Step `process-external` for DS3: join Elliptic's features, classes and edges into one row per transaction
+    with the temporal split; writes rows.parquet and processing.json."""
     names = ["txId", "time_step"] + LOCAL + AGG
     features = pd.read_csv(raw / "elliptic_txs_features.csv", header=None, names=names,
                            dtype={c: "float32" for c in LOCAL + AGG})

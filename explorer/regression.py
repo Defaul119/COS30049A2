@@ -186,6 +186,8 @@ def metrics(y: np.ndarray, pred: np.ndarray, naive_pred: np.ndarray) -> dict[str
 
 
 def run_regression() -> int:
+    """Step `regression`: expected size and gap from Ridge, random forest and gradient boosting (chosen by
+    validation MAE), residual flags and conformal ranges; writes models/regression*.joblib and their tables."""
     r, seed = SETTINGS["regression"], SETTINGS["model"]["seed"]
     features = pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES["refined"])
     fit_all = fit_rows(features)

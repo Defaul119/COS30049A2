@@ -94,6 +94,7 @@ def cases(rows: list[dict[str, Any]]) -> dict[str, int]:
 
 
 def run_build_weak_cases(out_dir: Path = OUT_DIR) -> int:
+    """Step `build-weak-cases`: write train.jsonl, dev.jsonl and manifest.json (cases per file, SHA-256)."""
     p = SETTINGS["weakCases"]
     if set(TRAIN_INSTRUCTIONS) & (set(REWORDED) | {assistant.INSTRUCTION}):
         raise ValueError("a training instruction is also a test-set or DS7 instruction")

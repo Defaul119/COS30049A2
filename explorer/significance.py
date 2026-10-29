@@ -86,6 +86,8 @@ def two_sided_p(diffs: np.ndarray) -> float:
 
 def significance_table(boot: dict[str, dict[str, np.ndarray]], reference: str, level: float,
                        margin_points: float) -> pd.DataFrame:
+    """Each method's measures with bootstrap intervals, and its difference to the reference method (inside the
+    tie margin or not)."""
     rows = []
     ref = boot[reference]["mean_recall"]
     for name, measures in boot.items():
@@ -104,6 +106,8 @@ def significance_table(boot: dict[str, dict[str, np.ndarray]], reference: str, l
 
 
 def run_significance() -> int:
+    """Step `significance`: address-level bootstrap intervals for every method's recall and for its difference to
+    the explorerMethod; writes eval_significance.csv and eval_plant_hits.csv."""
     s = SETTINGS["significance"]
     copies = load_copies("refined", "reporting")
     methods = saved_methods()

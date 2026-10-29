@@ -11,6 +11,35 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Audit, part 2: references, documentation, tests (29 Oct).**
+- References: `docs/REFERENCES.md` replaces the plan's draft list for the report. Every source is from 2020 or later
+  (the user: "no more than 7 years old"). Each was checked: 30 DOIs against Crossref; software releases against
+  Zenodo (scikit-learn 1.6.1 10.5281/zenodo.14627164, pandas 2.2.3, matplotlib 3.10.1); arXiv preprints against
+  arXiv. Corrections found: Hoffmann et al.'s NeurIPS title differs from the preprint; Liang et al. (2024) is "Systematic
+  analysis of 32,111 AI model cards..."; Le and Zhang (2022) pp. 1356-1367; Wu and Keogh (2023) 35(3) pp.
+  2421-2429; the ACM Computing Surveys issue years. LLaMA's architecture section was read to confirm it matches the
+  152M model, and EvolveGCN's text to confirm the Elliptic step-43 collapse (Pareja et al. 2020 now cited in the
+  eda_tests note instead of Weber et al. 2019). One decision is left: the Elliptic dataset record (2019).
+  MODEL_CARD cites Liang et al. (2024).
+- seaborn removed from both environments, requirements.txt and LICENSES.md: nothing imports it.
+- Docstrings for 49 public pipeline steps and classes that had none (every `run_<step>` says what it reads and
+  writes); README section 6 and the CLI usage list the stage commands (stage-search, ensemble, stage-test,
+  build-weak-cases, writer-gate).
+- lm/eval_stats.py: the glossary row of stats_writers_paired.csv now reports the observed difference (it reported
+  the bootstrap mean), as every other row does. New tests: tests/test_eval_stats.py (rates, paired difference,
+  McNemar counts) and tests/test_kaggle_notebooks.py (every committed notebook compiles, is pinned to a full commit,
+  and asks for a GPU only when its code needs one).
+- README section 3 checked by hand with the promoted methods: totals 377 / 367 / 3 / 3, unknown address exit 2,
+  what-if score 5.98 (F1 z 5.88), the template explanation, the DS4 prediction: all as documented.
+
+**Stage B3 trial (Kaggle, kainetyson cos30049a2-text150m-b3-trial v1, commit 3978c8c, 2.08 h on T4 x2).** From round
+1's chat model: A (DS7 v2 + glossary x4) 1,049 steps, validation loss 0.0230; B (A + the weak cases) 1,278 steps,
+0.0224. Weak-case dev slice (600 prompts), fully correct / guardrail pass / direction errors: round 1 0.375 / 0.853
+/ 57; A 0.457 / 0.780 / 102; B 0.922 / 0.990 / 0; B is higher in every case. The DS7 v2 validation part of the
+dev tier stopped: DS7 writes no template into train/val rows. `lm/eval_explain.py` now judges a row without a template
+against its reference reply (checked on all 1,637 DS7 v2 test rows: same reasons and order, every strict measure
+identical; test added). Notebook `text150m_b3_dev_eval` runs only those evaluations; the gate waits for them.
+
 **Audit, part 1: code (the user, 29 Oct: "recheck all the code, models, testing ... perfect everything").**
 - pyflakes over explorer/, lm/, tools/, scripts/, tests/ and every Kaggle notebook's code: four unused imports
   removed (corpus, ds7, evaluate, inject; one in a test); the notebooks only import `threading` unused (the shared

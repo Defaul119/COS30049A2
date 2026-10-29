@@ -124,6 +124,7 @@ def method_stability(name: str, method: Method, features: pd.DataFrame) -> float
 
 
 def injection(methods: dict[str, Method], copies: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Planted-pattern metrics per method and reporting seed, and their mean and SD over the seeds."""
     by_seed = []
     for name, method in methods.items():
         for seed, part in copies.groupby("seed"):
@@ -233,6 +234,8 @@ def combination(methods: dict[str, Method], names: list[str], features: pd.DataF
 
 
 def run_evaluate() -> int:
+    """Step `evaluate`: every saved method on the reporting plants (recall, stability, agreement, sanity, ablation)
+    and the selection rule; writes the eval_*.csv tables and models/selection.json."""
     features = pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES["refined"])
     copies = load_copies("refined", "reporting")
     methods = saved_methods()

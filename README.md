@@ -52,7 +52,7 @@ conda activate cos30049-a2
 python -m pytest -q
 ```
 
-Expected: `255 passed` in about three minutes (the first run takes longer while the new libraries load).
+Expected: `259 passed` in about three minutes (the first run takes longer while the new libraries load).
 Run every later command from the repository folder with `cos30049-a2` active. On Windows, run
 `set PYTHONUTF8=1` first in each new terminal (Command Prompt) so the logs print correctly; macOS and Linux
 need nothing.
@@ -189,6 +189,20 @@ BitcoinHeist model is 263 MB. So `predict heist` and `predict elliptic` work onl
   classifiers) are trained by the steps in sections 4 and 5. Every grid, seed and threshold is in
   `config/settings.json`; every search is in `reports/tables/tuning_*.csv`.
 - **Language models** need `environment-gpu.yml` and an NVIDIA GPU (section 7).
+- **Training stages** (`docs/TRAINING_PLAN.md`): after the first round (milestone M0, git tag `m0`) every model was
+  retrained one stage at a time, and each stage was kept only if it passed a gate fixed before any result: higher
+  recall with a bootstrap interval above 0, no planted pattern falling by more than its seed spread, the flag rate
+  within the sanity limit. Every decision is a row of `reports/tables/stages.csv`. The commands, each a CPU job:
+
+  | Command | What it does |
+  |---|---|
+  | `python -m explorer.cli stage-search --stages C3` | one method's grid at its M0 flag budget, ranked on tuning seeds 40000-40002, gated on 40003-40004 (C1-C7, C9) |
+  | `python -m explorer.cli ensemble` | stage D6: an ensemble of the Elliptic classifiers, gated against the random forest |
+  | `python -m explorer.cli stage-test --snapshot C`, then `--before M0 --after C --stage C-test --methods ...` | the test tier: the kept stages scored once on the reporting plants and gated against M0 |
+  | `python -m explorer.cli build-weak-cases`, `writer-gate --before ... --after ...` | stage B3 of the 152M writer: weak-case training examples, and the gate between two writers' dev answers |
+
+  Kept stages replace the M0 models through `config/settings.json -> stageModels` (LOF C3, K-Means C4, DBSCAN C5);
+  the winners are in `models/stage/`.
 
 ## 7. Retraining the language models (GPU, optional)
 

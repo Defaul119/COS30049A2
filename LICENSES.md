@@ -39,7 +39,7 @@ Installed by `environment.yml` (CPU) and `environment-gpu.yml` (GPU); none of it
 | Package | Licence |
 |---|---|
 | Python 3.11 | PSF License |
-| numpy, pandas, scikit-learn, scipy, seaborn, joblib, jupyterlab | BSD 3-Clause |
+| numpy, pandas, scikit-learn, scipy, joblib, jupyterlab | BSD 3-Clause |
 | matplotlib | Matplotlib License (PSF-based) |
 | PyTorch | BSD-style (3-Clause) |
 | pyarrow, tokenizers, huggingface_hub, transformers, peft, accelerate | Apache 2.0 |

@@ -131,6 +131,8 @@ def compare(y: np.ndarray, p_new: np.ndarray, p_ref: np.ndarray, thresholds: tup
 
 
 def run_ensemble() -> int:
+    """Step `ensemble` (stage D6): choose a soft-voting or stacking ensemble on Elliptic steps 27-30, gate it against
+    the random forest on 31-34, and test it once only if accepted; writes ensemble_{search,results}.csv."""
     e = SETTINGS["ensemble"]
     features = FEATURE_SETS[e["featureSet"]]
     rows = pd.read_parquet(ELLIPTIC_DIR / "rows.parquet")

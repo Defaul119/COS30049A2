@@ -37,6 +37,8 @@ log = logging.getLogger(__name__)
 
 
 def run_walkforward(n_jobs: int = SETTINGS["classification"]["nJobs"]) -> int:
+    """Step `walk-forward`: every saved configuration refitted at other fit/evaluation cut-offs (settings
+    walkForward) and scored on new reporting plants; writes eval_walkforward.csv."""
     transactions = pd.read_csv(MANIFEST_PATH.parent / "transactions.csv")
     features = pd.read_csv(MANIFEST_PATH.parent / "features.csv")
     saved = {n: m for n, m in saved_methods().items() if n not in PRECOMPUTED_ONLY}

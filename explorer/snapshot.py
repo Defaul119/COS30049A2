@@ -523,6 +523,7 @@ def provenance(raw_dir: Path) -> list[dict[str, Any]]:
 
 
 def address_summary(history: History, role: str, visit_rank: int, raw_dir: Path) -> dict[str, Any]:
+    """One row of the snapshot's address table: role, script type, counts in and out, first and last transaction."""
     times = [f.block_time for f in history.flows]
     return {
         "address": history.address, "role": role, "visit_rank": visit_rank, "script_type": history.script_type,

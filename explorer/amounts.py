@@ -17,6 +17,7 @@ SATS_PER_BTC = 100_000_000
 
 @dataclass(frozen=True)
 class AddressFlow:
+    """One transaction seen from one address: satoshis it received and sent, and where the block is."""
     txid: str
     confirmed: bool
     block_height: int | None
@@ -38,6 +39,8 @@ class AddressFlow:
 
 
 def address_flow(tx: dict[str, Any], address: str) -> AddressFlow:
+    """The address's side of one Esplora transaction: outputs paid to it (received) and the inputs it spent
+    (sent), in satoshis."""
     received = sum(
         out.get("value", 0)
         for out in tx.get("vout", [])

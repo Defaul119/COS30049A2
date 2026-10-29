@@ -48,6 +48,8 @@ class IsolationForestMethod:
 
 
 class LOFMethod:
+    """Local Outlier Factor in novelty mode on the pooled inputs; flagged above the top fraction of the fit period's
+    own LOF values."""
     def __init__(self, params: dict[str, Any], seed: int):
         self.params, self.seed = params, seed  # LOF is deterministic; the seed is kept for a uniform interface
 
@@ -79,6 +81,8 @@ def bootstrap_stability(cls: type, params: dict[str, Any], features: pd.DataFram
 
 
 def run_outliers() -> int:
+    """Step `outliers`: the Isolation Forest and LOF grids on the tuning plants, chosen by recall among stable
+    configurations; writes tuning_outliers.csv and models/{isolation_forest,lof}.joblib."""
     m = SETTINGS["model"]
     features = {name: pd.read_csv(MANIFEST_PATH.parent / f) for name, f in FEATURE_FILES.items()}
     copies = {name: load_copies(name, "tuning") for name in FEATURE_FILES}

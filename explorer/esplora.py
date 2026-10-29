@@ -47,6 +47,7 @@ class EsploraError(RuntimeError):
 
 @dataclass
 class RequestStats:
+    """Counts and latencies of one client's HTTP requests (for the collection log)."""
     requests: int = 0
     retries: int = 0
     rate_limited: int = 0
@@ -121,6 +122,8 @@ class EsploraEndpoints:
 
 
 class EsploraClient(EsploraEndpoints):
+    """A polite Esplora HTTP client: paced requests, retries with back-off on rate limits, server and network errors,
+    and request statistics."""
     def __init__(
         self,
         base_url: str,

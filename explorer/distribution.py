@@ -88,6 +88,8 @@ def datasets() -> dict[str, tuple[pd.DataFrame, bool, int, dict[str, Any]]]:
 
 
 def run_distribution(only: list[str] | None = None, n_jobs: int = SETTINGS["classification"]["nJobs"]) -> int:
+    """Step `distribution`: every scoring method's recall over many plant seeds on DS1, DS10 and DS2 (settings
+    distribution); writes stats_methods_seeds.csv and stats_methods_summary.csv."""
     d = SETTINGS["distribution"]
     cfg = FeatureConfig.refined()
     saved = {n: m for n, m in saved_methods().items() if n not in PRECOMPUTED_ONLY}

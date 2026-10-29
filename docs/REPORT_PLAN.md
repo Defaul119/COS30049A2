@@ -93,6 +93,10 @@ section can now quote and the order to write it in.
    DATA_CARD.md (DS1-DS10), MODEL_CARD.md, LICENSES.md.
 5. **Review**: Cam Dan Bui reads against the rubric and the completeness checklist (plan s12);
    references checked entry by entry; the number check and word count pass.
+7. **References** (the user, 29 Oct: as recent as possible, none older than 7 years): use
+   `docs/REFERENCES.md`, verified 29 Oct against Crossref, publishers, arXiv and Zenodo, all from 2020 or later.
+   It replaces the plan's draft list (`docs/plan/sections/c-references.tex`) and maps each older entry to its
+   replacement; one decision is left (the Elliptic dataset record, 2019).
 6. **Team items**: weekly A2 meeting minutes, the blind reviewer check, the AI declaration, and the
    contribution form (anyone under 33% has their mark scaled down).
 

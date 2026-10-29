@@ -140,6 +140,8 @@ def plant_scores_exist() -> bool:
 
 
 def run_txgpt() -> int:
+    """Step `txgpt`: choose TxGPT's score (raw or relative surprisal) on the tuning plants and fix its threshold;
+    writes tuning_txgpt.csv and models/txgpt_method.joblib."""
     from .baseline import load_copies
 
     if not plant_scores_exist():

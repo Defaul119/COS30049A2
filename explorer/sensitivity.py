@@ -51,6 +51,8 @@ def is_default(overrides: dict[str, Any]) -> bool:
 
 
 def run_sensitivity(n_jobs: int = SETTINGS["classification"]["nJobs"]) -> int:
+    """Step `sensitivity`: each method's recall as each planted pattern is made weaker or stronger; writes
+    eval_sensitivity.csv."""
     transactions = pd.read_csv(MANIFEST_PATH.parent / "transactions.csv")
     periods = pd.read_csv(MANIFEST_PATH.parent / "features.csv", usecols=["address", "txid", "period"])
     # TxGPT's surprisal needs its own GPU scoring pass for each new copy (lm.tx_score), so it sits this one out.

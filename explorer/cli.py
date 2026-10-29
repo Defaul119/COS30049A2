@@ -26,6 +26,9 @@ Usage (from the repository root):
     python -m explorer.cli stages-freeze          # M0: SHA-256 of the frozen test files (TRAINING_PLAN gate)
     python -m explorer.cli stage-search --stages C1 C2  # each method's grid at its flag budget, then the gate
     python -m explorer.cli ensemble               # stage D6: soft voting / stacking of the Elliptic classifiers, gated
+    python -m explorer.cli stage-test --snapshot C   # the test tier: snapshot the reporting-plant results ...
+    python -m explorer.cli stage-test --before M0 --after C --stage C-test --methods lof   # ... and gate them
+    python -m explorer.cli writer-gate --before <r1 tables> --after <new tables> --stage B3 --model text150m --previous r1
     python -m explorer.cli sensitivity            # recall against plant strength (spike size, burst size, dormancy)
     python -m explorer.cli ds2-check              # the frozen DS1 methods on DS2's ~2,900 comparable histories
     python -m explorer.cli walk-forward           # every method at several fit/evaluation cut-offs

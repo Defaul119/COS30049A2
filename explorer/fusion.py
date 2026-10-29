@@ -110,6 +110,8 @@ def multipliers_of(row: pd.Series) -> dict[str, float]:
 
 
 def run_fusion() -> int:
+    """Step `fusion`: search two-method fusions at the explorerMethod's flag budget on the tuning plants (M0 models);
+    writes tuning_fusion.csv and models/fusion.joblib."""
     from .evaluate import method_stability  # evaluate imports this module, so import it only when running
 
     f, target = SETTINGS["fusion"], SETTINGS["model"]["stabilityTarget"]

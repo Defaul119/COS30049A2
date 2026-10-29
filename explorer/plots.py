@@ -527,7 +527,7 @@ def fig_elliptic_f1_by_step(by_step: pd.DataFrame, results: pd.DataFrame) -> tup
     return fig, [stat("elliptic_f1_by_step", f"best model ({best['model']}) mean F1, steps 35-42",
                       round(float(g[g["time_step"] < 43]["f1"].mean()), 3)),
                  stat("elliptic_f1_by_step", f"best model ({best['model']}) mean F1, steps 43-49", round(float(late), 3),
-                      "Weber et al. (2019) report the same collapse after a dark-market shutdown")]
+                      "Pareja et al. (2020) report the same collapse from step 43, after a dark-market shutdown")]
 
 
 def fig_heist_lofo(lofo: pd.DataFrame, results: pd.DataFrame) -> tuple[Figure, Stats]:
@@ -1020,6 +1020,8 @@ def available() -> dict[str, Callable[[], tuple[Figure, Stats]]]:
 
 
 def run_figures(figures_dir: Path = FIGURES_DIR, tables_dir: Path = TABLES_DIR) -> int:
+    """Step `figures`: every report figure (PDF) in reports/figures/ and the statistics quoted with them
+    (reports/tables/eda_tests.csv)."""
     style()
     figures_dir.mkdir(parents=True, exist_ok=True)
     all_stats: Stats = []

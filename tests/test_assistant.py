@@ -319,6 +319,19 @@ class StrictMeasureTests(unittest.TestCase):
         self.assertTrue(assistant.reasons_ok("\n".join(swapped), good, facts))  # same features, wrong order
         self.assertFalse(assistant.binding_ok(good.replace("0.5 BTC moved", "30 hours moved"), facts))
 
+    def test_a_row_without_a_template_is_judged_against_its_reference_reply(self):
+        # DS7's val rows carry no template (the B3 dev tier); the reply names the same reasons in the same order.
+        from explorer.explain import template_explanation
+        from lm.eval_explain import measure
+
+        t = tx()
+        row = {"kind": "flagged", "messages": assistant.prompt_messages(t) + [{"role": "assistant", "content": ds7.phrase(t, 1)}]}
+        with_template = {**row, "template": template_explanation(t)}
+        for answer in (template_explanation(t), ds7.phrase(t, 2)):
+            a, b = measure(answer, row), measure(answer, with_template)
+            self.assertEqual([a[k] for k in ("reasons_ok", "order_ok", "binding_ok", "correct")],
+                             [b[k] for k in ("reasons_ok", "order_ok", "binding_ok", "correct")])
+
     def test_case_of_names_the_decision(self):
         self.assertEqual(assistant.case_of(assistant.summary(tx())), "flagged, 2 reasons")
         quiet = tx(flagged=False)

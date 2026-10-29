@@ -1,7 +1,7 @@
 # Model card
 
 Every final model in this project: what it is for, what it was trained on, its parameters, how well it does,
-its limits and its intended use, in the spirit of Mitchell et al. (2019). The metric tables are written by
+its limits and its intended use, following current model-card practice (Liang et al. 2024). The metric tables are written by
 `python tools/cards.py` from `reports/tables/`; the rest is by hand.
 
 **Intended use, for every model here.** Help a person decide which of a Bitcoin address's transactions are worth

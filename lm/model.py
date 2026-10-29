@@ -30,6 +30,7 @@ IGNORE_INDEX = -1
 
 @dataclass
 class GPTConfig:
+    """The model's shape; saved with every checkpoint so it loads without the training config."""
     vocab_size: int = 32768
     seq_len: int = 1024        # longest sequence the model can attend over
     n_layer: int = 18
@@ -85,6 +86,7 @@ def apply_rope(x: torch.Tensor, cos: torch.Tensor, sin: torch.Tensor) -> torch.T
 
 
 class Attention(nn.Module):
+    """Causal multi-head self-attention with rotary embeddings on queries and keys."""
     def __init__(self, cfg: GPTConfig):
         super().__init__()
         assert cfg.d_model % cfg.n_head == 0, "d_model must divide evenly into heads"
@@ -132,6 +134,7 @@ class SwiGLU(nn.Module):
 
 
 class Block(nn.Module):
+    """One pre-norm transformer block: RMSNorm, attention, RMSNorm, SwiGLU, each with a residual connection."""
     def __init__(self, cfg: GPTConfig):
         super().__init__()
         self.norm1 = RMSNorm(cfg.d_model)
@@ -147,6 +150,7 @@ class Block(nn.Module):
 
 
 class GPT(nn.Module):
+    """The decoder-only language model: token embeddings, the blocks, a final RMSNorm and the tied output layer."""
     def __init__(self, cfg: GPTConfig):
         super().__init__()
         self.cfg = cfg

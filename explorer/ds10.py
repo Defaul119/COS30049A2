@@ -116,6 +116,8 @@ def compare_rows(ours: pd.DataFrame, theirs: pd.DataFrame) -> pd.DataFrame:
 
 
 def run_ds10(client: EsploraEndpoints, raw_dir: Path = RAW_DIR, out_dir: Path = OUT_DIR) -> int:
+    """Step `ds10`: refetch the teammate's addresses with DS1's client, cut at their last block, cross-check row by row
+    and write data/processed/ds10/ (histories, transactions, manifest)."""
     p = SETTINGS["ds10"]
     theirs, summary, their_manifest = teammate_tables(out_dir / "teammate")
     roles = roles_of(summary)
@@ -230,6 +232,8 @@ def explanation_set(features: pd.DataFrame, tx: pd.DataFrame, methods: dict[str,
 
 
 def run_ds10_check(out_dir: Path = OUT_DIR, n_jobs: int = SETTINGS["classification"]["nJobs"]) -> int:
+    """Step `ds10-check`: every frozen model, TxGPT included, on DS10 (never seen by any model) with planted copies;
+    writes eval_ds10*.csv and the Assistant's DS10 prompts."""
     p = SETTINGS["ds10"]
     tx = pd.read_csv(out_dir / "transactions.csv")
     cfg = FeatureConfig.refined()
