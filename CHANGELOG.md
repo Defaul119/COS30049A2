@@ -11,6 +11,10 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**New figure `eval_stages` (explorer/plots.py).** TRAINING_PLAN section 6 promises the report the stage decisions; the
+figure draws every gate row of stages.csv (difference to the stage before with its 95% interval, filled when kept)
+and writes each row's difference, interval and reason to eda_tests.csv. Drawn by `figures` at the freeze.
+
 **Stage B3 accepted: round 2's explanation stage adds the weak-case examples.** The dev tier is complete: the weak-case
 slice (600 prompts; the trial) and 596 explanation prompts of DS7 v2's validation split (`cos30049a2-text150m-b3-dev-eval`,
 kainetyson, commit 25f18cb, 0.57 h). On DS7 v2 validation alone, fully correct: round 1 0.859, A 0.961, B 0.963

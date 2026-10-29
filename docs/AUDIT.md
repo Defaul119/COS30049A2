@@ -19,6 +19,7 @@ date order.
 | CLI and README | compared the CLI with README sections 4, 6 and 11 | new commands undocumented; "git status" as the rebuild check | Stage commands documented; `tools/compare_tables.py` is the rebuild check |
 | Writer statistics | read lm/eval_stats.py | the glossary row reported the bootstrap mean difference, every other row the observed one | Observed difference everywhere; test added |
 | Zip contents | built a trial zip from HEAD | today's clean-up would have left the 152M retraining guide out | Only the hand-off note is left out; test added |
+| Model-selection evidence | TRAINING_PLAN section 6 against the figures | no figure showed the stage decisions | New figure `eval_stages`: every gate row of stages.csv with its interval |
 | Data card | compared DATA_CARD.md's file list with the shipped data | the weak-case files (stage B3) were not described | Listed with their columns (`tools/cards.py`) |
 
 ## 2. Models and results

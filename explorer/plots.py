@@ -896,6 +896,36 @@ def fig_stats_methods(seeds: pd.DataFrame, summary: pd.DataFrame) -> tuple[Figur
     return fig, s
 
 
+def fig_stages(stages: pd.DataFrame) -> tuple[Figure, Stats]:
+    """Every training stage's gate (docs/TRAINING_PLAN.md): the difference to the stage before with its 95% interval,
+    filled when the stage was kept. Differences are of the family's primary metric (mean planted recall, F1 or fully
+    correct), all shares, so they share one axis."""
+    rows = stages.dropna(subset=["diff_previous"]).reset_index(drop=True)
+    names = {**METHOD_NAMES, "ensemble": "Elliptic classifier ensemble", "text150m": "152M explanation writer"}
+    labels = [f"{r.stage} {names.get(r.model, r.model)}" + (" (test)" if r.tier == "test" else "")
+              for r in rows.itertuples()]
+    fig, ax = plt.subplots(figsize=(6.4, 0.24 * len(rows) + 1.2))
+    y = np.arange(len(rows))[::-1]
+    kept = rows["accepted"].astype(str) == "True"
+    low = (rows["diff_previous"] - rows["diff_previous_ci_low"]).clip(lower=0)
+    high = (rows["diff_previous_ci_high"] - rows["diff_previous"]).clip(lower=0)
+    ax.errorbar(rows["diff_previous"], y, xerr=[low, high], fmt="none", ecolor=MUTED, elinewidth=0.9, capsize=2)
+    ax.scatter(rows.loc[kept, "diff_previous"], y[kept.to_numpy()], color=INK, s=18, zorder=3, label="kept")
+    ax.scatter(rows.loc[~kept, "diff_previous"], y[~kept.to_numpy()], facecolor="white", edgecolor=INK, s=18,
+               zorder=3, label="rejected")
+    ax.axvline(0, color=INK, linewidth=0.8)
+    ax.set_yticks(y, labels, fontsize=6.5)
+    ax.set(xlabel="Difference to the stage before\n(each family's primary metric; 95% bootstrap interval)",
+           title="Training stages: every gate decision (reports/tables/stages.csv)")
+    ax.grid(axis="x", color=GRID)
+    ax.legend(fontsize=7, loc="upper right", frameon=False)
+    s = [stat("eval_stages", f"{r.stage} {r.model} ({r.tier}): difference", round(float(r.diff_previous), 3),
+              f"95% {r.diff_previous_ci_low:+.3f} to {r.diff_previous_ci_high:+.3f}; "
+              + ("kept" if str(r.accepted) == "True" else f"rejected: {r.reasons}"))
+         for r in rows.itertuples()]
+    return fig, s
+
+
 def fig_stats_classifiers(summary: pd.DataFrame) -> tuple[Figure, Stats]:
     """Classifier test F1: mean over training seeds, with a 95% bootstrap interval over test rows."""
     schemes = summary["scheme"].unique().tolist()
@@ -1016,6 +1046,8 @@ def available() -> dict[str, Callable[[], tuple[Figure, Stats]]]:
         figs["stats_classifiers"] = lambda: fig_stats_classifiers(table("stats_classifiers_summary"))
     if (TABLES_DIR / "stats_writers_summary.csv").exists():
         figs["stats_writers"] = lambda: fig_stats_writers(table("stats_writers_summary"))
+    if (TABLES_DIR / "stages.csv").exists():
+        figs["eval_stages"] = lambda: fig_stages(table("stages"))
     return figs
 
 
