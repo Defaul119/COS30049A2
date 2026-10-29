@@ -1,0 +1,15 @@
+{
+  "commit": "3978c8c5e938112cfa324066076b1e1878ee7c73",
+  "gpus": 2,
+  "python": "3.13.15",
+  "packages": {
+    "torch": "2.11.0+cu128",
+    "numpy": "2.2.6",
+    "tokenizers": "0.21.1"
+  },
+  "session_hours": 2.08,
+  "finished": {
+    "text-150m-explain-b3a": true,
+    "text-150m-explain-b3b": true
+  }
+}

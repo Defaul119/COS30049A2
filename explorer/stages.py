@@ -141,15 +141,17 @@ class GateResult:
 def decide(diff_ci_low: float, case_before: dict[str, float], case_after: dict[str, float],
            case_spread: dict[str, float], loss_agrees: bool, guardrail_before: float | None = None,
            guardrail_after: float | None = None, flagged_share: float | None = None,
-           address_share_before: float | None = None, address_share_after: float | None = None) -> GateResult:
-    """Apply the four rules of TRAINING_PLAN section 3; every failed rule is listed in `reasons`."""
+           address_share_before: float | None = None, address_share_after: float | None = None,
+           spread_name: str = "M0 seed spread") -> GateResult:
+    """Apply the four rules of TRAINING_PLAN section 3; every failed rule is listed in `reasons` (`spread_name` says
+    what a case's allowed fall is: the M0 seed spread, or for a writer the binomial standard error)."""
     reasons = []
     if not diff_ci_low > 0:
         reasons.append(f"difference interval reaches {diff_ci_low:+.4f} (not above 0)")
     for case, before in case_before.items():
         drop = before - case_after[case]
         if drop > case_spread.get(case, 0.0):
-            reasons.append(f"case {case} fell {drop:.4f} (> its M0 seed spread {case_spread.get(case, 0.0):.4f})")
+            reasons.append(f"case {case} fell {drop:.4f} (> its {spread_name} {case_spread.get(case, 0.0):.4f})")
     if guardrail_before is not None and guardrail_after is not None and guardrail_after < guardrail_before:
         reasons.append(f"guardrail pass rate fell {guardrail_before:.4f} -> {guardrail_after:.4f}")
     limit = SETTINGS["sanity"]["maxFlaggedShare"]
@@ -357,7 +359,8 @@ def run_compare_writers(before: list[Path], after: list[Path], stage: str, model
     n = b.groupby("case").size()
     spread = {c: float(np.sqrt(rate_b[c] * (1 - rate_b[c]) / n[c])) for c in rate_b.index}
     result = decide(low_high[1], rate_b.to_dict(), rate_a.to_dict(), spread, loss_agrees,
-                    guardrail_before=float(b["passed"].mean()), guardrail_after=float(a["passed"].mean()))
+                    guardrail_before=float(b["passed"].mean()), guardrail_after=float(a["passed"].mean()),
+                    spread_name="binomial standard error")
     numbers_b, numbers_a = float(b["numbers_ok"].mean()), float(a["numbers_ok"].mean())
     if numbers_a < numbers_b:
         result.reasons.append(f"number faithfulness fell {numbers_b:.4f} -> {numbers_a:.4f}")

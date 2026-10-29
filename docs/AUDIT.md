@@ -57,8 +57,10 @@ cite the Elliptic dataset record (2019).
 ## 5. Results of the long checks (filled in as they finish)
 
 - **Fresh-clone rebuild** (tritran72 `cos30049a2-rebuild`, commit 0aded70): pending.
-- **Stage B3 gate** (weak-case examples for the 152M explanation stage): the weak-case dev slice is done (round 1
-  0.375, A 0.457, B 0.922 fully correct); DS7 v2's validation prompts pending (`cos30049a2-text150m-b3-dev-eval`).
+- **Stage B3 gate** (weak-case examples for the 152M explanation stage): ACCEPTED. On both dev files, fully correct
+  0.708 (A) -> 0.942 (B), +0.234 [+0.204, +0.266], every case higher; on DS7 v2's ordinary validation prompts
+  A 0.961 and B 0.963 (round 1 0.859). The planned recipe without B3 (A) was rejected by the same gate. Round 2's
+  explanation stage therefore adds the weak cases.
 - **152M round 2**: pretraining session 4 running (ends about 01:30 Fri); the chat and explanation stages follow on
   the same account, then the adoption rule (docs/KAGGLE_LM_PLAN.md section 3).
 

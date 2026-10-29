@@ -18,7 +18,7 @@ Due Sun 8 Nov 23:59 GMT+7; the team submits Sat 7 Nov. Results freeze Tue 3 Nov;
 - [x] Rebuild-only stage_test run: every DS1 table matches the live methods (29 Oct).
 - [ ] B1 152M pretraining: s1-s3 done (2.29B of 3.0B, val 3.0967); s4 on dansns to 3.0B. [Kaggle]
 - [x] B3 weak-case examples built (8,000 train / 600 dev; own seeds and wordings); writer gate. [Claude]
-- [ ] B3 trial on the round-1 model (kainetyson, chain running 29 Oct) -> WEAK_CASES for round 2. [Kaggle]
+- [x] B3 trial on the round-1 model: ACCEPTED (B vs A +0.234 fully correct on dev); round 2 adds the weak cases.
 - [ ] B2-B6 on the round-2 model: ds7_data -> text150m_stage_data -> text150m_stages; dev gate by case. [Kaggle]
 - [ ] Adoption rule (KAGGLE_LM_PLAN.md section 3); round-2 tables and model into reports/ and models/. [Claude]
 - [ ] Optional C+: the 152M explanation stage with 5 seeds (a language model's seed spread). [Kaggle]

@@ -1,0 +1,34 @@
+model,case,prompts,fully_correct
+text150m_r1,"flagged, 1 reason",51,0.196078431372549
+text150m_r1,"flagged, 2 reasons",59,0.3559322033898305
+text150m_r1,"flagged, 3 reasons",42,0.2142857142857142
+text150m_r1,"flagged, 4 reasons",28,0.1785714285714285
+text150m_r1,"flagged, nothing stands out",24,0.0416666666666666
+text150m_r1,"not flagged, 1 reason",83,0.5180722891566265
+text150m_r1,"not flagged, 2 reasons",90,0.3222222222222222
+text150m_r1,"not flagged, 3 reasons",72,0.1527777777777778
+text150m_r1,"not flagged, 4 reasons",20,0.05
+text150m_r1,"not flagged, nothing stands out",65,0.4461538461538462
+text150m_r1,unscored,66,1.0
+text150m_b3a,"flagged, 1 reason",51,0.3333333333333333
+text150m_b3a,"flagged, 2 reasons",59,0.5254237288135594
+text150m_b3a,"flagged, 3 reasons",42,0.3095238095238095
+text150m_b3a,"flagged, 4 reasons",28,0.25
+text150m_b3a,"flagged, nothing stands out",24,0.0
+text150m_b3a,"not flagged, 1 reason",83,0.5783132530120482
+text150m_b3a,"not flagged, 2 reasons",90,0.4444444444444444
+text150m_b3a,"not flagged, 3 reasons",72,0.25
+text150m_b3a,"not flagged, 4 reasons",20,0.25
+text150m_b3a,"not flagged, nothing stands out",65,0.4461538461538462
+text150m_b3a,unscored,66,1.0
+text150m_b3b,"flagged, 1 reason",51,1.0
+text150m_b3b,"flagged, 2 reasons",59,0.9661016949152542
+text150m_b3b,"flagged, 3 reasons",42,0.7619047619047619
+text150m_b3b,"flagged, 4 reasons",28,0.8928571428571429
+text150m_b3b,"flagged, nothing stands out",24,0.7916666666666666
+text150m_b3b,"not flagged, 1 reason",83,0.9879518072289156
+text150m_b3b,"not flagged, 2 reasons",90,0.9444444444444444
+text150m_b3b,"not flagged, 3 reasons",72,0.9027777777777778
+text150m_b3b,"not flagged, 4 reasons",20,0.95
+text150m_b3b,"not flagged, nothing stands out",65,0.8
+text150m_b3b,unscored,66,1.0

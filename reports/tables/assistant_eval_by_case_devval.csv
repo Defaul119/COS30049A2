@@ -1,0 +1,28 @@
+model,case,prompts,fully_correct
+text150m_r1,"flagged, 1 reason",71,1.0
+text150m_r1,"flagged, 2 reasons",75,0.88
+text150m_r1,"flagged, 3 reasons",29,0.5862068965517241
+text150m_r1,"flagged, 4 reasons",6,0.3333333333333333
+text150m_r1,"not flagged, 1 reason",68,1.0
+text150m_r1,"not flagged, 2 reasons",23,0.8695652173913043
+text150m_r1,"not flagged, 3 reasons",7,0.4285714285714285
+text150m_r1,"not flagged, nothing stands out",277,0.8122743682310469
+text150m_r1,unscored,40,1.0
+text150m_b3a,"flagged, 1 reason",71,1.0
+text150m_b3a,"flagged, 2 reasons",75,0.9866666666666668
+text150m_b3a,"flagged, 3 reasons",29,0.9310344827586208
+text150m_b3a,"flagged, 4 reasons",6,0.8333333333333334
+text150m_b3a,"not flagged, 1 reason",68,1.0
+text150m_b3a,"not flagged, 2 reasons",23,1.0
+text150m_b3a,"not flagged, 3 reasons",7,0.7142857142857143
+text150m_b3a,"not flagged, nothing stands out",277,0.9386281588447654
+text150m_b3a,unscored,40,1.0
+text150m_b3b,"flagged, 1 reason",71,1.0
+text150m_b3b,"flagged, 2 reasons",75,0.9733333333333334
+text150m_b3b,"flagged, 3 reasons",29,0.9655172413793104
+text150m_b3b,"flagged, 4 reasons",6,1.0
+text150m_b3b,"not flagged, 1 reason",68,1.0
+text150m_b3b,"not flagged, 2 reasons",23,0.9565217391304348
+text150m_b3b,"not flagged, 3 reasons",7,1.0
+text150m_b3b,"not flagged, nothing stands out",277,0.9350180505415162
+text150m_b3b,unscored,40,1.0

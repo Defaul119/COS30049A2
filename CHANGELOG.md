@@ -11,6 +11,19 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Stage B3 accepted: round 2's explanation stage adds the weak-case examples.** The dev tier is complete: the weak-case
+slice (600 prompts; the trial) and 596 explanation prompts of DS7 v2's validation split (`cos30049a2-text150m-b3-dev-eval`,
+kainetyson, commit 25f18cb, 0.57 h). On DS7 v2 validation alone, fully correct: round 1 0.859, A 0.961, B 0.963
+(guardrail 0.985 / 1.000 / 1.000; direction errors 9 / 0 / 0). Writer gates on both dev files together (stages.csv):
+- B3 (B against A, the decision): 0.708 -> 0.942, +0.234 [+0.204, +0.266], McNemar p < 1e-60; every case higher.
+  ACCEPTED, so `text150m_stages` runs with WEAK_CASES = True.
+- B3 against M0 (B against round 1): 0.616 -> 0.942, +0.326 [+0.291, +0.362]. ACCEPTED.
+- B3-A (A against round 1, the planned DS7 v2 recipe alone): +0.092 [+0.070, +0.114] but REJECTED: "flagged,
+  nothing stands out" fell 1 of 24 prompts (0.042 > its binomial standard error 0.041), and on the combined dev
+  files its guardrail pass rate (0.919 -> 0.890) and number faithfulness (0.984 -> 0.976) fell. Without B3, the
+  planned round-2 recipe would not have passed its own gate.
+The gate's reason text now names the writer's allowance ("binomial standard error"), not "M0 seed spread".
+
 **The adoption rule as code (`lm/adopt.py`, settings assistant.adoption; tests).** docs/KAGGLE_LM_PLAN.md section 3
 (fixed 26 Oct) was only text. `python -m lm.adopt` now applies it to lm.eval_explain's summary tables: on the DS7 v1
 test and DS10, guardrail pass rate and number faithfulness no lower and direction errors no more than round 1; on the

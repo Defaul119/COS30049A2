@@ -1,0 +1,10 @@
+{
+  "commit": "25f18cb5aebade4cc5d8335558148c8d967146c1",
+  "python": "3.13.15",
+  "packages": {
+    "torch": "2.11.0+cu128",
+    "numpy": "2.2.6",
+    "tokenizers": "0.21.1"
+  },
+  "hours": 0.57
+}

@@ -1,0 +1,13 @@
+[eval] 50/600 (51 s)
+[eval] 100/600 (102 s)
+[eval] 150/600 (152 s)
+[eval] 200/600 (205 s)
+[eval] 250/600 (259 s)
+[eval] 300/600 (310 s)
+[eval] 350/600 (365 s)
+[eval] 400/600 (419 s)
+[eval] 450/600 (470 s)
+[eval] 500/600 (522 s)
+[eval] 550/600 (574 s)
+[eval] 600/600 (625 s)
+[eval] {'model': 'text150m_r1', 'prompts': 596, 'number_faithfulness': np.float64(1.0), 'limitation_line': np.float64(1.0), 'banned_word_share': np.float64(0.0), 'guardrail_pass': np.float64(0.9848993288590604), 'feature_coverage': np.float64(0.9988052568697728), 'rouge_l': np.float64(0.6801088110468865), 'direction_errors': 9, 'rouge_own': np.float64(0.6801088110468865), 'copy_rate_flagged': np.float64(0.09392265193370165), 'verdict_accuracy': np.float64(1.0), 'reasons_accuracy': np.float64(0.9781879194630873), 'order_accuracy': np.float64(0.8741610738255033), 'binding_accuracy': np.float64(1.0), 'fully_correct': np.float64(0.8590604026845637), 'fully_correct_macro': np.float64(0.7677723604532041), 'fully_correct_nothing_stands_out': np.float64(0.8122743682310469), 'nothing_stands_out_prompts': 277, 'unique_prompts': 557, 'fully_correct_unique': np.float64(0.8491921005385996), 'glossary_prompts': 4, 'glossary_banned_word_share': np.float64(0.0), 'glossary_rouge_l': np.float64(0.3677602333516312), 'glossary_key_facts': nan, 'glossary_correct': nan, 'seconds': 625.1, 'source': '/kaggle/input/datasets/kainetyson/cos30049a2-text150m-base/text150m_explain_v1.pt'}

@@ -1,0 +1,1318 @@
+[train] text-150m-explain-b3b on 1 x cuda (Tesla T4), float16
+[train] model 152.6M parameters: 18 layers, d_model 768, 12 heads, context 1024, vocabulary 32768
+[train] data 20,927,489 training tokens; run 41,854,978 tokens = 1,278 steps of 32,768 (4 x 1024 x 8 accumulation); cosine schedule
+[train] starting from /kaggle/input/datasets/kainetyson/cos30049a2-text150m-chat-v1/text150m_chat_v1.pt
+[eval] step 0 | validation loss 2.8729 (perplexity 17.7)
+[train] step 1/1,278 | loss 2.9934 | lr 5.00e-06 | grad 10.18 | 9,702 tok/s | MFU 41% | 6.4 GB | ETA 1h 11m
+[train] step 2/1,278 | loss 2.6774 | lr 1.00e-05 | grad 8.74 | 10,181 tok/s | MFU 44% | 7.6 GB | ETA 1h 8m
+[train] step 3/1,278 | loss 2.4259 | lr 1.50e-05 | grad 6.49 | 10,328 tok/s | MFU 44% | 7.6 GB | ETA 1h 7m
+[train] step 4/1,278 | loss 1.9482 | lr 2.00e-05 | grad 4.14 | 10,381 tok/s | MFU 44% | 7.6 GB | ETA 1h 7m
+[train] step 5/1,278 | loss 1.7464 | lr 2.50e-05 | grad 4.19 | 10,404 tok/s | MFU 44% | 7.6 GB | ETA 1h 6m
+[train] step 6/1,278 | loss 1.4586 | lr 3.00e-05 | grad 3.92 | 10,404 tok/s | MFU 44% | 7.6 GB | ETA 1h 6m
+[train] step 7/1,278 | loss 1.1035 | lr 3.50e-05 | grad 3.03 | 10,405 tok/s | MFU 44% | 7.6 GB | ETA 1h 6m
+[train] step 8/1,278 | loss 0.9291 | lr 4.00e-05 | grad 2.39 | 10,392 tok/s | MFU 44% | 7.6 GB | ETA 1h 6m
+[train] step 9/1,278 | loss 0.7312 | lr 4.50e-05 | grad 1.95 | 10,370 tok/s | MFU 44% | 7.6 GB | ETA 1h 6m
+[train] step 10/1,278 | loss 0.6076 | lr 5.00e-05 | grad 1.74 | 10,341 tok/s | MFU 44% | 7.6 GB | ETA 1h 6m
+[train] step 11/1,278 | loss 0.4937 | lr 5.50e-05 | grad 1.44 | 10,311 tok/s | MFU 44% | 7.6 GB | ETA 1h 7m
+[train] step 12/1,278 | loss 0.3211 | lr 6.00e-05 | grad 1.76 | 10,284 tok/s | MFU 44% | 7.6 GB | ETA 1h 7m
+[train] step 13/1,278 | loss 0.2338 | lr 6.50e-05 | grad 2.00 | 10,257 tok/s | MFU 44% | 7.6 GB | ETA 1h 7m
+[train] step 14/1,278 | loss 0.3299 | lr 7.00e-05 | grad 1.49 | 10,223 tok/s | MFU 44% | 7.6 GB | ETA 1h 7m
+[train] step 15/1,278 | loss 0.1887 | lr 7.50e-05 | grad 1.46 | 10,182 tok/s | MFU 44% | 7.6 GB | ETA 1h 7m
+[train] step 16/1,278 | loss 0.1791 | lr 8.00e-05 | grad 1.37 | 10,138 tok/s | MFU 43% | 7.6 GB | ETA 1h 7m
+[train] step 17/1,278 | loss 0.2130 | lr 8.50e-05 | grad 1.00 | 10,086 tok/s | MFU 43% | 7.6 GB | ETA 1h 8m
+[train] step 18/1,278 | loss 0.2120 | lr 9.00e-05 | grad 0.94 | 10,034 tok/s | MFU 43% | 7.6 GB | ETA 1h 8m
+[train] step 19/1,278 | loss 0.1419 | lr 9.50e-05 | grad 0.86 | 9,981 tok/s | MFU 43% | 7.6 GB | ETA 1h 8m
+[train] step 20/1,278 | loss 0.2626 | lr 1.00e-04 | grad 1.03 | 9,917 tok/s | MFU 42% | 7.6 GB | ETA 1h 9m
+[train] step 21/1,278 | loss 0.1190 | lr 1.00e-04 | grad 0.62 | 9,861 tok/s | MFU 42% | 7.6 GB | ETA 1h 9m
+[train] step 22/1,278 | loss 0.3086 | lr 1.00e-04 | grad 0.83 | 9,746 tok/s | MFU 42% | 7.6 GB | ETA 1h 10m
+[train] step 23/1,278 | loss 0.1449 | lr 1.00e-04 | grad 0.72 | 9,628 tok/s | MFU 41% | 7.6 GB | ETA 1h 11m
+[train] step 24/1,278 | loss 0.1459 | lr 1.00e-04 | grad 0.51 | 9,505 tok/s | MFU 41% | 7.6 GB | ETA 1h 12m
+[train] step 25/1,278 | loss 0.1356 | lr 1.00e-04 | grad 0.58 | 9,384 tok/s | MFU 40% | 7.6 GB | ETA 1h 12m
+[train] step 26/1,278 | loss 0.1339 | lr 1.00e-04 | grad 0.67 | 9,272 tok/s | MFU 40% | 7.6 GB | ETA 1h 13m
+[train] step 27/1,278 | loss 0.1367 | lr 1.00e-04 | grad 0.66 | 9,170 tok/s | MFU 39% | 7.6 GB | ETA 1h 14m
+[train] step 28/1,278 | loss 0.1072 | lr 1.00e-04 | grad 0.49 | 9,083 tok/s | MFU 39% | 7.6 GB | ETA 1h 15m
+[train] step 29/1,278 | loss 0.1619 | lr 1.00e-04 | grad 0.54 | 9,011 tok/s | MFU 39% | 7.6 GB | ETA 1h 15m
+[train] step 30/1,278 | loss 0.2260 | lr 1.00e-04 | grad 0.65 | 8,951 tok/s | MFU 38% | 7.6 GB | ETA 1h 16m
+[train] step 31/1,278 | loss 0.1621 | lr 1.00e-04 | grad 0.54 | 8,896 tok/s | MFU 38% | 7.6 GB | ETA 1h 16m
+[train] step 32/1,278 | loss 0.1397 | lr 1.00e-04 | grad 0.65 | 8,846 tok/s | MFU 38% | 7.6 GB | ETA 1h 16m
+[train] step 33/1,278 | loss 0.1065 | lr 1.00e-04 | grad 0.44 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 1h 17m
+[train] step 34/1,278 | loss 0.1022 | lr 1.00e-04 | grad 0.65 | 8,770 tok/s | MFU 37% | 7.6 GB | ETA 1h 17m
+[train] step 35/1,278 | loss 0.1011 | lr 1.00e-04 | grad 0.67 | 8,743 tok/s | MFU 37% | 7.6 GB | ETA 1h 17m
+[train] step 36/1,278 | loss 0.1020 | lr 1.00e-04 | grad 0.53 | 8,725 tok/s | MFU 37% | 7.6 GB | ETA 1h 17m
+[train] step 37/1,278 | loss 0.1581 | lr 1.00e-04 | grad 0.42 | 8,710 tok/s | MFU 37% | 7.6 GB | ETA 1h 17m
+[train] step 38/1,278 | loss 0.0928 | lr 1.00e-04 | grad 0.48 | 8,703 tok/s | MFU 37% | 7.6 GB | ETA 1h 17m
+[train] step 39/1,278 | loss 0.1291 | lr 1.00e-04 | grad 0.45 | 8,697 tok/s | MFU 37% | 7.6 GB | ETA 1h 17m
+[train] step 40/1,278 | loss 0.0836 | lr 9.99e-05 | grad 0.44 | 8,705 tok/s | MFU 37% | 7.6 GB | ETA 1h 17m
+[train] step 41/1,278 | loss 0.0810 | lr 9.99e-05 | grad 0.36 | 8,717 tok/s | MFU 37% | 7.6 GB | ETA 1h 17m
+[train] step 42/1,278 | loss 0.1637 | lr 9.99e-05 | grad 0.66 | 8,736 tok/s | MFU 37% | 7.6 GB | ETA 1h 17m
+[train] step 43/1,278 | loss 0.1133 | lr 9.99e-05 | grad 0.55 | 8,762 tok/s | MFU 37% | 7.6 GB | ETA 1h 16m
+[train] step 44/1,278 | loss 0.0782 | lr 9.99e-05 | grad 0.39 | 8,795 tok/s | MFU 38% | 7.6 GB | ETA 1h 16m
+[train] step 45/1,278 | loss 0.2733 | lr 9.99e-05 | grad 0.55 | 8,824 tok/s | MFU 38% | 7.6 GB | ETA 1h 16m
+[train] step 46/1,278 | loss 0.1313 | lr 9.99e-05 | grad 0.36 | 8,851 tok/s | MFU 38% | 7.6 GB | ETA 1h 16m
+[train] step 47/1,278 | loss 0.2415 | lr 9.99e-05 | grad 0.52 | 8,867 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 48/1,278 | loss 0.1493 | lr 9.99e-05 | grad 0.40 | 8,874 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 49/1,278 | loss 0.1027 | lr 9.99e-05 | grad 0.32 | 8,874 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 50/1,278 | loss 0.1111 | lr 9.99e-05 | grad 0.36 | 8,872 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[eval] step 50 | validation loss 0.1113 (perplexity 1.1)
+[train] step 51/1,278 | loss 0.1541 | lr 9.99e-05 | grad 0.43 | 8,877 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 52/1,278 | loss 0.0775 | lr 9.99e-05 | grad 0.36 | 8,876 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 53/1,278 | loss 0.0923 | lr 9.99e-05 | grad 0.31 | 8,871 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 54/1,278 | loss 0.1338 | lr 9.98e-05 | grad 0.35 | 8,856 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 55/1,278 | loss 0.0748 | lr 9.98e-05 | grad 0.31 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 56/1,278 | loss 0.1192 | lr 9.98e-05 | grad 0.50 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 57/1,278 | loss 0.0871 | lr 9.98e-05 | grad 0.39 | 8,814 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 58/1,278 | loss 0.0883 | lr 9.98e-05 | grad 0.37 | 8,798 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 59/1,278 | loss 0.0805 | lr 9.98e-05 | grad 0.44 | 8,784 tok/s | MFU 38% | 7.6 GB | ETA 1h 15m
+[train] step 60/1,278 | loss 0.1414 | lr 9.98e-05 | grad 0.40 | 8,768 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 61/1,278 | loss 0.1215 | lr 9.98e-05 | grad 0.36 | 8,753 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 62/1,278 | loss 0.1142 | lr 9.98e-05 | grad 0.35 | 8,742 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 63/1,278 | loss 0.1093 | lr 9.98e-05 | grad 0.37 | 8,735 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 64/1,278 | loss 0.0715 | lr 9.97e-05 | grad 0.33 | 8,732 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 65/1,278 | loss 0.0687 | lr 9.97e-05 | grad 0.39 | 8,735 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 66/1,278 | loss 0.2567 | lr 9.97e-05 | grad 0.47 | 8,737 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 67/1,278 | loss 0.0802 | lr 9.97e-05 | grad 0.31 | 8,745 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 68/1,278 | loss 0.1329 | lr 9.97e-05 | grad 0.43 | 8,756 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 69/1,278 | loss 0.1258 | lr 9.97e-05 | grad 0.34 | 8,765 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 70/1,278 | loss 0.0826 | lr 9.97e-05 | grad 0.30 | 8,773 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 71/1,278 | loss 0.1130 | lr 9.96e-05 | grad 0.38 | 8,770 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 72/1,278 | loss 0.1324 | lr 9.96e-05 | grad 0.35 | 8,767 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 73/1,278 | loss 0.0674 | lr 9.96e-05 | grad 0.30 | 8,767 tok/s | MFU 37% | 7.6 GB | ETA 1h 15m
+[train] step 74/1,278 | loss 0.1104 | lr 9.96e-05 | grad 0.33 | 8,770 tok/s | MFU 37% | 7.6 GB | ETA 1h 14m
+[train] step 75/1,278 | loss 0.1107 | lr 9.96e-05 | grad 0.37 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 1h 14m
+[train] step 76/1,278 | loss 0.0730 | lr 9.96e-05 | grad 0.35 | 8,779 tok/s | MFU 38% | 7.6 GB | ETA 1h 14m
+[train] step 77/1,278 | loss 0.1294 | lr 9.96e-05 | grad 0.36 | 8,782 tok/s | MFU 38% | 7.6 GB | ETA 1h 14m
+[train] step 78/1,278 | loss 0.0642 | lr 9.95e-05 | grad 0.34 | 8,784 tok/s | MFU 38% | 7.6 GB | ETA 1h 14m
+[train] step 79/1,278 | loss 0.0616 | lr 9.95e-05 | grad 0.21 | 8,789 tok/s | MFU 38% | 7.6 GB | ETA 1h 14m
+[train] step 80/1,278 | loss 0.1042 | lr 9.95e-05 | grad 0.35 | 8,795 tok/s | MFU 38% | 7.6 GB | ETA 1h 14m
+[train] step 81/1,278 | loss 0.0688 | lr 9.95e-05 | grad 0.36 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 1h 14m
+[train] step 82/1,278 | loss 0.0671 | lr 9.95e-05 | grad 0.26 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 1h 14m
+[train] step 83/1,278 | loss 0.0773 | lr 9.95e-05 | grad 0.29 | 8,805 tok/s | MFU 38% | 7.6 GB | ETA 1h 14m
+[train] step 84/1,278 | loss 0.1082 | lr 9.94e-05 | grad 0.38 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 1h 14m
+[train] step 85/1,278 | loss 0.0988 | lr 9.94e-05 | grad 0.29 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 1h 14m
+[train] step 86/1,278 | loss 0.0880 | lr 9.94e-05 | grad 0.44 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 1h 13m
+[train] step 87/1,278 | loss 0.0648 | lr 9.94e-05 | grad 0.46 | 8,799 tok/s | MFU 38% | 7.6 GB | ETA 1h 13m
+[train] step 88/1,278 | loss 0.0782 | lr 9.94e-05 | grad 0.26 | 8,797 tok/s | MFU 38% | 7.6 GB | ETA 1h 13m
+[train] step 89/1,278 | loss 0.0882 | lr 9.94e-05 | grad 0.52 | 8,793 tok/s | MFU 38% | 7.6 GB | ETA 1h 13m
+[train] step 90/1,278 | loss 0.0640 | lr 9.93e-05 | grad 0.39 | 8,786 tok/s | MFU 38% | 7.6 GB | ETA 1h 13m
+[train] step 91/1,278 | loss 0.1138 | lr 9.93e-05 | grad 0.49 | 8,780 tok/s | MFU 38% | 7.6 GB | ETA 1h 13m
+[train] step 92/1,278 | loss 0.0650 | lr 9.93e-05 | grad 0.39 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 93/1,278 | loss 0.1348 | lr 9.93e-05 | grad 0.43 | 8,762 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 94/1,278 | loss 0.0658 | lr 9.93e-05 | grad 0.38 | 8,759 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 95/1,278 | loss 0.0698 | lr 9.92e-05 | grad 0.34 | 8,752 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 96/1,278 | loss 0.0555 | lr 9.92e-05 | grad 0.28 | 8,748 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 97/1,278 | loss 0.0641 | lr 9.92e-05 | grad 0.42 | 8,740 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 98/1,278 | loss 0.0807 | lr 9.92e-05 | grad 0.36 | 8,737 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 99/1,278 | loss 0.0629 | lr 9.91e-05 | grad 0.36 | 8,732 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 100/1,278 | loss 0.0635 | lr 9.91e-05 | grad 0.29 | 8,727 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[eval] step 100 | validation loss 0.0765 (perplexity 1.1)
+[train] step 101/1,278 | loss 0.1180 | lr 9.91e-05 | grad 0.43 | 8,726 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 102/1,278 | loss 0.0567 | lr 9.91e-05 | grad 0.33 | 8,731 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 103/1,278 | loss 0.0643 | lr 9.91e-05 | grad 0.36 | 8,735 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 104/1,278 | loss 0.0574 | lr 9.90e-05 | grad 0.37 | 8,734 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 105/1,278 | loss 0.0612 | lr 9.90e-05 | grad 0.32 | 8,727 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 106/1,278 | loss 0.0745 | lr 9.90e-05 | grad 0.41 | 8,721 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 107/1,278 | loss 0.1085 | lr 9.90e-05 | grad 0.40 | 8,718 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 108/1,278 | loss 0.0564 | lr 9.89e-05 | grad 0.31 | 8,714 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 109/1,278 | loss 0.1094 | lr 9.89e-05 | grad 0.36 | 8,713 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 110/1,278 | loss 0.1030 | lr 9.89e-05 | grad 0.33 | 8,711 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 111/1,278 | loss 0.0573 | lr 9.89e-05 | grad 0.30 | 8,715 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 112/1,278 | loss 0.0561 | lr 9.88e-05 | grad 0.31 | 8,722 tok/s | MFU 37% | 7.6 GB | ETA 1h 13m
+[train] step 113/1,278 | loss 0.0668 | lr 9.88e-05 | grad 0.30 | 8,732 tok/s | MFU 37% | 7.6 GB | ETA 1h 12m
+[train] step 114/1,278 | loss 0.0635 | lr 9.88e-05 | grad 0.31 | 8,736 tok/s | MFU 37% | 7.6 GB | ETA 1h 12m
+[train] step 115/1,278 | loss 0.0536 | lr 9.88e-05 | grad 0.24 | 8,739 tok/s | MFU 37% | 7.6 GB | ETA 1h 12m
+[train] step 116/1,278 | loss 0.1065 | lr 9.87e-05 | grad 0.37 | 8,741 tok/s | MFU 37% | 7.6 GB | ETA 1h 12m
+[train] step 117/1,278 | loss 0.1025 | lr 9.87e-05 | grad 0.47 | 8,751 tok/s | MFU 37% | 7.6 GB | ETA 1h 12m
+[train] step 118/1,278 | loss 0.0563 | lr 9.87e-05 | grad 0.34 | 8,757 tok/s | MFU 37% | 7.6 GB | ETA 1h 12m
+[train] step 119/1,278 | loss 0.0525 | lr 9.87e-05 | grad 0.31 | 8,764 tok/s | MFU 37% | 7.6 GB | ETA 1h 12m
+[train] step 120/1,278 | loss 0.0660 | lr 9.86e-05 | grad 0.27 | 8,772 tok/s | MFU 37% | 7.6 GB | ETA 1h 12m
+[train] step 121/1,278 | loss 0.0899 | lr 9.86e-05 | grad 0.34 | 8,772 tok/s | MFU 37% | 7.6 GB | ETA 1h 12m
+[train] step 122/1,278 | loss 0.0686 | lr 9.86e-05 | grad 0.34 | 8,770 tok/s | MFU 37% | 7.6 GB | ETA 1h 11m
+[train] step 123/1,278 | loss 0.0639 | lr 9.85e-05 | grad 0.32 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 1h 11m
+[train] step 124/1,278 | loss 0.0542 | lr 9.85e-05 | grad 0.22 | 8,782 tok/s | MFU 38% | 7.6 GB | ETA 1h 11m
+[train] step 125/1,278 | loss 0.0522 | lr 9.85e-05 | grad 0.23 | 8,790 tok/s | MFU 38% | 7.6 GB | ETA 1h 11m
+[train] step 126/1,278 | loss 0.0542 | lr 9.85e-05 | grad 0.28 | 8,800 tok/s | MFU 38% | 7.6 GB | ETA 1h 11m
+[train] step 127/1,278 | loss 0.0685 | lr 9.84e-05 | grad 0.32 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 1h 11m
+[train] step 128/1,278 | loss 0.0702 | lr 9.84e-05 | grad 0.26 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 1h 11m
+[train] step 129/1,278 | loss 0.0742 | lr 9.84e-05 | grad 0.31 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 1h 11m
+[train] step 130/1,278 | loss 0.0509 | lr 9.83e-05 | grad 0.25 | 8,823 tok/s | MFU 38% | 7.6 GB | ETA 1h 11m
+[train] step 131/1,278 | loss 0.0945 | lr 9.83e-05 | grad 0.31 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 1h 11m
+[train] step 132/1,278 | loss 0.0473 | lr 9.83e-05 | grad 0.19 | 8,819 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 133/1,278 | loss 0.0659 | lr 9.83e-05 | grad 0.28 | 8,819 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 134/1,278 | loss 0.0528 | lr 9.82e-05 | grad 0.29 | 8,818 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 135/1,278 | loss 0.0508 | lr 9.82e-05 | grad 0.27 | 8,818 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 136/1,278 | loss 0.0696 | lr 9.82e-05 | grad 0.33 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 137/1,278 | loss 0.0594 | lr 9.81e-05 | grad 0.31 | 8,812 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 138/1,278 | loss 0.0551 | lr 9.81e-05 | grad 0.28 | 8,807 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 139/1,278 | loss 0.0455 | lr 9.81e-05 | grad 0.24 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 140/1,278 | loss 0.0471 | lr 9.80e-05 | grad 0.28 | 8,798 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 141/1,278 | loss 0.0571 | lr 9.80e-05 | grad 0.30 | 8,795 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 142/1,278 | loss 0.0547 | lr 9.80e-05 | grad 0.34 | 8,790 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 143/1,278 | loss 0.0457 | lr 9.79e-05 | grad 0.24 | 8,781 tok/s | MFU 38% | 7.6 GB | ETA 1h 10m
+[train] step 144/1,278 | loss 0.0822 | lr 9.79e-05 | grad 0.40 | 8,775 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 145/1,278 | loss 0.0520 | lr 9.79e-05 | grad 0.25 | 8,770 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 146/1,278 | loss 0.0529 | lr 9.78e-05 | grad 0.20 | 8,765 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 147/1,278 | loss 0.0780 | lr 9.78e-05 | grad 0.42 | 8,761 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 148/1,278 | loss 0.0454 | lr 9.78e-05 | grad 0.23 | 8,756 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 149/1,278 | loss 0.0805 | lr 9.77e-05 | grad 0.28 | 8,750 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 150/1,278 | loss 0.0483 | lr 9.77e-05 | grad 0.31 | 8,744 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[eval] step 150 | validation loss 0.0603 (perplexity 1.1)
+[train] step 151/1,278 | loss 0.0458 | lr 9.76e-05 | grad 0.18 | 8,750 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 152/1,278 | loss 0.0464 | lr 9.76e-05 | grad 0.22 | 8,752 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 153/1,278 | loss 0.0626 | lr 9.76e-05 | grad 0.28 | 8,747 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 154/1,278 | loss 0.0524 | lr 9.75e-05 | grad 0.29 | 8,743 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 155/1,278 | loss 0.0464 | lr 9.75e-05 | grad 0.21 | 8,733 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] checkpoint saved at step 155
+[train] step 156/1,278 | loss 0.0444 | lr 9.75e-05 | grad 0.20 | 8,756 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 157/1,278 | loss 0.1418 | lr 9.74e-05 | grad 0.51 | 8,767 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 158/1,278 | loss 0.1024 | lr 9.74e-05 | grad 0.39 | 8,770 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 159/1,278 | loss 0.0471 | lr 9.74e-05 | grad 0.22 | 8,761 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 160/1,278 | loss 0.0699 | lr 9.73e-05 | grad 0.30 | 8,737 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 161/1,278 | loss 0.0497 | lr 9.73e-05 | grad 0.26 | 8,706 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 162/1,278 | loss 0.0556 | lr 9.72e-05 | grad 0.29 | 8,669 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 163/1,278 | loss 0.0490 | lr 9.72e-05 | grad 0.23 | 8,635 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 164/1,278 | loss 0.0469 | lr 9.72e-05 | grad 0.23 | 8,604 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 165/1,278 | loss 0.0565 | lr 9.71e-05 | grad 0.28 | 8,581 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 166/1,278 | loss 0.1010 | lr 9.71e-05 | grad 0.36 | 8,567 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 167/1,278 | loss 0.0479 | lr 9.70e-05 | grad 0.18 | 8,561 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 168/1,278 | loss 0.0453 | lr 9.70e-05 | grad 0.24 | 8,561 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 169/1,278 | loss 0.0482 | lr 9.70e-05 | grad 0.39 | 8,566 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 170/1,278 | loss 0.0433 | lr 9.69e-05 | grad 0.18 | 8,575 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 171/1,278 | loss 0.0584 | lr 9.69e-05 | grad 0.33 | 8,579 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 172/1,278 | loss 0.0587 | lr 9.68e-05 | grad 0.27 | 8,590 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 173/1,278 | loss 0.0536 | lr 9.68e-05 | grad 0.21 | 8,605 tok/s | MFU 37% | 7.6 GB | ETA 1h 10m
+[train] step 174/1,278 | loss 0.0498 | lr 9.68e-05 | grad 0.23 | 8,620 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 175/1,278 | loss 0.0442 | lr 9.67e-05 | grad 0.14 | 8,644 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 176/1,278 | loss 0.0481 | lr 9.67e-05 | grad 0.49 | 8,636 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 177/1,278 | loss 0.0759 | lr 9.66e-05 | grad 0.27 | 8,637 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 178/1,278 | loss 0.0480 | lr 9.66e-05 | grad 0.21 | 8,643 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 179/1,278 | loss 0.0575 | lr 9.65e-05 | grad 0.25 | 8,658 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 180/1,278 | loss 0.0455 | lr 9.65e-05 | grad 0.25 | 8,679 tok/s | MFU 37% | 7.6 GB | ETA 1h 9m
+[train] step 181/1,278 | loss 0.0476 | lr 9.65e-05 | grad 0.27 | 8,708 tok/s | MFU 37% | 7.6 GB | ETA 1h 8m
+[train] step 182/1,278 | loss 0.0482 | lr 9.64e-05 | grad 0.26 | 8,740 tok/s | MFU 37% | 7.6 GB | ETA 1h 8m
+[train] step 183/1,278 | loss 0.0533 | lr 9.64e-05 | grad 0.23 | 8,770 tok/s | MFU 37% | 7.6 GB | ETA 1h 8m
+[train] step 184/1,278 | loss 0.0586 | lr 9.63e-05 | grad 0.28 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 185/1,278 | loss 0.0500 | lr 9.63e-05 | grad 0.23 | 8,817 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 186/1,278 | loss 0.0587 | lr 9.62e-05 | grad 0.32 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 187/1,278 | loss 0.0432 | lr 9.62e-05 | grad 0.18 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 188/1,278 | loss 0.0520 | lr 9.61e-05 | grad 0.24 | 8,829 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 189/1,278 | loss 0.0455 | lr 9.61e-05 | grad 0.35 | 8,824 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 190/1,278 | loss 0.0568 | lr 9.61e-05 | grad 0.36 | 8,817 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 191/1,278 | loss 0.0479 | lr 9.60e-05 | grad 0.25 | 8,810 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 192/1,278 | loss 0.0520 | lr 9.60e-05 | grad 0.28 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 193/1,278 | loss 0.0468 | lr 9.59e-05 | grad 0.29 | 8,788 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 194/1,278 | loss 0.0461 | lr 9.59e-05 | grad 0.32 | 8,784 tok/s | MFU 38% | 7.6 GB | ETA 1h 7m
+[train] step 195/1,278 | loss 0.0415 | lr 9.58e-05 | grad 0.22 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 1h 7m
+[train] step 196/1,278 | loss 0.0488 | lr 9.58e-05 | grad 0.26 | 8,766 tok/s | MFU 37% | 7.6 GB | ETA 1h 7m
+[train] step 197/1,278 | loss 0.0417 | lr 9.57e-05 | grad 0.29 | 8,758 tok/s | MFU 37% | 7.6 GB | ETA 1h 7m
+[train] step 198/1,278 | loss 0.0477 | lr 9.57e-05 | grad 0.33 | 8,755 tok/s | MFU 37% | 7.6 GB | ETA 1h 7m
+[train] step 199/1,278 | loss 0.0509 | lr 9.56e-05 | grad 0.23 | 8,753 tok/s | MFU 37% | 7.6 GB | ETA 1h 7m
+[train] step 200/1,278 | loss 0.0384 | lr 9.56e-05 | grad 0.18 | 8,755 tok/s | MFU 37% | 7.6 GB | ETA 1h 7m
+[eval] step 200 | validation loss 0.0510 (perplexity 1.1)
+[train] step 201/1,278 | loss 0.0476 | lr 9.55e-05 | grad 0.22 | 8,760 tok/s | MFU 37% | 7.6 GB | ETA 1h 7m
+[train] step 202/1,278 | loss 0.0491 | lr 9.55e-05 | grad 0.32 | 8,770 tok/s | MFU 37% | 7.6 GB | ETA 1h 7m
+[train] step 203/1,278 | loss 0.0495 | lr 9.54e-05 | grad 0.31 | 8,780 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 204/1,278 | loss 0.0455 | lr 9.54e-05 | grad 0.29 | 8,783 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 205/1,278 | loss 0.0501 | lr 9.53e-05 | grad 0.27 | 8,783 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 206/1,278 | loss 0.0492 | lr 9.53e-05 | grad 0.30 | 8,786 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 207/1,278 | loss 0.0465 | lr 9.52e-05 | grad 0.28 | 8,788 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 208/1,278 | loss 0.0508 | lr 9.52e-05 | grad 0.26 | 8,786 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 209/1,278 | loss 0.0411 | lr 9.51e-05 | grad 0.20 | 8,785 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 210/1,278 | loss 0.0450 | lr 9.51e-05 | grad 0.24 | 8,784 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 211/1,278 | loss 0.0466 | lr 9.50e-05 | grad 0.29 | 8,781 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 212/1,278 | loss 0.0460 | lr 9.50e-05 | grad 0.23 | 8,783 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 213/1,278 | loss 0.0461 | lr 9.49e-05 | grad 0.30 | 8,780 tok/s | MFU 38% | 7.6 GB | ETA 1h 6m
+[train] step 214/1,278 | loss 0.0431 | lr 9.49e-05 | grad 0.18 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 1h 6m
+[train] step 215/1,278 | loss 0.0623 | lr 9.48e-05 | grad 0.35 | 8,772 tok/s | MFU 37% | 7.6 GB | ETA 1h 6m
+[train] step 216/1,278 | loss 0.0430 | lr 9.48e-05 | grad 0.25 | 8,771 tok/s | MFU 37% | 7.6 GB | ETA 1h 6m
+[train] step 217/1,278 | loss 0.0515 | lr 9.47e-05 | grad 0.25 | 8,771 tok/s | MFU 37% | 7.6 GB | ETA 1h 6m
+[train] step 218/1,278 | loss 0.0428 | lr 9.47e-05 | grad 0.19 | 8,773 tok/s | MFU 37% | 7.6 GB | ETA 1h 5m
+[train] step 219/1,278 | loss 0.0495 | lr 9.46e-05 | grad 0.26 | 8,777 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 220/1,278 | loss 0.0402 | lr 9.46e-05 | grad 0.18 | 8,781 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 221/1,278 | loss 0.0380 | lr 9.45e-05 | grad 0.19 | 8,780 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 222/1,278 | loss 0.0446 | lr 9.44e-05 | grad 0.21 | 8,775 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 223/1,278 | loss 0.0448 | lr 9.44e-05 | grad 0.21 | 8,777 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 224/1,278 | loss 0.0417 | lr 9.43e-05 | grad 0.21 | 8,781 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 225/1,278 | loss 0.0400 | lr 9.43e-05 | grad 0.17 | 8,789 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 226/1,278 | loss 0.0481 | lr 9.42e-05 | grad 0.26 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 227/1,278 | loss 0.0438 | lr 9.42e-05 | grad 0.20 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 228/1,278 | loss 0.0628 | lr 9.41e-05 | grad 0.23 | 8,804 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 229/1,278 | loss 0.0465 | lr 9.41e-05 | grad 0.21 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 1h 5m
+[train] step 230/1,278 | loss 0.0426 | lr 9.40e-05 | grad 0.23 | 8,809 tok/s | MFU 38% | 7.6 GB | ETA 1h 4m
+[train] step 231/1,278 | loss 0.0440 | lr 9.40e-05 | grad 0.26 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 1h 4m
+[train] step 232/1,278 | loss 0.0481 | lr 9.39e-05 | grad 0.25 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 1h 4m
+[train] step 233/1,278 | loss 0.0389 | lr 9.38e-05 | grad 0.21 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 1h 4m
+[train] step 234/1,278 | loss 0.0454 | lr 9.38e-05 | grad 0.25 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 1h 4m
+[train] step 235/1,278 | loss 0.0447 | lr 9.37e-05 | grad 0.25 | 8,789 tok/s | MFU 38% | 7.6 GB | ETA 1h 4m
+[train] step 236/1,278 | loss 0.0473 | lr 9.37e-05 | grad 0.27 | 8,781 tok/s | MFU 38% | 7.6 GB | ETA 1h 4m
+[train] step 237/1,278 | loss 0.0430 | lr 9.36e-05 | grad 0.19 | 8,775 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 238/1,278 | loss 0.0386 | lr 9.36e-05 | grad 0.18 | 8,767 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 239/1,278 | loss 0.0394 | lr 9.35e-05 | grad 0.16 | 8,758 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 240/1,278 | loss 0.0441 | lr 9.34e-05 | grad 0.30 | 8,754 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 241/1,278 | loss 0.0471 | lr 9.34e-05 | grad 0.24 | 8,750 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 242/1,278 | loss 0.0366 | lr 9.33e-05 | grad 0.18 | 8,748 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 243/1,278 | loss 0.0421 | lr 9.33e-05 | grad 0.24 | 8,744 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 244/1,278 | loss 0.0476 | lr 9.32e-05 | grad 0.37 | 8,745 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 245/1,278 | loss 0.0449 | lr 9.31e-05 | grad 0.23 | 8,743 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 246/1,278 | loss 0.0387 | lr 9.31e-05 | grad 0.19 | 8,744 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 247/1,278 | loss 0.0439 | lr 9.30e-05 | grad 0.24 | 8,744 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 248/1,278 | loss 0.0421 | lr 9.30e-05 | grad 0.25 | 8,747 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 249/1,278 | loss 0.0526 | lr 9.29e-05 | grad 0.21 | 8,744 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 250/1,278 | loss 0.0405 | lr 9.28e-05 | grad 0.27 | 8,749 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[eval] step 250 | validation loss 0.0413 (perplexity 1.0)
+[train] step 251/1,278 | loss 0.0438 | lr 9.28e-05 | grad 0.22 | 8,756 tok/s | MFU 37% | 7.6 GB | ETA 1h 4m
+[train] step 252/1,278 | loss 0.0388 | lr 9.27e-05 | grad 0.22 | 8,764 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 253/1,278 | loss 0.0395 | lr 9.27e-05 | grad 0.25 | 8,767 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 254/1,278 | loss 0.0392 | lr 9.26e-05 | grad 0.21 | 8,772 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 255/1,278 | loss 0.0504 | lr 9.25e-05 | grad 0.20 | 8,773 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 256/1,278 | loss 0.0398 | lr 9.25e-05 | grad 0.22 | 8,773 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 257/1,278 | loss 0.0397 | lr 9.24e-05 | grad 0.15 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 258/1,278 | loss 0.0449 | lr 9.23e-05 | grad 0.21 | 8,769 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 259/1,278 | loss 0.0432 | lr 9.23e-05 | grad 0.20 | 8,769 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 260/1,278 | loss 0.0392 | lr 9.22e-05 | grad 0.19 | 8,770 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 261/1,278 | loss 0.0368 | lr 9.22e-05 | grad 0.22 | 8,771 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 262/1,278 | loss 0.0378 | lr 9.21e-05 | grad 0.18 | 8,773 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 263/1,278 | loss 0.0375 | lr 9.20e-05 | grad 0.16 | 8,775 tok/s | MFU 38% | 7.6 GB | ETA 1h 3m
+[train] step 264/1,278 | loss 0.0501 | lr 9.20e-05 | grad 0.30 | 8,775 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 265/1,278 | loss 0.0383 | lr 9.19e-05 | grad 0.19 | 8,775 tok/s | MFU 37% | 7.6 GB | ETA 1h 3m
+[train] step 266/1,278 | loss 0.0387 | lr 9.18e-05 | grad 0.19 | 8,773 tok/s | MFU 37% | 7.6 GB | ETA 1h 2m
+[train] step 267/1,278 | loss 0.0394 | lr 9.18e-05 | grad 0.20 | 8,773 tok/s | MFU 37% | 7.6 GB | ETA 1h 2m
+[train] step 268/1,278 | loss 0.0492 | lr 9.17e-05 | grad 0.23 | 8,773 tok/s | MFU 37% | 7.6 GB | ETA 1h 2m
+[train] step 269/1,278 | loss 0.0356 | lr 9.16e-05 | grad 0.16 | 8,777 tok/s | MFU 38% | 7.6 GB | ETA 1h 2m
+[train] step 270/1,278 | loss 0.0413 | lr 9.16e-05 | grad 0.17 | 8,776 tok/s | MFU 38% | 7.6 GB | ETA 1h 2m
+[train] step 271/1,278 | loss 0.0366 | lr 9.15e-05 | grad 0.14 | 8,772 tok/s | MFU 37% | 7.6 GB | ETA 1h 2m
+[train] step 272/1,278 | loss 0.0384 | lr 9.14e-05 | grad 0.18 | 8,767 tok/s | MFU 37% | 7.6 GB | ETA 1h 2m
+[train] step 273/1,278 | loss 0.0339 | lr 9.14e-05 | grad 0.16 | 8,764 tok/s | MFU 37% | 7.6 GB | ETA 1h 2m
+[train] step 274/1,278 | loss 0.0367 | lr 9.13e-05 | grad 0.20 | 8,765 tok/s | MFU 37% | 7.6 GB | ETA 1h 2m
+[train] step 275/1,278 | loss 0.0411 | lr 9.12e-05 | grad 0.22 | 8,768 tok/s | MFU 37% | 7.6 GB | ETA 1h 2m
+[train] step 276/1,278 | loss 0.0400 | lr 9.12e-05 | grad 0.28 | 8,771 tok/s | MFU 37% | 7.6 GB | ETA 1h 2m
+[train] step 277/1,278 | loss 0.0334 | lr 9.11e-05 | grad 0.17 | 8,775 tok/s | MFU 37% | 7.6 GB | ETA 1h 2m
+[train] step 278/1,278 | loss 0.0412 | lr 9.10e-05 | grad 0.29 | 8,783 tok/s | MFU 38% | 7.6 GB | ETA 1h 2m
+[train] step 279/1,278 | loss 0.0423 | lr 9.10e-05 | grad 0.28 | 8,788 tok/s | MFU 38% | 7.6 GB | ETA 1h 2m
+[train] step 280/1,278 | loss 0.0425 | lr 9.09e-05 | grad 0.33 | 8,792 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 281/1,278 | loss 0.0378 | lr 9.08e-05 | grad 0.22 | 8,793 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 282/1,278 | loss 0.0430 | lr 9.08e-05 | grad 0.27 | 8,793 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 283/1,278 | loss 0.0350 | lr 9.07e-05 | grad 0.24 | 8,793 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 284/1,278 | loss 0.0372 | lr 9.06e-05 | grad 0.22 | 8,800 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 285/1,278 | loss 0.0467 | lr 9.06e-05 | grad 0.33 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 286/1,278 | loss 0.0422 | lr 9.05e-05 | grad 0.24 | 8,807 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 287/1,278 | loss 0.0374 | lr 9.04e-05 | grad 0.21 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 288/1,278 | loss 0.0335 | lr 9.04e-05 | grad 0.22 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 289/1,278 | loss 0.0439 | lr 9.03e-05 | grad 0.35 | 8,818 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 290/1,278 | loss 0.0374 | lr 9.02e-05 | grad 0.34 | 8,820 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 291/1,278 | loss 0.0340 | lr 9.02e-05 | grad 0.15 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 292/1,278 | loss 0.0350 | lr 9.01e-05 | grad 0.14 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 1h 1m
+[train] step 293/1,278 | loss 0.0371 | lr 9.00e-05 | grad 0.23 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 1h 0m
+[train] step 294/1,278 | loss 0.0531 | lr 8.99e-05 | grad 0.34 | 8,834 tok/s | MFU 38% | 7.6 GB | ETA 1h 0m
+[train] step 295/1,278 | loss 0.0390 | lr 8.99e-05 | grad 0.17 | 8,837 tok/s | MFU 38% | 7.6 GB | ETA 1h 0m
+[train] step 296/1,278 | loss 0.0444 | lr 8.98e-05 | grad 0.21 | 8,841 tok/s | MFU 38% | 7.6 GB | ETA 1h 0m
+[train] step 297/1,278 | loss 0.0377 | lr 8.97e-05 | grad 0.13 | 8,842 tok/s | MFU 38% | 7.6 GB | ETA 1h 0m
+[train] step 298/1,278 | loss 0.0301 | lr 8.97e-05 | grad 0.10 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 1h 0m
+[train] step 299/1,278 | loss 0.0413 | lr 8.96e-05 | grad 0.23 | 8,848 tok/s | MFU 38% | 7.6 GB | ETA 1h 0m
+[train] step 300/1,278 | loss 0.0359 | lr 8.95e-05 | grad 0.21 | 8,849 tok/s | MFU 38% | 7.6 GB | ETA 1h 0m
+[eval] step 300 | validation loss 0.0362 (perplexity 1.0)
+[train] step 301/1,278 | loss 0.0369 | lr 8.94e-05 | grad 0.21 | 8,861 tok/s | MFU 38% | 7.6 GB | ETA 1h 0m
+[train] step 302/1,278 | loss 0.0366 | lr 8.94e-05 | grad 0.18 | 8,871 tok/s | MFU 38% | 7.6 GB | ETA 1h 0m
+[train] step 303/1,278 | loss 0.0335 | lr 8.93e-05 | grad 0.16 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] step 304/1,278 | loss 0.0371 | lr 8.92e-05 | grad 0.19 | 8,875 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] step 305/1,278 | loss 0.0334 | lr 8.91e-05 | grad 0.16 | 8,870 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] step 306/1,278 | loss 0.0363 | lr 8.91e-05 | grad 0.18 | 8,859 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] step 307/1,278 | loss 0.0363 | lr 8.90e-05 | grad 0.26 | 8,846 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] step 308/1,278 | loss 0.0353 | lr 8.89e-05 | grad 0.15 | 8,830 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] checkpoint saved at step 308
+[train] step 309/1,278 | loss 0.0385 | lr 8.89e-05 | grad 0.18 | 8,842 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] step 310/1,278 | loss 0.0336 | lr 8.88e-05 | grad 0.13 | 8,848 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] step 311/1,278 | loss 0.0366 | lr 8.87e-05 | grad 0.26 | 8,843 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] step 312/1,278 | loss 0.0361 | lr 8.86e-05 | grad 0.19 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] step 313/1,278 | loss 0.0348 | lr 8.86e-05 | grad 0.14 | 8,798 tok/s | MFU 38% | 7.6 GB | ETA 59m
+[train] step 314/1,278 | loss 0.0341 | lr 8.85e-05 | grad 0.20 | 8,763 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 315/1,278 | loss 0.0359 | lr 8.84e-05 | grad 0.17 | 8,722 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 316/1,278 | loss 0.0346 | lr 8.83e-05 | grad 0.20 | 8,683 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 317/1,278 | loss 0.0379 | lr 8.83e-05 | grad 0.21 | 8,655 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 318/1,278 | loss 0.0365 | lr 8.82e-05 | grad 0.19 | 8,635 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 319/1,278 | loss 0.0361 | lr 8.81e-05 | grad 0.22 | 8,620 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 320/1,278 | loss 0.0437 | lr 8.80e-05 | grad 0.32 | 8,612 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 321/1,278 | loss 0.0372 | lr 8.80e-05 | grad 0.18 | 8,603 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 322/1,278 | loss 0.0381 | lr 8.79e-05 | grad 0.20 | 8,599 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 323/1,278 | loss 0.0367 | lr 8.78e-05 | grad 0.24 | 8,601 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 324/1,278 | loss 0.0400 | lr 8.77e-05 | grad 0.25 | 8,613 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 325/1,278 | loss 0.0319 | lr 8.76e-05 | grad 0.17 | 8,628 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 326/1,278 | loss 0.0348 | lr 8.76e-05 | grad 0.17 | 8,651 tok/s | MFU 37% | 7.6 GB | ETA 1h 0m
+[train] step 327/1,278 | loss 0.0359 | lr 8.75e-05 | grad 0.21 | 8,676 tok/s | MFU 37% | 7.6 GB | ETA 59m
+[train] step 328/1,278 | loss 0.0350 | lr 8.74e-05 | grad 0.17 | 8,700 tok/s | MFU 37% | 7.6 GB | ETA 59m
+[train] step 329/1,278 | loss 0.0326 | lr 8.73e-05 | grad 0.21 | 8,694 tok/s | MFU 37% | 7.6 GB | ETA 59m
+[train] step 330/1,278 | loss 0.0360 | lr 8.73e-05 | grad 0.19 | 8,692 tok/s | MFU 37% | 7.6 GB | ETA 59m
+[train] step 331/1,278 | loss 0.0369 | lr 8.72e-05 | grad 0.16 | 8,697 tok/s | MFU 37% | 7.6 GB | ETA 59m
+[train] step 332/1,278 | loss 0.0349 | lr 8.71e-05 | grad 0.15 | 8,712 tok/s | MFU 37% | 7.6 GB | ETA 59m
+[train] step 333/1,278 | loss 0.0371 | lr 8.70e-05 | grad 0.17 | 8,734 tok/s | MFU 37% | 7.6 GB | ETA 59m
+[train] step 334/1,278 | loss 0.0339 | lr 8.69e-05 | grad 0.13 | 8,762 tok/s | MFU 37% | 7.6 GB | ETA 58m
+[train] step 335/1,278 | loss 0.0347 | lr 8.69e-05 | grad 0.16 | 8,794 tok/s | MFU 38% | 7.6 GB | ETA 58m
+[train] step 336/1,278 | loss 0.0388 | lr 8.68e-05 | grad 0.19 | 8,823 tok/s | MFU 38% | 7.6 GB | ETA 58m
+[train] step 337/1,278 | loss 0.0375 | lr 8.67e-05 | grad 0.19 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 58m
+[train] step 338/1,278 | loss 0.0298 | lr 8.66e-05 | grad 0.09 | 8,856 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 339/1,278 | loss 0.0377 | lr 8.65e-05 | grad 0.20 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 340/1,278 | loss 0.0397 | lr 8.65e-05 | grad 0.26 | 8,865 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 341/1,278 | loss 0.0410 | lr 8.64e-05 | grad 0.26 | 8,862 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 342/1,278 | loss 0.0342 | lr 8.63e-05 | grad 0.20 | 8,858 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 343/1,278 | loss 0.0305 | lr 8.62e-05 | grad 0.15 | 8,850 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 344/1,278 | loss 0.0383 | lr 8.61e-05 | grad 0.20 | 8,841 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 345/1,278 | loss 0.0407 | lr 8.61e-05 | grad 0.25 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 346/1,278 | loss 0.0356 | lr 8.60e-05 | grad 0.20 | 8,823 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 347/1,278 | loss 0.0346 | lr 8.59e-05 | grad 0.21 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 348/1,278 | loss 0.0305 | lr 8.58e-05 | grad 0.15 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 349/1,278 | loss 0.0356 | lr 8.57e-05 | grad 0.18 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 350/1,278 | loss 0.0304 | lr 8.56e-05 | grad 0.25 | 8,800 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[eval] step 350 | validation loss 0.0336 (perplexity 1.0)
+[train] step 351/1,278 | loss 0.0335 | lr 8.56e-05 | grad 0.18 | 8,804 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 352/1,278 | loss 0.0362 | lr 8.55e-05 | grad 0.21 | 8,804 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 353/1,278 | loss 0.0324 | lr 8.54e-05 | grad 0.18 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 354/1,278 | loss 0.0342 | lr 8.53e-05 | grad 0.20 | 8,807 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 355/1,278 | loss 0.0376 | lr 8.52e-05 | grad 0.21 | 8,805 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 356/1,278 | loss 0.0329 | lr 8.51e-05 | grad 0.19 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 357/1,278 | loss 0.0361 | lr 8.51e-05 | grad 0.18 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 358/1,278 | loss 0.0406 | lr 8.50e-05 | grad 0.34 | 8,791 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 359/1,278 | loss 0.0304 | lr 8.49e-05 | grad 0.20 | 8,784 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 360/1,278 | loss 0.0313 | lr 8.48e-05 | grad 0.18 | 8,784 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 361/1,278 | loss 0.0324 | lr 8.47e-05 | grad 0.15 | 8,782 tok/s | MFU 38% | 7.6 GB | ETA 57m
+[train] step 362/1,278 | loss 0.0361 | lr 8.46e-05 | grad 0.25 | 8,778 tok/s | MFU 38% | 7.6 GB | ETA 56m
+[train] step 363/1,278 | loss 0.0372 | lr 8.46e-05 | grad 0.18 | 8,775 tok/s | MFU 37% | 7.6 GB | ETA 56m
+[train] step 364/1,278 | loss 0.0364 | lr 8.45e-05 | grad 0.19 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 56m
+[train] step 365/1,278 | loss 0.0320 | lr 8.44e-05 | grad 0.15 | 8,772 tok/s | MFU 37% | 7.6 GB | ETA 56m
+[train] step 366/1,278 | loss 0.0339 | lr 8.43e-05 | grad 0.17 | 8,772 tok/s | MFU 37% | 7.6 GB | ETA 56m
+[train] step 367/1,278 | loss 0.0386 | lr 8.42e-05 | grad 0.25 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 56m
+[train] step 368/1,278 | loss 0.0346 | lr 8.41e-05 | grad 0.18 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 56m
+[train] step 369/1,278 | loss 0.0328 | lr 8.40e-05 | grad 0.23 | 8,776 tok/s | MFU 38% | 7.6 GB | ETA 56m
+[train] step 370/1,278 | loss 0.0316 | lr 8.40e-05 | grad 0.18 | 8,778 tok/s | MFU 38% | 7.6 GB | ETA 56m
+[train] step 371/1,278 | loss 0.0343 | lr 8.39e-05 | grad 0.18 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 56m
+[train] step 372/1,278 | loss 0.0363 | lr 8.38e-05 | grad 0.17 | 8,773 tok/s | MFU 37% | 7.6 GB | ETA 56m
+[train] step 373/1,278 | loss 0.0322 | lr 8.37e-05 | grad 0.24 | 8,773 tok/s | MFU 37% | 7.6 GB | ETA 56m
+[train] step 374/1,278 | loss 0.0386 | lr 8.36e-05 | grad 0.23 | 8,778 tok/s | MFU 38% | 7.6 GB | ETA 56m
+[train] step 375/1,278 | loss 0.0365 | lr 8.35e-05 | grad 0.16 | 8,782 tok/s | MFU 38% | 7.6 GB | ETA 56m
+[train] step 376/1,278 | loss 0.0331 | lr 8.34e-05 | grad 0.22 | 8,792 tok/s | MFU 38% | 7.6 GB | ETA 56m
+[train] step 377/1,278 | loss 0.0369 | lr 8.34e-05 | grad 0.24 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 378/1,278 | loss 0.0345 | lr 8.33e-05 | grad 0.15 | 8,807 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 379/1,278 | loss 0.0313 | lr 8.32e-05 | grad 0.15 | 8,815 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 380/1,278 | loss 0.0309 | lr 8.31e-05 | grad 0.11 | 8,817 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 381/1,278 | loss 0.0381 | lr 8.30e-05 | grad 0.20 | 8,819 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 382/1,278 | loss 0.0312 | lr 8.29e-05 | grad 0.15 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 383/1,278 | loss 0.0356 | lr 8.28e-05 | grad 0.22 | 8,823 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 384/1,278 | loss 0.0351 | lr 8.27e-05 | grad 0.20 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 385/1,278 | loss 0.0329 | lr 8.27e-05 | grad 0.17 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 386/1,278 | loss 0.0319 | lr 8.26e-05 | grad 0.19 | 8,819 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 387/1,278 | loss 0.0309 | lr 8.25e-05 | grad 0.12 | 8,817 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 388/1,278 | loss 0.0432 | lr 8.24e-05 | grad 0.25 | 8,810 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 389/1,278 | loss 0.0325 | lr 8.23e-05 | grad 0.23 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 390/1,278 | loss 0.0333 | lr 8.22e-05 | grad 0.22 | 8,804 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 391/1,278 | loss 0.0310 | lr 8.21e-05 | grad 0.11 | 8,807 tok/s | MFU 38% | 7.6 GB | ETA 55m
+[train] step 392/1,278 | loss 0.0297 | lr 8.20e-05 | grad 0.15 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 54m
+[train] step 393/1,278 | loss 0.0373 | lr 8.19e-05 | grad 0.23 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 54m
+[train] step 394/1,278 | loss 0.0297 | lr 8.18e-05 | grad 0.15 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 54m
+[train] step 395/1,278 | loss 0.0326 | lr 8.18e-05 | grad 0.18 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 54m
+[train] step 396/1,278 | loss 0.0301 | lr 8.17e-05 | grad 0.15 | 8,820 tok/s | MFU 38% | 7.6 GB | ETA 54m
+[train] step 397/1,278 | loss 0.0313 | lr 8.16e-05 | grad 0.15 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 54m
+[train] step 398/1,278 | loss 0.0296 | lr 8.15e-05 | grad 0.12 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 54m
+[train] step 399/1,278 | loss 0.0371 | lr 8.14e-05 | grad 0.20 | 8,840 tok/s | MFU 38% | 7.6 GB | ETA 54m
+[train] step 400/1,278 | loss 0.0309 | lr 8.13e-05 | grad 0.17 | 8,848 tok/s | MFU 38% | 7.6 GB | ETA 54m
+[eval] step 400 | validation loss 0.0320 (perplexity 1.0)
+[train] step 401/1,278 | loss 0.0381 | lr 8.12e-05 | grad 0.17 | 8,859 tok/s | MFU 38% | 7.6 GB | ETA 54m
+[train] step 402/1,278 | loss 0.0308 | lr 8.11e-05 | grad 0.11 | 8,869 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 403/1,278 | loss 0.0353 | lr 8.10e-05 | grad 0.20 | 8,875 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 404/1,278 | loss 0.0322 | lr 8.09e-05 | grad 0.12 | 8,877 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 405/1,278 | loss 0.0299 | lr 8.08e-05 | grad 0.12 | 8,870 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 406/1,278 | loss 0.0327 | lr 8.08e-05 | grad 0.23 | 8,858 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 407/1,278 | loss 0.0304 | lr 8.07e-05 | grad 0.14 | 8,843 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 408/1,278 | loss 0.0315 | lr 8.06e-05 | grad 0.16 | 8,835 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 409/1,278 | loss 0.0304 | lr 8.05e-05 | grad 0.16 | 8,823 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 410/1,278 | loss 0.0284 | lr 8.04e-05 | grad 0.17 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 411/1,278 | loss 0.0327 | lr 8.03e-05 | grad 0.15 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 412/1,278 | loss 0.0272 | lr 8.02e-05 | grad 0.11 | 8,807 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 413/1,278 | loss 0.0379 | lr 8.01e-05 | grad 0.19 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 414/1,278 | loss 0.0277 | lr 8.00e-05 | grad 0.13 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 415/1,278 | loss 0.0283 | lr 7.99e-05 | grad 0.15 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 416/1,278 | loss 0.0304 | lr 7.98e-05 | grad 0.15 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 417/1,278 | loss 0.0309 | lr 7.97e-05 | grad 0.17 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 418/1,278 | loss 0.0341 | lr 7.96e-05 | grad 0.19 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 419/1,278 | loss 0.0338 | lr 7.95e-05 | grad 0.19 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 420/1,278 | loss 0.0329 | lr 7.94e-05 | grad 0.17 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 421/1,278 | loss 0.0330 | lr 7.94e-05 | grad 0.19 | 8,795 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 422/1,278 | loss 0.0286 | lr 7.93e-05 | grad 0.15 | 8,788 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 423/1,278 | loss 0.0360 | lr 7.92e-05 | grad 0.16 | 8,785 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 424/1,278 | loss 0.0304 | lr 7.91e-05 | grad 0.19 | 8,788 tok/s | MFU 38% | 7.6 GB | ETA 53m
+[train] step 425/1,278 | loss 0.0345 | lr 7.90e-05 | grad 0.20 | 8,798 tok/s | MFU 38% | 7.6 GB | ETA 52m
+[train] step 426/1,278 | loss 0.0364 | lr 7.89e-05 | grad 0.20 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 52m
+[train] step 427/1,278 | loss 0.0281 | lr 7.88e-05 | grad 0.16 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 52m
+[train] step 428/1,278 | loss 0.0300 | lr 7.87e-05 | grad 0.12 | 8,838 tok/s | MFU 38% | 7.6 GB | ETA 52m
+[train] step 429/1,278 | loss 0.0276 | lr 7.86e-05 | grad 0.14 | 8,847 tok/s | MFU 38% | 7.6 GB | ETA 52m
+[train] step 430/1,278 | loss 0.0292 | lr 7.85e-05 | grad 0.17 | 8,858 tok/s | MFU 38% | 7.6 GB | ETA 52m
+[train] step 431/1,278 | loss 0.0332 | lr 7.84e-05 | grad 0.15 | 8,867 tok/s | MFU 38% | 7.6 GB | ETA 52m
+[train] step 432/1,278 | loss 0.0329 | lr 7.83e-05 | grad 0.18 | 8,874 tok/s | MFU 38% | 7.6 GB | ETA 52m
+[train] step 433/1,278 | loss 0.0323 | lr 7.82e-05 | grad 0.16 | 8,875 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 434/1,278 | loss 0.0293 | lr 7.81e-05 | grad 0.24 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 435/1,278 | loss 0.0302 | lr 7.80e-05 | grad 0.13 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 436/1,278 | loss 0.0326 | lr 7.79e-05 | grad 0.15 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 437/1,278 | loss 0.0290 | lr 7.78e-05 | grad 0.16 | 8,881 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 438/1,278 | loss 0.0296 | lr 7.77e-05 | grad 0.11 | 8,880 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 439/1,278 | loss 0.0336 | lr 7.76e-05 | grad 0.18 | 8,879 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 440/1,278 | loss 0.0347 | lr 7.75e-05 | grad 0.15 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 441/1,278 | loss 0.0311 | lr 7.74e-05 | grad 0.17 | 8,880 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 442/1,278 | loss 0.0319 | lr 7.73e-05 | grad 0.12 | 8,881 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 443/1,278 | loss 0.0284 | lr 7.72e-05 | grad 0.10 | 8,881 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 444/1,278 | loss 0.0313 | lr 7.71e-05 | grad 0.13 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 445/1,278 | loss 0.0312 | lr 7.70e-05 | grad 0.14 | 8,881 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 446/1,278 | loss 0.0315 | lr 7.69e-05 | grad 0.15 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 447/1,278 | loss 0.0346 | lr 7.68e-05 | grad 0.23 | 8,881 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 448/1,278 | loss 0.0290 | lr 7.67e-05 | grad 0.17 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 51m
+[train] step 449/1,278 | loss 0.0308 | lr 7.67e-05 | grad 0.13 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 450/1,278 | loss 0.0300 | lr 7.66e-05 | grad 0.14 | 8,875 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[eval] step 450 | validation loss 0.0289 (perplexity 1.0)
+[train] step 451/1,278 | loss 0.0328 | lr 7.65e-05 | grad 0.14 | 8,883 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 452/1,278 | loss 0.0300 | lr 7.64e-05 | grad 0.14 | 8,887 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 453/1,278 | loss 0.0311 | lr 7.63e-05 | grad 0.12 | 8,890 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 454/1,278 | loss 0.0297 | lr 7.62e-05 | grad 0.20 | 8,887 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 455/1,278 | loss 0.0304 | lr 7.61e-05 | grad 0.18 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 456/1,278 | loss 0.0278 | lr 7.60e-05 | grad 0.13 | 8,862 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 457/1,278 | loss 0.0352 | lr 7.59e-05 | grad 0.15 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 458/1,278 | loss 0.0307 | lr 7.58e-05 | grad 0.14 | 8,829 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 459/1,278 | loss 0.0289 | lr 7.57e-05 | grad 0.12 | 8,818 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 460/1,278 | loss 0.0310 | lr 7.56e-05 | grad 0.28 | 8,810 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 461/1,278 | loss 0.0359 | lr 7.55e-05 | grad 0.42 | 8,804 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] checkpoint saved at step 461
+[train] step 462/1,278 | loss 0.0312 | lr 7.54e-05 | grad 0.19 | 8,830 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 463/1,278 | loss 0.0323 | lr 7.53e-05 | grad 0.16 | 8,847 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 464/1,278 | loss 0.0309 | lr 7.52e-05 | grad 0.15 | 8,855 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 465/1,278 | loss 0.0312 | lr 7.51e-05 | grad 0.17 | 8,850 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 466/1,278 | loss 0.0311 | lr 7.50e-05 | grad 0.15 | 8,834 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 467/1,278 | loss 0.0301 | lr 7.49e-05 | grad 0.12 | 8,805 tok/s | MFU 38% | 7.6 GB | ETA 50m
+[train] step 468/1,278 | loss 0.0300 | lr 7.48e-05 | grad 0.16 | 8,775 tok/s | MFU 37% | 7.6 GB | ETA 50m
+[train] step 469/1,278 | loss 0.0351 | lr 7.47e-05 | grad 0.34 | 8,732 tok/s | MFU 37% | 7.6 GB | ETA 50m
+[train] step 470/1,278 | loss 0.0310 | lr 7.46e-05 | grad 0.18 | 8,684 tok/s | MFU 37% | 7.6 GB | ETA 50m
+[train] step 471/1,278 | loss 0.0278 | lr 7.45e-05 | grad 0.11 | 8,629 tok/s | MFU 37% | 7.6 GB | ETA 51m
+[train] step 472/1,278 | loss 0.0291 | lr 7.44e-05 | grad 0.12 | 8,588 tok/s | MFU 37% | 7.6 GB | ETA 51m
+[train] step 473/1,278 | loss 0.0281 | lr 7.42e-05 | grad 0.14 | 8,561 tok/s | MFU 37% | 7.6 GB | ETA 51m
+[train] step 474/1,278 | loss 0.0279 | lr 7.41e-05 | grad 0.12 | 8,548 tok/s | MFU 37% | 7.6 GB | ETA 51m
+[train] step 475/1,278 | loss 0.0314 | lr 7.40e-05 | grad 0.18 | 8,552 tok/s | MFU 37% | 7.6 GB | ETA 51m
+[train] step 476/1,278 | loss 0.0336 | lr 7.39e-05 | grad 0.21 | 8,568 tok/s | MFU 37% | 7.6 GB | ETA 51m
+[train] step 477/1,278 | loss 0.0283 | lr 7.38e-05 | grad 0.18 | 8,590 tok/s | MFU 37% | 7.6 GB | ETA 50m
+[train] step 478/1,278 | loss 0.0291 | lr 7.37e-05 | grad 0.16 | 8,617 tok/s | MFU 37% | 7.6 GB | ETA 50m
+[train] step 479/1,278 | loss 0.0301 | lr 7.36e-05 | grad 0.12 | 8,639 tok/s | MFU 37% | 7.6 GB | ETA 50m
+[train] step 480/1,278 | loss 0.0330 | lr 7.35e-05 | grad 0.19 | 8,661 tok/s | MFU 37% | 7.6 GB | ETA 50m
+[train] step 481/1,278 | loss 0.0315 | lr 7.34e-05 | grad 0.12 | 8,683 tok/s | MFU 37% | 7.6 GB | ETA 50m
+[train] step 482/1,278 | loss 0.0279 | lr 7.33e-05 | grad 0.09 | 8,675 tok/s | MFU 37% | 7.6 GB | ETA 50m
+[train] step 483/1,278 | loss 0.0285 | lr 7.32e-05 | grad 0.15 | 8,674 tok/s | MFU 37% | 7.6 GB | ETA 50m
+[train] step 484/1,278 | loss 0.0326 | lr 7.31e-05 | grad 0.28 | 8,677 tok/s | MFU 37% | 7.6 GB | ETA 49m
+[train] step 485/1,278 | loss 0.0309 | lr 7.30e-05 | grad 0.13 | 8,688 tok/s | MFU 37% | 7.6 GB | ETA 49m
+[train] step 486/1,278 | loss 0.0308 | lr 7.29e-05 | grad 0.13 | 8,708 tok/s | MFU 37% | 7.6 GB | ETA 49m
+[train] step 487/1,278 | loss 0.0283 | lr 7.28e-05 | grad 0.15 | 8,735 tok/s | MFU 37% | 7.6 GB | ETA 49m
+[train] step 488/1,278 | loss 0.0270 | lr 7.27e-05 | grad 0.08 | 8,763 tok/s | MFU 37% | 7.6 GB | ETA 49m
+[train] step 489/1,278 | loss 0.0308 | lr 7.26e-05 | grad 0.15 | 8,800 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 490/1,278 | loss 0.0292 | lr 7.25e-05 | grad 0.17 | 8,838 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 491/1,278 | loss 0.0297 | lr 7.24e-05 | grad 0.17 | 8,875 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 492/1,278 | loss 0.0308 | lr 7.23e-05 | grad 0.13 | 8,901 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 493/1,278 | loss 0.0286 | lr 7.22e-05 | grad 0.17 | 8,912 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 494/1,278 | loss 0.0298 | lr 7.21e-05 | grad 0.25 | 8,914 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 495/1,278 | loss 0.0330 | lr 7.20e-05 | grad 0.13 | 8,907 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 496/1,278 | loss 0.0311 | lr 7.19e-05 | grad 0.12 | 8,900 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 497/1,278 | loss 0.0257 | lr 7.18e-05 | grad 0.09 | 8,889 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 498/1,278 | loss 0.0244 | lr 7.17e-05 | grad 0.11 | 8,873 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 499/1,278 | loss 0.0298 | lr 7.16e-05 | grad 0.14 | 8,860 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 500/1,278 | loss 0.0304 | lr 7.15e-05 | grad 0.18 | 8,843 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[eval] step 500 | validation loss 0.0290 (perplexity 1.0)
+[train] step 501/1,278 | loss 0.0311 | lr 7.14e-05 | grad 0.28 | 8,830 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 502/1,278 | loss 0.0343 | lr 7.13e-05 | grad 0.17 | 8,815 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 503/1,278 | loss 0.0279 | lr 7.12e-05 | grad 0.17 | 8,799 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 504/1,278 | loss 0.0306 | lr 7.10e-05 | grad 0.13 | 8,788 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 505/1,278 | loss 0.0276 | lr 7.09e-05 | grad 0.11 | 8,780 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 506/1,278 | loss 0.0297 | lr 7.08e-05 | grad 0.13 | 8,775 tok/s | MFU 38% | 7.6 GB | ETA 48m
+[train] step 507/1,278 | loss 0.0332 | lr 7.07e-05 | grad 0.13 | 8,772 tok/s | MFU 37% | 7.6 GB | ETA 47m
+[train] step 508/1,278 | loss 0.0286 | lr 7.06e-05 | grad 0.14 | 8,772 tok/s | MFU 37% | 7.6 GB | ETA 47m
+[train] step 509/1,278 | loss 0.0295 | lr 7.05e-05 | grad 0.12 | 8,775 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 510/1,278 | loss 0.0296 | lr 7.04e-05 | grad 0.15 | 8,784 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 511/1,278 | loss 0.0292 | lr 7.03e-05 | grad 0.13 | 8,791 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 512/1,278 | loss 0.0270 | lr 7.02e-05 | grad 0.13 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 513/1,278 | loss 0.0334 | lr 7.01e-05 | grad 0.19 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 514/1,278 | loss 0.0305 | lr 7.00e-05 | grad 0.29 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 515/1,278 | loss 0.0309 | lr 6.99e-05 | grad 0.14 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 516/1,278 | loss 0.0312 | lr 6.98e-05 | grad 0.14 | 8,823 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 517/1,278 | loss 0.0303 | lr 6.97e-05 | grad 0.13 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 518/1,278 | loss 0.0309 | lr 6.96e-05 | grad 0.17 | 8,823 tok/s | MFU 38% | 7.6 GB | ETA 47m
+[train] step 519/1,278 | loss 0.0321 | lr 6.95e-05 | grad 0.17 | 8,820 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 520/1,278 | loss 0.0269 | lr 6.94e-05 | grad 0.07 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 521/1,278 | loss 0.0278 | lr 6.92e-05 | grad 0.13 | 8,807 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 522/1,278 | loss 0.0295 | lr 6.91e-05 | grad 0.14 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 523/1,278 | loss 0.0319 | lr 6.90e-05 | grad 0.13 | 8,798 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 524/1,278 | loss 0.0248 | lr 6.89e-05 | grad 0.10 | 8,795 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 525/1,278 | loss 0.0294 | lr 6.88e-05 | grad 0.13 | 8,789 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 526/1,278 | loss 0.0292 | lr 6.87e-05 | grad 0.21 | 8,790 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 527/1,278 | loss 0.0307 | lr 6.86e-05 | grad 0.14 | 8,786 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 528/1,278 | loss 0.0323 | lr 6.85e-05 | grad 0.14 | 8,785 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 529/1,278 | loss 0.0315 | lr 6.84e-05 | grad 0.17 | 8,786 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 530/1,278 | loss 0.0309 | lr 6.83e-05 | grad 0.14 | 8,786 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 531/1,278 | loss 0.0307 | lr 6.82e-05 | grad 0.13 | 8,786 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 532/1,278 | loss 0.0275 | lr 6.81e-05 | grad 0.16 | 8,791 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 533/1,278 | loss 0.0302 | lr 6.80e-05 | grad 0.21 | 8,792 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 534/1,278 | loss 0.0300 | lr 6.79e-05 | grad 0.15 | 8,798 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 535/1,278 | loss 0.0259 | lr 6.77e-05 | grad 0.10 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 536/1,278 | loss 0.0275 | lr 6.76e-05 | grad 0.12 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 46m
+[train] step 537/1,278 | loss 0.0305 | lr 6.75e-05 | grad 0.16 | 8,812 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 538/1,278 | loss 0.0298 | lr 6.74e-05 | grad 0.16 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 539/1,278 | loss 0.0306 | lr 6.73e-05 | grad 0.16 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 540/1,278 | loss 0.0286 | lr 6.72e-05 | grad 0.22 | 8,814 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 541/1,278 | loss 0.0281 | lr 6.71e-05 | grad 0.15 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 542/1,278 | loss 0.0310 | lr 6.70e-05 | grad 0.20 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 543/1,278 | loss 0.0261 | lr 6.69e-05 | grad 0.13 | 8,818 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 544/1,278 | loss 0.0290 | lr 6.68e-05 | grad 0.13 | 8,820 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 545/1,278 | loss 0.0306 | lr 6.67e-05 | grad 0.12 | 8,824 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 546/1,278 | loss 0.0310 | lr 6.66e-05 | grad 0.16 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 547/1,278 | loss 0.0288 | lr 6.64e-05 | grad 0.18 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 548/1,278 | loss 0.0292 | lr 6.63e-05 | grad 0.14 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 549/1,278 | loss 0.0268 | lr 6.62e-05 | grad 0.10 | 8,829 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[train] step 550/1,278 | loss 0.0256 | lr 6.61e-05 | grad 0.11 | 8,830 tok/s | MFU 38% | 7.6 GB | ETA 45m
+[eval] step 550 | validation loss 0.0288 (perplexity 1.0)
+[train] step 551/1,278 | loss 0.0285 | lr 6.60e-05 | grad 0.15 | 8,837 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 552/1,278 | loss 0.0269 | lr 6.59e-05 | grad 0.12 | 8,847 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 553/1,278 | loss 0.0322 | lr 6.58e-05 | grad 0.15 | 8,848 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 554/1,278 | loss 0.0338 | lr 6.57e-05 | grad 0.23 | 8,846 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 555/1,278 | loss 0.0281 | lr 6.56e-05 | grad 0.12 | 8,839 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 556/1,278 | loss 0.0331 | lr 6.55e-05 | grad 0.18 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 557/1,278 | loss 0.0299 | lr 6.54e-05 | grad 0.13 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 558/1,278 | loss 0.0264 | lr 6.52e-05 | grad 0.14 | 8,804 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 559/1,278 | loss 0.0328 | lr 6.51e-05 | grad 0.26 | 8,797 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 560/1,278 | loss 0.0292 | lr 6.50e-05 | grad 0.13 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 561/1,278 | loss 0.0338 | lr 6.49e-05 | grad 0.17 | 8,792 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 562/1,278 | loss 0.0284 | lr 6.48e-05 | grad 0.11 | 8,794 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 563/1,278 | loss 0.0274 | lr 6.47e-05 | grad 0.10 | 8,797 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 564/1,278 | loss 0.0288 | lr 6.46e-05 | grad 0.13 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 565/1,278 | loss 0.0293 | lr 6.45e-05 | grad 0.20 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 566/1,278 | loss 0.0274 | lr 6.44e-05 | grad 0.10 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 567/1,278 | loss 0.0295 | lr 6.43e-05 | grad 0.13 | 8,815 tok/s | MFU 38% | 7.6 GB | ETA 44m
+[train] step 568/1,278 | loss 0.0263 | lr 6.42e-05 | grad 0.10 | 8,820 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 569/1,278 | loss 0.0283 | lr 6.40e-05 | grad 0.31 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 570/1,278 | loss 0.0315 | lr 6.39e-05 | grad 0.18 | 8,830 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 571/1,278 | loss 0.0290 | lr 6.38e-05 | grad 0.17 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 572/1,278 | loss 0.0312 | lr 6.37e-05 | grad 0.16 | 8,819 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 573/1,278 | loss 0.0293 | lr 6.36e-05 | grad 0.13 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 574/1,278 | loss 0.0270 | lr 6.35e-05 | grad 0.15 | 8,818 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 575/1,278 | loss 0.0291 | lr 6.34e-05 | grad 0.13 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 576/1,278 | loss 0.0343 | lr 6.33e-05 | grad 0.21 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 577/1,278 | loss 0.0282 | lr 6.32e-05 | grad 0.17 | 8,843 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 578/1,278 | loss 0.0290 | lr 6.30e-05 | grad 0.16 | 8,851 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 579/1,278 | loss 0.0297 | lr 6.29e-05 | grad 0.19 | 8,854 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 580/1,278 | loss 0.0264 | lr 6.28e-05 | grad 0.09 | 8,855 tok/s | MFU 38% | 7.6 GB | ETA 43m
+[train] step 581/1,278 | loss 0.0278 | lr 6.27e-05 | grad 0.11 | 8,854 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 582/1,278 | loss 0.0344 | lr 6.26e-05 | grad 0.13 | 8,846 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 583/1,278 | loss 0.0253 | lr 6.25e-05 | grad 0.11 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 584/1,278 | loss 0.0304 | lr 6.24e-05 | grad 0.18 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 585/1,278 | loss 0.0292 | lr 6.23e-05 | grad 0.20 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 586/1,278 | loss 0.0278 | lr 6.22e-05 | grad 0.15 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 587/1,278 | loss 0.0277 | lr 6.21e-05 | grad 0.16 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 588/1,278 | loss 0.0281 | lr 6.19e-05 | grad 0.11 | 8,810 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 589/1,278 | loss 0.0344 | lr 6.18e-05 | grad 0.21 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 590/1,278 | loss 0.0287 | lr 6.17e-05 | grad 0.16 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 591/1,278 | loss 0.0258 | lr 6.16e-05 | grad 0.12 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 592/1,278 | loss 0.0253 | lr 6.15e-05 | grad 0.11 | 8,804 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 593/1,278 | loss 0.0287 | lr 6.14e-05 | grad 0.14 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 594/1,278 | loss 0.0297 | lr 6.13e-05 | grad 0.17 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 595/1,278 | loss 0.0272 | lr 6.12e-05 | grad 0.14 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 596/1,278 | loss 0.0280 | lr 6.11e-05 | grad 0.14 | 8,820 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 597/1,278 | loss 0.0288 | lr 6.09e-05 | grad 0.15 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 598/1,278 | loss 0.0271 | lr 6.08e-05 | grad 0.10 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 42m
+[train] step 599/1,278 | loss 0.0286 | lr 6.07e-05 | grad 0.17 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 600/1,278 | loss 0.0276 | lr 6.06e-05 | grad 0.11 | 8,842 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[eval] step 600 | validation loss 0.0281 (perplexity 1.0)
+[train] step 601/1,278 | loss 0.0301 | lr 6.05e-05 | grad 0.14 | 8,854 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 602/1,278 | loss 0.0246 | lr 6.04e-05 | grad 0.07 | 8,864 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 603/1,278 | loss 0.0260 | lr 6.03e-05 | grad 0.11 | 8,876 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 604/1,278 | loss 0.0268 | lr 6.02e-05 | grad 0.13 | 8,880 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 605/1,278 | loss 0.0268 | lr 6.00e-05 | grad 0.10 | 8,874 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 606/1,278 | loss 0.0285 | lr 5.99e-05 | grad 0.13 | 8,864 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 607/1,278 | loss 0.0253 | lr 5.98e-05 | grad 0.14 | 8,851 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 608/1,278 | loss 0.0284 | lr 5.97e-05 | grad 0.15 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 609/1,278 | loss 0.0273 | lr 5.96e-05 | grad 0.13 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 610/1,278 | loss 0.0298 | lr 5.95e-05 | grad 0.14 | 8,817 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 611/1,278 | loss 0.0253 | lr 5.94e-05 | grad 0.11 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 612/1,278 | loss 0.0282 | lr 5.93e-05 | grad 0.14 | 8,810 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 613/1,278 | loss 0.0256 | lr 5.92e-05 | grad 0.10 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 614/1,278 | loss 0.0281 | lr 5.90e-05 | grad 0.15 | 8,807 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] step 615/1,278 | loss 0.0284 | lr 5.89e-05 | grad 0.19 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 41m
+[train] checkpoint saved at step 615
+[train] step 616/1,278 | loss 0.0264 | lr 5.88e-05 | grad 0.11 | 8,830 tok/s | MFU 38% | 7.6 GB | ETA 40m
+[train] step 617/1,278 | loss 0.0312 | lr 5.87e-05 | grad 0.17 | 8,847 tok/s | MFU 38% | 7.6 GB | ETA 40m
+[train] step 618/1,278 | loss 0.0293 | lr 5.86e-05 | grad 0.15 | 8,850 tok/s | MFU 38% | 7.6 GB | ETA 40m
+[train] step 619/1,278 | loss 0.0271 | lr 5.85e-05 | grad 0.15 | 8,849 tok/s | MFU 38% | 7.6 GB | ETA 40m
+[train] step 620/1,278 | loss 0.0289 | lr 5.84e-05 | grad 0.13 | 8,835 tok/s | MFU 38% | 7.6 GB | ETA 40m
+[train] step 621/1,278 | loss 0.0321 | lr 5.83e-05 | grad 0.16 | 8,804 tok/s | MFU 38% | 7.6 GB | ETA 40m
+[train] step 622/1,278 | loss 0.0243 | lr 5.81e-05 | grad 0.09 | 8,767 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 623/1,278 | loss 0.0319 | lr 5.80e-05 | grad 0.15 | 8,722 tok/s | MFU 37% | 7.6 GB | ETA 41m
+[train] step 624/1,278 | loss 0.0258 | lr 5.79e-05 | grad 0.13 | 8,675 tok/s | MFU 37% | 7.6 GB | ETA 41m
+[train] step 625/1,278 | loss 0.0289 | lr 5.78e-05 | grad 0.14 | 8,639 tok/s | MFU 37% | 7.6 GB | ETA 41m
+[train] step 626/1,278 | loss 0.0281 | lr 5.77e-05 | grad 0.12 | 8,621 tok/s | MFU 37% | 7.6 GB | ETA 41m
+[train] step 627/1,278 | loss 0.0271 | lr 5.76e-05 | grad 0.09 | 8,614 tok/s | MFU 37% | 7.6 GB | ETA 41m
+[train] step 628/1,278 | loss 0.0257 | lr 5.75e-05 | grad 0.15 | 8,616 tok/s | MFU 37% | 7.6 GB | ETA 41m
+[train] step 629/1,278 | loss 0.0275 | lr 5.74e-05 | grad 0.12 | 8,621 tok/s | MFU 37% | 7.6 GB | ETA 41m
+[train] step 630/1,278 | loss 0.0268 | lr 5.72e-05 | grad 0.12 | 8,633 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 631/1,278 | loss 0.0284 | lr 5.71e-05 | grad 0.14 | 8,644 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 632/1,278 | loss 0.0299 | lr 5.70e-05 | grad 0.18 | 8,658 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 633/1,278 | loss 0.0244 | lr 5.69e-05 | grad 0.11 | 8,673 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 634/1,278 | loss 0.0285 | lr 5.68e-05 | grad 0.11 | 8,687 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 635/1,278 | loss 0.0302 | lr 5.67e-05 | grad 0.13 | 8,704 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 636/1,278 | loss 0.0273 | lr 5.66e-05 | grad 0.10 | 8,694 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 637/1,278 | loss 0.0269 | lr 5.65e-05 | grad 0.18 | 8,688 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 638/1,278 | loss 0.0304 | lr 5.63e-05 | grad 0.14 | 8,693 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 639/1,278 | loss 0.0311 | lr 5.62e-05 | grad 0.15 | 8,702 tok/s | MFU 37% | 7.6 GB | ETA 40m
+[train] step 640/1,278 | loss 0.0242 | lr 5.61e-05 | grad 0.08 | 8,720 tok/s | MFU 37% | 7.6 GB | ETA 39m
+[train] step 641/1,278 | loss 0.0272 | lr 5.60e-05 | grad 0.12 | 8,745 tok/s | MFU 37% | 7.6 GB | ETA 39m
+[train] step 642/1,278 | loss 0.0263 | lr 5.59e-05 | grad 0.13 | 8,774 tok/s | MFU 37% | 7.6 GB | ETA 39m
+[train] step 643/1,278 | loss 0.0292 | lr 5.58e-05 | grad 0.18 | 8,809 tok/s | MFU 38% | 7.6 GB | ETA 39m
+[train] step 644/1,278 | loss 0.0282 | lr 5.57e-05 | grad 0.15 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 39m
+[train] step 645/1,278 | loss 0.0282 | lr 5.56e-05 | grad 0.14 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 646/1,278 | loss 0.0270 | lr 5.54e-05 | grad 0.13 | 8,893 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 647/1,278 | loss 0.0266 | lr 5.53e-05 | grad 0.13 | 8,899 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 648/1,278 | loss 0.0283 | lr 5.52e-05 | grad 0.13 | 8,898 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 649/1,278 | loss 0.0267 | lr 5.51e-05 | grad 0.11 | 8,893 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 650/1,278 | loss 0.0284 | lr 5.50e-05 | grad 0.17 | 8,881 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[eval] step 650 | validation loss 0.0274 (perplexity 1.0)
+[train] step 651/1,278 | loss 0.0253 | lr 5.49e-05 | grad 0.12 | 8,879 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 652/1,278 | loss 0.0262 | lr 5.48e-05 | grad 0.11 | 8,873 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 653/1,278 | loss 0.0256 | lr 5.47e-05 | grad 0.10 | 8,863 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 654/1,278 | loss 0.0265 | lr 5.46e-05 | grad 0.10 | 8,851 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 655/1,278 | loss 0.0295 | lr 5.44e-05 | grad 0.19 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 656/1,278 | loss 0.0287 | lr 5.43e-05 | grad 0.12 | 8,818 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 657/1,278 | loss 0.0258 | lr 5.42e-05 | grad 0.10 | 8,800 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 658/1,278 | loss 0.0272 | lr 5.41e-05 | grad 0.14 | 8,782 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 659/1,278 | loss 0.0263 | lr 5.40e-05 | grad 0.12 | 8,772 tok/s | MFU 37% | 7.6 GB | ETA 38m
+[train] step 660/1,278 | loss 0.0256 | lr 5.39e-05 | grad 0.09 | 8,761 tok/s | MFU 37% | 7.6 GB | ETA 38m
+[train] step 661/1,278 | loss 0.0259 | lr 5.38e-05 | grad 0.09 | 8,754 tok/s | MFU 37% | 7.6 GB | ETA 38m
+[train] step 662/1,278 | loss 0.0282 | lr 5.37e-05 | grad 0.14 | 8,749 tok/s | MFU 37% | 7.6 GB | ETA 38m
+[train] step 663/1,278 | loss 0.0258 | lr 5.35e-05 | grad 0.09 | 8,754 tok/s | MFU 37% | 7.6 GB | ETA 38m
+[train] step 664/1,278 | loss 0.0261 | lr 5.34e-05 | grad 0.10 | 8,762 tok/s | MFU 37% | 7.6 GB | ETA 38m
+[train] step 665/1,278 | loss 0.0256 | lr 5.33e-05 | grad 0.14 | 8,776 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 666/1,278 | loss 0.0275 | lr 5.32e-05 | grad 0.11 | 8,792 tok/s | MFU 38% | 7.6 GB | ETA 38m
+[train] step 667/1,278 | loss 0.0280 | lr 5.31e-05 | grad 0.14 | 8,809 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 668/1,278 | loss 0.0242 | lr 5.30e-05 | grad 0.10 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 669/1,278 | loss 0.0301 | lr 5.29e-05 | grad 0.11 | 8,834 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 670/1,278 | loss 0.0298 | lr 5.28e-05 | grad 0.17 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 671/1,278 | loss 0.0276 | lr 5.26e-05 | grad 0.12 | 8,842 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 672/1,278 | loss 0.0236 | lr 5.25e-05 | grad 0.10 | 8,835 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 673/1,278 | loss 0.0284 | lr 5.24e-05 | grad 0.20 | 8,831 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 674/1,278 | loss 0.0270 | lr 5.23e-05 | grad 0.15 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 675/1,278 | loss 0.0243 | lr 5.22e-05 | grad 0.09 | 8,837 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 676/1,278 | loss 0.0252 | lr 5.21e-05 | grad 0.11 | 8,841 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 677/1,278 | loss 0.0257 | lr 5.20e-05 | grad 0.11 | 8,846 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 678/1,278 | loss 0.0260 | lr 5.19e-05 | grad 0.12 | 8,855 tok/s | MFU 38% | 7.6 GB | ETA 37m
+[train] step 679/1,278 | loss 0.0269 | lr 5.17e-05 | grad 0.14 | 8,862 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 680/1,278 | loss 0.0306 | lr 5.16e-05 | grad 0.18 | 8,870 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 681/1,278 | loss 0.0281 | lr 5.15e-05 | grad 0.14 | 8,879 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 682/1,278 | loss 0.0270 | lr 5.14e-05 | grad 0.24 | 8,888 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 683/1,278 | loss 0.0270 | lr 5.13e-05 | grad 0.10 | 8,892 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 684/1,278 | loss 0.0290 | lr 5.12e-05 | grad 0.15 | 8,896 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 685/1,278 | loss 0.0267 | lr 5.11e-05 | grad 0.09 | 8,892 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 686/1,278 | loss 0.0255 | lr 5.10e-05 | grad 0.13 | 8,890 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 687/1,278 | loss 0.0281 | lr 5.08e-05 | grad 0.09 | 8,885 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 688/1,278 | loss 0.0261 | lr 5.07e-05 | grad 0.12 | 8,884 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 689/1,278 | loss 0.0294 | lr 5.06e-05 | grad 0.16 | 8,879 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 690/1,278 | loss 0.0256 | lr 5.05e-05 | grad 0.13 | 8,874 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 691/1,278 | loss 0.0275 | lr 5.04e-05 | grad 0.12 | 8,865 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 692/1,278 | loss 0.0302 | lr 5.03e-05 | grad 0.13 | 8,863 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 693/1,278 | loss 0.0254 | lr 5.02e-05 | grad 0.11 | 8,857 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 694/1,278 | loss 0.0293 | lr 5.01e-05 | grad 0.14 | 8,848 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 695/1,278 | loss 0.0275 | lr 5.00e-05 | grad 0.13 | 8,839 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 696/1,278 | loss 0.0289 | lr 4.98e-05 | grad 0.17 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 36m
+[train] step 697/1,278 | loss 0.0261 | lr 4.97e-05 | grad 0.12 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 698/1,278 | loss 0.0250 | lr 4.96e-05 | grad 0.16 | 8,817 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 699/1,278 | loss 0.0298 | lr 4.95e-05 | grad 0.10 | 8,810 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 700/1,278 | loss 0.0299 | lr 4.94e-05 | grad 0.12 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[eval] step 700 | validation loss 0.0270 (perplexity 1.0)
+[train] step 701/1,278 | loss 0.0260 | lr 4.93e-05 | grad 0.13 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 702/1,278 | loss 0.0253 | lr 4.92e-05 | grad 0.09 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 703/1,278 | loss 0.0263 | lr 4.91e-05 | grad 0.17 | 8,805 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 704/1,278 | loss 0.0265 | lr 4.89e-05 | grad 0.14 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 705/1,278 | loss 0.0261 | lr 4.88e-05 | grad 0.12 | 8,797 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 706/1,278 | loss 0.0282 | lr 4.87e-05 | grad 0.13 | 8,793 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 707/1,278 | loss 0.0256 | lr 4.86e-05 | grad 0.10 | 8,788 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 708/1,278 | loss 0.0276 | lr 4.85e-05 | grad 0.11 | 8,783 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 709/1,278 | loss 0.0277 | lr 4.84e-05 | grad 0.14 | 8,780 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 710/1,278 | loss 0.0258 | lr 4.83e-05 | grad 0.09 | 8,779 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 711/1,278 | loss 0.0265 | lr 4.82e-05 | grad 0.13 | 8,783 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 712/1,278 | loss 0.0232 | lr 4.81e-05 | grad 0.12 | 8,780 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 713/1,278 | loss 0.0285 | lr 4.79e-05 | grad 0.11 | 8,783 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 714/1,278 | loss 0.0258 | lr 4.78e-05 | grad 0.11 | 8,788 tok/s | MFU 38% | 7.6 GB | ETA 35m
+[train] step 715/1,278 | loss 0.0262 | lr 4.77e-05 | grad 0.10 | 8,793 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 716/1,278 | loss 0.0254 | lr 4.76e-05 | grad 0.11 | 8,804 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 717/1,278 | loss 0.0295 | lr 4.75e-05 | grad 0.14 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 718/1,278 | loss 0.0265 | lr 4.74e-05 | grad 0.13 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 719/1,278 | loss 0.0244 | lr 4.73e-05 | grad 0.08 | 8,820 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 720/1,278 | loss 0.0257 | lr 4.72e-05 | grad 0.08 | 8,828 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 721/1,278 | loss 0.0275 | lr 4.71e-05 | grad 0.14 | 8,828 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 722/1,278 | loss 0.0285 | lr 4.70e-05 | grad 0.16 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 723/1,278 | loss 0.0242 | lr 4.68e-05 | grad 0.10 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 724/1,278 | loss 0.0263 | lr 4.67e-05 | grad 0.17 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 725/1,278 | loss 0.0260 | lr 4.66e-05 | grad 0.10 | 8,852 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 726/1,278 | loss 0.0273 | lr 4.65e-05 | grad 0.13 | 8,860 tok/s | MFU 38% | 7.6 GB | ETA 34m
+[train] step 727/1,278 | loss 0.0277 | lr 4.64e-05 | grad 0.13 | 8,869 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 728/1,278 | loss 0.0258 | lr 4.63e-05 | grad 0.09 | 8,879 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 729/1,278 | loss 0.0270 | lr 4.62e-05 | grad 0.11 | 8,887 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 730/1,278 | loss 0.0293 | lr 4.61e-05 | grad 0.16 | 8,893 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 731/1,278 | loss 0.0260 | lr 4.60e-05 | grad 0.10 | 8,895 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 732/1,278 | loss 0.0238 | lr 4.58e-05 | grad 0.09 | 8,899 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 733/1,278 | loss 0.0279 | lr 4.57e-05 | grad 0.14 | 8,898 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 734/1,278 | loss 0.0278 | lr 4.56e-05 | grad 0.15 | 8,895 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 735/1,278 | loss 0.0252 | lr 4.55e-05 | grad 0.10 | 8,892 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 736/1,278 | loss 0.0258 | lr 4.54e-05 | grad 0.08 | 8,886 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 737/1,278 | loss 0.0265 | lr 4.53e-05 | grad 0.10 | 8,883 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 738/1,278 | loss 0.0296 | lr 4.52e-05 | grad 0.14 | 8,879 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 739/1,278 | loss 0.0284 | lr 4.51e-05 | grad 0.22 | 8,875 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 740/1,278 | loss 0.0250 | lr 4.50e-05 | grad 0.11 | 8,867 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 741/1,278 | loss 0.0266 | lr 4.49e-05 | grad 0.15 | 8,860 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 742/1,278 | loss 0.0264 | lr 4.48e-05 | grad 0.18 | 8,851 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 743/1,278 | loss 0.0266 | lr 4.46e-05 | grad 0.13 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 744/1,278 | loss 0.0278 | lr 4.45e-05 | grad 0.18 | 8,837 tok/s | MFU 38% | 7.6 GB | ETA 33m
+[train] step 745/1,278 | loss 0.0275 | lr 4.44e-05 | grad 0.13 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 746/1,278 | loss 0.0239 | lr 4.43e-05 | grad 0.10 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 747/1,278 | loss 0.0265 | lr 4.42e-05 | grad 0.19 | 8,819 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 748/1,278 | loss 0.0291 | lr 4.41e-05 | grad 0.14 | 8,812 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 749/1,278 | loss 0.0288 | lr 4.40e-05 | grad 0.20 | 8,809 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 750/1,278 | loss 0.0270 | lr 4.39e-05 | grad 0.10 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[eval] step 750 | validation loss 0.0260 (perplexity 1.0)
+[train] step 751/1,278 | loss 0.0248 | lr 4.38e-05 | grad 0.16 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 752/1,278 | loss 0.0278 | lr 4.37e-05 | grad 0.14 | 8,812 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 753/1,278 | loss 0.0288 | lr 4.36e-05 | grad 0.10 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 754/1,278 | loss 0.0303 | lr 4.34e-05 | grad 0.14 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 755/1,278 | loss 0.0248 | lr 4.33e-05 | grad 0.11 | 8,805 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 756/1,278 | loss 0.0283 | lr 4.32e-05 | grad 0.17 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 757/1,278 | loss 0.0238 | lr 4.31e-05 | grad 0.08 | 8,795 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 758/1,278 | loss 0.0264 | lr 4.30e-05 | grad 0.20 | 8,790 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 759/1,278 | loss 0.0249 | lr 4.29e-05 | grad 0.12 | 8,787 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 760/1,278 | loss 0.0242 | lr 4.28e-05 | grad 0.10 | 8,789 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 761/1,278 | loss 0.0264 | lr 4.27e-05 | grad 0.09 | 8,789 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 762/1,278 | loss 0.0214 | lr 4.26e-05 | grad 0.05 | 8,790 tok/s | MFU 38% | 7.6 GB | ETA 32m
+[train] step 763/1,278 | loss 0.0260 | lr 4.25e-05 | grad 0.10 | 8,793 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 764/1,278 | loss 0.0265 | lr 4.24e-05 | grad 0.16 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 765/1,278 | loss 0.0254 | lr 4.23e-05 | grad 0.15 | 8,798 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 766/1,278 | loss 0.0259 | lr 4.21e-05 | grad 0.12 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 767/1,278 | loss 0.0257 | lr 4.20e-05 | grad 0.11 | 8,809 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 768/1,278 | loss 0.0283 | lr 4.19e-05 | grad 0.10 | 8,817 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] checkpoint saved at step 768
+[train] step 769/1,278 | loss 0.0252 | lr 4.18e-05 | grad 0.09 | 8,841 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 770/1,278 | loss 0.0270 | lr 4.17e-05 | grad 0.12 | 8,859 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 771/1,278 | loss 0.0235 | lr 4.16e-05 | grad 0.08 | 8,861 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 772/1,278 | loss 0.0240 | lr 4.15e-05 | grad 0.11 | 8,854 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 773/1,278 | loss 0.0299 | lr 4.14e-05 | grad 0.20 | 8,837 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 774/1,278 | loss 0.0243 | lr 4.13e-05 | grad 0.08 | 8,818 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 775/1,278 | loss 0.0248 | lr 4.12e-05 | grad 0.12 | 8,789 tok/s | MFU 38% | 7.6 GB | ETA 31m
+[train] step 776/1,278 | loss 0.0225 | lr 4.11e-05 | grad 0.12 | 8,751 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 777/1,278 | loss 0.0247 | lr 4.10e-05 | grad 0.13 | 8,715 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 778/1,278 | loss 0.0257 | lr 4.09e-05 | grad 0.12 | 8,679 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 779/1,278 | loss 0.0255 | lr 4.08e-05 | grad 0.13 | 8,649 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 780/1,278 | loss 0.0248 | lr 4.06e-05 | grad 0.13 | 8,633 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 781/1,278 | loss 0.0248 | lr 4.05e-05 | grad 0.10 | 8,624 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 782/1,278 | loss 0.0245 | lr 4.04e-05 | grad 0.08 | 8,626 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 783/1,278 | loss 0.0237 | lr 4.03e-05 | grad 0.11 | 8,632 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 784/1,278 | loss 0.0275 | lr 4.02e-05 | grad 0.17 | 8,639 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 785/1,278 | loss 0.0264 | lr 4.01e-05 | grad 0.12 | 8,651 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 786/1,278 | loss 0.0267 | lr 4.00e-05 | grad 0.14 | 8,664 tok/s | MFU 37% | 7.6 GB | ETA 31m
+[train] step 787/1,278 | loss 0.0250 | lr 3.99e-05 | grad 0.15 | 8,678 tok/s | MFU 37% | 7.6 GB | ETA 30m
+[train] step 788/1,278 | loss 0.0271 | lr 3.98e-05 | grad 0.13 | 8,691 tok/s | MFU 37% | 7.6 GB | ETA 30m
+[train] step 789/1,278 | loss 0.0259 | lr 3.97e-05 | grad 0.11 | 8,688 tok/s | MFU 37% | 7.6 GB | ETA 30m
+[train] step 790/1,278 | loss 0.0260 | lr 3.96e-05 | grad 0.12 | 8,685 tok/s | MFU 37% | 7.6 GB | ETA 30m
+[train] step 791/1,278 | loss 0.0259 | lr 3.95e-05 | grad 0.08 | 8,692 tok/s | MFU 37% | 7.6 GB | ETA 30m
+[train] step 792/1,278 | loss 0.0266 | lr 3.94e-05 | grad 0.11 | 8,705 tok/s | MFU 37% | 7.6 GB | ETA 30m
+[train] step 793/1,278 | loss 0.0259 | lr 3.93e-05 | grad 0.13 | 8,728 tok/s | MFU 37% | 7.6 GB | ETA 30m
+[train] step 794/1,278 | loss 0.0284 | lr 3.92e-05 | grad 0.13 | 8,755 tok/s | MFU 37% | 7.6 GB | ETA 30m
+[train] step 795/1,278 | loss 0.0277 | lr 3.91e-05 | grad 0.10 | 8,784 tok/s | MFU 38% | 7.6 GB | ETA 30m
+[train] step 796/1,278 | loss 0.0269 | lr 3.90e-05 | grad 0.10 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 29m
+[train] step 797/1,278 | loss 0.0252 | lr 3.88e-05 | grad 0.16 | 8,854 tok/s | MFU 38% | 7.6 GB | ETA 29m
+[train] step 798/1,278 | loss 0.0260 | lr 3.87e-05 | grad 0.10 | 8,887 tok/s | MFU 38% | 7.6 GB | ETA 29m
+[train] step 799/1,278 | loss 0.0254 | lr 3.86e-05 | grad 0.11 | 8,913 tok/s | MFU 38% | 7.6 GB | ETA 29m
+[train] step 800/1,278 | loss 0.0250 | lr 3.85e-05 | grad 0.08 | 8,925 tok/s | MFU 38% | 7.6 GB | ETA 29m
+[eval] step 800 | validation loss 0.0253 (perplexity 1.0)
+[train] step 801/1,278 | loss 0.0243 | lr 3.84e-05 | grad 0.13 | 8,940 tok/s | MFU 38% | 7.6 GB | ETA 29m
+[train] step 802/1,278 | loss 0.0247 | lr 3.83e-05 | grad 0.11 | 8,945 tok/s | MFU 38% | 7.6 GB | ETA 29m
+[train] step 803/1,278 | loss 0.0238 | lr 3.82e-05 | grad 0.10 | 8,943 tok/s | MFU 38% | 7.6 GB | ETA 29m
+[train] step 804/1,278 | loss 0.0264 | lr 3.81e-05 | grad 0.22 | 8,937 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 805/1,278 | loss 0.0242 | lr 3.80e-05 | grad 0.12 | 8,924 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 806/1,278 | loss 0.0262 | lr 3.79e-05 | grad 0.09 | 8,906 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 807/1,278 | loss 0.0280 | lr 3.78e-05 | grad 0.13 | 8,886 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 808/1,278 | loss 0.0252 | lr 3.77e-05 | grad 0.11 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 809/1,278 | loss 0.0267 | lr 3.76e-05 | grad 0.09 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 810/1,278 | loss 0.0273 | lr 3.75e-05 | grad 0.14 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 811/1,278 | loss 0.0273 | lr 3.74e-05 | grad 0.14 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 812/1,278 | loss 0.0252 | lr 3.73e-05 | grad 0.15 | 8,788 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 813/1,278 | loss 0.0264 | lr 3.72e-05 | grad 0.11 | 8,779 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 814/1,278 | loss 0.0247 | lr 3.71e-05 | grad 0.11 | 8,775 tok/s | MFU 37% | 7.6 GB | ETA 28m
+[train] step 815/1,278 | loss 0.0229 | lr 3.70e-05 | grad 0.08 | 8,777 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 816/1,278 | loss 0.0261 | lr 3.69e-05 | grad 0.10 | 8,781 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 817/1,278 | loss 0.0248 | lr 3.68e-05 | grad 0.21 | 8,792 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 818/1,278 | loss 0.0270 | lr 3.67e-05 | grad 0.10 | 8,805 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 819/1,278 | loss 0.0250 | lr 3.66e-05 | grad 0.12 | 8,815 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 820/1,278 | loss 0.0259 | lr 3.65e-05 | grad 0.13 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 821/1,278 | loss 0.0255 | lr 3.64e-05 | grad 0.12 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 822/1,278 | loss 0.0253 | lr 3.63e-05 | grad 0.10 | 8,819 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 823/1,278 | loss 0.0248 | lr 3.62e-05 | grad 0.10 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 824/1,278 | loss 0.0234 | lr 3.61e-05 | grad 0.11 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 825/1,278 | loss 0.0272 | lr 3.60e-05 | grad 0.13 | 8,815 tok/s | MFU 38% | 7.6 GB | ETA 28m
+[train] step 826/1,278 | loss 0.0248 | lr 3.59e-05 | grad 0.14 | 8,817 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 827/1,278 | loss 0.0241 | lr 3.58e-05 | grad 0.10 | 8,820 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 828/1,278 | loss 0.0239 | lr 3.56e-05 | grad 0.08 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 829/1,278 | loss 0.0276 | lr 3.55e-05 | grad 0.09 | 8,828 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 830/1,278 | loss 0.0233 | lr 3.54e-05 | grad 0.06 | 8,837 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 831/1,278 | loss 0.0247 | lr 3.53e-05 | grad 0.09 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 832/1,278 | loss 0.0260 | lr 3.52e-05 | grad 0.11 | 8,855 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 833/1,278 | loss 0.0245 | lr 3.51e-05 | grad 0.09 | 8,862 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 834/1,278 | loss 0.0235 | lr 3.50e-05 | grad 0.07 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 835/1,278 | loss 0.0273 | lr 3.49e-05 | grad 0.13 | 8,873 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 836/1,278 | loss 0.0230 | lr 3.48e-05 | grad 0.09 | 8,877 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 837/1,278 | loss 0.0259 | lr 3.47e-05 | grad 0.18 | 8,882 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 838/1,278 | loss 0.0234 | lr 3.46e-05 | grad 0.10 | 8,885 tok/s | MFU 38% | 7.6 GB | ETA 27m
+[train] step 839/1,278 | loss 0.0237 | lr 3.45e-05 | grad 0.07 | 8,886 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 840/1,278 | loss 0.0251 | lr 3.44e-05 | grad 0.09 | 8,887 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 841/1,278 | loss 0.0238 | lr 3.43e-05 | grad 0.14 | 8,890 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 842/1,278 | loss 0.0265 | lr 3.42e-05 | grad 0.11 | 8,888 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 843/1,278 | loss 0.0251 | lr 3.41e-05 | grad 0.09 | 8,890 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 844/1,278 | loss 0.0247 | lr 3.40e-05 | grad 0.13 | 8,893 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 845/1,278 | loss 0.0248 | lr 3.39e-05 | grad 0.09 | 8,892 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 846/1,278 | loss 0.0264 | lr 3.38e-05 | grad 0.13 | 8,893 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 847/1,278 | loss 0.0236 | lr 3.37e-05 | grad 0.10 | 8,895 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 848/1,278 | loss 0.0242 | lr 3.36e-05 | grad 0.09 | 8,893 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 849/1,278 | loss 0.0243 | lr 3.35e-05 | grad 0.09 | 8,891 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 850/1,278 | loss 0.0233 | lr 3.34e-05 | grad 0.12 | 8,886 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[eval] step 850 | validation loss 0.0248 (perplexity 1.0)
+[train] step 851/1,278 | loss 0.0254 | lr 3.33e-05 | grad 0.13 | 8,894 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 852/1,278 | loss 0.0237 | lr 3.33e-05 | grad 0.09 | 8,895 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 853/1,278 | loss 0.0241 | lr 3.32e-05 | grad 0.09 | 8,892 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 854/1,278 | loss 0.0217 | lr 3.31e-05 | grad 0.08 | 8,886 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 855/1,278 | loss 0.0296 | lr 3.30e-05 | grad 0.19 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 26m
+[train] step 856/1,278 | loss 0.0249 | lr 3.29e-05 | grad 0.12 | 8,868 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 857/1,278 | loss 0.0247 | lr 3.28e-05 | grad 0.13 | 8,860 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 858/1,278 | loss 0.0255 | lr 3.27e-05 | grad 0.13 | 8,852 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 859/1,278 | loss 0.0241 | lr 3.26e-05 | grad 0.11 | 8,846 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 860/1,278 | loss 0.0243 | lr 3.25e-05 | grad 0.10 | 8,839 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 861/1,278 | loss 0.0245 | lr 3.24e-05 | grad 0.11 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 862/1,278 | loss 0.0257 | lr 3.23e-05 | grad 0.15 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 863/1,278 | loss 0.0255 | lr 3.22e-05 | grad 0.10 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 864/1,278 | loss 0.0262 | lr 3.21e-05 | grad 0.10 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 865/1,278 | loss 0.0258 | lr 3.20e-05 | grad 0.15 | 8,838 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 866/1,278 | loss 0.0260 | lr 3.19e-05 | grad 0.18 | 8,842 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 867/1,278 | loss 0.0242 | lr 3.18e-05 | grad 0.12 | 8,843 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 868/1,278 | loss 0.0258 | lr 3.17e-05 | grad 0.11 | 8,846 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 869/1,278 | loss 0.0260 | lr 3.16e-05 | grad 0.10 | 8,850 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 870/1,278 | loss 0.0250 | lr 3.15e-05 | grad 0.11 | 8,858 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 871/1,278 | loss 0.0257 | lr 3.14e-05 | grad 0.15 | 8,856 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 872/1,278 | loss 0.0258 | lr 3.13e-05 | grad 0.13 | 8,854 tok/s | MFU 38% | 7.6 GB | ETA 25m
+[train] step 873/1,278 | loss 0.0236 | lr 3.12e-05 | grad 0.12 | 8,856 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 874/1,278 | loss 0.0270 | lr 3.11e-05 | grad 0.12 | 8,863 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 875/1,278 | loss 0.0221 | lr 3.10e-05 | grad 0.11 | 8,868 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 876/1,278 | loss 0.0237 | lr 3.09e-05 | grad 0.10 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 877/1,278 | loss 0.0261 | lr 3.08e-05 | grad 0.15 | 8,885 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 878/1,278 | loss 0.0231 | lr 3.07e-05 | grad 0.09 | 8,891 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 879/1,278 | loss 0.0253 | lr 3.06e-05 | grad 0.13 | 8,899 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 880/1,278 | loss 0.0248 | lr 3.06e-05 | grad 0.10 | 8,905 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 881/1,278 | loss 0.0274 | lr 3.05e-05 | grad 0.11 | 8,909 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 882/1,278 | loss 0.0243 | lr 3.04e-05 | grad 0.12 | 8,908 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 883/1,278 | loss 0.0272 | lr 3.03e-05 | grad 0.13 | 8,907 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 884/1,278 | loss 0.0239 | lr 3.02e-05 | grad 0.10 | 8,903 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 885/1,278 | loss 0.0261 | lr 3.01e-05 | grad 0.09 | 8,897 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 886/1,278 | loss 0.0247 | lr 3.00e-05 | grad 0.13 | 8,888 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 887/1,278 | loss 0.0267 | lr 2.99e-05 | grad 0.14 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 888/1,278 | loss 0.0238 | lr 2.98e-05 | grad 0.10 | 8,873 tok/s | MFU 38% | 7.6 GB | ETA 24m
+[train] step 889/1,278 | loss 0.0259 | lr 2.97e-05 | grad 0.12 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 890/1,278 | loss 0.0271 | lr 2.96e-05 | grad 0.12 | 8,853 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 891/1,278 | loss 0.0240 | lr 2.95e-05 | grad 0.12 | 8,843 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 892/1,278 | loss 0.0227 | lr 2.94e-05 | grad 0.09 | 8,835 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 893/1,278 | loss 0.0251 | lr 2.93e-05 | grad 0.13 | 8,830 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 894/1,278 | loss 0.0261 | lr 2.92e-05 | grad 0.10 | 8,823 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 895/1,278 | loss 0.0260 | lr 2.92e-05 | grad 0.10 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 896/1,278 | loss 0.0249 | lr 2.91e-05 | grad 0.08 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 897/1,278 | loss 0.0230 | lr 2.90e-05 | grad 0.15 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 898/1,278 | loss 0.0257 | lr 2.89e-05 | grad 0.14 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 899/1,278 | loss 0.0272 | lr 2.88e-05 | grad 0.12 | 8,807 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 900/1,278 | loss 0.0267 | lr 2.87e-05 | grad 0.15 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[eval] step 900 | validation loss 0.0244 (perplexity 1.0)
+[train] step 901/1,278 | loss 0.0271 | lr 2.86e-05 | grad 0.09 | 8,817 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 902/1,278 | loss 0.0258 | lr 2.85e-05 | grad 0.08 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 903/1,278 | loss 0.0267 | lr 2.84e-05 | grad 0.10 | 8,831 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 904/1,278 | loss 0.0235 | lr 2.83e-05 | grad 0.18 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 905/1,278 | loss 0.0251 | lr 2.82e-05 | grad 0.14 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 23m
+[train] step 906/1,278 | loss 0.0234 | lr 2.82e-05 | grad 0.07 | 8,834 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 907/1,278 | loss 0.0245 | lr 2.81e-05 | grad 0.13 | 8,835 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 908/1,278 | loss 0.0256 | lr 2.80e-05 | grad 0.12 | 8,828 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 909/1,278 | loss 0.0243 | lr 2.79e-05 | grad 0.08 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 910/1,278 | loss 0.0233 | lr 2.78e-05 | grad 0.10 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 911/1,278 | loss 0.0263 | lr 2.77e-05 | grad 0.13 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 912/1,278 | loss 0.0259 | lr 2.76e-05 | grad 0.11 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 913/1,278 | loss 0.0237 | lr 2.75e-05 | grad 0.11 | 8,824 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 914/1,278 | loss 0.0241 | lr 2.74e-05 | grad 0.14 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 915/1,278 | loss 0.0245 | lr 2.73e-05 | grad 0.11 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 916/1,278 | loss 0.0229 | lr 2.73e-05 | grad 0.10 | 8,829 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 917/1,278 | loss 0.0216 | lr 2.72e-05 | grad 0.08 | 8,829 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 918/1,278 | loss 0.0255 | lr 2.71e-05 | grad 0.14 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 919/1,278 | loss 0.0238 | lr 2.70e-05 | grad 0.12 | 8,834 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 920/1,278 | loss 0.0245 | lr 2.69e-05 | grad 0.14 | 8,834 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 921/1,278 | loss 0.0240 | lr 2.68e-05 | grad 0.11 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] step 922/1,278 | loss 0.0258 | lr 2.67e-05 | grad 0.15 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 22m
+[train] checkpoint saved at step 922
+[train] step 923/1,278 | loss 0.0252 | lr 2.66e-05 | grad 0.10 | 8,839 tok/s | MFU 38% | 7.6 GB | ETA 21m
+[train] step 924/1,278 | loss 0.0245 | lr 2.66e-05 | grad 0.10 | 8,854 tok/s | MFU 38% | 7.6 GB | ETA 21m
+[train] step 925/1,278 | loss 0.0232 | lr 2.65e-05 | grad 0.07 | 8,861 tok/s | MFU 38% | 7.6 GB | ETA 21m
+[train] step 926/1,278 | loss 0.0244 | lr 2.64e-05 | grad 0.12 | 8,862 tok/s | MFU 38% | 7.6 GB | ETA 21m
+[train] step 927/1,278 | loss 0.0228 | lr 2.63e-05 | grad 0.09 | 8,849 tok/s | MFU 38% | 7.6 GB | ETA 21m
+[train] step 928/1,278 | loss 0.0260 | lr 2.62e-05 | grad 0.17 | 8,831 tok/s | MFU 38% | 7.6 GB | ETA 21m
+[train] step 929/1,278 | loss 0.0263 | lr 2.61e-05 | grad 0.12 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 21m
+[train] step 930/1,278 | loss 0.0260 | lr 2.60e-05 | grad 0.11 | 8,752 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 931/1,278 | loss 0.0259 | lr 2.60e-05 | grad 0.12 | 8,713 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 932/1,278 | loss 0.0235 | lr 2.59e-05 | grad 0.10 | 8,680 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 933/1,278 | loss 0.0247 | lr 2.58e-05 | grad 0.08 | 8,661 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 934/1,278 | loss 0.0258 | lr 2.57e-05 | grad 0.12 | 8,650 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 935/1,278 | loss 0.0264 | lr 2.56e-05 | grad 0.11 | 8,644 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 936/1,278 | loss 0.0245 | lr 2.55e-05 | grad 0.11 | 8,647 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 937/1,278 | loss 0.0267 | lr 2.54e-05 | grad 0.16 | 8,655 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 938/1,278 | loss 0.0240 | lr 2.54e-05 | grad 0.12 | 8,665 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 939/1,278 | loss 0.0239 | lr 2.53e-05 | grad 0.14 | 8,678 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 940/1,278 | loss 0.0252 | lr 2.52e-05 | grad 0.13 | 8,692 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 941/1,278 | loss 0.0235 | lr 2.51e-05 | grad 0.08 | 8,704 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 942/1,278 | loss 0.0270 | lr 2.50e-05 | grad 0.09 | 8,717 tok/s | MFU 37% | 7.6 GB | ETA 21m
+[train] step 943/1,278 | loss 0.0255 | lr 2.49e-05 | grad 0.10 | 8,713 tok/s | MFU 37% | 7.6 GB | ETA 20m
+[train] step 944/1,278 | loss 0.0258 | lr 2.49e-05 | grad 0.11 | 8,713 tok/s | MFU 37% | 7.6 GB | ETA 20m
+[train] step 945/1,278 | loss 0.0229 | lr 2.48e-05 | grad 0.07 | 8,724 tok/s | MFU 37% | 7.6 GB | ETA 20m
+[train] step 946/1,278 | loss 0.0258 | lr 2.47e-05 | grad 0.12 | 8,740 tok/s | MFU 37% | 7.6 GB | ETA 20m
+[train] step 947/1,278 | loss 0.0261 | lr 2.46e-05 | grad 0.12 | 8,767 tok/s | MFU 37% | 7.6 GB | ETA 20m
+[train] step 948/1,278 | loss 0.0249 | lr 2.45e-05 | grad 0.15 | 8,797 tok/s | MFU 38% | 7.6 GB | ETA 20m
+[train] step 949/1,278 | loss 0.0257 | lr 2.44e-05 | grad 0.12 | 8,835 tok/s | MFU 38% | 7.6 GB | ETA 20m
+[train] step 950/1,278 | loss 0.0240 | lr 2.44e-05 | grad 0.12 | 8,881 tok/s | MFU 38% | 7.6 GB | ETA 20m
+[eval] step 950 | validation loss 0.0237 (perplexity 1.0)
+[train] step 951/1,278 | loss 0.0233 | lr 2.43e-05 | grad 0.09 | 8,927 tok/s | MFU 38% | 7.6 GB | ETA 20m
+[train] step 952/1,278 | loss 0.0245 | lr 2.42e-05 | grad 0.11 | 8,961 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 953/1,278 | loss 0.0242 | lr 2.41e-05 | grad 0.12 | 8,978 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 954/1,278 | loss 0.0236 | lr 2.40e-05 | grad 0.11 | 8,978 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 955/1,278 | loss 0.0251 | lr 2.39e-05 | grad 0.19 | 8,974 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 956/1,278 | loss 0.0265 | lr 2.39e-05 | grad 0.16 | 8,963 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 957/1,278 | loss 0.0246 | lr 2.38e-05 | grad 0.09 | 8,947 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 958/1,278 | loss 0.0243 | lr 2.37e-05 | grad 0.12 | 8,930 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 959/1,278 | loss 0.0249 | lr 2.36e-05 | grad 0.11 | 8,913 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 960/1,278 | loss 0.0255 | lr 2.35e-05 | grad 0.12 | 8,897 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 961/1,278 | loss 0.0238 | lr 2.35e-05 | grad 0.11 | 8,882 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 962/1,278 | loss 0.0232 | lr 2.34e-05 | grad 0.10 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 963/1,278 | loss 0.0237 | lr 2.33e-05 | grad 0.12 | 8,855 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 964/1,278 | loss 0.0215 | lr 2.32e-05 | grad 0.08 | 8,842 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 965/1,278 | loss 0.0217 | lr 2.31e-05 | grad 0.11 | 8,831 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 966/1,278 | loss 0.0218 | lr 2.31e-05 | grad 0.10 | 8,824 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 967/1,278 | loss 0.0238 | lr 2.30e-05 | grad 0.11 | 8,819 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 968/1,278 | loss 0.0249 | lr 2.29e-05 | grad 0.12 | 8,819 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 969/1,278 | loss 0.0233 | lr 2.28e-05 | grad 0.13 | 8,825 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 970/1,278 | loss 0.0229 | lr 2.27e-05 | grad 0.11 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 19m
+[train] step 971/1,278 | loss 0.0250 | lr 2.27e-05 | grad 0.15 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 972/1,278 | loss 0.0221 | lr 2.26e-05 | grad 0.07 | 8,840 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 973/1,278 | loss 0.0236 | lr 2.25e-05 | grad 0.10 | 8,847 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 974/1,278 | loss 0.0245 | lr 2.24e-05 | grad 0.11 | 8,860 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 975/1,278 | loss 0.0270 | lr 2.24e-05 | grad 0.12 | 8,870 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 976/1,278 | loss 0.0242 | lr 2.23e-05 | grad 0.11 | 8,873 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 977/1,278 | loss 0.0250 | lr 2.22e-05 | grad 0.11 | 8,880 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 978/1,278 | loss 0.0262 | lr 2.21e-05 | grad 0.13 | 8,883 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 979/1,278 | loss 0.0218 | lr 2.20e-05 | grad 0.14 | 8,884 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 980/1,278 | loss 0.0230 | lr 2.20e-05 | grad 0.11 | 8,881 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 981/1,278 | loss 0.0238 | lr 2.19e-05 | grad 0.09 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 982/1,278 | loss 0.0220 | lr 2.18e-05 | grad 0.07 | 8,871 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 983/1,278 | loss 0.0209 | lr 2.17e-05 | grad 0.08 | 8,861 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 984/1,278 | loss 0.0233 | lr 2.17e-05 | grad 0.09 | 8,852 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 985/1,278 | loss 0.0236 | lr 2.16e-05 | grad 0.10 | 8,841 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 986/1,278 | loss 0.0228 | lr 2.15e-05 | grad 0.12 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 987/1,278 | loss 0.0234 | lr 2.14e-05 | grad 0.15 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 18m
+[train] step 988/1,278 | loss 0.0242 | lr 2.14e-05 | grad 0.11 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 989/1,278 | loss 0.0244 | lr 2.13e-05 | grad 0.12 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 990/1,278 | loss 0.0241 | lr 2.12e-05 | grad 0.08 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 991/1,278 | loss 0.0237 | lr 2.11e-05 | grad 0.09 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 992/1,278 | loss 0.0261 | lr 2.11e-05 | grad 0.11 | 8,804 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 993/1,278 | loss 0.0259 | lr 2.10e-05 | grad 0.14 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 994/1,278 | loss 0.0246 | lr 2.09e-05 | grad 0.09 | 8,805 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 995/1,278 | loss 0.0248 | lr 2.09e-05 | grad 0.19 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 996/1,278 | loss 0.0256 | lr 2.08e-05 | grad 0.09 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 997/1,278 | loss 0.0241 | lr 2.07e-05 | grad 0.09 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 998/1,278 | loss 0.0250 | lr 2.06e-05 | grad 0.11 | 8,810 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 999/1,278 | loss 0.0249 | lr 2.06e-05 | grad 0.13 | 8,810 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 1,000/1,278 | loss 0.0250 | lr 2.05e-05 | grad 0.14 | 8,812 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[eval] step 1,000 | validation loss 0.0240 (perplexity 1.0)
+[train] step 1,001/1,278 | loss 0.0253 | lr 2.04e-05 | grad 0.15 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 1,002/1,278 | loss 0.0231 | lr 2.03e-05 | grad 0.12 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 1,003/1,278 | loss 0.0238 | lr 2.03e-05 | grad 0.12 | 8,824 tok/s | MFU 38% | 7.6 GB | ETA 17m
+[train] step 1,004/1,278 | loss 0.0234 | lr 2.02e-05 | grad 0.07 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,005/1,278 | loss 0.0238 | lr 2.01e-05 | grad 0.09 | 8,831 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,006/1,278 | loss 0.0226 | lr 2.01e-05 | grad 0.14 | 8,837 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,007/1,278 | loss 0.0246 | lr 2.00e-05 | grad 0.12 | 8,838 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,008/1,278 | loss 0.0204 | lr 1.99e-05 | grad 0.07 | 8,840 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,009/1,278 | loss 0.0218 | lr 1.98e-05 | grad 0.08 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,010/1,278 | loss 0.0225 | lr 1.98e-05 | grad 0.09 | 8,849 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,011/1,278 | loss 0.0239 | lr 1.97e-05 | grad 0.14 | 8,851 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,012/1,278 | loss 0.0241 | lr 1.96e-05 | grad 0.08 | 8,853 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,013/1,278 | loss 0.0247 | lr 1.96e-05 | grad 0.11 | 8,850 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,014/1,278 | loss 0.0267 | lr 1.95e-05 | grad 0.13 | 8,850 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,015/1,278 | loss 0.0250 | lr 1.94e-05 | grad 0.14 | 8,853 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,016/1,278 | loss 0.0238 | lr 1.94e-05 | grad 0.07 | 8,855 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,017/1,278 | loss 0.0229 | lr 1.93e-05 | grad 0.11 | 8,856 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,018/1,278 | loss 0.0243 | lr 1.92e-05 | grad 0.09 | 8,860 tok/s | MFU 38% | 7.6 GB | ETA 16m
+[train] step 1,019/1,278 | loss 0.0210 | lr 1.92e-05 | grad 0.09 | 8,862 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,020/1,278 | loss 0.0226 | lr 1.91e-05 | grad 0.11 | 8,862 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,021/1,278 | loss 0.0235 | lr 1.90e-05 | grad 0.10 | 8,860 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,022/1,278 | loss 0.0228 | lr 1.90e-05 | grad 0.09 | 8,862 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,023/1,278 | loss 0.0234 | lr 1.89e-05 | grad 0.06 | 8,863 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,024/1,278 | loss 0.0237 | lr 1.88e-05 | grad 0.10 | 8,864 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,025/1,278 | loss 0.0220 | lr 1.88e-05 | grad 0.10 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,026/1,278 | loss 0.0301 | lr 1.87e-05 | grad 0.27 | 8,867 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,027/1,278 | loss 0.0227 | lr 1.86e-05 | grad 0.14 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,028/1,278 | loss 0.0249 | lr 1.86e-05 | grad 0.08 | 8,868 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,029/1,278 | loss 0.0239 | lr 1.85e-05 | grad 0.07 | 8,870 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,030/1,278 | loss 0.0247 | lr 1.84e-05 | grad 0.09 | 8,870 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,031/1,278 | loss 0.0241 | lr 1.84e-05 | grad 0.08 | 8,872 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,032/1,278 | loss 0.0242 | lr 1.83e-05 | grad 0.10 | 8,872 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,033/1,278 | loss 0.0234 | lr 1.82e-05 | grad 0.06 | 8,877 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,034/1,278 | loss 0.0243 | lr 1.82e-05 | grad 0.09 | 8,881 tok/s | MFU 38% | 7.6 GB | ETA 15m
+[train] step 1,035/1,278 | loss 0.0244 | lr 1.81e-05 | grad 0.09 | 8,882 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,036/1,278 | loss 0.0223 | lr 1.80e-05 | grad 0.09 | 8,879 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,037/1,278 | loss 0.0232 | lr 1.80e-05 | grad 0.09 | 8,880 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,038/1,278 | loss 0.0246 | lr 1.79e-05 | grad 0.16 | 8,882 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,039/1,278 | loss 0.0238 | lr 1.78e-05 | grad 0.10 | 8,884 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,040/1,278 | loss 0.0242 | lr 1.78e-05 | grad 0.11 | 8,885 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,041/1,278 | loss 0.0243 | lr 1.77e-05 | grad 0.08 | 8,887 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,042/1,278 | loss 0.0224 | lr 1.77e-05 | grad 0.07 | 8,887 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,043/1,278 | loss 0.0228 | lr 1.76e-05 | grad 0.09 | 8,891 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,044/1,278 | loss 0.0233 | lr 1.75e-05 | grad 0.13 | 8,894 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,045/1,278 | loss 0.0238 | lr 1.75e-05 | grad 0.14 | 8,894 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,046/1,278 | loss 0.0218 | lr 1.74e-05 | grad 0.07 | 8,893 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,047/1,278 | loss 0.0243 | lr 1.73e-05 | grad 0.12 | 8,899 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,048/1,278 | loss 0.0254 | lr 1.73e-05 | grad 0.09 | 8,899 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,049/1,278 | loss 0.0226 | lr 1.72e-05 | grad 0.07 | 8,901 tok/s | MFU 38% | 7.6 GB | ETA 14m
+[train] step 1,050/1,278 | loss 0.0238 | lr 1.72e-05 | grad 0.12 | 8,900 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[eval] step 1,050 | validation loss 0.0234 (perplexity 1.0)
+[train] step 1,051/1,278 | loss 0.0212 | lr 1.71e-05 | grad 0.10 | 8,907 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,052/1,278 | loss 0.0249 | lr 1.70e-05 | grad 0.09 | 8,917 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,053/1,278 | loss 0.0242 | lr 1.70e-05 | grad 0.08 | 8,918 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,054/1,278 | loss 0.0237 | lr 1.69e-05 | grad 0.13 | 8,915 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,055/1,278 | loss 0.0243 | lr 1.69e-05 | grad 0.11 | 8,908 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,056/1,278 | loss 0.0236 | lr 1.68e-05 | grad 0.10 | 8,897 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,057/1,278 | loss 0.0224 | lr 1.67e-05 | grad 0.09 | 8,880 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,058/1,278 | loss 0.0234 | lr 1.67e-05 | grad 0.08 | 8,861 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,059/1,278 | loss 0.0250 | lr 1.66e-05 | grad 0.12 | 8,848 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,060/1,278 | loss 0.0223 | lr 1.66e-05 | grad 0.08 | 8,841 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,061/1,278 | loss 0.0242 | lr 1.65e-05 | grad 0.09 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,062/1,278 | loss 0.0254 | lr 1.64e-05 | grad 0.13 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,063/1,278 | loss 0.0232 | lr 1.64e-05 | grad 0.07 | 8,828 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,064/1,278 | loss 0.0272 | lr 1.63e-05 | grad 0.17 | 8,829 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,065/1,278 | loss 0.0234 | lr 1.63e-05 | grad 0.11 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,066/1,278 | loss 0.0247 | lr 1.62e-05 | grad 0.14 | 8,840 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,067/1,278 | loss 0.0219 | lr 1.62e-05 | grad 0.08 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 13m
+[train] step 1,068/1,278 | loss 0.0231 | lr 1.61e-05 | grad 0.09 | 8,848 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,069/1,278 | loss 0.0245 | lr 1.60e-05 | grad 0.10 | 8,850 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,070/1,278 | loss 0.0213 | lr 1.60e-05 | grad 0.08 | 8,853 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,071/1,278 | loss 0.0268 | lr 1.59e-05 | grad 0.19 | 8,849 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,072/1,278 | loss 0.0223 | lr 1.59e-05 | grad 0.09 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,073/1,278 | loss 0.0273 | lr 1.58e-05 | grad 0.12 | 8,830 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,074/1,278 | loss 0.0242 | lr 1.58e-05 | grad 0.12 | 8,830 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,075/1,278 | loss 0.0236 | lr 1.57e-05 | grad 0.09 | 8,829 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,076/1,278 | loss 0.0255 | lr 1.57e-05 | grad 0.12 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,077/1,278 | loss 0.0226 | lr 1.56e-05 | grad 0.09 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] checkpoint saved at step 1,077
+[train] step 1,078/1,278 | loss 0.0244 | lr 1.56e-05 | grad 0.12 | 8,873 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,079/1,278 | loss 0.0243 | lr 1.55e-05 | grad 0.09 | 8,895 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,080/1,278 | loss 0.0223 | lr 1.54e-05 | grad 0.09 | 8,900 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,081/1,278 | loss 0.0251 | lr 1.54e-05 | grad 0.12 | 8,895 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,082/1,278 | loss 0.0226 | lr 1.53e-05 | grad 0.11 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,083/1,278 | loss 0.0234 | lr 1.53e-05 | grad 0.12 | 8,853 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,084/1,278 | loss 0.0253 | lr 1.52e-05 | grad 0.11 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 12m
+[train] step 1,085/1,278 | loss 0.0227 | lr 1.52e-05 | grad 0.09 | 8,793 tok/s | MFU 38% | 7.6 GB | ETA 11m
+[train] step 1,086/1,278 | loss 0.0223 | lr 1.51e-05 | grad 0.07 | 8,769 tok/s | MFU 37% | 7.6 GB | ETA 11m
+[train] step 1,087/1,278 | loss 0.0216 | lr 1.51e-05 | grad 0.06 | 8,754 tok/s | MFU 37% | 7.6 GB | ETA 11m
+[train] step 1,088/1,278 | loss 0.0233 | lr 1.50e-05 | grad 0.10 | 8,745 tok/s | MFU 37% | 7.6 GB | ETA 11m
+[train] step 1,089/1,278 | loss 0.0239 | lr 1.50e-05 | grad 0.08 | 8,737 tok/s | MFU 37% | 7.6 GB | ETA 11m
+[train] step 1,090/1,278 | loss 0.0255 | lr 1.49e-05 | grad 0.12 | 8,734 tok/s | MFU 37% | 7.6 GB | ETA 11m
+[train] step 1,091/1,278 | loss 0.0239 | lr 1.49e-05 | grad 0.10 | 8,736 tok/s | MFU 37% | 7.6 GB | ETA 11m
+[train] step 1,092/1,278 | loss 0.0227 | lr 1.48e-05 | grad 0.13 | 8,745 tok/s | MFU 37% | 7.6 GB | ETA 11m
+[train] step 1,093/1,278 | loss 0.0213 | lr 1.48e-05 | grad 0.09 | 8,756 tok/s | MFU 37% | 7.6 GB | ETA 11m
+[train] step 1,094/1,278 | loss 0.0250 | lr 1.47e-05 | grad 0.12 | 8,767 tok/s | MFU 37% | 7.6 GB | ETA 11m
+[train] step 1,095/1,278 | loss 0.0243 | lr 1.47e-05 | grad 0.07 | 8,780 tok/s | MFU 38% | 7.6 GB | ETA 11m
+[train] step 1,096/1,278 | loss 0.0229 | lr 1.46e-05 | grad 0.13 | 8,792 tok/s | MFU 38% | 7.6 GB | ETA 11m
+[train] step 1,097/1,278 | loss 0.0217 | lr 1.46e-05 | grad 0.08 | 8,805 tok/s | MFU 38% | 7.6 GB | ETA 11m
+[train] step 1,098/1,278 | loss 0.0215 | lr 1.45e-05 | grad 0.09 | 8,795 tok/s | MFU 38% | 7.6 GB | ETA 11m
+[train] step 1,099/1,278 | loss 0.0208 | lr 1.45e-05 | grad 0.10 | 8,789 tok/s | MFU 38% | 7.6 GB | ETA 11m
+[train] step 1,100/1,278 | loss 0.0220 | lr 1.44e-05 | grad 0.08 | 8,791 tok/s | MFU 38% | 7.6 GB | ETA 11m
+[eval] step 1,100 | validation loss 0.0236 (perplexity 1.0)
+[train] step 1,101/1,278 | loss 0.0205 | lr 1.44e-05 | grad 0.09 | 8,797 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,102/1,278 | loss 0.0253 | lr 1.43e-05 | grad 0.12 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,103/1,278 | loss 0.0246 | lr 1.43e-05 | grad 0.13 | 8,830 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,104/1,278 | loss 0.0229 | lr 1.42e-05 | grad 0.09 | 8,853 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,105/1,278 | loss 0.0246 | lr 1.42e-05 | grad 0.14 | 8,874 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,106/1,278 | loss 0.0253 | lr 1.41e-05 | grad 0.13 | 8,889 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,107/1,278 | loss 0.0242 | lr 1.41e-05 | grad 0.07 | 8,897 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,108/1,278 | loss 0.0232 | lr 1.40e-05 | grad 0.08 | 8,903 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,109/1,278 | loss 0.0238 | lr 1.40e-05 | grad 0.12 | 8,905 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,110/1,278 | loss 0.0240 | lr 1.39e-05 | grad 0.09 | 8,905 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,111/1,278 | loss 0.0243 | lr 1.39e-05 | grad 0.10 | 8,903 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,112/1,278 | loss 0.0267 | lr 1.39e-05 | grad 0.11 | 8,900 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,113/1,278 | loss 0.0228 | lr 1.38e-05 | grad 0.10 | 8,897 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,114/1,278 | loss 0.0222 | lr 1.38e-05 | grad 0.09 | 8,889 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,115/1,278 | loss 0.0225 | lr 1.37e-05 | grad 0.13 | 8,884 tok/s | MFU 38% | 7.6 GB | ETA 10m
+[train] step 1,116/1,278 | loss 0.0217 | lr 1.37e-05 | grad 0.12 | 8,880 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,117/1,278 | loss 0.0224 | lr 1.36e-05 | grad 0.09 | 8,874 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,118/1,278 | loss 0.0245 | lr 1.36e-05 | grad 0.10 | 8,869 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,119/1,278 | loss 0.0234 | lr 1.35e-05 | grad 0.11 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,120/1,278 | loss 0.0228 | lr 1.35e-05 | grad 0.10 | 8,864 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,121/1,278 | loss 0.0214 | lr 1.35e-05 | grad 0.08 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,122/1,278 | loss 0.0243 | lr 1.34e-05 | grad 0.09 | 8,868 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,123/1,278 | loss 0.0242 | lr 1.34e-05 | grad 0.08 | 8,873 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,124/1,278 | loss 0.0243 | lr 1.33e-05 | grad 0.10 | 8,876 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,125/1,278 | loss 0.0217 | lr 1.33e-05 | grad 0.09 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,126/1,278 | loss 0.0219 | lr 1.32e-05 | grad 0.10 | 8,877 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,127/1,278 | loss 0.0214 | lr 1.32e-05 | grad 0.10 | 8,874 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,128/1,278 | loss 0.0225 | lr 1.32e-05 | grad 0.12 | 8,869 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,129/1,278 | loss 0.0240 | lr 1.31e-05 | grad 0.08 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,130/1,278 | loss 0.0223 | lr 1.31e-05 | grad 0.07 | 8,858 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,131/1,278 | loss 0.0230 | lr 1.30e-05 | grad 0.09 | 8,850 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,132/1,278 | loss 0.0249 | lr 1.30e-05 | grad 0.14 | 8,842 tok/s | MFU 38% | 7.6 GB | ETA 9m
+[train] step 1,133/1,278 | loss 0.0238 | lr 1.30e-05 | grad 0.11 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,134/1,278 | loss 0.0239 | lr 1.29e-05 | grad 0.10 | 8,828 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,135/1,278 | loss 0.0233 | lr 1.29e-05 | grad 0.10 | 8,823 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,136/1,278 | loss 0.0247 | lr 1.28e-05 | grad 0.11 | 8,820 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,137/1,278 | loss 0.0237 | lr 1.28e-05 | grad 0.12 | 8,814 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,138/1,278 | loss 0.0230 | lr 1.28e-05 | grad 0.07 | 8,816 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,139/1,278 | loss 0.0238 | lr 1.27e-05 | grad 0.08 | 8,815 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,140/1,278 | loss 0.0205 | lr 1.27e-05 | grad 0.09 | 8,812 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,141/1,278 | loss 0.0230 | lr 1.26e-05 | grad 0.05 | 8,812 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,142/1,278 | loss 0.0217 | lr 1.26e-05 | grad 0.13 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,143/1,278 | loss 0.0234 | lr 1.26e-05 | grad 0.09 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,144/1,278 | loss 0.0226 | lr 1.25e-05 | grad 0.12 | 8,810 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,145/1,278 | loss 0.0231 | lr 1.25e-05 | grad 0.08 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,146/1,278 | loss 0.0248 | lr 1.25e-05 | grad 0.10 | 8,811 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,147/1,278 | loss 0.0222 | lr 1.24e-05 | grad 0.08 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,148/1,278 | loss 0.0228 | lr 1.24e-05 | grad 0.13 | 8,815 tok/s | MFU 38% | 7.6 GB | ETA 8m
+[train] step 1,149/1,278 | loss 0.0234 | lr 1.24e-05 | grad 0.14 | 8,819 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,150/1,278 | loss 0.0212 | lr 1.23e-05 | grad 0.11 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[eval] step 1,150 | validation loss 0.0229 (perplexity 1.0)
+[train] step 1,151/1,278 | loss 0.0246 | lr 1.23e-05 | grad 0.15 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,152/1,278 | loss 0.0206 | lr 1.22e-05 | grad 0.08 | 8,839 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,153/1,278 | loss 0.0216 | lr 1.22e-05 | grad 0.10 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,154/1,278 | loss 0.0242 | lr 1.22e-05 | grad 0.12 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,155/1,278 | loss 0.0228 | lr 1.21e-05 | grad 0.09 | 8,840 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,156/1,278 | loss 0.0222 | lr 1.21e-05 | grad 0.09 | 8,831 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,157/1,278 | loss 0.0232 | lr 1.21e-05 | grad 0.09 | 8,824 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,158/1,278 | loss 0.0217 | lr 1.20e-05 | grad 0.10 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,159/1,278 | loss 0.0244 | lr 1.20e-05 | grad 0.09 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,160/1,278 | loss 0.0242 | lr 1.20e-05 | grad 0.16 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,161/1,278 | loss 0.0237 | lr 1.19e-05 | grad 0.09 | 8,798 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,162/1,278 | loss 0.0223 | lr 1.19e-05 | grad 0.08 | 8,797 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,163/1,278 | loss 0.0222 | lr 1.19e-05 | grad 0.12 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,164/1,278 | loss 0.0282 | lr 1.18e-05 | grad 0.17 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,165/1,278 | loss 0.0226 | lr 1.18e-05 | grad 0.09 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 7m
+[train] step 1,166/1,278 | loss 0.0219 | lr 1.18e-05 | grad 0.10 | 8,820 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,167/1,278 | loss 0.0245 | lr 1.17e-05 | grad 0.07 | 8,828 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,168/1,278 | loss 0.0241 | lr 1.17e-05 | grad 0.09 | 8,838 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,169/1,278 | loss 0.0221 | lr 1.17e-05 | grad 0.07 | 8,843 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,170/1,278 | loss 0.0246 | lr 1.17e-05 | grad 0.11 | 8,848 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,171/1,278 | loss 0.0237 | lr 1.16e-05 | grad 0.13 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,172/1,278 | loss 0.0227 | lr 1.16e-05 | grad 0.11 | 8,841 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,173/1,278 | loss 0.0247 | lr 1.16e-05 | grad 0.11 | 8,840 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,174/1,278 | loss 0.0225 | lr 1.15e-05 | grad 0.09 | 8,840 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,175/1,278 | loss 0.0228 | lr 1.15e-05 | grad 0.07 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,176/1,278 | loss 0.0214 | lr 1.15e-05 | grad 0.07 | 8,849 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,177/1,278 | loss 0.0251 | lr 1.15e-05 | grad 0.09 | 8,856 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,178/1,278 | loss 0.0240 | lr 1.14e-05 | grad 0.13 | 8,863 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,179/1,278 | loss 0.0239 | lr 1.14e-05 | grad 0.09 | 8,868 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,180/1,278 | loss 0.0243 | lr 1.14e-05 | grad 0.10 | 8,871 tok/s | MFU 38% | 7.6 GB | ETA 6m
+[train] step 1,181/1,278 | loss 0.0248 | lr 1.13e-05 | grad 0.16 | 8,872 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,182/1,278 | loss 0.0243 | lr 1.13e-05 | grad 0.12 | 8,875 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,183/1,278 | loss 0.0236 | lr 1.13e-05 | grad 0.17 | 8,868 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,184/1,278 | loss 0.0219 | lr 1.13e-05 | grad 0.09 | 8,869 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,185/1,278 | loss 0.0231 | lr 1.12e-05 | grad 0.11 | 8,861 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,186/1,278 | loss 0.0219 | lr 1.12e-05 | grad 0.11 | 8,854 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,187/1,278 | loss 0.0211 | lr 1.12e-05 | grad 0.07 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,188/1,278 | loss 0.0220 | lr 1.12e-05 | grad 0.07 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,189/1,278 | loss 0.0228 | lr 1.11e-05 | grad 0.08 | 8,829 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,190/1,278 | loss 0.0214 | lr 1.11e-05 | grad 0.07 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,191/1,278 | loss 0.0215 | lr 1.11e-05 | grad 0.10 | 8,821 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,192/1,278 | loss 0.0241 | lr 1.11e-05 | grad 0.11 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,193/1,278 | loss 0.0233 | lr 1.10e-05 | grad 0.14 | 8,822 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,194/1,278 | loss 0.0229 | lr 1.10e-05 | grad 0.11 | 8,824 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,195/1,278 | loss 0.0222 | lr 1.10e-05 | grad 0.11 | 8,827 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,196/1,278 | loss 0.0240 | lr 1.10e-05 | grad 0.10 | 8,832 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,197/1,278 | loss 0.0219 | lr 1.09e-05 | grad 0.12 | 8,836 tok/s | MFU 38% | 7.6 GB | ETA 5m
+[train] step 1,198/1,278 | loss 0.0219 | lr 1.09e-05 | grad 0.08 | 8,840 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,199/1,278 | loss 0.0222 | lr 1.09e-05 | grad 0.09 | 8,841 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,200/1,278 | loss 0.0236 | lr 1.09e-05 | grad 0.09 | 8,848 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[eval] step 1,200 | validation loss 0.0230 (perplexity 1.0)
+[train] step 1,201/1,278 | loss 0.0213 | lr 1.09e-05 | grad 0.07 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,202/1,278 | loss 0.0228 | lr 1.08e-05 | grad 0.09 | 8,847 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,203/1,278 | loss 0.0214 | lr 1.08e-05 | grad 0.11 | 8,852 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,204/1,278 | loss 0.0214 | lr 1.08e-05 | grad 0.10 | 8,851 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,205/1,278 | loss 0.0210 | lr 1.08e-05 | grad 0.06 | 8,858 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,206/1,278 | loss 0.0226 | lr 1.07e-05 | grad 0.10 | 8,861 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,207/1,278 | loss 0.0260 | lr 1.07e-05 | grad 0.09 | 8,865 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,208/1,278 | loss 0.0229 | lr 1.07e-05 | grad 0.09 | 8,869 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,209/1,278 | loss 0.0220 | lr 1.07e-05 | grad 0.12 | 8,866 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,210/1,278 | loss 0.0228 | lr 1.07e-05 | grad 0.08 | 8,869 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,211/1,278 | loss 0.0237 | lr 1.06e-05 | grad 0.09 | 8,871 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,212/1,278 | loss 0.0206 | lr 1.06e-05 | grad 0.08 | 8,872 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,213/1,278 | loss 0.0235 | lr 1.06e-05 | grad 0.09 | 8,874 tok/s | MFU 38% | 7.6 GB | ETA 4m
+[train] step 1,214/1,278 | loss 0.0238 | lr 1.06e-05 | grad 0.15 | 8,877 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,215/1,278 | loss 0.0229 | lr 1.06e-05 | grad 0.17 | 8,878 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,216/1,278 | loss 0.0219 | lr 1.06e-05 | grad 0.07 | 8,879 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,217/1,278 | loss 0.0224 | lr 1.05e-05 | grad 0.10 | 8,881 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,218/1,278 | loss 0.0236 | lr 1.05e-05 | grad 0.14 | 8,884 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,219/1,278 | loss 0.0247 | lr 1.05e-05 | grad 0.08 | 8,887 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,220/1,278 | loss 0.0232 | lr 1.05e-05 | grad 0.08 | 8,888 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,221/1,278 | loss 0.0213 | lr 1.05e-05 | grad 0.09 | 8,895 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,222/1,278 | loss 0.0252 | lr 1.05e-05 | grad 0.11 | 8,897 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,223/1,278 | loss 0.0210 | lr 1.04e-05 | grad 0.13 | 8,900 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,224/1,278 | loss 0.0233 | lr 1.04e-05 | grad 0.10 | 8,902 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,225/1,278 | loss 0.0243 | lr 1.04e-05 | grad 0.16 | 8,899 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,226/1,278 | loss 0.0225 | lr 1.04e-05 | grad 0.07 | 8,899 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,227/1,278 | loss 0.0244 | lr 1.04e-05 | grad 0.10 | 8,900 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,228/1,278 | loss 0.0230 | lr 1.04e-05 | grad 0.09 | 8,900 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,229/1,278 | loss 0.0266 | lr 1.04e-05 | grad 0.11 | 8,906 tok/s | MFU 38% | 7.6 GB | ETA 3m
+[train] step 1,230/1,278 | loss 0.0272 | lr 1.03e-05 | grad 0.12 | 8,904 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,231/1,278 | loss 0.0228 | lr 1.03e-05 | grad 0.09 | 8,908 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,232/1,278 | loss 0.0244 | lr 1.03e-05 | grad 0.11 | 8,910 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,233/1,278 | loss 0.0221 | lr 1.03e-05 | grad 0.09 | 8,911 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] checkpoint saved at step 1,233
+[train] step 1,234/1,278 | loss 0.0234 | lr 1.03e-05 | grad 0.08 | 8,926 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,235/1,278 | loss 0.0219 | lr 1.03e-05 | grad 0.08 | 8,940 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,236/1,278 | loss 0.0216 | lr 1.03e-05 | grad 0.09 | 8,945 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,237/1,278 | loss 0.0222 | lr 1.02e-05 | grad 0.10 | 8,941 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,238/1,278 | loss 0.0239 | lr 1.02e-05 | grad 0.11 | 8,924 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,239/1,278 | loss 0.0223 | lr 1.02e-05 | grad 0.15 | 8,896 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,240/1,278 | loss 0.0238 | lr 1.02e-05 | grad 0.09 | 8,863 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,241/1,278 | loss 0.0234 | lr 1.02e-05 | grad 0.09 | 8,829 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,242/1,278 | loss 0.0200 | lr 1.02e-05 | grad 0.12 | 8,801 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,243/1,278 | loss 0.0242 | lr 1.02e-05 | grad 0.13 | 8,784 tok/s | MFU 38% | 7.6 GB | ETA 2m
+[train] step 1,244/1,278 | loss 0.0220 | lr 1.02e-05 | grad 0.11 | 8,768 tok/s | MFU 37% | 7.6 GB | ETA 2m
+[train] step 1,245/1,278 | loss 0.0227 | lr 1.02e-05 | grad 0.07 | 8,759 tok/s | MFU 37% | 7.6 GB | ETA 2m
+[train] step 1,246/1,278 | loss 0.0228 | lr 1.02e-05 | grad 0.10 | 8,755 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[train] step 1,247/1,278 | loss 0.0203 | lr 1.01e-05 | grad 0.10 | 8,752 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[train] step 1,248/1,278 | loss 0.0213 | lr 1.01e-05 | grad 0.08 | 8,755 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[train] step 1,249/1,278 | loss 0.0234 | lr 1.01e-05 | grad 0.10 | 8,760 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[train] step 1,250/1,278 | loss 0.0215 | lr 1.01e-05 | grad 0.07 | 8,768 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[eval] step 1,250 | validation loss 0.0227 (perplexity 1.0)
+[train] step 1,251/1,278 | loss 0.0222 | lr 1.01e-05 | grad 0.12 | 8,778 tok/s | MFU 38% | 7.6 GB | ETA 1m
+[train] step 1,252/1,278 | loss 0.0216 | lr 1.01e-05 | grad 0.11 | 8,790 tok/s | MFU 38% | 7.6 GB | ETA 1m
+[train] step 1,253/1,278 | loss 0.0240 | lr 1.01e-05 | grad 0.10 | 8,797 tok/s | MFU 38% | 7.6 GB | ETA 1m
+[train] step 1,254/1,278 | loss 0.0226 | lr 1.01e-05 | grad 0.14 | 8,782 tok/s | MFU 38% | 7.6 GB | ETA 1m
+[train] step 1,255/1,278 | loss 0.0247 | lr 1.01e-05 | grad 0.09 | 8,766 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[train] step 1,256/1,278 | loss 0.0224 | lr 1.01e-05 | grad 0.07 | 8,750 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[train] step 1,257/1,278 | loss 0.0213 | lr 1.01e-05 | grad 0.10 | 8,736 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[train] step 1,258/1,278 | loss 0.0233 | lr 1.01e-05 | grad 0.10 | 8,729 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[train] step 1,259/1,278 | loss 0.0230 | lr 1.01e-05 | grad 0.09 | 8,739 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[train] step 1,260/1,278 | loss 0.0216 | lr 1.01e-05 | grad 0.08 | 8,756 tok/s | MFU 37% | 7.6 GB | ETA 1m
+[train] step 1,261/1,278 | loss 0.0213 | lr 1.00e-05 | grad 0.09 | 8,776 tok/s | MFU 38% | 7.6 GB | ETA 1m
+[train] step 1,262/1,278 | loss 0.0223 | lr 1.00e-05 | grad 0.07 | 8,796 tok/s | MFU 38% | 7.6 GB | ETA 59s
+[train] step 1,263/1,278 | loss 0.0232 | lr 1.00e-05 | grad 0.11 | 8,808 tok/s | MFU 38% | 7.6 GB | ETA 55s
+[train] step 1,264/1,278 | loss 0.0266 | lr 1.00e-05 | grad 0.10 | 8,824 tok/s | MFU 38% | 7.6 GB | ETA 51s
+[train] step 1,265/1,278 | loss 0.0229 | lr 1.00e-05 | grad 0.09 | 8,833 tok/s | MFU 38% | 7.6 GB | ETA 48s
+[train] step 1,266/1,278 | loss 0.0226 | lr 1.00e-05 | grad 0.11 | 8,839 tok/s | MFU 38% | 7.6 GB | ETA 44s
+[train] step 1,267/1,278 | loss 0.0216 | lr 1.00e-05 | grad 0.09 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 40s
+[train] step 1,268/1,278 | loss 0.0253 | lr 1.00e-05 | grad 0.09 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 37s
+[train] step 1,269/1,278 | loss 0.0233 | lr 1.00e-05 | grad 0.14 | 8,844 tok/s | MFU 38% | 7.6 GB | ETA 33s
+[train] step 1,270/1,278 | loss 0.0224 | lr 1.00e-05 | grad 0.10 | 8,839 tok/s | MFU 38% | 7.6 GB | ETA 29s
+[train] step 1,271/1,278 | loss 0.0215 | lr 1.00e-05 | grad 0.08 | 8,829 tok/s | MFU 38% | 7.6 GB | ETA 25s
+[train] step 1,272/1,278 | loss 0.0248 | lr 1.00e-05 | grad 0.12 | 8,818 tok/s | MFU 38% | 7.6 GB | ETA 22s
+[train] step 1,273/1,278 | loss 0.0233 | lr 1.00e-05 | grad 0.14 | 8,806 tok/s | MFU 38% | 7.6 GB | ETA 18s
+[train] step 1,274/1,278 | loss 0.0230 | lr 1.00e-05 | grad 0.10 | 8,802 tok/s | MFU 38% | 7.6 GB | ETA 14s
+[train] step 1,275/1,278 | loss 0.0223 | lr 1.00e-05 | grad 0.09 | 8,803 tok/s | MFU 38% | 7.6 GB | ETA 11s
+[train] step 1,276/1,278 | loss 0.0223 | lr 1.00e-05 | grad 0.10 | 8,813 tok/s | MFU 38% | 7.6 GB | ETA 7s
+[train] step 1,277/1,278 | loss 0.0217 | lr 1.00e-05 | grad 0.11 | 8,826 tok/s | MFU 38% | 7.6 GB | ETA 3s
+[train] step 1,278/1,278 | loss 0.0228 | lr 1.00e-05 | grad 0.07 | 8,845 tok/s | MFU 38% | 7.6 GB | ETA 0s
+[eval] step 1,278 | validation loss 0.0224 (perplexity 1.0)
+[train] finished: /kaggle/working/runs/text-150m-explain-b3b/model.pt (validation loss 0.0224)

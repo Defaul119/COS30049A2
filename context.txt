@@ -17,9 +17,6 @@ RUNNING
   30 Oct and writes runs/text-150m-cont/model.pt (kaggle_run.json "finished": true).
 - Check: KAGGLE_API_TOKEN=$(cat C:/Users/ADMIN/.kaggle/accounts/dansns.token) kaggle kernels status
   dansns/cos30049a2-text150m-train (logs only after it ends: `kernels logs`; "[eval] step ... validation loss").
-- kainetyson/cos30049a2-text150m-b3-dev-eval (T4, pinned 25f18cb): round 1, A and B on DS7 v2's validation
-  prompts (the B3 trial's devval part failed: val rows have no template; eval_explain now uses the reference reply).
-  The trial's weak-case dev results are in CHANGELOG 29 Oct (B 0.922 vs A 0.457 vs r1 0.375 fully correct).
 - tritran72/cos30049a2-rebuild (CPU, pinned 0aded70): README 2-4 on a fresh clone with DS3 and DS4, distribution
   and figures, then tools/compare_tables.py against the commit (compare.csv). Its outputs are the frozen DS1/DS2/
   DS10/classifier tables (features with 12 significant digits: regression and fusion may move slightly).
@@ -29,11 +26,11 @@ RUNNING
 NEXT, IN ORDER (the user, 29 Oct: "continue with training, don't work on reports yet, start on everything behind
 schedule")
 1. DONE 29 Oct: scoring stages finished (C3-C5 promoted; C6, C7, C9 rejected; C8 not run); tables rebuilt.
-2. B3 dev eval done -> bring home the devval tables (and the trial's devweak tables from scratchpad out_b3), then
-   `python -m explorer.cli writer-gate --before <b3a devweak, devval> --after <b3b devweak, devval> --stage B3
-   --model text150m --previous B3-A` (B vs A decides WEAK_CASES) and A vs r1 recorded too (stage "B3-A").
-3. Session 4 done -> record its losses; push text150m_stages on dansns (kernel_sources stage-data + train;
-   WEAK_CASES from step 2); then writer-gate round 2 vs round 1 on dev, then the adoption rule (KAGGLE_LM_PLAN 3).
+2. DONE 29 Oct: stage B3 ACCEPTED (B vs A +0.234 [+0.204, +0.266]); round 2 runs with WEAK_CASES = True.
+3. Session 4 done -> scratchpad stages_chain.sh (own window, log stages_chain.log) checks "finished" and pushes
+   text150m_stages on dansns with WEAK_CASES True (about 5 h: chat, explanation, every evaluation). Then bring home
+   its tables and runs/*/model_best.pt, writer-gate round 2 vs round 1 on dev (stage "B round 2"), `python -m
+   lm.adopt` on the test tier, and the freeze (5).
 3b. Rebuild done -> read compare.csv; copy the rebuilt tables/figures/models/esplora CSVs over the repo (not
    stages.csv), rerun `figures` (eda_tests note now cites Pareja et al. 2020), pytest, commit: frozen non-LM results.
 4. C10 done (test tier, 29 Oct): the baseline stays recommended; explorerMethod unchanged.
