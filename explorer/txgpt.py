@@ -5,6 +5,8 @@ same for every planted copy. Two candidate scores (plan §10.1, step 4):
     raw       s_i, the total surprisal
     relative  a robust z of s_i against the same history's strictly earlier surprisals (floored
               spread), i.e. surprising *for this address* rather than surprising in general
+Stage C7 (docs/TRAINING_PLAN.md) adds event-level variants, event_<raw|relative>_<W>h: the score plus the
+strictly earlier ones within W hours, so a burst of mildly surprising transactions adds up.
 The tuning plants (seeds 40000-40004) choose between them by mean recall; the flag threshold is
 the top 2% of fit-period scores, and the baseline's minimum-history rule applies (methods.flags).
 The reason shown with a flag names the field with the largest surprisal.
@@ -32,6 +34,7 @@ from .snapshot import MANIFEST_PATH
 log = logging.getLogger(__name__)
 
 SCORES_PATH = MANIFEST_PATH.parent / "txgpt_scores.csv"
+SECONDS_PER_HOUR = 3600.0
 
 
 def relative_scores(times: np.ndarray, surprisal: np.ndarray, min_scale: float, min_values: int) -> np.ndarray:
@@ -51,15 +54,37 @@ def relative_scores(times: np.ndarray, surprisal: np.ndarray, min_scale: float, 
     return out
 
 
+def event_scores(times: np.ndarray, values: np.ndarray, window_seconds: float) -> np.ndarray:
+    """Stage C7's event-level score: each value's positive part plus those of the strictly earlier values within
+    `window_seconds` in the same time-ordered history (a burst of mildly surprising transactions adds up). NaN
+    where the transaction's own value is NaN; an earlier NaN adds nothing."""
+    positive = np.where(np.isfinite(values), np.maximum(values, 0.0), 0.0)
+    out = np.full(len(values), np.nan)
+    for i in range(len(values)):
+        if np.isfinite(values[i]):
+            earlier = (times < times[i]) & (times >= times[i] - window_seconds)
+            out[i] = positive[i] + positive[earlier].sum()
+    return out
+
+
+def event_columns() -> list[str]:
+    """The event-level variants' column names (settings txgpt -> eventWindowsHours)."""
+    return [f"event_{base}_{w}h" for base in ("raw", "relative") for w in SETTINGS["txgpt"]["eventWindowsHours"]]
+
+
 def with_relative(scores: pd.DataFrame, times: pd.DataFrame, group: str) -> pd.DataFrame:
-    """Add `relative` to a surprisal table (keyed by group and txid), computed per history."""
+    """Add `relative` and the event-level columns to a surprisal table (keyed by group and txid), per history."""
     t = SETTINGS["txgpt"]
     merged = scores.merge(times, on=[group, "txid"], how="left").sort_values([group, "block_time_utc", "txid"])
     parts = []
     for _, g in merged.groupby(group, sort=False):
         g = g.copy()
+        when = g["block_time_utc"].to_numpy(dtype="float64")  # Unix seconds
         g["relative"] = relative_scores(g["block_time_utc"].to_numpy(), g["surprisal"].to_numpy(),
                                         t["relativeMinScale"], SETTINGS["features"]["minComparisonValues"])
+        for base, column in (("raw", "surprisal"), ("relative", "relative")):
+            for w in t["eventWindowsHours"]:
+                g[f"event_{base}_{w}h"] = event_scores(when, g[column].to_numpy(dtype="float64"), w * SECONDS_PER_HOUR)
         parts.append(g)
     return pd.concat(parts, ignore_index=True)
 
@@ -79,7 +104,7 @@ class TxGPTMethod:
 
     def score(self, frame: pd.DataFrame) -> np.ndarray:
         # A transaction without a score (not enough history for the relative z) is not unusual.
-        column = "surprisal" if self.variant == "raw" else "relative"
+        column = {"raw": "surprisal", "relative": "relative"}.get(self.variant, self.variant)  # or event_*
         return self._rows(frame)[column].fillna(-np.inf).to_numpy(dtype="float64")
 
     def reasons(self, frame: pd.DataFrame) -> list[str]:

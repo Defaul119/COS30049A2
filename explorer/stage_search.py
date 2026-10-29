@@ -21,7 +21,8 @@ Each candidate is fitted on the real fit period and scored as arrays; the winner
 
 Candidates (settings.json -> stageSearch): how the baseline combines |z| (C1); Isolation Forest, LOF, K-Means and
 DBSCAN / HDBSCAN hyperparameters and input sets, F9 included as an option (C2-C5); regression's model family per
-target, input set and residual floor, and the range variant's quantiles and calibration share (C6); the fusion of
+target, input set and residual floor, and the range variant's quantiles and calibration share (C6); TxGPT's score
+variants, event-level ones included (C7, from the precomputed surprisals); the fusion of
 every pair of the current methods, each at its last accepted stage, with a weight ratio (C9). Per-address
 Isolation Forests are left out: they cannot score an address they were not fitted on (criterion C3).
 
@@ -61,7 +62,7 @@ log = logging.getLogger(__name__)
 SEARCH_DIR = TABLES_DIR / "stage_search"
 STAGE_MODELS_DIR = MODELS_DIR / "stage"
 STAGES = {"C1": ("baseline",), "C2": ("isolation_forest",), "C3": ("lof",), "C4": ("kmeans",), "C5": ("dbscan",),
-          "C6": ("regression", "regression_interval"), "C9": ("fusion",)}
+          "C6": ("regression", "regression_interval"), "C7": ("txgpt_method",), "C9": ("fusion",)}
 STABLE = {"isolation_forest", "lof", "fusion"}  # methods whose M0 choice also needed the stability target
 REGRESSION_BASE = [c for c in INPUTS if c != PACE_ID]  # regression.INPUTS without stage A0's F9
 
@@ -137,7 +138,7 @@ def m0_reference(method: str, before: str = "M0") -> dict[str, Any]:
     hits = hits[(hits["method"] == method) & hits["seed"].isin(SETTINGS["stageSearch"]["searchSeeds"])]
     return {"budget": min(float(summary["flag_rate"]), SETTINGS["sanity"]["maxFlaggedShare"]),
             "max_address_share": float(summary["max_address_share"]), "recalls": hit_recalls(hits),
-            "spread": m0_spread(method)}
+            "spread": m0_spread(method, hits)}
 
 
 def evaluate(data: Data, real_scores: np.ndarray, search_scores: np.ndarray, ref: dict[str, Any]) -> dict[str, Any]:
@@ -426,7 +427,22 @@ def fusion_candidates(data: Data) -> Iterator[Candidate]:
                             scores=scores, refit=refit)
 
 
+def txgpt_candidates() -> list[Candidate]:
+    """C7: TxGPT's score variants from the precomputed surprisals (lm.tx_score --plants; data/interim, so this stage
+    runs where they are): M0's raw and relative, and the event-level ones (settings txgpt -> eventWindowsHours)."""
+    from .baseline import FEATURE_FILES
+    from .txgpt import TxGPTMethod, event_columns, load_lookup, plant_scores_exist
+
+    if not plant_scores_exist():
+        raise SystemExit("stage C7 needs the planted copies' TxGPT scores (python -m lm.tx_score --plants)")
+    lookup = load_lookup(pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES["refined"]))
+    return [Candidate({"variant": v}, make=lambda v=v: TxGPTMethod(v, lookup))
+            for v in SETTINGS["txgpt"]["variants"] + event_columns()]
+
+
 def candidates(method: str, data: Data, fits: dict | None) -> list[Candidate]:
+    if method == "txgpt_method":
+        return txgpt_candidates()
     if method == "fusion":
         return list(fusion_candidates(data))
     if method == "baseline":

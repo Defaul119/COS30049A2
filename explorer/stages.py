@@ -254,12 +254,24 @@ def pattern_mean_draws(hits: pd.DataFrame, weights: np.ndarray, addresses: list[
     return np.mean(per_pattern, axis=0)
 
 
-def m0_spread(method: str) -> dict[str, float]:
-    """Each pattern recall's seed spread (one SD over the 100 distribution seeds on DS1) at M0."""
+def m0_spread(method: str, hits: pd.DataFrame | None = None) -> dict[str, float]:
+    """Each pattern recall's seed spread (one SD over the 100 distribution seeds on DS1) at M0.
+
+    TxGPT has no seed rows (distribution.py cannot score new plants with it), so for a method without them the
+    stand-in is the standard error of the M0 per-plant measure on `hits` (the plants being compared), set 29 Oct
+    before stage C7's result; without `hits` the spread is 0 (no fall allowed)."""
     seeds = pd.read_csv(TABLES_DIR / "stats_methods_seeds.csv")
     seeds = seeds[(seeds["dataset"] == "DS1") & (seeds["method"] == method)]
     names = {"spike": "recall_spike", "burst": "recall_burst_tx", "dormant": "recall_dormant"}
-    return {p: float(seeds[c].std()) for p, c in names.items()} if len(seeds) else {}
+    if len(seeds):
+        return {p: float(seeds[c].std()) for p, c in names.items()}
+    if hits is None:
+        return {}
+    out = {}
+    for pattern, measure in PATTERN_MEASURES.items():
+        v = hits.loc[hits["pattern"] == pattern, measure].astype("float64")
+        out[pattern] = float(v.std(ddof=1) / np.sqrt(len(v))) if len(v) > 1 else 0.0
+    return out
 
 
 def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True, seeds: list[int] | None = None,
@@ -285,7 +297,7 @@ def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True, s
         low, high = interval(diff[1:], s["ciLevel"])
         recalls_b, recalls_a = ({p: float(h.loc[h["pattern"] == p, m].mean()) for p, m in PATTERN_MEASURES.items()}
                                 for h in (b, a))
-        result = decide(low, recalls_b, recalls_a, m0_spread(method), loss_agrees,
+        result = decide(low, recalls_b, recalls_a, m0_spread(method, b), loss_agrees,
                         flagged_share=float(sa.loc[method, "flag_rate"]),
                         address_share_before=float(sb.loc[method, "max_address_share"]),
                         address_share_after=float(sa.loc[method, "max_address_share"]))

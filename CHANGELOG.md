@@ -11,6 +11,16 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Stage C7 rejected: TxGPT stays at M0 (run on the PC, CPU, 94 s, from the precomputed plant surprisals).** At the
+M0 flag budget (1.48%), on search seeds 40000-40002: raw 0.532 (M0's variant), relative 0.489, event-level relative
+1 h / 6 h / 24 h 0.506 / 0.489 / 0.485, event-level raw 0.27 / 0.09 / 0.04. Event-level scores trade patterns, they
+do not add: burst recall rises 0.16 -> 0.30 / 0.50 / 0.65 while spike (0.70 -> 0.43) and dormant (0.73 -> 0.38)
+fall, so the per-pattern rule filters them; their PR-AUC is higher (0.33 -> 0.49 / 0.54 at 6 h / 24 h). The winner
+(raw at the budget's cut) is gated against M0 on seeds 40003-40004: -0.004 [-0.010, 0.000], rejected. The
+per-pattern allowance for TxGPT (no M0 seed spread) is the standard error of M0's per-plant measure on the compared
+plants, set before the run. TxGPT retraining (new time tokens, sizes x seeds) and C8 are not run: the size sweep
+already ties and the GPU hours go to the 152M model.
+
 **Stage C9 prepared: fusion of the current methods (set before any result).** `stage-search --stages C9` searches
 every pair of the current methods (each at its last accepted stage via stageModels; TxGPT cannot join, it scores
 only the reporting plants) fused as fusion.py fuses, at weight ratios 0.5-2 for the second component, at the M0

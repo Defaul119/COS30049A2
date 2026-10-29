@@ -92,6 +92,21 @@ are filtered before ranking. The comparison window, minimum history and spread f
 so they are a shared feature stage like A0 (A1), not part of C1. Per-address Isolation Forests are left out:
 they cannot score an address they were not fitted on.
 
+How C7, C9 and the test tier run (set 29 Oct before any result):
+- **C7 (TxGPT, scoring only):** the same rules, over TxGPT's score variants computed from the surprisals already
+  scored for every plant: M0's raw and relative, and event-level scores (the score plus the strictly earlier ones
+  within 1, 6 or 24 hours, positive parts, raw or relative), for the burst weak spot. TxGPT has no M0 seed spread
+  (it cannot score new plants without the GPU step), so its per-pattern allowance is the standard error of M0's
+  per-plant measure on the compared plants. Retraining TxGPT (new time tokens, sizes x seeds) is left out: the size
+  sweep already ties (txgpt_sizes.csv) and the GPU hours go to the 152M model.
+- **C9 (fusion):** every pair of the current methods (each at its last accepted stage), fused as fusion.py fuses,
+  with the second component's weight in 0.5-2, at the M0 fusion's flag budget; stability-checked as M0's fusion was.
+- **Promotion:** an accepted stage's winner replaces the M0 model everywhere through `config/settings.json ->
+  stageModels` (C3, C4, C5, C6 recorded 29 Oct).
+- **Test tier (C10's inputs):** Kaggle notebook `stage_test` rebuilds the features and plants, runs `scores`,
+  `evaluate` (stability, sanity and the A1 selection rule = C10), `significance` and `ds2-check` on the reporting
+  plants, then `stage-test` gates each promoted method against M0's committed snapshot (tier "test" rows).
+
 ### D. The classifiers (labelled data: accuracy, precision, recall, F1)
 
 Validation is time-safe: Elliptic tunes on its later training steps (inside 1-34), BitcoinHeist on its later

@@ -38,17 +38,22 @@ def saved_methods(models_dir: Path = MODELS_DIR) -> dict[str, Method]:
     if (models_dir / "baseline.json").exists():
         chosen = json.loads((models_dir / "baseline.json").read_text(encoding="utf-8"))["chosen"]["refined"]
         methods["baseline"] = Baseline(chosen["threshold"])
-    accepted = stage_models()
     for name in ("isolation_forest", "lof", "kmeans", "dbscan", "regression", "regression_interval", "fusion", "txgpt_method"):
-        if name in accepted:
-            path = models_dir / "stage" / f"{accepted[name]}_{name}.joblib"
-            if not path.exists():  # an accepted stage without its winner would silently fall back to M0
-                raise FileNotFoundError(f"{path} is missing: stageModels names stage {accepted[name]} for {name}")
-        else:
-            path = models_dir / f"{name}.joblib"
+        path = method_path(name, models_dir)
         if path.exists():
             methods[name] = joblib.load(path)["method"]
     return methods
+
+
+def method_path(name: str, models_dir: Path = MODELS_DIR) -> Path:
+    """The saved file of a method: its accepted stage's winner, else its M0 model."""
+    accepted = stage_models()
+    if name not in accepted:
+        return models_dir / f"{name}.joblib"
+    path = models_dir / "stage" / f"{accepted[name]}_{name}.joblib"
+    if not path.exists():  # an accepted stage without its winner would silently fall back to M0
+        raise FileNotFoundError(f"{path} is missing: stageModels names stage {accepted[name]} for {name}")
+    return path
 
 
 def run_scores(features_path: Path = MANIFEST_PATH.parent / "features.csv", out_path: Path = SCORES_PATH) -> int:

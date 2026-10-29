@@ -268,6 +268,8 @@
   "txgpt": {
     "variants": ["raw", "relative"],
     "relativeMinScale": 0.5,
+    "eventWindowsHours": [1, 6, 24],
+    "_eventWindowsHours": "stage C7 (set 29 Oct before any result): event-level scores for bursts. event_<base>_<W>h = this transaction's score plus the strictly earlier ones within W hours in the same history (positive parts; base raw = surprisal, relative = the robust z), so several mildly surprising transactions close together add up. Strictly earlier only, as for every feature (DR-02).",
     "_relativeMinScale": "floor on the spread (nats) of an address's earlier surprisals, as minScale does for the baseline (CR-05)",
     "reasons": {
       "GAP": "the timing was unusual for this address",

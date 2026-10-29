@@ -9,14 +9,16 @@ Due Sun 8 Nov 23:59 GMT+7; the team submits Sat 7 Nov. Results freeze Tue 3 Nov;
 - [x] A0 F9 feature: rejected. C1 baseline, C2 Isolation Forest, C6 regression: rejected.
 - [x] C3 LOF, C4 K-Means, C5 DBSCAN, C6 regression range variant: accepted (models/stage/).
 - [x] D1-D5 not run (validation F1 already 0.95-0.99); D6 ensemble rejected; D7 reported as a data limit.
-- [ ] C7 TxGPT: event-level burst scoring, time tokens relative to the address's median gap, context / lr /
-      dropout, sizes x seeds, seed ensemble. [Claude; Kaggle]
-- [ ] C8 TxGPT data: sizes x data fractions (scaling study). [Claude; Kaggle]
-- [ ] C9 fusion of every accepted method (TxGPT included); C10 selection rule over the accepted stages. [Claude]
-- [ ] Test tier, once per accepted candidate (reporting seeds 30049-30053, DS2 test addresses). [Claude; Kaggle]
+- [x] Accepted stages promoted (settings stageModels); refit rules; test-tier snapshot/gate (`stage-test`). [Claude]
+- [x] C7 TxGPT score variants incl. event-level burst scores: rejected (burst 0.16 -> 0.65 but spike and dormant
+      fall; mean not higher); TxGPT stays at M0. Retraining left out (sizes tie; GPU hours to the 152M). [Claude]
+- [ ] C8 TxGPT scaling study: not planned (needs a longer DS2 crawl and GPU hours); user may override. [Cao]
+- [ ] C9 fusion of the current methods (Kaggle CPU, honglquanganh, running 29 Oct). [Kaggle]
+- [ ] Test tier of C3-C6 + C10 selection (Kaggle CPU stage_test, tritran72, running 29 Oct); again for C7/C9 if
+      accepted. [Kaggle]
 - [ ] B1 152M pretraining: s1-s3 done (2.29B of 3.0B, val 3.0967); s4 on dansns to 3.0B. [Kaggle]
-- [ ] B3 weak-case explanation examples (hard, max_shift, nothing stands out) from training-split addresses with
-      new seeds; B3-B5 recipe tried on the round-1 model. [Claude; Kaggle]
+- [x] B3 weak-case examples built (8,000 train / 600 dev; own seeds and wordings); writer gate. [Claude]
+- [ ] B3 trial on the round-1 model (kainetyson, chain running 29 Oct) -> WEAK_CASES for round 2. [Kaggle]
 - [ ] B2-B6 on the round-2 model: ds7_data -> text150m_stage_data -> text150m_stages; dev gate by case. [Kaggle]
 - [ ] Adoption rule (KAGGLE_LM_PLAN.md section 3); round-2 tables and model into reports/ and models/. [Claude]
 - [ ] Optional C+: the 152M explanation stage with 5 seeds (a language model's seed spread). [Kaggle]
@@ -29,7 +31,7 @@ Due Sun 8 Nov 23:59 GMT+7; the team submits Sat 7 Nov. Results freeze Tue 3 Nov;
 
 ## Packaging and code (Wed 4 Nov code freeze)
 
-- [ ] DS4 final model 263 MB -> a smaller final model (e.g. histogram gradient boosting). [Claude]
+- [x] DS4 model: kept (best by the rule), out of the zip, rebuilt by the README; clear message if missing. [Claude]
 - [ ] fp16 export of the 152M model (~305 MB); weights as a release asset only with the user's OK. [Claude, Cao]
 - [ ] Canvas upload limit (decides `--with-models`); confirm the zip leaves out CLAUDE.md, context.txt,
       docs/HANDOFF.md, docs/brief/. [team]

@@ -1,0 +1,16 @@
+2026-10-29 15:39:00 INFO Step stage-search started: C:\Users\ADMIN\COS30049A2\explorer\cli.py stage-search --stages C7
+2026-10-29 15:39:02 INFO Fit 5308 rows, real evaluation 2291 rows, tuning copies 90418 evaluation rows (52985 on the search seeds)
+2026-10-29 15:40:28 INFO C7 txgpt_method: 8 candidates at a flag budget of 0.0148
+2026-10-29 15:40:28 INFO txgpt_method {'variant': 'raw'}: mean recall 0.532 (spike 0.700, burst 0.162, dormant 0.733), flag rate 0.015, max share 0.113
+2026-10-29 15:40:28 INFO txgpt_method {'variant': 'relative'}: mean recall 0.489 (spike 0.640, burst 0.219, dormant 0.607), flag rate 0.015, max share 0.121 (filtered)
+2026-10-29 15:40:29 INFO txgpt_method {'variant': 'event_raw_1h'}: mean recall 0.267 (spike 0.433, burst 0.127, dormant 0.240), flag rate 0.015, max share 0.117 (filtered)
+2026-10-29 15:40:29 INFO txgpt_method {'variant': 'event_raw_6h'}: mean recall 0.090 (spike 0.040, burst 0.230, dormant 0.000), flag rate 0.014, max share 0.162 (filtered)
+2026-10-29 15:40:30 INFO txgpt_method {'variant': 'event_raw_24h'}: mean recall 0.045 (spike 0.013, burst 0.121, dormant 0.000), flag rate 0.015, max share 0.838 (filtered)
+2026-10-29 15:40:30 INFO txgpt_method {'variant': 'event_relative_1h'}: mean recall 0.506 (spike 0.620, burst 0.297, dormant 0.600), flag rate 0.015, max share 0.114 (filtered)
+2026-10-29 15:40:31 INFO txgpt_method {'variant': 'event_relative_6h'}: mean recall 0.489 (spike 0.540, burst 0.501, dormant 0.427), flag rate 0.015, max share 0.129 (filtered)
+2026-10-29 15:40:31 INFO txgpt_method {'variant': 'event_relative_24h'}: mean recall 0.485 (spike 0.427, burst 0.649, dormant 0.380), flag rate 0.014, max share 0.152 (filtered)
+2026-10-29 15:40:34 INFO C7 txgpt_method: chose {'variant': 'raw'} (highest search recall among candidates passing the sanity and per-pattern rules); search recall 0.532 vs M0 0.533
+C:\Users\ADMIN\COS30049A2\explorer\stages.py:181: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  out = pd.concat([old, pd.DataFrame([full])], ignore_index=True) if len(old) else pd.DataFrame([full])
+2026-10-29 15:40:34 INFO txgpt_method         C7: -0.004 [-0.010, +0.000] -> rejected difference interval reaches -0.0104 (not above 0)
+2026-10-29 15:40:34 INFO Step stage-search finished in 94 s (exit 0)

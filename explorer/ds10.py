@@ -255,14 +255,15 @@ def run_ds10_check(out_dir: Path = OUT_DIR, n_jobs: int = SETTINGS["classificati
     planted_full = pd.concat(copies, ignore_index=True)
 
     # TxGPT never saw DS10, so it is tested here too: scored now, with DS1's variant and threshold kept.
-    saved = joblib.load(MODELS_DIR / "txgpt_method.joblib")
+    from .scores import method_path
     from .txgpt import TxGPTMethod
 
+    saved = joblib.load(method_path("txgpt_method"))  # its accepted stage's variant and threshold, else M0's
     lookup = txgpt_lookup([(tx, "address"), (planted_full, "plant_id")])
-    txgpt = TxGPTMethod(saved["variant"], lookup)
+    txgpt = TxGPTMethod(saved["method"].variant, lookup)  # a stage winner's file has no "variant" key
     txgpt.threshold = saved["threshold"]
     methods["txgpt_method"] = txgpt
-    log.info("TxGPT: %s score, DS1 threshold %.3f, %d rows scored", saved["variant"], txgpt.threshold, len(lookup))
+    log.info("TxGPT: %s score, DS1 threshold %.3f, %d rows scored", txgpt.variant, txgpt.threshold, len(lookup))
 
     planted = planted_full[planted_full["is_synthetic"] == 1]
     hits = plant_hits(methods, planted)
