@@ -31,15 +31,16 @@ def stage_models() -> dict[str, str]:
     return {k: v for k, v in SETTINGS["stageModels"].items() if not k.startswith("_")}
 
 
-def saved_methods(models_dir: Path = MODELS_DIR) -> dict[str, Method]:
+def saved_methods(models_dir: Path = MODELS_DIR, promoted: bool = True) -> dict[str, Method]:
     """The final DS1 methods that exist so far, by name: a method with an accepted training stage is that stage's
-    winner (models/stage/<stage>_<method>.joblib), every other its M0 model (models/<method>.joblib)."""
+    winner (models/stage/<stage>_<method>.joblib), every other its M0 model (models/<method>.joblib). With
+    promoted=False every method is its M0 model (fusion.py's own search: stage C9 decides any newer fusion)."""
     methods: dict[str, Method] = {}
     if (models_dir / "baseline.json").exists():
         chosen = json.loads((models_dir / "baseline.json").read_text(encoding="utf-8"))["chosen"]["refined"]
         methods["baseline"] = Baseline(chosen["threshold"])
     for name in ("isolation_forest", "lof", "kmeans", "dbscan", "regression", "regression_interval", "fusion", "txgpt_method"):
-        path = method_path(name, models_dir)
+        path = method_path(name, models_dir) if promoted else models_dir / f"{name}.joblib"
         if path.exists():
             methods[name] = joblib.load(path)["method"]
     return methods

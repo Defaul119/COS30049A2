@@ -93,6 +93,8 @@
     "minHistorySpanDays": 14,
     "sizeComparison": "same-direction",
     "_sizeComparisonOptions": "same-direction (proposed CR-04: size features compared only with earlier transactions in the same direction) or all (report §2.3 as written)",
+    "csvSignificantDigits": 12,
+    "_csvSignificantDigits": "features.csv and features_as_written.csv are written with this many significant digits (decided 29 Oct; MAC REPLICATION in context.txt): numpy's last-bit rounding differs between Apple Silicon, Intel Windows and Linux (~1e-13), and the regression gap model amplified that into different fits; rounded, every machine writes identical files and fits identical models",
     "zClip": 20,
     "_zClip": "own-history z-scores are clipped to +/- this before pooled models (plan §6.2), so one extreme value cannot dominate",
     "pace": {
@@ -252,6 +254,12 @@
     "_regressionInterval": "the range variant: quantile pair x the share of each address's fit period used for conformal calibration (CQR)",
     "fusion": {"ratios": [0.5, 0.7, 1.0, 1.4, 2.0]},
     "_fusion": "stage C9 (set 29 Oct before any result): every pair of the current methods (each at its last accepted stage, settings stageModels; TxGPT scores only the reporting plants, so it cannot join), fused as fusion.py fuses (max of score / (weight x the component's threshold)); the budget's cut sets the level, so only the second component's weight relative to the first (these ratios) matters. Rank averaging is not a candidate: a rank needs the whole frame, so a single what-if transaction could not be scored."
+  },
+
+  "rebuildCheck": {
+    "_about": "tools/compare_tables.py (README sections 4 and 11; milestone M4): a rebuilt table matches the committed one when its columns, rows and text cells are equal and every number is within tolerance x max(1, |committed value|) (README 11: a difference above 0.01 in a recall or a rate is worth reporting). ignoreColumns record when or where a run happened, not a result.",
+    "tolerance": 0.01,
+    "ignoreColumns": ["time_utc", "commit", "seconds", "built_utc", "source"]
   },
 
   "stageModels": {

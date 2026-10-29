@@ -45,7 +45,7 @@ from typing import Any, Iterator
 import pandas as pd
 
 from . import assistant
-from .baseline import MODELS_DIR, TABLES_DIR
+from .baseline import TABLES_DIR
 from .explain import reasons_for, template_explanation
 from .features import FeatureConfig, build_features
 from .methods import flags

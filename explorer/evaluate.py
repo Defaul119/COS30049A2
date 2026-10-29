@@ -41,7 +41,7 @@ from .baseline import FEATURE_FILES, MODELS_DIR, TABLES_DIR, Baseline, load_copi
 from .clustering import DBSCANMethod, KMeansMethod
 from .fusion import FusionMethod
 from .methods import (
-    Method, fit_rows, flags, jaccard, pattern_recalls, plant_metrics, real_metrics, stability, top_k,
+    Method, fit_rows, flags, jaccard, plant_metrics, real_metrics, stability, top_k,
 )
 from .outliers import IsolationForestMethod, LOFMethod
 from .regression import RegressionIntervalMethod, RegressionMethod, design, residual_scales, targets

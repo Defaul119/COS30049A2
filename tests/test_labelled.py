@@ -83,10 +83,6 @@ class ProtocolTests(unittest.TestCase):
         self.assertEqual((threshold, round(f1, 4)), (0.35, 0.8))
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class EllipticTests(unittest.TestCase):
     def test_join_degrees_labels_and_split(self):
         names = ["txId", "time_step"] + labelled.LOCAL + labelled.AGG
@@ -104,3 +100,7 @@ class EllipticTests(unittest.TestCase):
         self.assertEqual(out["period"].tolist(), [labelled.FIT, labelled.VAL, labelled.TEST, labelled.TEST])
         self.assertNotIn("time_step", labelled.FEATURE_SETS["AF"])
         self.assertEqual((decisions["labelled"], decisions["illicit"]), (3, 1))
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -115,7 +115,9 @@ def run_fusion() -> int:
     f, target = SETTINGS["fusion"], SETTINGS["model"]["stabilityTarget"]
     features = pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES["refined"])
     copies = load_copies("refined", "tuning")
-    methods = saved_methods()
+    # The M0 components, as when the fusion was chosen: a rebuild must reproduce it whatever later stages promoted
+    # (stage C9 searched fusions of the promoted methods and kept this one; CHANGELOG 29 Oct).
+    methods = saved_methods(promoted=False)
     budget_method = SETTINGS["explorerMethod"]
     budget = real_metrics(methods[budget_method], features)["flag_rate"]
     log.info("Flag budget: %.4f, the flag rate of explorerMethod (%s) on the real evaluation period", budget, budget_method)

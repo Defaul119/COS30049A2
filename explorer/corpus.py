@@ -39,7 +39,6 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Iterator
 
-from .amounts import address_flow
 from .esplora import EsploraClient, EsploraError
 from .settings import PROJECT_ROOT, SETTINGS
 from .snapshot import (

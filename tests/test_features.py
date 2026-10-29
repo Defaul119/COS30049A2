@@ -128,10 +128,6 @@ class AsWrittenTests(unittest.TestCase):
         self.assertFalse(last_refined["flagged"])
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class PaceTests(unittest.TestCase):
     """F9 (stage A0): burst on the address's own clock; strictly earlier transactions only (DR-02)."""
 
@@ -155,3 +151,7 @@ class PaceTests(unittest.TestCase):
         out = self.pace(self.history([start + 3600 * k for k in range(10)]))
         self.assertLessEqual(abs(out[39]["z_F9"]), 1)       # an ordinary day
         self.assertGreater(out[-1]["z_F9"], 3)              # the tenth transaction of a ten-in-ten-hours burst
+
+
+if __name__ == "__main__":
+    unittest.main()

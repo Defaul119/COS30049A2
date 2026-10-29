@@ -378,7 +378,9 @@ def run_features(as_written: bool = False, transactions_path: Path = TRANSACTION
     transactions = pd.read_csv(transactions_path)
     frame = build_features(transactions, cfg)
     out_path = transactions_path.parent / ("features_as_written.csv" if as_written else "features.csv")
-    frame.to_csv(out_path, index=False)
+    # Rounded so every machine writes the same bytes (settings features.csvSignificantDigits: last-bit differences
+    # between platforms otherwise change the regression's fitted trees).
+    frame.to_csv(out_path, index=False, float_format=f"%.{SETTINGS['features']['csvSignificantDigits']}g")
     scorable = frame["scorable"]
     log.info("%s method: %d transactions, %d scorable, %d flagged by the baseline (%.1f%% of scorable)",
              "As-written" if as_written else "Refined", len(frame), scorable.sum(), frame["flag_baseline"].sum(),

@@ -19,7 +19,7 @@ reports/               figures (PDF), tables (CSV, the source of every number in
                        assistant_tests.pdf (every Assistant test set and result)
 tests/                 unit tests (pytest)
 kaggle/                the notebooks that trained and tested the language models on Kaggle
-tools/                 helpers: job status, the Kaggle notebook generator, the test-report PDF
+tools/                 helpers: job status, the Kaggle notebook generator, the test-report PDF, the rebuild check
 docs/                  the delivery plan, the brief, the report plan, the AI use log, archive/LM_TRAINING.md
 CHANGELOG.md           every decision and measured result, newest first
 DATA_CARD.md           every dataset: source, licence, collection, biases, and every file and column
@@ -52,7 +52,7 @@ conda activate cos30049-a2
 python -m pytest -q
 ```
 
-Expected: `252 passed` in about three minutes (the first run takes longer while the new libraries load).
+Expected: `255 passed` in about three minutes (the first run takes longer while the new libraries load).
 Run every later command from the repository folder with `cos30049-a2` active. On Windows, run
 `set PYTHONUTF8=1` first in each new terminal (Command Prompt) so the logs print correctly; macOS and Linux
 need nothing.
@@ -109,8 +109,14 @@ python -m explorer.cli figures
 ```
 
 `all` runs every step below in order, offline, and stops at the first failure. Each step writes its log to
-`reports/logs/<step>.log`. Afterwards, `git status reports/tables` shows which tables changed; with the same
-pinned versions they should match ours (see section 11 for tolerance). Times were measured on our PC (Intel
+`reports/logs/<step>.log`. Afterwards, check the rebuild against our committed results:
+
+```
+python tools/compare_tables.py
+```
+
+It compares every table in `reports/tables/` with the committed copy, number by number, and prints only the tables
+that differ (exit code 1 if any differs by more than 0.01 x max(1, |our value|); see section 11). Times were measured on our PC (Intel
 i5-12600K, 16 threads); a laptop takes longer.
 
 | Step | Reads | Writes | Time |
@@ -124,7 +130,7 @@ i5-12600K, 16 threads); a laptop takes longer.
 | `clustering` | DS1 + plants | K-Means and DBSCAN | 15 s |
 | `regression` | DS1 + plants | Ridge, random forest, gradient boosting, conformal ranges | 1 min |
 | `profiles` | DS1 + DS2 | address profiles, DS2's coverage of DS1 | 10 s |
-| `fusion` | saved methods + plants | two methods fused at one flag budget | 18 min |
+| `fusion` | the first-round (M0) methods + plants | two methods fused at one flag budget | 18 min |
 | `scores` | every saved model | `data/processed/esplora/scores.csv` | 10 s |
 | `evaluate` | everything above | recall, stability, agreement, sanity, ablation, the selection | 5 min |
 | `significance` | plant hits | address-level bootstrap intervals | 15 s |
@@ -270,9 +276,11 @@ dataset, file and column; `MODEL_CARD.md` every model and its metrics (both refr
 
 - Versions are pinned in `environment.yml`; every random choice takes its seed from `config/settings.json`.
   Planted transactions use seeds 40000-40004 for tuning and 30049-30053 for the reported results.
-- Most tables reproduce exactly. Models that use several threads (gradient boosting, random forests) can
-  differ in the last decimal places across machines and operating systems; differences larger than
-  about 0.01 in a recall or a rate are worth reporting as a bug.
+- Most tables reproduce exactly. `features.csv` is written with 12 significant digits, because numpy's last-bit
+  rounding differs between Apple Silicon, Intel and Linux and the regression's trees amplified that into
+  different fits. Models that use several threads (gradient boosting, random forests) can still differ in the
+  last decimal places; `python tools/compare_tables.py` reports any difference larger than 0.01 in a recall or a
+  rate, which is worth reporting as a bug.
 - `CHANGELOG.md` records every decision and measured result; `docs/AI_USE_LOG.md` records how generative AI was
   used, for the AI declaration the tutor asked for.
 

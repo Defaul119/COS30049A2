@@ -36,10 +36,6 @@ class TxGPTMethodTests(unittest.TestCase):
         self.assertEqual(raw.reasons(frame)[1], SETTINGS["txgpt"]["reasons"]["AMT"])
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 def test_event_scores_add_strictly_earlier_positive_parts_in_the_window():
     # Stage C7: own positive part + strictly earlier ones within the window; same-time rows are not history.
     import numpy as np
@@ -53,3 +49,7 @@ def test_event_scores_add_strictly_earlier_positive_parts_in_the_window():
     assert out[1] == 0.0 + 1.0 and out[2] == 3.0 + 1.0  # the two same-time rows never count each other
     assert np.isnan(out[3])                            # no own score, no event score
     assert out[4] == 0.5                               # 5000 is more than an hour earlier
+
+
+if __name__ == "__main__":
+    unittest.main()

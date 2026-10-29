@@ -171,10 +171,6 @@ class DS2CheckTests(unittest.TestCase):
         self.assertIs(ds2_check.adapt(Baseline(5.0), rows).__class__, Baseline)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class DistributionTests(unittest.TestCase):
     """explorer/distribution.py (27 Oct): every method's recall over many plant seeds."""
 
@@ -212,3 +208,7 @@ class ClassifierBootstrapTests(unittest.TestCase):
         self.assertTrue(np.array_equal(boot["a"]["f1"], boot["b"]["f1"]))
         self.assertTrue(((boot["a"]["f1"] >= 0) & (boot["a"]["f1"] <= 1)).all())
         self.assertGreater(boot["a"]["pr_auc"].mean(), boot["c"]["pr_auc"].mean())
+
+
+if __name__ == "__main__":
+    unittest.main()

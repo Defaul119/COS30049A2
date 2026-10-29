@@ -13,7 +13,6 @@ from explorer import evaluate, regression
 from explorer.clustering import DBSCANMethod, KMeansMethod
 from explorer.methods import fit_rows
 from explorer.outliers import IsolationForestMethod, LOFMethod
-from explorer.settings import SETTINGS
 from tests.test_methods import MethodChecksTests
 
 

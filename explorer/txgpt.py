@@ -72,8 +72,9 @@ def event_columns() -> list[str]:
     return [f"event_{base}_{w}h" for base in ("raw", "relative") for w in SETTINGS["txgpt"]["eventWindowsHours"]]
 
 
-def with_relative(scores: pd.DataFrame, times: pd.DataFrame, group: str) -> pd.DataFrame:
-    """Add `relative` and the event-level columns to a surprisal table (keyed by group and txid), per history."""
+def with_relative(scores: pd.DataFrame, times: pd.DataFrame, group: str, events: bool = False) -> pd.DataFrame:
+    """Add `relative` to a surprisal table (keyed by group and txid), per history; with `events`, also the
+    event-level columns (stage C7's candidates; rejected, so the saved method and DS10 do not compute them)."""
     t = SETTINGS["txgpt"]
     merged = scores.merge(times, on=[group, "txid"], how="left").sort_values([group, "block_time_utc", "txid"])
     parts = []
@@ -82,7 +83,7 @@ def with_relative(scores: pd.DataFrame, times: pd.DataFrame, group: str) -> pd.D
         when = g["block_time_utc"].to_numpy(dtype="float64")  # Unix seconds
         g["relative"] = relative_scores(g["block_time_utc"].to_numpy(), g["surprisal"].to_numpy(),
                                         t["relativeMinScale"], SETTINGS["features"]["minComparisonValues"])
-        for base, column in (("raw", "surprisal"), ("relative", "relative")):
+        for base, column in (("raw", "surprisal"), ("relative", "relative")) if events else ():
             for w in t["eventWindowsHours"]:
                 g[f"event_{base}_{w}h"] = event_scores(when, g[column].to_numpy(dtype="float64"), w * SECONDS_PER_HOUR)
         parts.append(g)
@@ -120,14 +121,15 @@ class TxGPTMethod:
         return self
 
 
-def load_lookup(features: pd.DataFrame) -> pd.DataFrame:
-    """DS1 and planted-copy scores in one table, with the relative variant computed per history."""
+def load_lookup(features: pd.DataFrame, events: bool = False) -> pd.DataFrame:
+    """DS1 and planted-copy scores in one table, with the relative variant (and with `events` the event-level
+    ones) computed per history."""
     times = features[["address", "txid", "block_time_utc"]]
-    ds1 = with_relative(pd.read_csv(SCORES_PATH), times, "address").rename(columns={"address": "key"})
+    ds1 = with_relative(pd.read_csv(SCORES_PATH), times, "address", events).rename(columns={"address": "key"})
     parts = [ds1]
     for path in sorted((INTERIM_DIR / "txgpt").glob("*.parquet")):
         copies = pd.read_parquet(INTERIM_DIR / "refined" / path.name, columns=["plant_id", "txid", "block_time_utc"])
-        scored = with_relative(pd.read_parquet(path).drop(columns=["address"]), copies, "plant_id")
+        scored = with_relative(pd.read_parquet(path).drop(columns=["address"]), copies, "plant_id", events)
         parts.append(scored.rename(columns={"plant_id": "key"}))
     return pd.concat(parts, ignore_index=True).drop(columns=["block_time_utc"], errors="ignore")
 

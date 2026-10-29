@@ -174,14 +174,10 @@ class EvalGeneratorTests(unittest.TestCase):
         self.assertIsInstance(answer, str)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class DS7V2BuildTests(unittest.TestCase):
     """Round 2's build (C7) on the real DS1 data and a few DS2 addresses, against the real frozen v1 test set."""
 
-    def build(self, glossary_rows: list[dict]) -> "Path":
+    def build(self, glossary_rows: list[dict]):
         import json
         import tempfile
         from pathlib import Path
@@ -395,3 +391,7 @@ class MoreTestSetsTests(unittest.TestCase):
         self.assertFalse(real_new & earlier)
         self.assertTrue(all(r["variant"]["reworded"] is not None and r["variant"]["method"] != "baseline"
                             for r in new["max_shift"]))
+
+
+if __name__ == "__main__":
+    unittest.main()

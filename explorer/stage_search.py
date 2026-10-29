@@ -435,7 +435,7 @@ def txgpt_candidates() -> list[Candidate]:
 
     if not plant_scores_exist():
         raise SystemExit("stage C7 needs the planted copies' TxGPT scores (python -m lm.tx_score --plants)")
-    lookup = load_lookup(pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES["refined"]))
+    lookup = load_lookup(pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES["refined"]), events=True)
     return [Candidate({"variant": v}, make=lambda v=v: TxGPTMethod(v, lookup))
             for v in SETTINGS["txgpt"]["variants"] + event_columns()]
 

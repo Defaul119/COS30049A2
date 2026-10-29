@@ -17,6 +17,7 @@ account's name in a copy that is pushed (`kaggle kernels push -p <copy>`, run fr
     stage_search        CPU   TRAINING_PLAN stages C1-C6: each method's grid, then the gate (any account)
     ensemble            CPU   TRAINING_PLAN stage D6: Elliptic classifier ensemble, gated (any account)
     stage_test          CPU   the test tier of the accepted DS1 stages, the selection rule (any account)
+    rebuild             CPU   README 2-4 on a fresh clone: tests, all --offline, statistics, figures, compare (any)
 
 Only models the team trains from scratch are trained here (the tutor, 27 Oct 2026); the Qwen 3B notebooks of
 26-27 Oct are on the qwen-archive branch.
@@ -848,6 +849,82 @@ print((SRC / "reports" / "tables" / "stages.csv").read_text(encoding="utf-8"))
 ]
 
 
+REBUILD_NB = [
+    ("markdown", r"""
+# COS30049 A2 - Rebuild every result from a fresh clone, and compare with the committed tables (Kaggle CPU session)
+
+What README sections 2-4 ask of a marker (and milestone M4 of a teammate), on a clean machine: the repository at a
+fixed commit, the pinned versions, the test suite, then `python -m explorer.cli all --offline` with DS3 (Elliptic,
+from the attached Kaggle dataset) and DS4 (BitcoinHeist, downloaded from UCI), the scoring methods' statistics
+(`distribution`) and `figures`. `tools/compare_tables.py` then compares every rebuilt table with the committed one
+(numbers within 0.01 x max(1, |committed|)); `compare.csv` lists each table's result. The rebuilt tables, figures,
+small models and DS1 files are saved to commit as the frozen results. CPU only, so no GPU quota.
+
+**Settings:** Accelerator **None**, **Internet on**. **Input:** dataset `ellipticco/elliptic-data-set`.
+"""),
+    ("code", f"""
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code and data this rebuild uses
+# environment.yml's versions (torch is Kaggle's own, recorded; TxGPT only scores DS10 with it)
+PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2",
+        "matplotlib==3.10.1", "seaborn==0.13.2", "tokenizers==0.21.1", "huggingface_hub==0.30.2", "pytest==8.3.5"]
+"""),
+    ("code", SETUP + CLONE + FIND),
+    ("code", r"""
+def cli(*args, log):
+    sh(sys.executable, "-m", "explorer.cli", *args, log=log)
+
+
+timing = {}
+def step(name, fn):
+    t = time.time()
+    try:
+        fn()
+        timing[name] = round((time.time() - t) / 60, 1)
+    except subprocess.CalledProcessError as e:
+        timing[name] = f"FAILED: {e}"
+    print(f"{name}: {timing[name]} min")
+
+
+step("pytest", lambda: sh(sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", log="pytest.log"))
+raw = SRC / "data" / "external" / "elliptic"
+raw.mkdir(parents=True, exist_ok=True)
+for name in ("elliptic_txs_features.csv", "elliptic_txs_classes.csv", "elliptic_txs_edgelist.csv"):
+    shutil.copy(find_input(name), raw / name)
+step("external --bitcoinheist", lambda: cli("external", "--bitcoinheist", log="external.log"))
+step("all --offline", lambda: cli("all", "--offline", log="all.log"))
+step("distribution", lambda: cli("distribution", log="distribution.log"))
+step("figures", lambda: cli("figures", log="figures.log"))
+step("compare", lambda: sh(sys.executable, "tools/compare_tables.py", "--report", str(WORK / "compare.csv"),
+                           log="compare.log"))
+"""),
+    ("code", r"""
+# The rebuilt results (to commit as the frozen ones), without the 263 MB DS4 model or any licensed raw rows.
+for rel in ["reports/tables", "reports/figures", "reports/logs", "models/selection.json", "models/baseline.json"]:
+    src = SRC / rel
+    dest = WORK / "rebuilt" / rel
+    if src.is_dir():
+        shutil.copytree(src, dest, dirs_exist_ok=True)
+    elif src.exists():
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(src, dest)
+for f in sorted((SRC / "models").glob("*.joblib")):
+    if f.name != "heist_best.joblib":
+        (WORK / "rebuilt" / "models").mkdir(parents=True, exist_ok=True)
+        shutil.copy(f, WORK / "rebuilt" / "models" / f.name)
+for name in ("transactions.csv", "features.csv", "features_as_written.csv", "scores.csv"):
+    dest = WORK / "rebuilt" / "data" / "processed" / "esplora"
+    dest.mkdir(parents=True, exist_ok=True)
+    shutil.copy(SRC / "data" / "processed" / "esplora" / name, dest / name)
+(WORK / "kaggle_run.json").write_text(json.dumps({"commit": COMMIT, "minutes": timing,
+    "hours": round((time.time() - T0) / 3600, 2), "python": sys.version.split()[0],
+    "packages": {p: version(p) for p in ("torch", "numpy", "pandas", "scikit-learn", "matplotlib")}}, indent=2),
+    encoding="utf-8")
+print(json.dumps(timing, indent=2))
+"""),
+]
+
+
 ENSEMBLE_NB = [
     ("markdown", r'''
 # COS30049 A2 - Training stage D6: an ensemble of the Elliptic classifiers, with its gate (Kaggle CPU session)
@@ -910,7 +987,8 @@ for folder, slug, cells, gpu, sources, datasets in [
         ("stage_cpu", "cos30049a2-stage-cpu", STAGE_CPU_NB, False, [], []),
         ("stage_search", "cos30049a2-stage-search", STAGE_SEARCH_NB, False, [], []),
         ("ensemble", "cos30049a2-ensemble", ENSEMBLE_NB, False, [], ["ellipticco/elliptic-data-set"]),
-        ("stage_test", "cos30049a2-stage-test", STAGE_TEST_NB, False, [], [])]:
+        ("stage_test", "cos30049a2-stage-test", STAGE_TEST_NB, False, [], []),
+        ("rebuild", "cos30049a2-rebuild", REBUILD_NB, False, [], ["ellipticco/elliptic-data-set"])]:
     if ONLY and folder not in ONLY:
         continue
     out = REPO_DIR / "kaggle" / folder

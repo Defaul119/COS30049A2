@@ -11,6 +11,25 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Audit, part 1: code (the user, 29 Oct: "recheck all the code, models, testing ... perfect everything").**
+- pyflakes over explorer/, lm/, tools/, scripts/, tests/ and every Kaggle notebook's code: four unused imports
+  removed (corpus, ds7, evaluate, inject; one in a test); the notebooks only import `threading` unused (the shared
+  setup cell; left). Five test files ran `unittest.main()` mid-file, so running them as scripts skipped the classes
+  after it (pytest was unaffected): the guard now ends each file.
+- Reproducibility trap fixed: the `fusion` step searched over `saved_methods()`, which since the promotion returns
+  the C3-C5 winners, so a rebuild could have chosen a fusion other than M0's while stage C9 kept M0's. It now
+  searches over the M0 models (`saved_methods(promoted=False)`).
+- TxGPT's event-level columns (stage C7, rejected) are computed only for the C7 search, not by the pipeline
+  (they would have grown txgpt_method.joblib and slowed ds10-check for nothing).
+- Every saved model loaded and re-scored on the committed features: the nine methods reproduce eval_sanity.csv's
+  flag rates and scores.csv exactly; fusion = baseline x1.1 + regression x3.0; selection = baseline.
+- features.csv is written with 12 significant digits (settings features.csvSignificantDigits; decided 29 Oct under
+  the user's "perfect everything"; MAC REPLICATION): every machine now writes the same bytes and fits the same
+  regression. This changes regression and fusion slightly at the next rebuild (results-v1.1).
+- New `tools/compare_tables.py` (settings rebuildCheck; tests): a rebuild's tables against the committed ones, number
+  by number, within 0.01 x max(1, |committed|); README sections 4 and 11 use it. New Kaggle notebook `rebuild`:
+  README 2-4 on a fresh clone (tests, all --offline with DS3 and DS4, distribution, figures, compare).
+
 **Files cleaned up.** docs/HANDOFF.md and docs/LM_TRAINING.md moved to docs/archive/ (historical; the zip leaves out
 docs/archive/); references updated (README, CLAUDE.md, tools/package.py, tests). Outside git: the dropped Qwen
 weights and runs and the 24 Oct runner logs moved out of the repository to C:/Users/ADMIN/COS30049A2_archive/

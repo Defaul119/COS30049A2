@@ -129,6 +129,7 @@ def test_saved_methods_loads_the_accepted_stage(monkeypatch):
         joblib.dump({"method": "stage model"}, models / "stage" / "C4_kmeans.joblib")
         monkeypatch.setitem(scores.SETTINGS, "stageModels", {"_about": "x", "kmeans": "C4"})
         assert scores.saved_methods(models)["kmeans"] == "stage model"
+        assert scores.saved_methods(models, promoted=False)["kmeans"] == "m0 model"  # fusion.py's own search
         monkeypatch.setitem(scores.SETTINGS, "stageModels", {})
         assert scores.saved_methods(models)["kmeans"] == "m0 model"
         monkeypatch.setitem(scores.SETTINGS, "stageModels", {"lof": "C3"})  # accepted, but its winner is missing
