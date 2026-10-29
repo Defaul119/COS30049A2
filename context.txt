@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first. Last update: 2026-10-29 ~16:00 GMT+7, on the PC (Claude).
+SESSION CONTEXT - read this first. Last update: 2026-10-29 ~19:30 GMT+7, on the PC (Claude).
 - PART 1 = live state (read all of it). PART 2 = reference (look things up). PART 3 = history (one line per day).
 - Other files: CHANGELOG.md (every change with its numbers), docs/TODO.md (checklist), docs/TRAINING_PLAN.md
   (stages + gate), docs/KAGGLE_LM_PLAN.md (152M round 2 + adoption rule, section 3), docs/REPORT_PLAN.md,
@@ -17,26 +17,32 @@ RUNNING
   30 Oct and writes runs/text-150m-cont/model.pt (kaggle_run.json "finished": true).
 - Check: KAGGLE_API_TOKEN=$(cat C:/Users/ADMIN/.kaggle/accounts/dansns.token) kaggle kernels status
   dansns/cos30049a2-text150m-train (logs only after it ends: `kernels logs`; "[eval] step ... validation loss").
-- B3 chain (scratchpad b3_chain.sh, own window, log b3_chain.log): kainetyson: dataset cos30049a2-text150m-chat-v1
-  (round 1's chat model, SHA-256 81645aa0...) + ds7_data -> text150m_stage_data -> text150m_b3_trial (T4 x2: A =
-  DS7 v2 + glossary, B = A + weak cases, from round 1's chat model; then dev tier for r1, A, B). dansns:
-  ds7_data -> text150m_stage_data (ready for text150m_stages after session 4).
+- kainetyson/cos30049a2-text150m-b3-dev-eval (T4, pinned 25f18cb): round 1, A and B on DS7 v2's validation
+  prompts (the B3 trial's devval part failed: val rows have no template; eval_explain now uses the reference reply).
+  The trial's weak-case dev results are in CHANGELOG 29 Oct (B 0.922 vs A 0.457 vs r1 0.375 fully correct).
+- tritran72/cos30049a2-rebuild (CPU, pinned 0aded70): README 2-4 on a fresh clone with DS3 and DS4, distribution
+  and figures, then tools/compare_tables.py against the commit (compare.csv). Its outputs are the frozen DS1/DS2/
+  DS10/classifier tables (features with 12 significant digits: regression and fusion may move slightly).
+- dansns stage data is built (text150m_stage_data, with ds7_v2_weak_chat and dev/); text150m_stages is re-pinned
+  to 7bb3112 and waits for session 4.
 
 NEXT, IN ORDER (the user, 29 Oct: "continue with training, don't work on reports yet, start on everything behind
 schedule")
 1. DONE 29 Oct: scoring stages finished (C3-C5 promoted; C6, C7, C9 rejected; C8 not run); tables rebuilt.
-2. B3 trial done -> `python -m explorer.cli writer-gate --before <r1 devweak/devval tables> --after <b3b tables>
-   --stage B3 --model text150m --previous r1-recipe` style: B vs A decides WEAK_CASES; A vs r1 recorded too.
-3. Session 4 done -> record its losses; push text150m_stages on dansns (kernel_sources stage-data + train) with
-   WEAK_CASES from step 2; then writer-gate round 2 vs round 1 on dev, then the adoption rule (KAGGLE_LM_PLAN 3).
+2. B3 dev eval done -> bring home the devval tables (and the trial's devweak tables from scratchpad out_b3), then
+   `python -m explorer.cli writer-gate --before <b3a devweak, devval> --after <b3b devweak, devval> --stage B3
+   --model text150m --previous B3-A` (B vs A decides WEAK_CASES) and A vs r1 recorded too (stage "B3-A").
+3. Session 4 done -> record its losses; push text150m_stages on dansns (kernel_sources stage-data + train;
+   WEAK_CASES from step 2); then writer-gate round 2 vs round 1 on dev, then the adoption rule (KAGGLE_LM_PLAN 3).
+3b. Rebuild done -> read compare.csv; copy the rebuilt tables/figures/models/esplora CSVs over the repo (not
+   stages.csv), rerun `figures` (eda_tests note now cites Pareja et al. 2020), pytest, commit: frozen non-LM results.
 4. C10: evaluate's selection on the test tier (models/selection.json); a new explorerMethod only if the user records it.
 5. Tue 3 Nov freeze: DS10 once (ds10-check); lm.eval_stats; tools/test_report.py; tools/cards.py; tag results-v1.1.
 6. Packaging: fp16 export of the 152M model; tools/package.py --tag v1.0 (DS4 model stays out by design).
 7. Report: NOT NOW (user, 29 Oct). Outline in docs/REPORT_PLAN.md.
 
 WAITING ON THE USER / TEAM
-- features.csv with float_format="%.12g" (Mac and PC give identical features; changes regression / fusion
-  slightly): Cao decides; if yes, apply before the freeze rerun.
+- References: docs/REFERENCES.md (all 2020+, verified); one decision left: the Elliptic dataset record (2019).
 - Canvas upload limit (decides --with-models); release-asset OK for the 152M weights; a licence for our own code;
   the zip exclusions (tools/package.py EXCLUDE = CLAUDE.md, context.txt, docs/archive/, docs/brief/).
 - Blind reviewer check (Minh Khang, Cam Dan): reports/reviewer/sheet.csv + INSTRUCTIONS.md, then
