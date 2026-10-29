@@ -36,9 +36,16 @@ schedule")
    WEAK_CASES from step 2); then writer-gate round 2 vs round 1 on dev, then the adoption rule (KAGGLE_LM_PLAN 3).
 3b. Rebuild done -> read compare.csv; copy the rebuilt tables/figures/models/esplora CSVs over the repo (not
    stages.csv), rerun `figures` (eda_tests note now cites Pareja et al. 2020), pytest, commit: frozen non-LM results.
-4. C10: evaluate's selection on the test tier (models/selection.json); a new explorerMethod only if the user records it.
-5. Tue 3 Nov freeze: DS10 once (ds10-check); lm.eval_stats; tools/test_report.py; tools/cards.py; tag results-v1.1.
-6. Packaging: fp16 export of the 152M model; tools/package.py --tag v1.0 (DS4 model stays out by design).
+4. C10 done (test tier, 29 Oct): the baseline stays recommended; explorerMethod unchanged.
+5. FREEZE (when 2, 3 and 3b are done; DS10's final tier ran inside the rebuild's all --offline): round-2 tables home
+   -> `python -m lm.adopt` (adoption.csv) -> if ADOPT: install round 2's model_best.pt + tokenizer as the writer
+   (settings assistant.text150mCheckpoint; record SHA-256) -> `python -m lm.eval_stats` -> `python -m explorer.cli
+   figures` (eda note, stats figures) -> `python tools/test_report.py` (MiKTeX) -> `python tools/cards.py` -> re-run
+   notebooks/01_eda.ipynb (nbconvert --execute --inplace --ExecutePreprocessor.kernel_name=cos30049-a2, then reset
+   its kernelspec to python3; its saved outputs still show the M0 LOF/K-Means/DBSCAN) -> pytest -> commit -> tag
+   results-v1.1 (never move a pushed tag). Update docs/AUDIT.md section 5 with the outcomes.
+6. Packaging: `python tools/package.py --tag v1.0` after M4 (trial from HEAD 29 Oct: 76.8 MB, 567 files, all
+   hashes match); --with-models adds the 152M weights (610 MB fp32) only if Canvas allows (team).
 7. Report: NOT NOW (user, 29 Oct). Outline in docs/REPORT_PLAN.md.
 
 WAITING ON THE USER / TEAM
