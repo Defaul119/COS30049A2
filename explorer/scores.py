@@ -18,6 +18,7 @@ import pandas as pd
 
 from .baseline import MODELS_DIR, Baseline
 from .methods import Method, flags
+from .settings import SETTINGS
 from .snapshot import MANIFEST_PATH
 
 log = logging.getLogger(__name__)
@@ -25,14 +26,26 @@ log = logging.getLogger(__name__)
 SCORES_PATH = MANIFEST_PATH.parent / "scores.csv"
 
 
+def stage_models() -> dict[str, str]:
+    """Each method's last accepted training stage (settings.json -> stageModels; docs/TRAINING_PLAN.md)."""
+    return {k: v for k, v in SETTINGS["stageModels"].items() if not k.startswith("_")}
+
+
 def saved_methods(models_dir: Path = MODELS_DIR) -> dict[str, Method]:
-    """The final DS1 methods that exist so far, by name."""
+    """The final DS1 methods that exist so far, by name: a method with an accepted training stage is that stage's
+    winner (models/stage/<stage>_<method>.joblib), every other its M0 model (models/<method>.joblib)."""
     methods: dict[str, Method] = {}
     if (models_dir / "baseline.json").exists():
         chosen = json.loads((models_dir / "baseline.json").read_text(encoding="utf-8"))["chosen"]["refined"]
         methods["baseline"] = Baseline(chosen["threshold"])
+    accepted = stage_models()
     for name in ("isolation_forest", "lof", "kmeans", "dbscan", "regression", "regression_interval", "fusion", "txgpt_method"):
-        path = models_dir / f"{name}.joblib"
+        if name in accepted:
+            path = models_dir / "stage" / f"{accepted[name]}_{name}.joblib"
+            if not path.exists():  # an accepted stage without its winner would silently fall back to M0
+                raise FileNotFoundError(f"{path} is missing: stageModels names stage {accepted[name]} for {name}")
+        else:
+            path = models_dir / f"{name}.joblib"
         if path.exists():
             methods[name] = joblib.load(path)["method"]
     return methods

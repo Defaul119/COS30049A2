@@ -236,6 +236,14 @@ def cmd_stage_compare(args: argparse.Namespace) -> int:
     return run_compare(args.before, args.after, args.stage)
 
 
+def cmd_stage_test(args: argparse.Namespace) -> int:
+    from .stages import run_compare, snapshot_test
+
+    if args.snapshot:
+        return snapshot_test(args.snapshot)
+    return run_compare(args.before, args.after, args.stage, tier="test", methods=args.methods)
+
+
 def cmd_writer_gate(args: argparse.Namespace) -> int:
     from .stages import run_compare_writers
 
@@ -289,6 +297,9 @@ def cmd_predict(args: argparse.Namespace) -> int:
     except InsufficientHistory as err:
         print(json.dumps(err.body, indent=2))
         return 3
+    except FileNotFoundError as err:  # a model not shipped in the zip (DS4), with how to build it
+        log.error("%s", err)
+        return 1
     check_outputs(result)
     print(json.dumps(result, indent=2))
     return 0
@@ -517,6 +528,14 @@ def build_parser() -> argparse.ArgumentParser:
     stage_compare.add_argument("--after", required=True, help="the new stage's stage-dev name")
     stage_compare.add_argument("--stage", required=True, help="the name recorded in stages.csv")
     stage_compare.set_defaults(func=cmd_stage_compare)
+    stage_test = steps.add_parser("stage-test", help="the test tier: snapshot the reporting-plant results, or gate "
+                                  "two snapshots -> stages.csv (tier test)")
+    stage_test.add_argument("--snapshot", help="save the current eval_plant_hits/eval_sanity as this stage's snapshot")
+    stage_test.add_argument("--before", help="the earlier snapshot (e.g. M0)")
+    stage_test.add_argument("--after", help="the new snapshot")
+    stage_test.add_argument("--stage", help="the name recorded in stages.csv (e.g. C-test)")
+    stage_test.add_argument("--methods", nargs="+", help="only these methods (the stages under test)")
+    stage_test.set_defaults(func=cmd_stage_test)
     writer_gate = steps.add_parser("writer-gate", help="the strict gate between two writers' dev answers -> stages.csv")
     writer_gate.add_argument("--before", nargs="+", required=True, help="the earlier writer's per-prompt eval tables")
     writer_gate.add_argument("--after", nargs="+", required=True, help="the new writer's tables, same dev files")

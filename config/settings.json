@@ -252,6 +252,14 @@
     "_regressionInterval": "the range variant: quantile pair x the share of each address's fit period used for conformal calibration (CQR)"
   },
 
+  "stageModels": {
+    "_about": "explorer/scores.py saved_methods: each DS1 method's last ACCEPTED training stage (reports/tables/stages.csv; docs/TRAINING_PLAN.md); its winner models/stage/<stage>_<method>.joblib replaces the M0 model everywhere (scores, evaluate, significance, DS2/DS10 checks, predict). Methods not listed stay at M0. Recorded 29 Oct from the C1-C6 gate of 28 Oct.",
+    "lof": "C3",
+    "kmeans": "C4",
+    "dbscan": "C5",
+    "regression_interval": "C6"
+  },
+
   "explorerMethod": "baseline",
   "_explorerMethod": "the DS1 method the Explorer and predict.py use (plan §11.4): the robust-z baseline, as models/selection.json recommends; recorded 23 Oct by Cao Tri Tran with the team's delegation",
 

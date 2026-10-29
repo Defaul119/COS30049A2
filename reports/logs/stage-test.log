@@ -1,0 +1,3 @@
+2026-10-29 15:25:06 INFO Step stage-test started: C:\Users\ADMIN\COS30049A2\explorer\cli.py stage-test --snapshot M0
+2026-10-29 15:25:08 INFO Test-tier snapshot M0: 6750 plant rows of ['baseline', 'dbscan', 'fusion', 'isolation_forest', 'kmeans', 'lof', 'regression', 'regression_interval', 'txgpt_method']
+2026-10-29 15:25:08 INFO Step stage-test finished in 2 s (exit 0)

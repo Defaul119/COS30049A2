@@ -195,6 +195,7 @@ def last_accepted(family: str, model: str, table: Path | None = None) -> pd.Seri
 
 
 DEV_DIR = TABLES_DIR / "stage_dev"
+TEST_DIR = TABLES_DIR / "stage_test"
 PATTERN_MEASURES = {"spike": "max", "burst": "mean", "dormant": "max"}  # = significance.MEAN_OF's three recalls
 
 
@@ -261,17 +262,20 @@ def m0_spread(method: str) -> dict[str, float]:
     return {p: float(seeds[c].std()) for p, c in names.items()} if len(seeds) else {}
 
 
-def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True, seeds: list[int] | None = None) -> int:
-    """Gate every DS1 scoring method of stage `after` against stage `before` (both from run_dev or a stage search),
-    paired on the same tuning plants with an address-level bootstrap; one stages.csv row per method. `seeds` keeps
-    only those tuning seeds' plants (a stage search gates on seeds it did not rank its candidates on)."""
+def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True, seeds: list[int] | None = None,
+                tier: str = "dev", methods: list[str] | None = None) -> int:
+    """Gate every DS1 scoring method of stage `after` against stage `before` (both from run_dev or a stage search;
+    for the test tier, both from snapshot_test), paired on the same plants with an address-level bootstrap; one
+    stages.csv row per method. `seeds` keeps only those seeds' plants (a stage search gates on tuning seeds it did
+    not rank its candidates on); `methods` limits the rows to those methods."""
     s = SETTINGS["stages"]
-    hb, ha = (pd.read_csv(DEV_DIR / f"{x}_hits.csv") for x in (before, after))
+    folder = DEV_DIR if tier == "dev" else TEST_DIR
+    hb, ha = (pd.read_csv(folder / f"{x}_hits.csv") for x in (before, after))
     if seeds is not None:
         hb, ha = (h[h["seed"].isin(seeds)] for h in (hb, ha))
-    sb, sa = (pd.read_csv(DEV_DIR / f"{x}_summary.csv").set_index("method") for x in (before, after))
+    sb, sa = (pd.read_csv(folder / f"{x}_summary.csv").set_index("method") for x in (before, after))
     key = ["seed", "pattern", "plant_id", "address"]
-    for method in sorted(set(ha["method"]) & set(hb["method"])):
+    for method in sorted((set(ha["method"]) & set(hb["method"])) & set(methods or ha["method"])):
         a, b = (h[h["method"] == method].sort_values(key).reset_index(drop=True) for h in (ha, hb))
         if not a[key].equals(b[key]):
             raise RuntimeError(f"{method}: the two stages were scored on different plants")
@@ -286,13 +290,29 @@ def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True, s
                         address_share_before=float(sb.loc[method, "max_address_share"]),
                         address_share_after=float(sa.loc[method, "max_address_share"]))
         used = sorted(a["seed"].unique())
-        record({"family": "scoring", "model": method, "stage": stage, "tier": "dev", "metric": "mean planted recall",
+        record({"family": "scoring", "model": method, "stage": stage, "tier": tier, "metric": "mean planted recall",
                 "value": float(np.mean(list(recalls_a.values()))), "previous_stage": before,
                 "diff_previous": float(diff[0]), "diff_previous_ci_low": low, "diff_previous_ci_high": high,
                 "accepted": result.accepted, "reasons": "; ".join(result.reasons),
-                "seeds": f"tuning {used[0]}-{used[-1]}" if seeds is None else "gate " + " ".join(map(str, used))})
+                "seeds": (f"{'tuning' if tier == 'dev' else 'reporting'} {used[0]}-{used[-1]}" if seeds is None
+                          else "gate " + " ".join(map(str, used)))})
         log.info("%-20s %s: %+.3f [%+.3f, %+.3f] -> %s %s", method, stage, diff[0], low, high,
                  "ACCEPTED" if result.accepted else "rejected", "; ".join(result.reasons))
+    return 0
+
+
+def snapshot_test(name: str) -> int:
+    """The test tier of the DS1 scoring methods as they stand: the reporting-plant hits written by `significance`
+    (eval_plant_hits.csv) and each method's real flag rate and largest address share (eval_sanity.csv), copied to
+    stage_test/<name>_{hits,summary}.csv so a later stage's test results can be gated against them. Run it after
+    `evaluate` and `significance`; the test files are checked against the frozen manifest first."""
+    check_frozen()
+    TEST_DIR.mkdir(parents=True, exist_ok=True)
+    hits = pd.read_csv(TABLES_DIR / "eval_plant_hits.csv").assign(stage=name)
+    hits.to_csv(TEST_DIR / f"{name}_hits.csv", index=False)
+    sanity = pd.read_csv(TABLES_DIR / "eval_sanity.csv")[["method", "flag_rate", "max_address_share"]]
+    sanity.assign(stage=name).to_csv(TEST_DIR / f"{name}_summary.csv", index=False)
+    log.info("Test-tier snapshot %s: %d plant rows of %s", name, len(hits), sorted(hits["method"].unique()))
     return 0
 
 

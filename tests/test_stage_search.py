@@ -99,3 +99,38 @@ def test_search_ranks_passing_candidates_at_the_budget():
     assert (table["flag_rate"] <= 0.1).all()
     assert best == 1 and table.loc[table["chosen"], "mean_recall"].iloc[0] == table["mean_recall"].max()
     assert "passing" in rule
+
+
+def test_refit_keeps_a_stage_winners_configuration_and_threshold():
+    # evaluate.refit (stability, walk-forward) must refit a promoted winner, not reject it (settings stageModels).
+    from explorer.evaluate import refit
+
+    rows = frame(300)
+    winner = ss.Pooled("kmeans", {"k": 2, "init": "k-means++", "score": "distance"}, "F1-F4+F9+dir", 1).fit(rows)
+    winner.threshold = 1.5
+    again = refit("kmeans", winner, rows.sample(frac=1.0, replace=True, random_state=0), 7)
+    assert isinstance(again, ss.Pooled) and again.threshold == 1.5 and again.seed == 7
+    assert again.input_set == winner.input_set and again.params == winner.params
+    assert np.isfinite(again.score(rows)).all()
+
+
+def test_saved_methods_loads_the_accepted_stage(monkeypatch):
+    import tempfile
+    from pathlib import Path
+
+    import joblib
+
+    from explorer import scores
+
+    with tempfile.TemporaryDirectory() as tmp:
+        models = Path(tmp)
+        (models / "stage").mkdir()
+        joblib.dump({"method": "m0 model"}, models / "kmeans.joblib")
+        joblib.dump({"method": "stage model"}, models / "stage" / "C4_kmeans.joblib")
+        monkeypatch.setitem(scores.SETTINGS, "stageModels", {"_about": "x", "kmeans": "C4"})
+        assert scores.saved_methods(models)["kmeans"] == "stage model"
+        monkeypatch.setitem(scores.SETTINGS, "stageModels", {})
+        assert scores.saved_methods(models)["kmeans"] == "m0 model"
+        monkeypatch.setitem(scores.SETTINGS, "stageModels", {"lof": "C3"})  # accepted, but its winner is missing
+        with pytest.raises(FileNotFoundError):
+            scores.saved_methods(models)

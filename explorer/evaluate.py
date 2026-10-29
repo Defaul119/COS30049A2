@@ -49,6 +49,7 @@ from .scores import saved_methods
 from .settings import SETTINGS
 from .snapshot import MANIFEST_PATH
 from .split import EVAL, FIT
+from .stage_search import IntervalCandidate, Pooled
 
 log = logging.getLogger(__name__)
 
@@ -88,6 +89,13 @@ def refit(name: str, method: Method, rows: pd.DataFrame, seed: int) -> Method:
         # Each fitted component is refitted (fixed ones stay); the tuned multipliers are part of the configuration.
         parts = {n: m if n in FIXED else refit(n, m, rows, seed) for n, m in method.components.items()}
         return FusionMethod(parts, method.multipliers)
+    if isinstance(method, (Pooled, IntervalCandidate)):
+        # A training stage's winner (settings stageModels): the same model, inputs and calibration share fitted
+        # again; its threshold, set at the method's flag budget by the stage search, is part of the configuration.
+        fresh = (Pooled(method.kind, method.params, method.input_set, seed) if isinstance(method, Pooled) else
+                 IntervalCandidate(method.extra, method.pair, method.share, method.hgb, seed)).fit(rows)
+        fresh.threshold = method.threshold
+        return fresh
     raise ValueError(f"no refit rule for {name}")
 
 
@@ -146,15 +154,15 @@ def ablation(methods: dict[str, Method]) -> pd.DataFrame:
 
     Fitted methods are refitted with the chosen configuration on the as-written fit period;
     regression, TxGPT and the fusion (which contains a regression) have no as-written counterpart
-    (A1 did not define them)."""
+    (A1 did not define them), nor have the training stages' winners (chosen on the refined features)."""
     rows = []
     seed = SETTINGS["model"]["seed"]
     for variant in FEATURE_FILES:
         features = pd.read_csv(MANIFEST_PATH.parent / FEATURE_FILES[variant])
         copies = load_copies(variant, "reporting")
         for name, method in methods.items():
-            if name.startswith("regression") or name in ("txgpt_method", "fusion"):
-                continue
+            if name.startswith("regression") or name in ("txgpt_method", "fusion") or isinstance(method, Pooled):
+                continue  # no A1-as-written counterpart (a stage winner was chosen on the refined features)
             m = method if (name == "baseline" or variant == "refined") else refit(name, method, fit_rows(features), seed)
             if name == "baseline" and variant == "as_written":
                 chosen = json.loads((MODELS_DIR / "baseline.json").read_text(encoding="utf-8"))["chosen"]["as_written"]

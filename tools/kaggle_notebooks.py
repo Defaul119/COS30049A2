@@ -16,6 +16,7 @@ account's name in a copy that is pushed (`kaggle kernels push -p <copy>`, run fr
     stage_cpu           CPU   one TRAINING_PLAN stage: refit before / after, dev gate    (any account)
     stage_search        CPU   TRAINING_PLAN stages C1-C6: each method's grid, then the gate (any account)
     ensemble            CPU   TRAINING_PLAN stage D6: Elliptic classifier ensemble, gated (any account)
+    stage_test          CPU   the test tier of the accepted DS1 stages, the selection rule (any account)
 
 Only models the team trains from scratch are trained here (the tutor, 27 Oct 2026); the Qwen 3B notebooks of
 26-27 Oct are on the qwen-archive branch.
@@ -790,6 +791,61 @@ print((SRC / "reports" / "tables" / "stages.csv").read_text(encoding="utf-8"))
 ]
 
 
+STAGE_TEST_NB = [
+    ("markdown", r"""
+# COS30049 A2 - The test tier of the accepted DS1 training stages, and the selection rule (Kaggle CPU session)
+
+Serves `docs/TRAINING_PLAN.md` section 5 ("every accepted candidate once"): with `config/settings.json -> stageModels`
+naming each method's accepted stage (C3 LOF, C4 K-Means, C5 DBSCAN, C6 the regression range variant), the DS1
+features (with F9, an input of the K-Means winner) and the plants are rebuilt, then every method is scored and
+evaluated on the REPORTING plants (seeds 30049-30053) with the existing steps: `scores`, `evaluate` (stability,
+sanity and the A1 selection rule: stage C10), `significance` (per-plant hits) and `ds2-check`. `stage-test` saves
+this tier's snapshot and gates it against M0's (committed in `reports/tables/stage_test/M0_*`), paired by plant with
+an address-level bootstrap. CPU only, so no GPU quota.
+
+**Settings:** Accelerator **None**, **Internet on**. Then **Save Version -> Save & Run All (Commit)**.
+"""),
+    ("code", f"""
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code this run uses
+SNAPSHOT = "C"        # this tier's snapshot name (stage_test/C_*.csv)
+METHODS = ["lof", "kmeans", "dbscan", "regression_interval"]   # the accepted stages under test
+STEPS = ["features", "features --as-written", "split", "inject", "scores", "evaluate", "significance", "ds2-check"]
+PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2"]
+"""),
+    ("code", SETUP + CLONE),
+    ("code", r"""
+def cli(*args, log):
+    sh(sys.executable, "-m", "explorer.cli", *args, log=log)
+
+
+for step in STEPS:
+    t = time.time()
+    cli(*step.split(), log=f"{step.split()[0]}{'-as-written' if '--as-written' in step else ''}.log")
+    print(f"{step}: {(time.time() - t) / 60:.1f} min")
+cli("stage-test", "--snapshot", SNAPSHOT, log="stage-test.log")
+cli("stage-test", "--before", "M0", "--after", SNAPSHOT, "--stage", f"{SNAPSHOT}-test", "--methods", *METHODS,
+    log="stage-test.log")
+"""),
+    ("code", r"""
+# Everything the steps rewrote (to commit), and the logs.
+for rel in ["reports/tables", "models/selection.json", "data/processed/esplora/features.csv",
+            "data/processed/esplora/features_as_written.csv", "data/processed/esplora/scores.csv", "reports/logs"]:
+    src = SRC / rel
+    dest = WORK / "stage" / rel
+    if src.is_dir():
+        shutil.copytree(src, dest, dirs_exist_ok=True)
+    elif src.exists():
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(src, dest)
+(WORK / "kaggle_run.json").write_text(json.dumps({"commit": COMMIT, "steps": STEPS, "methods": METHODS,
+    "hours": round((time.time() - T0) / 3600, 2),
+    "packages": {p.split("==")[0]: version(p.split("==")[0]) for p in PINS}}, indent=2), encoding="utf-8")
+print((SRC / "reports" / "tables" / "stages.csv").read_text(encoding="utf-8"))
+"""),
+]
+
+
 ENSEMBLE_NB = [
     ("markdown", r'''
 # COS30049 A2 - Training stage D6: an ensemble of the Elliptic classifiers, with its gate (Kaggle CPU session)
@@ -851,7 +907,8 @@ for folder, slug, cells, gpu, sources, datasets in [
         ("class_distribution", "cos30049a2-class-distribution", CLASS_NB, False, [], ["ellipticco/elliptic-data-set"]),
         ("stage_cpu", "cos30049a2-stage-cpu", STAGE_CPU_NB, False, [], []),
         ("stage_search", "cos30049a2-stage-search", STAGE_SEARCH_NB, False, [], []),
-        ("ensemble", "cos30049a2-ensemble", ENSEMBLE_NB, False, [], ["ellipticco/elliptic-data-set"])]:
+        ("ensemble", "cos30049a2-ensemble", ENSEMBLE_NB, False, [], ["ellipticco/elliptic-data-set"]),
+        ("stage_test", "cos30049a2-stage-test", STAGE_TEST_NB, False, [], [])]:
     if ONLY and folder not in ONLY:
         continue
     out = REPO_DIR / "kaggle" / folder

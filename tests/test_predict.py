@@ -123,5 +123,18 @@ class ExplainTests(unittest.TestCase):
         self.assertEqual([r["id"] for r in reasons], ["F2", "F3"])
 
 
+class MissingModelTest(unittest.TestCase):
+    def test_missing_ds4_model_says_how_to_build_it(self):
+        # heist_best.joblib (~263 MB) is not in the zip; the error must name the steps that rebuild it.
+        import tempfile
+        from pathlib import Path
+
+        from explorer import predict
+
+        with tempfile.TemporaryDirectory() as tmp, patch.object(predict, "MODELS_DIR", Path(tmp)):
+            with self.assertRaisesRegex(FileNotFoundError, "classify --dataset heist"):
+                Predictor.classify_heist(None, 1, 1, 1, 1, 1, 1)
+
+
 if __name__ == "__main__":
     unittest.main()

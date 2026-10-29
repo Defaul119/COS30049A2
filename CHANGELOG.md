@@ -11,6 +11,21 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Accepted stages promoted; test tier prepared (stage C10's inputs).** `config/settings.json -> stageModels` names each
+DS1 method's last accepted stage (lof C3, kmeans C4, dbscan C5, regression_interval C6); `scores.saved_methods` loads
+that stage's winner (models/stage/) instead of the M0 model, everywhere the methods are used, and stops if an
+accepted winner is missing. `evaluate.refit` refits a winner with its configuration and threshold (stability,
+walk-forward); the A1 ablation skips them (no as-written counterpart). Test tier: `stage-test --snapshot NAME` saves
+the reporting-plant hits and sanity of the methods as they stand; `stage-test --before M0 --after C --stage C-test`
+gates them (tier "test" rows in stages.csv). M0's snapshot is committed (reports/tables/stage_test/M0_*). Kaggle CPU
+notebook `stage_test` rebuilds features (with F9) and plants, then scores, evaluate (the selection rule), significance
+and ds2-check, then snapshots and gates. The committed scores.csv and eval tables stay M0's until that run comes home.
+
+**DS4 model kept out of the zip by design.** models/heist_best.joblib (the random forest: best temporal validation F1
+0.164 vs histogram gradient boosting 0.115) is 263 MB; replacing it by a smaller model would override the selection
+rule, so it stays git-ignored and rebuilt by the README's DS4 steps. `predict heist` now says how to build it when it
+is missing (exit 1) instead of a traceback.
+
 **Stage B3 prepared: weak-case explanation examples (`explorer/weak_cases.py`, settings `weakCases`, CLI
 `build-weak-cases`; set before any result).** At M0 the round-1 writer is fully correct on 0-56% per case of the hard
 and max_shift test prompts (it invents method names such as "Robusta" and loses the verdict when another method

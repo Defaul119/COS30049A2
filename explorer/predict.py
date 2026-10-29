@@ -257,7 +257,13 @@ class Predictor:
 
     def classify_heist(self, length: float, weight: float, count: float, looped: float, neighbors: float,
                        income: float) -> dict[str, Any]:
-        saved = joblib.load(MODELS_DIR / "heist_best.joblib")
+        path = MODELS_DIR / "heist_best.joblib"
+        if not path.exists():
+            # The chosen DS4 model (a random forest, best temporal validation F1) is ~263 MB, so it is not in the
+            # submission zip; it is rebuilt from the public data by the README's DS4 steps.
+            raise FileNotFoundError(f"{path} is missing: build it with `python -m explorer.cli external --bitcoinheist`, "
+                                    "`process-external` and `classify --dataset heist` (about 35 min; README.md)")
+        saved = joblib.load(path)
         decisions = json.loads((HEIST_DIR / "processing.json").read_text(encoding="utf-8"))
         raw = {"length": length, "weight": weight, "count": count, "looped": looped, "neighbors": neighbors, "income": income}
         x = {}
