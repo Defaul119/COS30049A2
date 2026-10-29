@@ -10,6 +10,7 @@ account's name in a copy that is pushed (`kaggle kernels push -p <copy>`, run fr
     text150m_train      T4x2  fp16 check, benchmark, gate, continued pretraining chain  (the teammate's account)
     text150m_stage_data CPU   DS6 and DS7 v2 tokenized for the 152M stages               (with the 152M chain)
     text150m_stages     T4x2  chat and explanation stages, then every 152M evaluation    (with the 152M chain)
+    text150m_b3_trial   T4x2  stage B3 on round 1: explanation stage with and without weak cases, dev tier
     distribution        CPU   every scoring method over many plant seeds                 (any account)
     class_distribution  CPU   classifier metrics over seeds and a test bootstrap         (any account)
     stage_cpu           CPU   one TRAINING_PLAN stage: refit before / after, dev gate    (any account)
@@ -317,7 +318,8 @@ STAGE_DATA_NB = [
 
 Tokenizes, with the 152M model's own tokenizer, what its two fine-tuning stages train on (`docs/KAGGLE_LM_PLAN.md`,
 section 4): DS6 smol-smoltalk for the chat stage, as in round 1, and DS7 v2 for the explanation stage, with the
-glossary's training rows repeated 4 times. CPU only, so no GPU quota.
+glossary's training rows repeated 4 times; and, for stage B3 (`docs/TRAINING_PLAN.md`), the same plus the weak-case
+examples (`ds7_v2_weak_chat`) and the writer's dev files (`dev/`). CPU only, so no GPU quota.
 
 **Settings:** Accelerator **None**, **Internet on**. **Inputs:** this account's dataset `cos30049a2-text150m-base`
 (the tokenizer) and notebook `cos30049a2-ds7-data` (DS7 v2). Output `stage/` and `stage_manifest.json`, read by
@@ -351,6 +353,18 @@ sh(sys.executable, "-m", "lm.prepare_chat", "--tokenizer", str(TOK), "--source",
    "--val-jsonl", str(DS7 / "val.jsonl"), "--extra", *[str(glossary)] * (GLOSSARY_REPEATS - 1),
    "--out", str(STAGE / "ds7_v2_chat"), log="prepare-ds7-v2-chat.log")
 shutil.copy(DS7 / "glossary_test.jsonl", STAGE / "glossary_test.jsonl")
+
+# Stage B3 (docs/TRAINING_PLAN.md): the same data plus the weak-case examples (explorer/weak_cases.py, committed
+# with their SHA-256), and the writer's dev files: the weak-case dev slice and DS7 v2's validation split.
+WEAK = SRC / "data" / "processed" / "weak_cases"
+for f in json.loads((WEAK / "manifest.json").read_text(encoding="utf-8"))["files"]:
+    assert sha256(SRC / f["path"]) == f["sha256"], f"{f['path']} differs from its manifest"
+sh(sys.executable, "-m", "lm.prepare_chat", "--tokenizer", str(TOK), "--source", "jsonl", "--jsonl", str(DS7 / "train.jsonl"),
+   "--val-jsonl", str(DS7 / "val.jsonl"), "--extra", *[str(glossary)] * (GLOSSARY_REPEATS - 1), str(WEAK / "train.jsonl"),
+   "--out", str(STAGE / "ds7_v2_weak_chat"), log="prepare-ds7-v2-weak-chat.log")
+(STAGE / "dev").mkdir(exist_ok=True)
+shutil.copy(WEAK / "dev.jsonl", STAGE / "dev" / "weak_dev.jsonl")
+shutil.copy(DS7 / "val.jsonl", STAGE / "dev" / "ds7v2_val.jsonl")
 '''),
     ("code", r'''
 manifest = {"commit": COMMIT, "ds7_v2_commit": ds7_manifest["commit"],
@@ -380,8 +394,9 @@ also this notebook's own previous output, with `RESUME_FROM` set.
 REPO = "https://github.com/Defaul119/COS30049A2.git"
 COMMIT = "{COMMIT}"   # the code this run uses; recorded in kaggle_run.json
 SESSION_HOURS = 11.75  # Kaggle ends a GPU session at 12 h
-EVAL_HOURS = 0.75      # what the evaluations need on two GPUs
+EVAL_HOURS = 1.25      # what the evaluations need on two GPUs (test sets, then the dev tier)
 RESUME_FROM = None     # e.g. "/kaggle/input/<this notebook>/runs" to continue a stopped session
+WEAK_CASES = True      # stage B3: the explanation stage adds the weak-case examples; set by the round-1 trial's gate
 PINS = ["tokenizers==0.21.1", "numpy==2.2.6"]  # environment.yml; torch is Kaggle's own (recorded)
 '''),
     ("code", SETUP + r'''
@@ -414,8 +429,8 @@ def config(name, **paths):
 
 CHAT, EXPLAIN = RUNS / "text-150m-chat-v2", RUNS / "text-150m-explain-v2"
 STAGES = [(config("text_150m_chat_v2", data_dir=STAGE / "chat", out_dir=CHAT, init_from=PRETRAINED), CHAT),
-          (config("text_150m_explain_v2", data_dir=STAGE / "ds7_v2_chat", out_dir=EXPLAIN,
-                  init_from=CHAT / "model.pt"), EXPLAIN)]
+          (config("text_150m_explain_v2", data_dir=STAGE / ("ds7_v2_weak_chat" if WEAK_CASES else "ds7_v2_chat"),
+                  out_dir=EXPLAIN, init_from=CHAT / "model.pt"), EXPLAIN)]
 '''),
     ("code", r'''
 for cfg, out in STAGES:
@@ -427,36 +442,27 @@ for cfg, out in STAGES:
         print(f"{out.name} stopped for time: run again with RESUME_FROM (see the top)")
         break
 '''),
-    ("code", r'''
-# Every evaluation the adoption rule needs, one queue per GPU; each test set writes its own tables.
+    ("code", DEV_EVAL + r'''
+# Every evaluation the adoption rule needs, one queue per GPU; each test set writes its own tables. --n above every
+# set's size: each prompt is answered (the default draws 500). The dev tier comes last (the B3 gate against round 1).
 V2 = EXPLAIN / "model_best.pt"
 GLOSSARY = STAGE / "glossary_test.jsonl"
 RANDOM = SRC / "data" / "processed" / "random_test"
-FIRST = [("text150m_v2", V2, SRC / "data" / "processed" / "ds7" / "test.jsonl", "")] + [
-    ("text150m_v2", V2, RANDOM / f"{part}.jsonl", f"random_{part}") for part in ("real", "hard", "crawl_ds1", "crawl_ds10", "extreme")]
-SECOND = [("text150m_v2", V2, SRC / "data" / "processed" / "ds10" / "explain.jsonl", "ds10"),
-          ("text150m_v2", V2, GLOSSARY, "glossary"),
-          ("text150m", base / "text150m_explain_v1.pt", GLOSSARY, "glossary")] + [
-    ("text150m_v2", V2, RANDOM / f"{part}.jsonl", f"random_{part}")
+ALL = 100000
+FIRST = [("text150m_v2", V2, SRC / "data" / "processed" / "ds7" / "test.jsonl", "", ALL, 30049)] + [
+    ("text150m_v2", V2, RANDOM / f"{part}.jsonl", f"random_{part}", ALL, 30049)
+    for part in ("real", "hard", "crawl_ds1", "crawl_ds10", "extreme")]
+SECOND = [("text150m_v2", V2, SRC / "data" / "processed" / "ds10" / "explain.jsonl", "ds10", ALL, 30049),
+          ("text150m_v2", V2, GLOSSARY, "glossary", ALL, 30049),
+          ("text150m", base / "text150m_explain_v1.pt", GLOSSARY, "glossary", ALL, 30049)] + [
+    ("text150m_v2", V2, RANDOM / f"{part}.jsonl", f"random_{part}", ALL, 30049)
     for part in ("synthetic", "balanced", "crawl_ds2", "close_calls", "max_shift")]
-# A test set's evaluations stay in one queue: they write one summary table.
+# A test set's evaluations stay in one queue: they write one summary table (so both writers' dev jobs go together).
+FIRST += dev_jobs("text150m_v2", V2) + dev_jobs("text150m_r1", base / "text150m_explain_v1.pt")
 QUEUES = [FIRST, SECOND] if GPUS > 1 else [FIRST + SECOND]
 
-
-def run_queue(gpu, queue):
-    for model, checkpoint, test, tag in queue:
-        # --n above every set's size: each prompt is answered (the default draws 500)
-        sh(sys.executable, "-m", "lm.eval_explain", "--model", model, "--checkpoint", str(checkpoint), "--test", str(test),
-           "--tag", tag, "--n", "100000", log=f"eval-{model}-{tag or 'ds7'}.log",
-           env=dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu)))
-
-
 if (EXPLAIN / "model.pt").exists():
-    threads = [threading.Thread(target=run_queue, args=(gpu, q)) for gpu, q in enumerate(QUEUES)]
-    for t in threads:
-        t.start()
-    for t in threads:
-        t.join()
+    run_queues(QUEUES)
     tables = WORK / "reports" / "tables"
     tables.mkdir(parents=True, exist_ok=True)
     for f in (SRC / "reports" / "tables").glob("assistant_eval*.csv"):
@@ -466,6 +472,128 @@ if (EXPLAIN / "model.pt").exists():
     "packages": {p: version(p) for p in ("torch", "numpy", "tokenizers")}, "resumed_from": RESUME_FROM,
     "session_hours": round((time.time() - T0) / 3600, 2),
     "finished": {out.name: (out / "model.pt").exists() for _, out in STAGES},
+}, indent=2), encoding="utf-8")
+'''),
+]
+
+
+DEV_EVAL = r'''
+# The writer's dev tier (TRAINING_PLAN section 2; settings weakCases): the weak-case dev slice and devVal prompts of
+# DS7 v2's validation split. Never the test sets: those are scored once per frozen candidate.
+WEAK_SETTINGS = json.loads((SRC / "config" / "settings.json").read_text(encoding="utf-8"))["weakCases"]
+DEV = [(STAGE / "dev" / "weak_dev.jsonl", "devweak", 100000), (STAGE / "dev" / "ds7v2_val.jsonl", "devval", WEAK_SETTINGS["devVal"])]
+
+
+def dev_jobs(model, checkpoint):
+    return [(model, checkpoint, test, tag, n, WEAK_SETTINGS["devValSeed"]) for test, tag, n in DEV]
+
+
+def run_queue(gpu, queue):
+    for model, checkpoint, test, tag, n, seed in queue:
+        sh(sys.executable, "-m", "lm.eval_explain", "--model", model, "--checkpoint", str(checkpoint), "--test", str(test),
+           "--tag", tag, "--n", str(n), "--seed", str(seed), log=f"eval-{model}-{tag}.log",
+           env=dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu)))
+
+
+def run_queues(queues):
+    threads = [threading.Thread(target=run_queue, args=(gpu, q)) for gpu, q in enumerate(queues)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+'''
+
+B3_TRIAL_NB = [
+    ("markdown", r'''
+# COS30049 A2 - Stage B3 tried on the round-1 152M model: does adding weak-case examples help? (T4 x2)
+
+`docs/TRAINING_PLAN.md` stage B3, first tried on round 1 while the round-2 pretraining runs, so the recipe is known
+before the round-2 model exists. From round 1's chat model, two explanation stages run side by side, one per GPU,
+with `configs/text_150m_explain_v2.json`:
+
+- **A**: DS7 v2 + the glossary x4 (round 2's planned recipe);
+- **B**: the same + the weak-case examples (`explorer/weak_cases.py`: other methods, reworded instructions of its
+  own, shuffled facts, three or four reasons).
+
+Then round 1's writer, A and B answer the same dev prompts (the weak-case dev slice and a fixed draw of DS7 v2's
+validation split). `python -m explorer.cli writer-gate` (run at home on the output tables) decides; the test sets
+are not touched here.
+
+**Settings:** Accelerator **GPU T4 x2**, **Internet on**. **Inputs:** this account's datasets
+`cos30049a2-text150m-base` and `cos30049a2-text150m-chat-v1` (round 1's chat model) and notebook
+`cos30049a2-text150m-stage-data`.
+'''),
+    ("code", f'''
+REPO = "https://github.com/Defaul119/COS30049A2.git"
+COMMIT = "{COMMIT}"   # the code this run uses; recorded in kaggle_run.json
+SESSION_HOURS = 11.75  # Kaggle ends a GPU session at 12 h
+EVAL_HOURS = 1.5       # three writers on two dev files, one queue per GPU
+# round 1's chat model (runs/text-150m-chat/model.pt on the PC), uploaded as dataset cos30049a2-text150m-chat-v1
+CHAT_V1_SHA256 = "81645aa07bff32e2dc2ee8e94ceafcfeb85a2c0efd8bf2b75d4d826aabc9dfdc"
+PINS = ["tokenizers==0.21.1", "numpy==2.2.6"]  # environment.yml; torch is Kaggle's own (recorded)
+'''),
+    ("code", SETUP + r'''
+if shutil.which("nvidia-smi") is None:
+    raise SystemExit("No GPU in this session: Settings panel -> Accelerator -> GPU T4 x2 (needs a verified phone).")
+GPUS = len(subprocess.run(["nvidia-smi", "-L"], capture_output=True, text=True).stdout.strip().splitlines())
+RUNS = WORK / "runs"
+''' + CLONE + FIND),
+    ("code", r'''
+base = check_base()
+stage_manifest_path = find_input("stage_manifest.json")
+for rel, digest in json.loads(stage_manifest_path.read_text(encoding="utf-8"))["files"].items():
+    assert sha256(stage_manifest_path.parent / rel) == digest, f"{rel} differs from stage_manifest.json"
+STAGE = stage_manifest_path.parent / "stage"
+CHAT_V1 = find_input("text150m_chat_v1.pt")
+assert sha256(CHAT_V1) == CHAT_V1_SHA256, "text150m_chat_v1.pt is not round 1's chat model"
+
+
+def config(name, out, **paths):
+    cfg = json.loads((SRC / "configs" / f"{name}.json").read_text(encoding="utf-8"))
+    cfg.update({k: str(v) for k, v in paths.items()}, out_dir=str(out), name=out.name)
+    path = Path(f"/tmp/{out.name}.json")
+    path.write_text(json.dumps(cfg, indent=2), encoding="utf-8")
+    return path
+
+
+A, B = RUNS / "text-150m-explain-b3a", RUNS / "text-150m-explain-b3b"
+TRIALS = [(config("text_150m_explain_v2", A, data_dir=STAGE / "ds7_v2_chat", init_from=CHAT_V1), A),
+          (config("text_150m_explain_v2", B, data_dir=STAGE / "ds7_v2_weak_chat", init_from=CHAT_V1), B)]
+'''),
+    ("code", r'''
+# One stage per GPU at the same time (each single-process), so both see the same session clock.
+hours = SESSION_HOURS - (time.time() - T0) / 3600 - EVAL_HOURS - 0.2
+
+
+def train(gpu, cfg, out):
+    sh(sys.executable, "-m", "lm.train", "--config", str(cfg), "--max-hours", f"{hours:.2f}", log=f"{out.name}.log",
+       env=dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu % GPUS)))
+
+
+threads = [threading.Thread(target=train, args=(gpu, cfg, out)) for gpu, (cfg, out) in enumerate(TRIALS)]
+for t in threads:
+    t.start()
+    if GPUS == 1:
+        t.join()
+for t in threads:
+    t.join()
+'''),
+    ("code", DEV_EVAL + r'''
+jobs = dev_jobs("text150m_r1", base / "text150m_explain_v1.pt")
+for name, out in (("text150m_b3a", A), ("text150m_b3b", B)):
+    if (out / "model.pt").exists():
+        jobs += dev_jobs(name, out / "model_best.pt")
+# jobs alternate devweak / devval, so each dev file's jobs share one queue (they write one summary table)
+run_queues([jobs[0::2], jobs[1::2]] if GPUS > 1 else [jobs])
+tables = WORK / "reports" / "tables"
+tables.mkdir(parents=True, exist_ok=True)
+for f in (SRC / "reports" / "tables").glob("assistant_eval*_dev*.csv"):
+    shutil.copy(f, tables)
+(WORK / "kaggle_run.json").write_text(json.dumps({
+    "commit": COMMIT, "gpus": GPUS, "python": sys.version.split()[0],
+    "packages": {p: version(p) for p in ("torch", "numpy", "tokenizers")},
+    "session_hours": round((time.time() - T0) / 3600, 2),
+    "finished": {out.name: (out / "model.pt").exists() for _, out in TRIALS},
 }, indent=2), encoding="utf-8")
 '''),
 ]
@@ -717,6 +845,8 @@ for folder, slug, cells, gpu, sources, datasets in [
          ["KAGGLE_USERNAME/cos30049a2-ds7-data"], BASE),
         ("text150m_stages", "cos30049a2-text150m-stages", STAGES_NB, True,
          ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data", "KAGGLE_USERNAME/cos30049a2-text150m-train"], BASE),
+        ("text150m_b3_trial", "cos30049a2-text150m-b3-trial", B3_TRIAL_NB, True,
+         ["KAGGLE_USERNAME/cos30049a2-text150m-stage-data"], BASE + ["KAGGLE_USERNAME/cos30049a2-text150m-chat-v1"]),
         ("distribution", "cos30049a2-distribution", DIST_NB, False, [], []),
         ("class_distribution", "cos30049a2-class-distribution", CLASS_NB, False, [], ["ellipticco/elliptic-data-set"]),
         ("stage_cpu", "cos30049a2-stage-cpu", STAGE_CPU_NB, False, [], []),

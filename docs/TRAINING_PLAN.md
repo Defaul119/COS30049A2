@@ -128,6 +128,16 @@ spread. The test steps are used once, only if the ensemble is accepted.
 B3-B5 are first tried on the round-1 model (one GPU hour each, the user's account) while B1 runs, so the recipe is
 known before the round-2 model exists; the winning recipe then runs once on the round-2 model (Mon 2 Nov).
 
+How B3 runs (set 29 Oct before any result): `explorer/weak_cases.py` draws 8,000 training and 600 dev examples of
+the weak cases (a method other than the baseline, reworded instructions of its own, shuffled facts, three or four
+reasons; seeds 60000/60001; no frozen test prompt; the test sets' reworded instructions stay unseen). Kaggle
+notebook `text150m_b3_trial` trains two explanation stages from round 1's chat model, A (DS7 v2 + glossary x4) and B
+(A + the weak cases), and scores round 1, A and B on the dev tier (the weak-case dev slice + 600 prompts of DS7 v2's
+validation split). `python -m explorer.cli writer-gate` gates B against A: fully correct paired by prompt, each
+case's fall within the binomial standard error of A's rate there (the writer has no M0 seed spread), guardrail and
+number faithfulness not falling. If B passes, the round-2 explanation stage adds the weak cases (`WEAK_CASES` in
+`text150m_stages`); its dev answers then gate round 2 against round 1 the same way, before the adoption rule's test.
+
 ## 5. Order and when testing runs
 
 Order: A0 first (it changes every scoring method's input); then C1-C6 and D1-D7 side by side on Kaggle CPU

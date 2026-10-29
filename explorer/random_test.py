@@ -157,11 +157,14 @@ REWORDED = [
 ]
 
 
-def hard_record(rng: random.Random, flag_z: float, shares: dict[str, float] | None = None) -> dict[str, Any]:
+def hard_record(rng: random.Random, flag_z: float, shares: dict[str, float] | None = None,
+                instructions: list[str] = REWORDED, ranges: dict[str, Any] | None = None) -> dict[str, Any]:
     """A synthetic transaction explained for a random method, maybe with a reworded instruction and shuffled facts;
-    `shares` overrides how often each happens (the maximal-shift set has every one)."""
+    `shares` overrides how often each happens (the maximal-shift set has every one). `instructions` and `ranges`
+    (synthetic_tx's) let explorer.weak_cases draw training examples with wordings the test sets never use; the
+    defaults draw exactly as the frozen sets were built."""
     p = {**SETTINGS["randomTest"], **(shares or {})}
-    tx = synthetic_tx(rng, flag_z)
+    tx = synthetic_tx(rng, flag_z, ranges)
     method = "baseline" if rng.random() < p["hardBaselineShare"] else rng.choice(
         [m for m in METHOD_NAMES if m != "baseline"])
     tx["method"] = {"name": METHOD_NAMES[method]}
@@ -173,8 +176,8 @@ def hard_record(rng: random.Random, flag_z: float, shares: dict[str, float] | No
     shuffled = bool(facts.get("features")) and rng.random() < p["shuffleShare"]
     if shuffled:
         rng.shuffle(facts["features"])
-    reworded = rng.randrange(len(REWORDED)) if rng.random() < p["rewordShare"] else None
-    instruction = assistant.INSTRUCTION if reworded is None else REWORDED[reworded]
+    reworded = rng.randrange(len(instructions)) if rng.random() < p["rewordShare"] else None
+    instruction = assistant.INSTRUCTION if reworded is None else instructions[reworded]
     messages = [{"role": "system", "content": assistant.SYSTEM_PROMPT},
                 {"role": "user", "content": f"{instruction}\n{json.dumps(facts, ensure_ascii=False)}"}]
     row = record(tx, rng, "hard", messages, facts)

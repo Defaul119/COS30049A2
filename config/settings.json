@@ -406,6 +406,28 @@
     ]
   },
 
+  "weakCases": {
+    "_about": "explorer/weak_cases.py (TRAINING_PLAN stage B3, set 29 Oct before any result): training and dev explanation examples of the round-1 writer's weak cases (a method other than the baseline, reworded instructions of its own, shuffled facts, three or four reasons), drawn as random_test.hard_record draws with its own seeds; no frozen test prompt, and dev never repeats a train prompt. manyReasonShare of rows draw z from manyReasonMixture (more contributing and flag-level values).",
+    "seed": 60000,
+    "devSeed": 60001,
+    "trainPrompts": 8000,
+    "devPrompts": 600,
+    "hardBaselineShare": 0.3,
+    "hardOtherFlagShare": 0.35,
+    "rewordShare": 0.5,
+    "shuffleShare": 0.5,
+    "manyReasonShare": 0.35,
+    "manyReasonMixture": {
+      "withinSd": 1.2,
+      "contributingShare": 0.45,
+      "flagShare": 0.25,
+      "nearZeroShare": 0.03
+    },
+    "_dev": "The writer's dev tier for stages B3-B6: dev.jsonl plus devVal prompts drawn with devValSeed from DS7 v2's val.jsonl (both are dev data; the test tier stays untouched). The gate pairs the two writers prompt by prompt (bootstrap over prompts, McNemar); a case's allowed fall is the binomial standard error of the earlier writer's rate on that case, as the writer has no seed spread at M0.",
+    "devVal": 600,
+    "devValSeed": 60002
+  },
+
   "writerStats": {
     "_about": "lm/eval_stats.py: bootstrap intervals (draws over each test set's prompts, shared by every writer, so comparisons are paired) and McNemar's exact test for the Assistants.",
     "seed": 72000,

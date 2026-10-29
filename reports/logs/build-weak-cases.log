@@ -1,0 +1,5 @@
+2026-10-29 15:09:44 INFO Step build-weak-cases started: C:\Users\ADMIN\COS30049A2\explorer\cli.py build-weak-cases
+2026-10-29 15:09:57 INFO 4716 frozen test prompts excluded
+2026-10-29 15:09:59 INFO train: 8000 prompts; {'flagged, 1 reason': 501, 'flagged, 2 reasons': 846, 'flagged, 3 reasons': 801, 'flagged, 4 reasons': 359, 'flagged, nothing stands out': 262, 'not flagged, 1 reason': 1294, 'not flagged, 2 reasons': 1296, 'not flagged, 3 reasons': 878, 'not flagged, 4 reasons': 339, 'not flagged, nothing stands out': 733, 'unscored': 691}
+2026-10-29 15:09:59 INFO dev: 600 prompts; {'flagged, 1 reason': 51, 'flagged, 2 reasons': 59, 'flagged, 3 reasons': 42, 'flagged, 4 reasons': 28, 'flagged, nothing stands out': 24, 'not flagged, 1 reason': 83, 'not flagged, 2 reasons': 90, 'not flagged, 3 reasons': 72, 'not flagged, 4 reasons': 20, 'not flagged, nothing stands out': 65, 'unscored': 66}
+2026-10-29 15:09:59 INFO Step build-weak-cases finished in 15 s (exit 0)

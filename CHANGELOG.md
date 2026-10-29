@@ -11,6 +11,20 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Stage B3 prepared: weak-case explanation examples (`explorer/weak_cases.py`, settings `weakCases`, CLI
+`build-weak-cases`; set before any result).** At M0 the round-1 writer is fully correct on 0-56% per case of the hard
+and max_shift test prompts (it invents method names such as "Robusta" and loses the verdict when another method
+flags). 8,000 training and 600 dev examples drawn as `random_test.hard_record` draws (any method, independent flags,
+shuffled facts, a third of rows with more contributing and flag-level values), with seeds 60000/60001 and eight
+instruction wordings of their own (the test sets' six stay unseen); every frozen test prompt excluded (4,716), dev
+disjoint from train. Train cases: 2,500 with three or four reasons. `random_test.hard_record` takes the instruction
+list and ranges as optional arguments (defaults draw exactly as before; tested). Writer gate
+(`stages.run_compare_writers`, CLI `writer-gate`): fully correct paired by prompt, a case may fall by at most the
+binomial standard error of the earlier writer's rate there, guardrail and number faithfulness may not fall. Kaggle:
+`text150m_stage_data` also writes `ds7_v2_weak_chat` and the dev files; new `text150m_b3_trial` (round 1's chat
+model -> A without, B with the weak cases, then the dev tier for round 1, A and B); `text150m_stages` gets
+`WEAK_CASES` and the dev tier for round 2 against round 1.
+
 **Context files cleaned up** (the user, 29 Oct): context.txt rewritten as bullet points (live state, reference
 tables for Kaggle accounts, the 152M chain and the training stages, one-line history); CLAUDE.md brought to 29 Oct
 (training stages as decision 5, the from-scratch rule, key dates); docs/TODO.md rewritten around the stages left.

@@ -42,6 +42,7 @@ Usage (from the repository root):
     python -m explorer.cli build-ds7 --out data/processed/ds7_v2 --settings ds7v2   # round 2's larger DS7
     python -m explorer.cli build-random-test      # the Assistants' randomized test set (needs DS7 v2's test split)
     python -m explorer.cli build-balanced-test    # ... and its balanced real set (DS10 + DS2's test split)
+    python -m explorer.cli build-weak-cases       # 152M stage B3: weak-case training and dev examples
     python -m explorer.cli distribution [--only DS1 DS10]   # every method's recall over many plant seeds
     python -m explorer.cli class-distribution     # classifiers: seed refits and test bootstrap (needs DS3/DS4)
     python -m explorer.cli label-check            # unsupervised scores against DS3/DS4 labels
@@ -233,6 +234,19 @@ def cmd_stage_compare(args: argparse.Namespace) -> int:
     from .stages import run_compare
 
     return run_compare(args.before, args.after, args.stage)
+
+
+def cmd_writer_gate(args: argparse.Namespace) -> int:
+    from .stages import run_compare_writers
+
+    return run_compare_writers([Path(x) for x in args.before], [Path(x) for x in args.after], args.stage, args.model,
+                               args.previous, loss_agrees=not args.loss_rose)
+
+
+def cmd_build_weak_cases(args: argparse.Namespace) -> int:
+    from .weak_cases import run_build_weak_cases
+
+    return run_build_weak_cases()
 
 
 def cmd_stage_search(args: argparse.Namespace) -> int:
@@ -503,6 +517,16 @@ def build_parser() -> argparse.ArgumentParser:
     stage_compare.add_argument("--after", required=True, help="the new stage's stage-dev name")
     stage_compare.add_argument("--stage", required=True, help="the name recorded in stages.csv")
     stage_compare.set_defaults(func=cmd_stage_compare)
+    writer_gate = steps.add_parser("writer-gate", help="the strict gate between two writers' dev answers -> stages.csv")
+    writer_gate.add_argument("--before", nargs="+", required=True, help="the earlier writer's per-prompt eval tables")
+    writer_gate.add_argument("--after", nargs="+", required=True, help="the new writer's tables, same dev files")
+    writer_gate.add_argument("--stage", required=True, help="the name recorded in stages.csv (e.g. B3)")
+    writer_gate.add_argument("--model", required=True, help="the writer's name in stages.csv")
+    writer_gate.add_argument("--previous", required=True, help="the earlier writer's stage name")
+    writer_gate.add_argument("--loss-rose", action="store_true", help="the new stage's validation loss rose")
+    writer_gate.set_defaults(func=cmd_writer_gate)
+    steps.add_parser("build-weak-cases", help="152M stage B3: weak-case explanation examples (train and dev)"
+                     ).set_defaults(func=cmd_build_weak_cases)
     stage_search = steps.add_parser("stage-search", help="stages C1-C6: each scoring method's grid at its M0 flag budget, gated")
     stage_search.add_argument("--stages", nargs="+", required=True, help="e.g. C1 C2 C3 C4 C5 C6")
     stage_search.set_defaults(func=cmd_stage_search)

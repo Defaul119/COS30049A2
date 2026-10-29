@@ -1,0 +1,65 @@
+{
+  "dataset": "Weak-case explanation examples for the 152M explanation stage (TRAINING_PLAN B3)",
+  "built_utc": "2026-10-29T08:09:59+00:00",
+  "settings": {
+    "_about": "explorer/weak_cases.py (TRAINING_PLAN stage B3, set 29 Oct before any result): training and dev explanation examples of the round-1 writer's weak cases (a method other than the baseline, reworded instructions of its own, shuffled facts, three or four reasons), drawn as random_test.hard_record draws with its own seeds; no frozen test prompt, and dev never repeats a train prompt. manyReasonShare of rows draw z from manyReasonMixture (more contributing and flag-level values).",
+    "seed": 60000,
+    "devSeed": 60001,
+    "trainPrompts": 8000,
+    "devPrompts": 600,
+    "hardBaselineShare": 0.3,
+    "hardOtherFlagShare": 0.35,
+    "rewordShare": 0.5,
+    "shuffleShare": 0.5,
+    "manyReasonShare": 0.35,
+    "manyReasonMixture": {
+      "withinSd": 1.2,
+      "contributingShare": 0.45,
+      "flagShare": 0.25,
+      "nearZeroShare": 0.03
+    },
+    "_dev": "The writer's dev tier for stages B3-B6: dev.jsonl plus devVal prompts drawn with devValSeed from DS7 v2's val.jsonl (both are dev data; the test tier stays untouched). The gate pairs the two writers prompt by prompt (bootstrap over prompts, McNemar); a case's allowed fall is the binomial standard error of the earlier writer's rate on that case, as the writer has no seed spread at M0.",
+    "devVal": 600,
+    "devValSeed": 60002
+  },
+  "flag_abs_z": 5.0,
+  "excluded_prompts": 12640,
+  "cases": {
+    "train": {
+      "flagged, 1 reason": 501,
+      "flagged, 2 reasons": 846,
+      "flagged, 3 reasons": 801,
+      "flagged, 4 reasons": 359,
+      "flagged, nothing stands out": 262,
+      "not flagged, 1 reason": 1294,
+      "not flagged, 2 reasons": 1296,
+      "not flagged, 3 reasons": 878,
+      "not flagged, 4 reasons": 339,
+      "not flagged, nothing stands out": 733,
+      "unscored": 691
+    },
+    "dev": {
+      "flagged, 1 reason": 51,
+      "flagged, 2 reasons": 59,
+      "flagged, 3 reasons": 42,
+      "flagged, 4 reasons": 28,
+      "flagged, nothing stands out": 24,
+      "not flagged, 1 reason": 83,
+      "not flagged, 2 reasons": 90,
+      "not flagged, 3 reasons": 72,
+      "not flagged, 4 reasons": 20,
+      "not flagged, nothing stands out": 65,
+      "unscored": 66
+    }
+  },
+  "files": [
+    {
+      "path": "data/processed/weak_cases/train.jsonl",
+      "sha256": "55bd99743838d66f0f1385668d3aebcaa02b12b50d31f425937815091c662398"
+    },
+    {
+      "path": "data/processed/weak_cases/dev.jsonl",
+      "sha256": "6381feb37d9e80995da56f8d2a48e2d089ccc43d32c211f77b2919e7a006bfca"
+    }
+  ]
+}

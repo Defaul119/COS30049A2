@@ -296,6 +296,54 @@ def run_compare(before: str, after: str, stage: str, loss_agrees: bool = True, s
     return 0
 
 
+def writer_answers(paths: list[Path]) -> pd.DataFrame:
+    """lm.eval_explain's per-prompt tables (assistant_eval_<writer>_<tag>.csv) of one writer, explanation prompts
+    only, keyed by "<file tag>:<id>" so two dev files cannot collide."""
+    parts = []
+    for path in paths:
+        t = pd.read_csv(path, keep_default_na=False)
+        t = t[t["kind"] != "glossary"].copy()
+        t["key"] = path.stem.rsplit("_", 1)[-1] + ":" + t["id"].astype(str)
+        parts.append(t)
+    out = pd.concat(parts, ignore_index=True)
+    for c in ("correct", "passed", "numbers_ok"):
+        out[c] = out[c].astype(str) == "True"
+    return out.set_index("key").sort_index()
+
+
+def run_compare_writers(before: list[Path], after: list[Path], stage: str, model: str, previous_stage: str,
+                        loss_agrees: bool = True) -> int:
+    """Gate a writer stage (TRAINING_PLAN B3-B6) on the dev prompts both writers answered: fully correct, paired
+    prompt by prompt (bootstrap over prompts, identical prompts drawn together; McNemar's exact test), each case's
+    fall within the binomial standard error of the earlier writer's rate there (settings weakCases _dev: no seed
+    spread exists for the writer at M0), and neither the guardrail pass rate nor number faithfulness falling."""
+    b, a = writer_answers(before), writer_answers(after)
+    if not b.index.equals(a.index) or not (b["prompt"] == a["prompt"]).all():
+        raise RuntimeError("the two writers answered different dev prompts")
+    low_high = paired_difference(b["correct"].to_numpy(), a["correct"].to_numpy(), b["prompt"].to_numpy())
+    rate_b, rate_a = b.groupby("case")["correct"].mean(), a.groupby("case")["correct"].mean()
+    n = b.groupby("case").size()
+    spread = {c: float(np.sqrt(rate_b[c] * (1 - rate_b[c]) / n[c])) for c in rate_b.index}
+    result = decide(low_high[1], rate_b.to_dict(), rate_a.to_dict(), spread, loss_agrees,
+                    guardrail_before=float(b["passed"].mean()), guardrail_after=float(a["passed"].mean()))
+    numbers_b, numbers_a = float(b["numbers_ok"].mean()), float(a["numbers_ok"].mean())
+    if numbers_a < numbers_b:
+        result.reasons.append(f"number faithfulness fell {numbers_b:.4f} -> {numbers_a:.4f}")
+        result.accepted = False
+    p = mcnemar_p(b["correct"].to_numpy(), a["correct"].to_numpy())
+    record({"family": "writer", "model": model, "stage": stage, "tier": "dev", "metric": "fully correct",
+            "value": float(a["correct"].mean()), "previous_stage": previous_stage, "diff_previous": low_high[0],
+            "diff_previous_ci_low": low_high[1], "diff_previous_ci_high": low_high[2], "mcnemar_p": p,
+            "accepted": result.accepted, "reasons": "; ".join(result.reasons),
+            "seeds": " + ".join(sorted({k.split(":")[0] for k in a.index}))})
+    log.info("%s %s vs %s: fully correct %.3f -> %.3f, %+.3f [%+.3f, %+.3f], McNemar p %.4f -> %s %s", model, stage,
+             previous_stage, b["correct"].mean(), a["correct"].mean(), *low_high, p,
+             "ACCEPTED" if result.accepted else "rejected", "; ".join(result.reasons))
+    for c in rate_b.index:
+        log.info("  %-34s %4d prompts  %.3f -> %.3f", c, n[c], rate_b[c], rate_a[c])
+    return 0
+
+
 def run_freeze() -> int:
     digests = freeze()
     log.info("Recorded the SHA-256 of %d frozen files in %s", len(digests), SETTINGS["stages"]["frozenManifest"])
