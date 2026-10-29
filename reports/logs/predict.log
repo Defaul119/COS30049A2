@@ -34,3 +34,7 @@
 2026-10-30 03:35:37 INFO Step predict finished in 2 s (exit 0)
 2026-10-30 03:35:42 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz
 2026-10-30 03:35:44 INFO Step predict finished in 2 s (exit 0)
+2026-10-30 05:09:02 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict what-if --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz --amount 0.05 --direction out --time 2026-10-20T12:00Z --assistant
+2026-10-30 05:09:10 INFO Step predict finished in 8 s (exit 0)
+2026-10-30 05:09:15 INFO Step predict started: C:\Users\ADMIN\COS30049A2\explorer\cli.py predict what-if --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz --amount 0.05 --direction out --time 2026-10-20T12:00Z --assistant
+2026-10-30 05:09:24 INFO Step predict finished in 8 s (exit 0)

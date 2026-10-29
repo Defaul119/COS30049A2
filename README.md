@@ -249,8 +249,10 @@ text = p.explain(guess, use_assistant=False)
 **The Assistant (`--assistant`).** Explanations are written by the first writer in
 `settings.json -> assistant -> writerOrder` that passes the code guardrail (every number from the facts, the
 limitation line, no banned word, the right comparison words and verdict), else by the template. The writer is
-the 152M model trained from scratch, which runs in the CPU environment. Its weights (`models/assistant/`) are over
-GitHub's 100 MB limit and are not in the repository; without them the template writes.
+the 152M model trained from scratch, which runs in the CPU environment (about 10 s per answer on our PC). The
+installed weights are round 2's, adopted on 30 Oct by `python -m lm.adopt`; their SHA-256 is in
+`settings.json -> assistant -> _text150mCheckpoint`. They (`models/assistant/`) are over GitHub's 100 MB limit and
+are not in the repository; without them the template writes.
 
 ## 9. Data
 

@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first. Last update: 2026-10-30 ~04:00 GMT+7, on the PC (Claude).
+SESSION CONTEXT - read this first. Last update: 2026-10-30 ~05:30 GMT+7, on the PC (Claude).
 - PART 1 = live state (read all of it). PART 2 = reference (look things up). PART 3 = history (one line per day).
 - Other files: CHANGELOG.md (every change with its numbers), docs/TODO.md (checklist), docs/TRAINING_PLAN.md
   (stages + gate), docs/KAGGLE_LM_PLAN.md (152M round 2 + adoption rule, section 3), docs/REPORT_PLAN.md,
@@ -11,35 +11,20 @@ PART 1 - LIVE STATE
 =====================================================================================================================
 
 RUNNING
-- dansns/cos30049a2-text150m-stages (pushed 30 Oct 01:01 by scratchpad stages_chain.sh, WEAK_CASES True, commit
-  7bb3112): round 2's chat + explanation stages on the finished pretraining, then every evaluation the adoption
-  rule needs (frozen tests, glossary for both writers, dev files for v2 and r1). About 5 h: ends ~06:00 Fri.
-- Check: KAGGLE_API_TOKEN=$(cat C:/Users/ADMIN/.kaggle/accounts/dansns.token) kaggle kernels status
-  dansns/cos30049a2-text150m-stages. Output: runs/*/model_best.pt, reports/tables/assistant_eval*.csv, logs.
-- DONE 30 Oct: 152M pretraining (session 4, step 11,447, val 3.0014). Fresh-clone rebuild (tritran72, 9.5 h):
-  adopted for DS1 (commit 97788a5); Elliptic/BitcoinHeist kept (platform: logistic and KNN only). AUDIT section 5.
+- Nothing. Every Kaggle job is finished (152M chain, rebuild, round-2 stages). Results frozen: tag results-v1.1.
+- DONE 30 Oct: fresh-clone rebuild adopted for DS1 (AUDIT section 5; confirmed on Windows). 152M round 2 ADOPTED
+  (dev gate +0.322; adoption rule all criteria; pooled fully correct 0.727 -> 0.948); installed in models/assistant/
+  (SHA-256 in settings); round 1 in C:/Users/ADMIN/COS30049A2_archive/assistant_round1/.
 
-NEXT, IN ORDER (the user, 29 Oct: "continue with training, don't work on reports yet, start on everything behind
-schedule")
-1. DONE 29 Oct: scoring stages finished (C3-C5 promoted; C6, C7, C9 rejected; C8 not run); tables rebuilt.
-2. DONE 29 Oct: stage B3 ACCEPTED (B vs A +0.234 [+0.204, +0.266]); round 2 runs with WEAK_CASES = True.
-3. Session 4 done -> scratchpad stages_chain.sh (own window, log stages_chain.log) checks "finished" and pushes
-   text150m_stages on dansns with WEAK_CASES True (about 5 h: chat, explanation, every evaluation). Then bring home
-   its tables and runs/*/model_best.pt, writer-gate round 2 vs round 1 on dev (stage "B round 2"), `python -m
-   lm.adopt` on the test tier, and the freeze (5).
-3b. DONE 30 Oct: rebuild adopted (DS1 tables, models, features, scores; figures and cards regenerated). Fusion is
-   now regression x2.0 + Isolation Forest x0.9 (same search, re-tuned regression); conclusions unchanged.
-4. C10 done (test tier, 29 Oct): the baseline stays recommended; explorerMethod unchanged.
-5. FREEZE (when 2, 3 and 3b are done; DS10's final tier ran inside the rebuild's all --offline): round-2 tables home
-   -> `python -m lm.adopt` (adoption.csv) -> if ADOPT: install round 2's model_best.pt + tokenizer as the writer
-   (settings assistant.text150mCheckpoint; record SHA-256) -> `python -m lm.eval_stats` -> `python -m explorer.cli
-   figures` (eda note, stats figures) -> `python tools/test_report.py` (MiKTeX) -> `python tools/cards.py` -> re-run
-   notebooks/01_eda.ipynb (nbconvert --execute --inplace --ExecutePreprocessor.kernel_name=cos30049-a2, then reset
-   its kernelspec to python3; its saved outputs still show the M0 LOF/K-Means/DBSCAN) -> pytest -> commit -> tag
-   results-v1.1 (never move a pushed tag). Update docs/AUDIT.md section 5 with the outcomes.
-6. Packaging: `python tools/package.py --tag v1.0` after M4 (trial from HEAD 29 Oct: 76.8 MB, 567 files, all
-   hashes match); --with-models adds the 152M weights (610 MB fp32) only if Canvas allows (team).
-7. Report: NOT NOW (user, 29 Oct). Outline in docs/REPORT_PLAN.md.
+NEXT, IN ORDER
+1. DONE 29-30 Oct: scoring stages; B3; rebuild; round 2 trained, gated and adopted; freeze (eval_stats, figures,
+   test report, cards, EDA notebook, tag results-v1.1).
+2. The user decides: the glossary's fusion sentence (it still says baseline + regression; fusion is now regression
+   + Isolation Forest). Fixing it changes DS7/glossary data, so it is an A3 item unless the team wants it now.
+3. Packaging: `python tools/package.py --tag v1.0` after M4 (Wed 4 Nov); --with-models adds the 152M weights
+   (610 MB fp32) only if Canvas allows (team); an fp16 export (~305 MB) is the fallback.
+4. Report: NOT STARTED on purpose (user, 29 Oct). Outline in docs/REPORT_PLAN.md; numbers from reports/tables only.
+   Say that the random hard/max-shift sets and B3's training examples share case types (AUDIT section 5).
 
 WAITING ON THE USER / TEAM
 - References: docs/REFERENCES.md (all 2020+, verified); one decision left: the Elliptic dataset record (2019).

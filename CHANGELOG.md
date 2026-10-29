@@ -5,6 +5,27 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 30 October 2026
 
+**152M round 2 ADOPTED.** dansns `cos30049a2-text150m-stages` (commit 7bb3112, two T4s, 3.98 h): chat stage, then the
+explanation stage with the weak cases (B3), then every evaluation. Round 1's dev answers re-run there are
+byte-identical to ours. Results:
+- Dev gate "B round 2" (stages.csv): fully correct 0.616 -> 0.938, +0.322 [+0.287, +0.358], McNemar p ~1e-100,
+  every case higher. ACCEPTED.
+- Adoption rule (lm/adopt.py -> adoption.csv), on the frozen tests: guardrail pass DS7 test 0.993 -> 1.000, DS10
+  0.993 -> 1.000; number faithfulness 0.998 -> 1.000 and 1.000 -> 1.000; direction errors 2 -> 0 on both;
+  glossary key facts 0.225 -> 0.483 (+0.258, needs +0.10). Every criterion holds: ADOPT.
+- Statistics (lm.eval_stats): fully correct DS7 test 0.870 -> 0.969, DS10 0.832 -> 0.931; pooled over 12 sets
+  0.727 [0.716, 0.738] -> 0.948 [0.941, 0.954]; largest gains on random hard (0.432 -> 0.944) and max shift
+  (0.187 -> 0.897), the cases B3's examples were written for (own seeds and wordings, no test prompt).
+- Installed: models/assistant/model.pt = round 2's model_best.pt (SHA-256 f9306a5e...; tokenizer unchanged); round 1
+  moved to C:/Users/ADMIN/COS30049A2_archive/assistant_round1/ (SHA-256 086b9d15...). The what-if example is now
+  written by the 152M model and passes the guardrail (~9 s on the CPU).
+- Regenerated: stats_writers tables and figure, eda_tests.csv, reports/assistant_tests.pdf, MODEL_CARD.md, the EDA
+  notebook. Logs: reports/logs/text150m_round2/.
+
+**Cross-platform check of the rebuild.** On this PC (Windows, Python 3.11) features, split, regression, inject and
+fusion from the adopted commit give the same regression choices (tables within 0.001 of Kaggle's) and the same
+fusion pair and multipliers: a teammate's M4 rebuild should match.
+
 **Fresh-clone rebuild finished; its DS1 results replace the committed ones.** tritran72 `cos30049a2-rebuild`
 (commit 0aded70, Kaggle Linux, 9.5 h): pytest 255 passed; compare_tables 110 same, 10 within, 26 different.
 The inputs are identical; the committed DS1 tables were stale (features at full precision before the

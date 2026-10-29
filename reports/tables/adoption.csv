@@ -1,0 +1,8 @@
+test,measure,old,new,rule,passed,old_writer,new_writer,decision
+DS7 v1 test,guardrail_pass,0.9932584269662922,1.0,no lower,True,text150m,text150m_v2,adopt
+DS7 v1 test,number_faithfulness,0.997752808988764,1.0,no lower,True,text150m,text150m_v2,adopt
+DS7 v1 test,direction_errors,2.0,0.0,no more,True,text150m,text150m_v2,adopt
+DS10,guardrail_pass,0.993127147766323,1.0,no lower,True,text150m,text150m_v2,adopt
+DS10,number_faithfulness,1.0,1.0,no lower,True,text150m,text150m_v2,adopt
+DS10,direction_errors,2.0,0.0,no more,True,text150m,text150m_v2,adopt
+glossary test,glossary_key_facts,0.2252252252252252,0.4828828828828829,at least +0.10,True,text150m,text150m_v2,adopt

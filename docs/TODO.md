@@ -19,14 +19,15 @@ Due Sun 8 Nov 23:59 GMT+7; the team submits Sat 7 Nov. Results freeze Tue 3 Nov;
 - [x] B1 152M pretraining: 3.0B new tokens (~5.0B in all), final validation loss 3.0014 (30 Oct). [Kaggle]
 - [x] B3 weak-case examples built (8,000 train / 600 dev; own seeds and wordings); writer gate. [Claude]
 - [x] B3 trial on the round-1 model: ACCEPTED (B vs A +0.234 fully correct on dev); round 2 adds the weak cases.
-- [ ] B2-B6 on the round-2 model: text150m_stages running on dansns (pushed 30 Oct 01:01); dev gate by case. [Kaggle]
-- [ ] Adoption rule (KAGGLE_LM_PLAN.md section 3); round-2 tables and model into reports/ and models/. [Claude]
+- [x] Round-2 writer: chat + explanation (with B3) on dansns; dev gate "B round 2" +0.322, every case higher. B4-B6 not
+      run (dev fully correct already 0.938; the user may still ask for them). [Kaggle, Claude]
+- [x] Adoption rule: ADOPT (adoption.csv); round 2 installed (SHA-256 in settings). [Claude]
 - [ ] Optional C+: the 152M explanation stage with 5 seeds (a language model's seed spread). [Kaggle]
 
 ## Freeze (Tue 3 Nov)
 
-- [ ] Everything once on DS10; `python -m lm.eval_stats`; `tools/test_report.py`; `tools/cards.py`; figures;
-      tag `results-v1.1`. [Claude]
+- [x] Everything once on DS10; `python -m lm.eval_stats`; `tools/test_report.py`; `tools/cards.py`; figures;
+      EDA notebook; tag `results-v1.1` (30 Oct). [Claude]
 - [x] features.csv with 12 significant digits; fresh-clone rebuild adopted for DS1 (30 Oct; AUDIT section 5).
 - [ ] Glossary: fusion's topic still names the old pair (baseline + regression). Correct it for A3, or keep
       the sentence generic. [Cao decides]

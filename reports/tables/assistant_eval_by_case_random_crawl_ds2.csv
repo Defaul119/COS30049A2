@@ -15,3 +15,11 @@ text150m,"not flagged, 2 reasons",60,0.85
 text150m,"not flagged, 3 reasons",60,0.6
 text150m,"not flagged, nothing stands out",60,0.8666666666666667
 text150m,unscored,1,1.0
+text150m_v2,"flagged, 1 reason",60,1.0
+text150m_v2,"flagged, 2 reasons",60,0.9666666666666667
+text150m_v2,"flagged, 3 reasons",60,0.9166666666666666
+text150m_v2,"not flagged, 1 reason",60,1.0
+text150m_v2,"not flagged, 2 reasons",60,0.9833333333333333
+text150m_v2,"not flagged, 3 reasons",60,0.9833333333333333
+text150m_v2,"not flagged, nothing stands out",60,0.9166666666666666
+text150m_v2,unscored,1,1.0

@@ -174,7 +174,8 @@ The writer is the 152M model, trained from scratch by the team; the template is 
 
 | Writer | What it is | Trained on | Files |
 |---|---|---|---|
-| 152M model, round 1 | trained from scratch: 18 layers, 12 heads, width 768, 1,024-token context, our 32,768-token tokenizer | pretrained on 2.0B DS5 tokens, chat-tuned on DS6, then taught DS7 v1 | `models/assistant/` |
+| 152M model, round 2 (**in use**) | trained from scratch: 18 layers, 12 heads, width 768, 1,024-token context, our 32,768-token tokenizer | round 1's pretraining plus 3.0B more DS5 tokens (~5.0B in all; validation loss 3.0014), chat-tuned on DS6, then taught DS7 v2 with the glossary and the weak-case examples (stage B3) | `models/assistant/` (SHA-256 in settings `assistant._text150mCheckpoint`) |
+| 152M model, round 1 | the same architecture | pretrained on 2.0B DS5 tokens, chat-tuned on DS6, then taught DS7 v1 | replaced on 30 Oct by the adoption rule (`reports/tables/adoption.csv`) |
 | Template | fixed sentences from the facts | none | `explorer/explain.py` |
 
 The model's files are over GitHub's 100 MB limit and are not in the repository (README section 8).
@@ -186,10 +187,14 @@ tied to its own number. The pooled rate weights every test set equally; interval
 | Writer | Guardrail pass, DS7 test / DS10 | Fully correct, DS7 test / DS10 | Fully correct, pooled (12 sets) [95% CI] | Glossary key facts [95% CI] |
 |---|---|---|---|---|
 | Template (control) | 100.0% / 100.0% | 100.0% / 100.0% | -- | -- |
-| 152M, round 1 | 99.3% / 99.3% | 87.0% / 83.2% | 72.7% [71.6%, 73.8%] | -- |
+| 152M, round 1 | 99.3% / 99.3% | 87.0% / 83.2% | 72.7% [71.6%, 73.8%] | 22.5% [13.5%, 31.5%] |
+| 152M, round 2 | 100.0% / 100.0% | 96.9% / 93.1% | 94.8% [94.1%, 95.4%] | 48.3% [37.0%, 59.1%] |
 <!-- /generated:writers -->
 
 **Limitations.** A language model can still give a wrong reason that the guardrail does not catch; the template
-fallback limits the damage but does not remove it. Round 1 is weakest on the hard and maximal-shift test sets,
-and its glossary answers (questions about the Explorer's terms) are not yet scored on the round-2 glossary test;
-round 2 (more pretraining, DS7 v2 with the glossary) targets both. English only.
+fallback limits the damage but does not remove it. Round 2 replaced round 1 because it passed the rule fixed on
+26 Oct, before any round-2 result (docs/KAGGLE_LM_PLAN.md section 3): no lower guardrail pass rate or number
+faithfulness and no more wrong comparison words on DS7's test and DS10, and at least 10 points more glossary key
+facts. Its largest gains are on the hard and maximal-shift sets, the cases its weak-case examples were written for
+(with their own seeds and wordings; no test prompt was used). Glossary answers remain its weakest part: about half
+of the key facts. English only.

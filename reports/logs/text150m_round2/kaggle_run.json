@@ -1,0 +1,16 @@
+{
+  "commit": "7bb311251c958ed7a55acd6932c59a6179f0f25e",
+  "gpus": 2,
+  "python": "3.13.15",
+  "packages": {
+    "torch": "2.11.0+cu128",
+    "numpy": "2.2.6",
+    "tokenizers": "0.21.1"
+  },
+  "resumed_from": null,
+  "session_hours": 3.98,
+  "finished": {
+    "text-150m-chat-v2": true,
+    "text-150m-explain-v2": true
+  }
+}

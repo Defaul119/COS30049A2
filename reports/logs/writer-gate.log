@@ -82,3 +82,17 @@
 2026-10-29 18:49:42 INFO   not flagged, nothing stands out     342 prompts  0.743 -> 0.909
 2026-10-29 18:49:42 INFO   unscored                            106 prompts  1.000 -> 1.000
 2026-10-29 18:49:42 INFO Step writer-gate finished in 1 s (exit 0)
+2026-10-30 05:06:12 INFO Step writer-gate started: C:\Users\ADMIN\COS30049A2\explorer\cli.py writer-gate --before reports/tables/assistant_eval_text150m_r1_devweak.csv reports/tables/assistant_eval_text150m_r1_devval.csv --after reports/tables/assistant_eval_text150m_v2_devweak.csv reports/tables/assistant_eval_text150m_v2_devval.csv --stage B round 2 --model text150m --previous M0
+2026-10-30 05:06:13 INFO text150m B round 2 vs M0: fully correct 0.616 -> 0.938, +0.322 [+0.287, +0.358], McNemar p 0.0000 -> ACCEPTED 
+2026-10-30 05:06:13 INFO   flagged, 1 reason                   122 prompts  0.664 -> 1.000
+2026-10-30 05:06:13 INFO   flagged, 2 reasons                  134 prompts  0.649 -> 0.993
+2026-10-30 05:06:13 INFO   flagged, 3 reasons                   71 prompts  0.366 -> 0.859
+2026-10-30 05:06:13 INFO   flagged, 4 reasons                   34 prompts  0.206 -> 0.853
+2026-10-30 05:06:13 INFO   flagged, nothing stands out          24 prompts  0.042 -> 0.875
+2026-10-30 05:06:13 INFO   not flagged, 1 reason               151 prompts  0.735 -> 1.000
+2026-10-30 05:06:13 INFO   not flagged, 2 reasons              113 prompts  0.434 -> 0.938
+2026-10-30 05:06:13 INFO   not flagged, 3 reasons               79 prompts  0.177 -> 0.848
+2026-10-30 05:06:13 INFO   not flagged, 4 reasons               20 prompts  0.050 -> 0.750
+2026-10-30 05:06:13 INFO   not flagged, nothing stands out     342 prompts  0.743 -> 0.909
+2026-10-30 05:06:13 INFO   unscored                            106 prompts  1.000 -> 1.000
+2026-10-30 05:06:13 INFO Step writer-gate finished in 1 s (exit 0)

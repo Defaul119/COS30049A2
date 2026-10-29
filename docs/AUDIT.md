@@ -92,8 +92,13 @@ cite the Elliptic dataset record (2019).
   0.708 (A) -> 0.942 (B), +0.234 [+0.204, +0.266], every case higher; on DS7 v2's ordinary validation prompts
   A 0.961 and B 0.963 (round 1 0.859). The planned recipe without B3 (A) was rejected by the same gate. Round 2's
   explanation stage therefore adds the weak cases.
-- **152M round 2**: pretraining session 4 running (ends about 01:30 Fri); the chat and explanation stages follow on
-  the same account, then the adoption rule (docs/KAGGLE_LM_PLAN.md section 3).
+- **152M round 2: ADOPTED (30 Oct).** Pretraining ended at step 11,447 (validation loss 3.0014). Dev gate "B round 2":
+  fully correct 0.616 -> 0.938, +0.322 [+0.287, +0.358], every case higher. The adoption rule passed every criterion
+  (guardrail 1.000 on DS7 test and DS10, direction errors 2 -> 0, glossary key facts +0.258). Pooled fully correct
+  over 12 sets 0.727 -> 0.948. Round 1's dev answers re-run on Kaggle were byte-identical to the committed ones (the
+  evaluation is deterministic). Caution for the report: the largest gains are on the hard and max-shift sets, the
+  case types B3's examples target; the examples used their own seeds and wordings and no test prompt, but the
+  report should say the sets and the examples share case types.
 
 ## 6. Still open (not code)
 

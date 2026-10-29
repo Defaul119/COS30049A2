@@ -1,0 +1,11 @@
+[eval] 50/500 (61 s)
+[eval] 100/500 (118 s)
+[eval] 150/500 (178 s)
+[eval] 200/500 (237 s)
+[eval] 250/500 (294 s)
+[eval] 300/500 (351 s)
+[eval] 350/500 (409 s)
+[eval] 400/500 (467 s)
+[eval] 450/500 (524 s)
+[eval] 500/500 (585 s)
+[eval] {'model': 'text150m_v2', 'prompts': 500, 'number_faithfulness': np.float64(0.998), 'limitation_line': np.float64(1.0), 'banned_word_share': np.float64(0.0), 'guardrail_pass': np.float64(0.998), 'feature_coverage': np.float64(0.9984202211690363), 'rouge_l': np.float64(0.7061267815573018), 'direction_errors': 0, 'rouge_own': np.float64(0.7482415405299238), 'copy_rate_flagged': np.float64(0.0), 'verdict_accuracy': np.float64(1.0), 'reasons_accuracy': np.float64(1.0), 'order_accuracy': np.float64(0.952), 'binding_accuracy': np.float64(0.998), 'fully_correct': np.float64(0.95), 'fully_correct_macro': np.float64(0.9803555253623188), 'fully_correct_nothing_stands_out': np.float64(0.91015625), 'nothing_stands_out_prompts': 256, 'unique_prompts': 468, 'fully_correct_unique': np.float64(0.9465811965811965), 'glossary_prompts': 0, 'glossary_banned_word_share': nan, 'glossary_rouge_l': nan, 'glossary_key_facts': nan, 'glossary_correct': nan, 'seconds': 585.2, 'source': '/kaggle/working/runs/text-150m-explain-v2/model_best.pt'}

@@ -21,3 +21,14 @@ text150m,"not flagged, 3 reasons",29,0.3103448275862069
 text150m,"not flagged, 4 reasons",9,0.0
 text150m,"not flagged, nothing stands out",73,0.5205479452054794
 text150m,unscored,44,1.0
+text150m_v2,"flagged, 1 reason",46,1.0
+text150m_v2,"flagged, 2 reasons",60,0.95
+text150m_v2,"flagged, 3 reasons",38,0.9736842105263158
+text150m_v2,"flagged, 4 reasons",14,0.7857142857142857
+text150m_v2,"flagged, nothing stands out",13,0.8461538461538461
+text150m_v2,"not flagged, 1 reason",105,1.0
+text150m_v2,"not flagged, 2 reasons",69,1.0
+text150m_v2,"not flagged, 3 reasons",29,0.8620689655172413
+text150m_v2,"not flagged, 4 reasons",9,0.6666666666666666
+text150m_v2,"not flagged, nothing stands out",73,0.8356164383561644
+text150m_v2,unscored,44,1.0

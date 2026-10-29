@@ -212,6 +212,19 @@ stats_writers,random close_calls text150m: fully correct,0.8,95% CI 0.757-0.843;
 stats_writers,random extreme text150m: fully correct,0.747,95% CI 0.697-0.793; 300 prompts
 stats_writers,random max_shift text150m: fully correct,0.187,95% CI 0.143-0.230; 300 prompts
 stats_writers,pooled (12 sets) text150m: fully correct,0.727,95% CI 0.716-0.738; 4948 prompts
+stats_writers,DS7 v1 test text150m_v2: fully correct,0.969,95% CI 0.953-0.982; 445 prompts
+stats_writers,DS10 text150m_v2: fully correct,0.931,95% CI 0.900-0.959; 291 prompts
+stats_writers,random real text150m_v2: fully correct,0.95,95% CI 0.930-0.968; 500 prompts
+stats_writers,random synthetic text150m_v2: fully correct,0.964,95% CI 0.948-0.978; 500 prompts
+stats_writers,random hard text150m_v2: fully correct,0.944,95% CI 0.922-0.964; 500 prompts
+stats_writers,random balanced text150m_v2: fully correct,0.949,95% CI 0.934-0.964; 883 prompts
+stats_writers,random crawl_ds1 text150m_v2: fully correct,0.943,95% CI 0.908-0.977; 174 prompts
+stats_writers,random crawl_ds2 text150m_v2: fully correct,0.967,95% CI 0.950-0.981; 421 prompts
+stats_writers,random crawl_ds10 text150m_v2: fully correct,0.976,95% CI 0.958-0.991; 334 prompts
+stats_writers,random close_calls text150m_v2: fully correct,0.93,95% CI 0.900-0.957; 300 prompts
+stats_writers,random extreme text150m_v2: fully correct,0.953,95% CI 0.930-0.977; 300 prompts
+stats_writers,random max_shift text150m_v2: fully correct,0.897,95% CI 0.860-0.930; 300 prompts
+stats_writers,pooled (12 sets) text150m_v2: fully correct,0.948,95% CI 0.941-0.954; 4948 prompts
 eval_stages,A0 baseline (dev): difference,0.0,95% +0.000 to +0.000; rejected: difference interval reaches +0.0000 (not above 0)
 eval_stages,A0 dbscan (dev): difference,0.165,95% +0.127 to +0.198; rejected: largest address share rose 0.377 -> 0.434
 eval_stages,A0 fusion (dev): difference,0.018,95% -0.025 to +0.075; rejected: difference interval reaches -0.0251 (not above 0)
@@ -238,3 +251,4 @@ eval_stages,C9 fusion (dev): difference,0.021,95% -0.024 to +0.072; rejected: di
 eval_stages,B3-A text150m (dev): difference,0.092,"95% +0.070 to +0.114; rejected: case flagged, nothing stands out fell 0.0417 (> its binomial standard error 0.0408); guardrail pass rate fell 0.9189 -> 0.8896; number faithfulness fell 0.9841 -> 0.9758"
 eval_stages,B3 text150m (dev): difference,0.234,95% +0.204 to +0.266; kept
 eval_stages,B3 (vs M0) text150m (dev): difference,0.326,95% +0.291 to +0.362; kept
+eval_stages,B round 2 text150m (dev): difference,0.322,95% +0.287 to +0.358; kept

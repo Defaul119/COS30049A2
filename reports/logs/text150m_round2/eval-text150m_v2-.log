@@ -1,0 +1,10 @@
+[eval] 50/450 (59 s)
+[eval] 100/450 (116 s)
+[eval] 150/450 (176 s)
+[eval] 200/450 (239 s)
+[eval] 250/450 (293 s)
+[eval] 300/450 (356 s)
+[eval] 350/450 (415 s)
+[eval] 400/450 (474 s)
+[eval] 450/450 (533 s)
+[eval] {'model': 'text150m_v2', 'prompts': 445, 'number_faithfulness': np.float64(1.0), 'limitation_line': np.float64(1.0), 'banned_word_share': np.float64(0.0), 'guardrail_pass': np.float64(1.0), 'feature_coverage': np.float64(1.0), 'rouge_l': np.float64(0.6423176522888558), 'direction_errors': 0, 'rouge_own': np.float64(0.6965165978111573), 'copy_rate_flagged': np.float64(0.0), 'verdict_accuracy': np.float64(1.0), 'reasons_accuracy': np.float64(1.0), 'order_accuracy': np.float64(0.9685393258426966), 'binding_accuracy': np.float64(1.0), 'fully_correct': np.float64(0.9685393258426966), 'fully_correct_macro': np.float64(0.9836312596481913), 'fully_correct_nothing_stands_out': np.float64(0.9401197604790419), 'nothing_stands_out_prompts': 167, 'unique_prompts': 407, 'fully_correct_unique': np.float64(0.9656019656019657), 'glossary_prompts': 5, 'glossary_banned_word_share': np.float64(0.0), 'glossary_rouge_l': np.float64(0.45175696783944214), 'glossary_key_facts': nan, 'glossary_correct': nan, 'seconds': 533.4, 'source': '/kaggle/working/runs/text-150m-explain-v2/model_best.pt'}
