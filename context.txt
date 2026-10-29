@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first. Last update: 2026-10-29 ~19:30 GMT+7, on the PC (Claude).
+SESSION CONTEXT - read this first. Last update: 2026-10-30 ~04:00 GMT+7, on the PC (Claude).
 - PART 1 = live state (read all of it). PART 2 = reference (look things up). PART 3 = history (one line per day).
 - Other files: CHANGELOG.md (every change with its numbers), docs/TODO.md (checklist), docs/TRAINING_PLAN.md
   (stages + gate), docs/KAGGLE_LM_PLAN.md (152M round 2 + adoption rule, section 3), docs/REPORT_PLAN.md,
@@ -11,17 +11,13 @@ PART 1 - LIVE STATE
 =====================================================================================================================
 
 RUNNING
-- 152M pretraining, session 4 (the last): dansns/cos30049a2-text150m-train, pushed 29 Oct 15:04 by the scratchpad
-  handover.sh (kainetyson -> dansns). Resumes step 8,730; 2,717 steps (~0.71B tokens, ~9.9 h) to step 11,447 =
-  3.0B new tokens (~5.0B in all). The decay (last 15%, from step ~9,727) is inside this session. Ends ~01:30 Fri
-  30 Oct and writes runs/text-150m-cont/model.pt (kaggle_run.json "finished": true).
+- dansns/cos30049a2-text150m-stages (pushed 30 Oct 01:01 by scratchpad stages_chain.sh, WEAK_CASES True, commit
+  7bb3112): round 2's chat + explanation stages on the finished pretraining, then every evaluation the adoption
+  rule needs (frozen tests, glossary for both writers, dev files for v2 and r1). About 5 h: ends ~06:00 Fri.
 - Check: KAGGLE_API_TOKEN=$(cat C:/Users/ADMIN/.kaggle/accounts/dansns.token) kaggle kernels status
-  dansns/cos30049a2-text150m-train (logs only after it ends: `kernels logs`; "[eval] step ... validation loss").
-- tritran72/cos30049a2-rebuild (CPU, pinned 0aded70): README 2-4 on a fresh clone with DS3 and DS4, distribution
-  and figures, then tools/compare_tables.py against the commit (compare.csv). Its outputs are the frozen DS1/DS2/
-  DS10/classifier tables (features with 12 significant digits: regression and fusion may move slightly).
-- dansns stage data is built (text150m_stage_data, with ds7_v2_weak_chat and dev/); text150m_stages is re-pinned
-  to 7bb3112 and waits for session 4.
+  dansns/cos30049a2-text150m-stages. Output: runs/*/model_best.pt, reports/tables/assistant_eval*.csv, logs.
+- DONE 30 Oct: 152M pretraining (session 4, step 11,447, val 3.0014). Fresh-clone rebuild (tritran72, 9.5 h):
+  adopted for DS1 (commit 97788a5); Elliptic/BitcoinHeist kept (platform: logistic and KNN only). AUDIT section 5.
 
 NEXT, IN ORDER (the user, 29 Oct: "continue with training, don't work on reports yet, start on everything behind
 schedule")
@@ -31,8 +27,8 @@ schedule")
    text150m_stages on dansns with WEAK_CASES True (about 5 h: chat, explanation, every evaluation). Then bring home
    its tables and runs/*/model_best.pt, writer-gate round 2 vs round 1 on dev (stage "B round 2"), `python -m
    lm.adopt` on the test tier, and the freeze (5).
-3b. Rebuild done -> read compare.csv; copy the rebuilt tables/figures/models/esplora CSVs over the repo (not
-   stages.csv), rerun `figures` (eda_tests note now cites Pareja et al. 2020), pytest, commit: frozen non-LM results.
+3b. DONE 30 Oct: rebuild adopted (DS1 tables, models, features, scores; figures and cards regenerated). Fusion is
+   now regression x2.0 + Isolation Forest x0.9 (same search, re-tuned regression); conclusions unchanged.
 4. C10 done (test tier, 29 Oct): the baseline stays recommended; explorerMethod unchanged.
 5. FREEZE (when 2, 3 and 3b are done; DS10's final tier ran inside the rebuild's all --offline): round-2 tables home
    -> `python -m lm.adopt` (adoption.csv) -> if ADOPT: install round 2's model_best.pt + tokenizer as the writer
@@ -141,6 +137,12 @@ TRAINING STAGES (docs/TRAINING_PLAN.md; every row in reports/tables/stages.csv; 
 | C9 fusion (pairs of current methods) | REJECTED: best LOF + regression unstable (0.46), gate +0.021 [-0.024, +0.072] |
 | B2-B6 | open (B3 trial running 29 Oct) |
 
+RESULTS AFTER THE REBUILD (30 Oct; these replace M0's where they differ; quote the CSVs)
+- DS1 mean planted recall: fusion (regression x2.0 + Isolation Forest x0.9) 0.682, baseline 0.655, regression 0.626
+  (stable now, 0.74), TxGPT 0.547, DBSCAN 0.476, K-Means 0.470, IF 0.429, LOF 0.331, conformal range 0.310. Fusion
+  vs baseline p = 0.324 -> baseline stays (selection.json). DS2 Spearman 0.929. DS10: TxGPT 0.598, baseline first
+  among pooled seeds (stats_methods_summary.csv).
+
 RESULTS AT M0 (the report quotes reports/tables/*.csv, never these lines)
 - DS1: baseline mean plant recall 0.655 [0.546, 0.753], flag rate 10.4% at |z| >= 5 (CR-03 option (a)). Regression
   highest recall but stability 0.61 < 0.7. Fusion (baseline x1.1 + regression x3.0) 0.684, p = 0.063: baseline
@@ -196,7 +198,8 @@ MAC REPLICATION (26 Oct, fresh clone, README followed exactly)
 - Identical (<= 1e-4): every method and table except regression and fusion (DS1 regression 0.673 -> 0.659, fusion
   0.684 -> 0.675, p 0.063 -> 0.325); no conclusion changes.
 - Cause (proved): features.csv differs at ~1e-13 between Apple Silicon and Intel (5,848 cells) and the gap model
-  amplifies it. Fix tested, not applied: float_format="%.12g" (WAITING ON THE USER).
+  amplifies it. Applied 29 Oct (features.csvSignificantDigits 12); a Windows refit of the
+  rebuilt features reproduces Kaggle's regression choices (30 Oct).
 
 INCIDENTS (for the report's robustness paragraph; CHANGELOG 24 Oct has the full entry)
 - Power cut, Sat 24 Oct ~19:16: PC unplugged mid-pretraining; lost 28 steps (7.3M tokens, ~10 min GPU) + ~27 min
