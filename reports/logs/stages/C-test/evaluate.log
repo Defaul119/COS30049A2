@@ -1,0 +1,13 @@
+2026-10-29 08:33:44 INFO Step evaluate started: /tmp/COS30049A2/explorer/cli.py evaluate
+2026-10-29 08:33:47 INFO Evaluating ['baseline', 'isolation_forest', 'lof', 'kmeans', 'dbscan', 'regression', 'regression_interval', 'fusion', 'txgpt_method'] on 750 reporting plants
+2026-10-29 08:38:36 INFO fusion               mean recall 0.684 (spike 0.72, burst 0.49, dormant 0.84), stability 0.89, flag rate 0.104, max address share 0.45
+2026-10-29 08:38:36 INFO regression           mean recall 0.673 (spike 0.88, burst 0.75, dormant 0.39), stability 0.61, flag rate 0.224, max address share 0.58
+2026-10-29 08:38:36 INFO baseline             mean recall 0.655 (spike 0.74, burst 0.38, dormant 0.84), stability 1.00, flag rate 0.104, max address share 0.45
+2026-10-29 08:38:36 INFO txgpt_method         mean recall 0.547 (spike 0.74, burst 0.17, dormant 0.74), stability 1.00, flag rate 0.015, max address share 0.11
+2026-10-29 08:38:36 INFO dbscan               mean recall 0.476 (spike 0.54, burst 0.11, dormant 0.78), stability 0.91, flag rate 0.039, max address share 0.38
+2026-10-29 08:38:36 INFO kmeans               mean recall 0.470 (spike 0.62, burst 0.05, dormant 0.74), stability 1.00, flag rate 0.038, max address share 0.43
+2026-10-29 08:38:36 INFO isolation_forest     mean recall 0.429 (spike 0.60, burst 0.12, dormant 0.56), stability 0.88, flag rate 0.036, max address share 0.43
+2026-10-29 08:38:36 INFO lof                  mean recall 0.331 (spike 0.12, burst 0.07, dormant 0.81), stability 0.85, flag rate 0.045, max address share 0.41
+2026-10-29 08:38:36 INFO regression_interval  mean recall 0.287 (spike 0.52, burst 0.30, dormant 0.04), stability 0.46, flag rate 0.035, max address share 0.13
+2026-10-29 08:38:36 INFO Recommended method: baseline (runner-up fusion). Record it as explorerMethod in settings.json to adopt it.
+2026-10-29 08:38:36 INFO Step evaluate finished in 292 s (exit 0)

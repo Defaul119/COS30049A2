@@ -1,0 +1,28 @@
+{
+  "commit": "41fa89e3586f9fd317f79b88018e370de469e242",
+  "steps": [
+    "features",
+    "features --as-written",
+    "split",
+    "inject",
+    "scores",
+    "evaluate",
+    "significance",
+    "ds2-check"
+  ],
+  "methods": [
+    "lof",
+    "kmeans",
+    "dbscan",
+    "regression_interval"
+  ],
+  "hours": 0.39,
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.17.1",
+    "pyarrow": "20.0.0",
+    "joblib": "1.4.2"
+  }
+}

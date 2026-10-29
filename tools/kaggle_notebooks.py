@@ -809,7 +809,8 @@ an address-level bootstrap. CPU only, so no GPU quota.
 REPO = "https://github.com/Defaul119/COS30049A2.git"
 COMMIT = "{COMMIT}"   # the code this run uses
 SNAPSHOT = "C"        # this tier's snapshot name (stage_test/C_*.csv)
-METHODS = ["lof", "kmeans", "dbscan", "regression_interval"]   # the accepted stages under test
+METHODS = []          # the accepted stages under test (29 Oct: lof, kmeans, dbscan, regression_interval); [] = only
+                      # rebuild every table with the methods as they stand (no snapshot, no gate)
 STEPS = ["features", "features --as-written", "split", "inject", "scores", "evaluate", "significance", "ds2-check"]
 PINS = ["numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1", "scipy==1.17.1", "pyarrow==20.0.0", "joblib==1.4.2"]
 """),
@@ -823,9 +824,10 @@ for step in STEPS:
     t = time.time()
     cli(*step.split(), log=f"{step.split()[0]}{'-as-written' if '--as-written' in step else ''}.log")
     print(f"{step}: {(time.time() - t) / 60:.1f} min")
-cli("stage-test", "--snapshot", SNAPSHOT, log="stage-test.log")
-cli("stage-test", "--before", "M0", "--after", SNAPSHOT, "--stage", f"{SNAPSHOT}-test", "--methods", *METHODS,
-    log="stage-test.log")
+if METHODS:
+    cli("stage-test", "--snapshot", SNAPSHOT, log="stage-test.log")
+    cli("stage-test", "--before", "M0", "--after", SNAPSHOT, "--stage", f"{SNAPSHOT}-test", "--methods", *METHODS,
+        log="stage-test.log")
 """),
     ("code", r"""
 # Everything the steps rewrote (to commit), and the logs.

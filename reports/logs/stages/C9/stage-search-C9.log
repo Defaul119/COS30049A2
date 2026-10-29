@@ -1,0 +1,123 @@
+2026-10-29 08:39:06 INFO Step stage-search started: /tmp/COS30049A2/explorer/cli.py stage-search --stages C9
+2026-10-29 08:39:09 INFO Fit 5308 rows, real evaluation 2291 rows, tuning copies 90418 evaluation rows (52985 on the search seeds)
+2026-10-29 08:39:16 INFO C9 fusion: 105 candidates at a flag budget of 0.1043
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'dbscan'], 'ratio': 0.5}: mean recall 0.653 (spike 0.800, burst 0.366, dormant 0.793), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'dbscan'], 'ratio': 0.7}: mean recall 0.636 (spike 0.773, burst 0.353, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'dbscan'], 'ratio': 1.0}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'dbscan'], 'ratio': 1.4}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'dbscan'], 'ratio': 2.0}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'isolation_forest'], 'ratio': 0.5}: mean recall 0.664 (spike 0.833, burst 0.311, dormant 0.847), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'isolation_forest'], 'ratio': 0.7}: mean recall 0.670 (spike 0.833, burst 0.310, dormant 0.867), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'isolation_forest'], 'ratio': 1.0}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'isolation_forest'], 'ratio': 1.4}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'isolation_forest'], 'ratio': 2.0}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'kmeans'], 'ratio': 0.5}: mean recall 0.631 (spike 0.807, burst 0.306, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'kmeans'], 'ratio': 0.7}: mean recall 0.642 (spike 0.793, burst 0.353, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'kmeans'], 'ratio': 1.0}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'kmeans'], 'ratio': 1.4}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'kmeans'], 'ratio': 2.0}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'lof'], 'ratio': 0.5}: mean recall 0.606 (spike 0.687, burst 0.278, dormant 0.853), flag rate 0.104, max share 0.472 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'lof'], 'ratio': 0.7}: mean recall 0.634 (spike 0.740, burst 0.297, dormant 0.867), flag rate 0.104, max share 0.459 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'lof'], 'ratio': 1.0}: mean recall 0.665 (spike 0.773, burst 0.355, dormant 0.867), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'lof'], 'ratio': 1.4}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'lof'], 'ratio': 2.0}: mean recall 0.637 (spike 0.780, burst 0.351, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'regression'], 'ratio': 0.5}: mean recall 0.595 (spike 0.853, burst 0.518, dormant 0.413), flag rate 0.104, max share 0.321 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'regression'], 'ratio': 0.7}: mean recall 0.658 (spike 0.867, burst 0.515, dormant 0.593), flag rate 0.104, max share 0.358 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'regression'], 'ratio': 1.0}: mean recall 0.663 (spike 0.853, burst 0.488, dormant 0.647), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'regression'], 'ratio': 1.4}: mean recall 0.658 (spike 0.813, burst 0.466, dormant 0.693), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'regression'], 'ratio': 2.0}: mean recall 0.659 (spike 0.787, burst 0.444, dormant 0.747), flag rate 0.104, max share 0.453
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'regression_interval'], 'ratio': 0.5}: mean recall 0.656 (spike 0.840, burst 0.382, dormant 0.747), flag rate 0.104, max share 0.453
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'regression_interval'], 'ratio': 0.7}: mean recall 0.657 (spike 0.847, burst 0.379, dormant 0.747), flag rate 0.104, max share 0.453
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'regression_interval'], 'ratio': 1.0}: mean recall 0.654 (spike 0.847, burst 0.369, dormant 0.747), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'regression_interval'], 'ratio': 1.4}: mean recall 0.657 (spike 0.860, burst 0.365, dormant 0.747), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['baseline', 'regression_interval'], 'ratio': 2.0}: mean recall 0.656 (spike 0.840, burst 0.383, dormant 0.747), flag rate 0.104, max share 0.453
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'isolation_forest'], 'ratio': 0.5}: mean recall 0.680 (spike 0.847, burst 0.341, dormant 0.853), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'isolation_forest'], 'ratio': 0.7}: mean recall 0.680 (spike 0.847, burst 0.341, dormant 0.853), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'isolation_forest'], 'ratio': 1.0}: mean recall 0.680 (spike 0.847, burst 0.341, dormant 0.853), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'isolation_forest'], 'ratio': 1.4}: mean recall 0.678 (spike 0.847, burst 0.333, dormant 0.853), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'isolation_forest'], 'ratio': 2.0}: mean recall 0.683 (spike 0.853, burst 0.343, dormant 0.853), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'kmeans'], 'ratio': 0.5}: mean recall 0.649 (spike 0.853, burst 0.314, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'kmeans'], 'ratio': 0.7}: mean recall 0.650 (spike 0.847, burst 0.322, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'kmeans'], 'ratio': 1.0}: mean recall 0.655 (spike 0.840, burst 0.345, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'kmeans'], 'ratio': 1.4}: mean recall 0.692 (spike 0.847, burst 0.364, dormant 0.867), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'kmeans'], 'ratio': 2.0}: mean recall 0.693 (spike 0.840, burst 0.351, dormant 0.887), flag rate 0.104, max share 0.486 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'lof'], 'ratio': 0.5}: mean recall 0.595 (spike 0.707, burst 0.213, dormant 0.867), flag rate 0.104, max share 0.459 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'lof'], 'ratio': 0.7}: mean recall 0.598 (spike 0.707, burst 0.220, dormant 0.867), flag rate 0.104, max share 0.459 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'lof'], 'ratio': 1.0}: mean recall 0.606 (spike 0.707, burst 0.243, dormant 0.867), flag rate 0.104, max share 0.459 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'lof'], 'ratio': 1.4}: mean recall 0.639 (spike 0.760, burst 0.289, dormant 0.867), flag rate 0.104, max share 0.459 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'lof'], 'ratio': 2.0}: mean recall 0.670 (spike 0.827, burst 0.329, dormant 0.853), flag rate 0.104, max share 0.459 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'regression'], 'ratio': 0.5}: mean recall 0.591 (spike 0.853, burst 0.513, dormant 0.407), flag rate 0.104, max share 0.339 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'regression'], 'ratio': 0.7}: mean recall 0.614 (spike 0.853, burst 0.507, dormant 0.480), flag rate 0.104, max share 0.415 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'regression'], 'ratio': 1.0}: mean recall 0.682 (spike 0.867, burst 0.518, dormant 0.660), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'regression'], 'ratio': 1.4}: mean recall 0.707 (spike 0.860, burst 0.521, dormant 0.740), flag rate 0.104, max share 0.453
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'regression'], 'ratio': 2.0}: mean recall 0.708 (spike 0.853, burst 0.509, dormant 0.760), flag rate 0.104, max share 0.453
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'regression_interval'], 'ratio': 0.5}: mean recall 0.726 (spike 0.900, burst 0.431, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'regression_interval'], 'ratio': 0.7}: mean recall 0.725 (spike 0.900, burst 0.429, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:16 INFO fusion {'components': ['dbscan', 'regression_interval'], 'ratio': 1.0}: mean recall 0.725 (spike 0.900, burst 0.428, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['dbscan', 'regression_interval'], 'ratio': 1.4}: mean recall 0.724 (spike 0.893, burst 0.432, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['dbscan', 'regression_interval'], 'ratio': 2.0}: mean recall 0.723 (spike 0.893, burst 0.429, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'kmeans'], 'ratio': 0.5}: mean recall 0.648 (spike 0.853, burst 0.312, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'kmeans'], 'ratio': 0.7}: mean recall 0.695 (spike 0.847, burst 0.365, dormant 0.873), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'kmeans'], 'ratio': 1.0}: mean recall 0.677 (spike 0.840, burst 0.339, dormant 0.853), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'kmeans'], 'ratio': 1.4}: mean recall 0.680 (spike 0.847, burst 0.341, dormant 0.853), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'kmeans'], 'ratio': 2.0}: mean recall 0.680 (spike 0.847, burst 0.341, dormant 0.853), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'lof'], 'ratio': 0.5}: mean recall 0.592 (spike 0.707, burst 0.204, dormant 0.867), flag rate 0.104, max share 0.486 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'lof'], 'ratio': 0.7}: mean recall 0.594 (spike 0.707, burst 0.209, dormant 0.867), flag rate 0.104, max share 0.486 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'lof'], 'ratio': 1.0}: mean recall 0.663 (spike 0.840, burst 0.303, dormant 0.847), flag rate 0.104, max share 0.459 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'lof'], 'ratio': 1.4}: mean recall 0.676 (spike 0.840, burst 0.336, dormant 0.853), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'lof'], 'ratio': 2.0}: mean recall 0.680 (spike 0.847, burst 0.341, dormant 0.853), flag rate 0.104, max share 0.434 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'regression'], 'ratio': 0.5}: mean recall 0.538 (spike 0.853, burst 0.527, dormant 0.233), flag rate 0.104, max share 0.321 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'regression'], 'ratio': 0.7}: mean recall 0.538 (spike 0.853, burst 0.527, dormant 0.233), flag rate 0.104, max share 0.321 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'regression'], 'ratio': 1.0}: mean recall 0.538 (spike 0.853, burst 0.527, dormant 0.233), flag rate 0.104, max share 0.321 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'regression'], 'ratio': 1.4}: mean recall 0.538 (spike 0.853, burst 0.527, dormant 0.233), flag rate 0.104, max share 0.321 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'regression'], 'ratio': 2.0}: mean recall 0.646 (spike 0.853, burst 0.517, dormant 0.567), flag rate 0.104, max share 0.472 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'regression_interval'], 'ratio': 0.5}: mean recall 0.722 (spike 0.907, burst 0.411, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'regression_interval'], 'ratio': 0.7}: mean recall 0.717 (spike 0.893, burst 0.411, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'regression_interval'], 'ratio': 1.0}: mean recall 0.717 (spike 0.893, burst 0.411, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'regression_interval'], 'ratio': 1.4}: mean recall 0.715 (spike 0.893, burst 0.406, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['isolation_forest', 'regression_interval'], 'ratio': 2.0}: mean recall 0.712 (spike 0.893, burst 0.397, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'lof'], 'ratio': 0.5}: mean recall 0.592 (spike 0.707, burst 0.204, dormant 0.867), flag rate 0.104, max share 0.486 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'lof'], 'ratio': 0.7}: mean recall 0.592 (spike 0.707, burst 0.204, dormant 0.867), flag rate 0.104, max share 0.459 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'lof'], 'ratio': 1.0}: mean recall 0.609 (spike 0.753, burst 0.207, dormant 0.867), flag rate 0.104, max share 0.459 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'lof'], 'ratio': 1.4}: mean recall 0.641 (spike 0.820, burst 0.237, dormant 0.867), flag rate 0.104, max share 0.459 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'lof'], 'ratio': 2.0}: mean recall 0.636 (spike 0.840, burst 0.288, dormant 0.780), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'regression'], 'ratio': 0.5}: mean recall 0.538 (spike 0.853, burst 0.527, dormant 0.233), flag rate 0.104, max share 0.321 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'regression'], 'ratio': 0.7}: mean recall 0.562 (spike 0.853, burst 0.525, dormant 0.307), flag rate 0.104, max share 0.321 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'regression'], 'ratio': 1.0}: mean recall 0.587 (spike 0.853, burst 0.509, dormant 0.400), flag rate 0.104, max share 0.415 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'regression'], 'ratio': 1.4}: mean recall 0.664 (spike 0.867, burst 0.519, dormant 0.607), flag rate 0.104, max share 0.453 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'regression'], 'ratio': 2.0}: mean recall 0.690 (spike 0.853, burst 0.518, dormant 0.700), flag rate 0.104, max share 0.472 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'regression_interval'], 'ratio': 0.5}: mean recall 0.683 (spike 0.887, burst 0.383, dormant 0.780), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'regression_interval'], 'ratio': 0.7}: mean recall 0.687 (spike 0.893, burst 0.387, dormant 0.780), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'regression_interval'], 'ratio': 1.0}: mean recall 0.682 (spike 0.880, burst 0.386, dormant 0.780), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'regression_interval'], 'ratio': 1.4}: mean recall 0.686 (spike 0.887, burst 0.390, dormant 0.780), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['kmeans', 'regression_interval'], 'ratio': 2.0}: mean recall 0.684 (spike 0.887, burst 0.384, dormant 0.780), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['lof', 'regression'], 'ratio': 0.5}: mean recall 0.538 (spike 0.853, burst 0.527, dormant 0.233), flag rate 0.104, max share 0.321 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['lof', 'regression'], 'ratio': 0.7}: mean recall 0.564 (spike 0.853, burst 0.527, dormant 0.313), flag rate 0.104, max share 0.321 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['lof', 'regression'], 'ratio': 1.0}: mean recall 0.608 (spike 0.853, burst 0.512, dormant 0.460), flag rate 0.104, max share 0.333 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['lof', 'regression'], 'ratio': 1.4}: mean recall 0.686 (spike 0.853, burst 0.511, dormant 0.693), flag rate 0.104, max share 0.396 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['lof', 'regression'], 'ratio': 2.0}: mean recall 0.727 (spike 0.853, burst 0.481, dormant 0.847), flag rate 0.104, max share 0.453
+2026-10-29 08:39:17 INFO fusion {'components': ['lof', 'regression_interval'], 'ratio': 0.5}: mean recall 0.677 (spike 0.820, burst 0.364, dormant 0.847), flag rate 0.104, max share 0.472 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['lof', 'regression_interval'], 'ratio': 0.7}: mean recall 0.680 (spike 0.820, burst 0.368, dormant 0.853), flag rate 0.104, max share 0.472 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['lof', 'regression_interval'], 'ratio': 1.0}: mean recall 0.684 (spike 0.833, burst 0.365, dormant 0.853), flag rate 0.104, max share 0.472 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['lof', 'regression_interval'], 'ratio': 1.4}: mean recall 0.676 (spike 0.820, burst 0.356, dormant 0.853), flag rate 0.104, max share 0.472 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['lof', 'regression_interval'], 'ratio': 2.0}: mean recall 0.679 (spike 0.827, burst 0.351, dormant 0.860), flag rate 0.104, max share 0.472 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['regression', 'regression_interval'], 'ratio': 0.5}: mean recall 0.542 (spike 0.900, burst 0.520, dormant 0.207), flag rate 0.104, max share 0.302 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['regression', 'regression_interval'], 'ratio': 0.7}: mean recall 0.542 (spike 0.900, burst 0.519, dormant 0.207), flag rate 0.104, max share 0.302 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['regression', 'regression_interval'], 'ratio': 1.0}: mean recall 0.542 (spike 0.893, burst 0.518, dormant 0.213), flag rate 0.104, max share 0.302 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['regression', 'regression_interval'], 'ratio': 1.4}: mean recall 0.540 (spike 0.887, burst 0.520, dormant 0.213), flag rate 0.104, max share 0.302 (filtered)
+2026-10-29 08:39:17 INFO fusion {'components': ['regression', 'regression_interval'], 'ratio': 2.0}: mean recall 0.538 (spike 0.873, burst 0.519, dormant 0.220), flag rate 0.104, max share 0.321 (filtered)
+2026-10-29 08:41:25 INFO fusion candidate 94: stability 0.598
+2026-10-29 08:42:46 INFO fusion candidate 50: stability 0.462
+2026-10-29 08:44:06 INFO fusion candidate 51: stability 0.455
+2026-10-29 08:45:27 INFO fusion candidate 52: stability 0.475
+2026-10-29 08:46:47 INFO fusion candidate 53: stability 0.540
+2026-10-29 08:48:07 INFO fusion candidate 54: stability 0.617
+2026-10-29 08:49:41 INFO fusion candidate 70: stability 0.461
+2026-10-29 08:51:14 INFO fusion candidate 71: stability 0.461
+2026-10-29 08:52:48 INFO fusion candidate 72: stability 0.461
+2026-10-29 08:54:21 INFO fusion candidate 73: stability 0.461
+2026-10-29 08:54:22 INFO C9 fusion: chose {'components': ['lof', 'regression'], 'ratio': 2.0} (no checked candidate reached the stability target; highest search recall); search recall 0.727 vs M0 0.664
+/tmp/COS30049A2/explorer/stages.py:181: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  out = pd.concat([old, pd.DataFrame([full])], ignore_index=True) if len(old) else pd.DataFrame([full])
+2026-10-29 08:54:22 INFO fusion               C9: +0.021 [-0.024, +0.072] -> rejected difference interval reaches -0.0239 (not above 0)
+2026-10-29 08:54:22 INFO Step stage-search finished in 917 s (exit 0)

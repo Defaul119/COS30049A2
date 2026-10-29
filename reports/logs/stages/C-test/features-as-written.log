@@ -1,0 +1,4 @@
+2026-10-29 08:31:26 INFO Step features started: /tmp/COS30049A2/explorer/cli.py features --as-written
+2026-10-29 08:31:29 INFO As-written method: 7966 transactions, 7599 scorable, 2644 flagged by the baseline (34.8% of scorable)
+2026-10-29 08:31:29 INFO Wrote /tmp/COS30049A2/data/processed/esplora/features_as_written.csv
+2026-10-29 08:31:29 INFO Step features finished in 2 s (exit 0)

@@ -1,0 +1,17 @@
+2026-10-29 08:54:20 INFO Step stage-test started: /tmp/COS30049A2/explorer/cli.py stage-test --snapshot C
+2026-10-29 08:54:21 INFO Test-tier snapshot C: 6750 plant rows of ['baseline', 'dbscan', 'fusion', 'isolation_forest', 'kmeans', 'lof', 'regression', 'regression_interval', 'txgpt_method']
+2026-10-29 08:54:21 INFO Step stage-test finished in 1 s (exit 0)
+2026-10-29 08:54:21 INFO Step stage-test started: /tmp/COS30049A2/explorer/cli.py stage-test --before M0 --after C --stage C-test --methods lof kmeans dbscan regression_interval
+/tmp/COS30049A2/explorer/stages.py:181: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  out = pd.concat([old, pd.DataFrame([full])], ignore_index=True) if len(old) else pd.DataFrame([full])
+2026-10-29 08:54:22 INFO dbscan               C-test: +0.071 [+0.036, +0.107] -> ACCEPTED 
+/tmp/COS30049A2/explorer/stages.py:181: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  out = pd.concat([old, pd.DataFrame([full])], ignore_index=True) if len(old) else pd.DataFrame([full])
+2026-10-29 08:54:22 INFO kmeans               C-test: +0.024 [+0.001, +0.071] -> ACCEPTED 
+/tmp/COS30049A2/explorer/stages.py:181: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  out = pd.concat([old, pd.DataFrame([full])], ignore_index=True) if len(old) else pd.DataFrame([full])
+2026-10-29 08:54:23 INFO lof                  C-test: +0.011 [+0.001, +0.025] -> ACCEPTED 
+/tmp/COS30049A2/explorer/stages.py:181: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  out = pd.concat([old, pd.DataFrame([full])], ignore_index=True) if len(old) else pd.DataFrame([full])
+2026-10-29 08:54:23 INFO regression_interval  C-test: +0.019 [-0.012, +0.048] -> rejected difference interval reaches -0.0118 (not above 0); case dormant fell 0.0240 (> its M0 seed spread 0.0234)
+2026-10-29 08:54:23 INFO Step stage-test finished in 1 s (exit 0)

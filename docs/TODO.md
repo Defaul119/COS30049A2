@@ -13,9 +13,9 @@ Due Sun 8 Nov 23:59 GMT+7; the team submits Sat 7 Nov. Results freeze Tue 3 Nov;
 - [x] C7 TxGPT score variants incl. event-level burst scores: rejected (burst 0.16 -> 0.65 but spike and dormant
       fall; mean not higher); TxGPT stays at M0. Retraining left out (sizes tie; GPU hours to the 152M). [Claude]
 - [ ] C8 TxGPT scaling study: not planned (needs a longer DS2 crawl and GPU hours); user may override. [Cao]
-- [ ] C9 fusion of the current methods (Kaggle CPU, honglquanganh, running 29 Oct). [Kaggle]
-- [ ] Test tier of C3-C6 + C10 selection (Kaggle CPU stage_test, tritran72, running 29 Oct); again for C7/C9 if
-      accepted. [Kaggle]
+- [x] C9 fusion of the current methods: rejected (best pair unstable; interval reaches below 0). [Kaggle]
+- [x] Test tier of C3-C6: DBSCAN, K-Means, LOF kept; the regression range variant back to M0. C10: baseline stays.
+- [ ] Rebuild-only stage_test run (tables match the live methods), bring home, commit. [Kaggle, Claude]
 - [ ] B1 152M pretraining: s1-s3 done (2.29B of 3.0B, val 3.0967); s4 on dansns to 3.0B. [Kaggle]
 - [x] B3 weak-case examples built (8,000 train / 600 dev; own seeds and wordings); writer gate. [Claude]
 - [ ] B3 trial on the round-1 model (kainetyson, chain running 29 Oct) -> WEAK_CASES for round 2. [Kaggle]

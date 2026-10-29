@@ -1,0 +1,4 @@
+2026-10-29 08:35:42 INFO Step features started: /tmp/COS30049A2/explorer/cli.py features
+2026-10-29 08:35:46 INFO Refined method: 7966 transactions, 7599 scorable, 1060 flagged by the baseline (13.9% of scorable)
+2026-10-29 08:35:46 INFO Wrote /tmp/COS30049A2/data/processed/esplora/features.csv
+2026-10-29 08:35:46 INFO Step features finished in 4 s (exit 0)

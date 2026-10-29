@@ -11,6 +11,20 @@ hand-off to dansns had died on 28 Oct 18:04 (a Windows fork failure in the backg
 idle ~21 h; re-run 29 Oct from a separate window: data manifests identical, dataset
 dansns/cos30049a2-s4-text-150m-cont, session 4 pushed 15:04 (2,717 steps, ~0.71B tokens, decay included).
 
+**Test tier of C3-C6 and stage C10 (Kaggle CPU, tritran72 cos30049a2-stage-test v1, commit 41fa89e, 0.39 h).**
+Reporting plants (seeds 30049-30053), each promoted method against M0's snapshot, paired by plant with an address
+bootstrap: DBSCAN +0.071 [+0.036, +0.107], K-Means +0.024 [+0.001, +0.071] and LOF +0.011 [+0.001, +0.025] ACCEPTED;
+the regression range variant +0.019 [-0.012, +0.048] REJECTED (and dormant fell 0.024 > its spread 0.023), so it
+returns to M0 (stageModels now C3, C4, C5). Selection rule (C10) on the test tier: the baseline stays recommended
+(0.655, stability 1.0; runner-up fusion 0.684, within the 5-point tie margin, harder to explain); explorerMethod
+unchanged. Records: stage_test/C_*.csv, stages.csv "C-test" rows, reports/logs/stages/C-test/.
+
+**Stage C9 rejected: fusion stays at M0 (Kaggle CPU, honglquanganh cos30049a2-stage-search v1, commit 984d036,
+0.32 h).** 105 pairs x ratios at the M0 fusion's budget (0.104). The best on the search seeds, LOF + regression
+(ratio 2), 0.727 vs M0 0.664, but no checked candidate reached the stability target (0.46 < 0.7); gated on seeds
+40003-40004: +0.021 [-0.024, +0.072], rejected. (The search included the C6 range variant as a component, since
+reverted; it was not in the winning pair, and removing candidates cannot produce a better passing one.)
+
 **Stage C7 rejected: TxGPT stays at M0 (run on the PC, CPU, 94 s, from the precomputed plant surprisals).** At the
 M0 flag budget (1.48%), on search seeds 40000-40002: raw 0.532 (M0's variant), relative 0.489, event-level relative
 1 h / 6 h / 24 h 0.506 / 0.489 / 0.485, event-level raw 0.27 / 0.09 / 0.04. Event-level scores trade patterns, they

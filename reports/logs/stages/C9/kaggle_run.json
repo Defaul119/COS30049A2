@@ -1,0 +1,21 @@
+{
+  "commit": "984d036a695c94f0543ec5e8beff49563a3ecdfc",
+  "stages": [
+    "C9"
+  ],
+  "failed": {},
+  "steps": [
+    "features",
+    "split",
+    "inject"
+  ],
+  "hours": 0.32,
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.17.1",
+    "pyarrow": "20.0.0",
+    "joblib": "1.4.2"
+  }
+}

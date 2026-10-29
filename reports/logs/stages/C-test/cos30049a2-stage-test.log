@@ -1,0 +1,157 @@
+[{"stream_name":"stderr","time":6.985399855,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":6.985453995,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":8.056831896,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.056859046,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.056862856,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.056866666,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":8.662573464,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.662630954,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.662638704,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.662641894,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":42.187400003,"data":"ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n"}
+,{"stream_name":"stdout","time":42.187949593,"data":"bigframes 2.48.0 requires google-cloud-bigquery-storage\u003c3.0.0,\u003e=2.30.0, which is not installed.\n"}
+,{"stream_name":"stdout","time":42.188845533,"data":"nilearn 0.14.1 requires pandas\u003e=2.3.0, but you have pandas 2.2.3 which is incompatible.\n"}
+,{"stream_name":"stdout","time":42.189699263,"data":"ydata-profiling 4.18.4 requires scipy\u003c1.17,\u003e=1.8, but you have scipy 1.17.1 which is incompatible.\n"}
+,{"stream_name":"stdout","time":42.190576703,"data":"google-colab 1.0.0 requires jupyter-server==2.20.0, but you have jupyter-server 2.12.5 which is incompatible.\n"}
+,{"stream_name":"stdout","time":42.191436203,"data":"google-colab 1.0.0 requires requests==2.32.4, but you have requests 2.34.2 which is incompatible.\n"}
+,{"stream_name":"stdout","time":42.192327543,"data":"dopamine-rl 4.1.2 requires gym\u003c=0.25.2, but you have gym 0.26.2 which is incompatible.\n"}
+,{"stream_name":"stdout","time":42.193443983,"data":"gradio 6.26.0 requires pillow\u003c13.0,\u003e=8.0, but you have pillow 13.0.0 which is incompatible.\n"}
+,{"stream_name":"stdout","time":42.194228803,"data":"datasets 4.8.5 requires pyarrow\u003e=21.0.0, but you have pyarrow 20.0.0 which is incompatible.\n"}
+,{"stream_name":"stdout","time":42.196073153,"data":"moviepy 1.0.3 requires decorator\u003c5.0,\u003e=4.0.2, but you have decorator 5.3.1 which is incompatible.\n"}
+,{"stream_name":"stdout","time":42.198290222,"data":"bigframes 2.48.0 requires pyarrow\u003e=23.0.1, but you have pyarrow 20.0.0 which is incompatible.\n"}
+,{"stream_name":"stdout","time":42.649596526,"data":"2026-10-29 08:31:24 INFO Step features started: /tmp/COS30049A2/explorer/cli.py features\n"}
+,{"stream_name":"stdout","time":45.144866885,"data":"2026-10-29 08:31:26 INFO Refined method: 7966 transactions, 7599 scorable, 1060 flagged by the baseline (13.9% of scorable)\n"}
+,{"stream_name":"stdout","time":45.146086445,"data":"2026-10-29 08:31:26 INFO Wrote /tmp/COS30049A2/data/processed/esplora/features.csv\n"}
+,{"stream_name":"stdout","time":45.146681125,"data":"2026-10-29 08:31:26 INFO Step features finished in 2 s (exit 0)\n"}
+,{"stream_name":"stdout","time":45.318873149,"data":"features: 0.0 min\n"}
+,{"stream_name":"stdout","time":45.318897359,"data":"2026-10-29 08:31:26 INFO Step features started: /tmp/COS30049A2/explorer/cli.py features --as-written\n"}
+,{"stream_name":"stdout","time":47.77070201,"data":"2026-10-29 08:31:29 INFO As-written method: 7966 transactions, 7599 scorable, 2644 flagged by the baseline (34.8% of scorable)\n"}
+,{"stream_name":"stdout","time":47.77103998,"data":"2026-10-29 08:31:29 INFO Wrote /tmp/COS30049A2/data/processed/esplora/features_as_written.csv\n"}
+,{"stream_name":"stdout","time":47.771631209,"data":"2026-10-29 08:31:29 INFO Step features finished in 2 s (exit 0)\n"}
+,{"stream_name":"stdout","time":47.940888363,"data":"features --as-written: 0.0 min\n"}
+,{"stream_name":"stdout","time":47.940911074,"data":"2026-10-29 08:31:29 INFO Step split started: /tmp/COS30049A2/explorer/cli.py split\n"}
+,{"stream_name":"stdout","time":49.370452171,"data":"2026-10-29 08:31:30 INFO Periods: {'fit': 5308, 'eval': 2291, 'history': 367}\n"}
+,{"stream_name":"stdout","time":49.371644431,"data":"2026-10-29 08:31:30 INFO Wrote the period column of /tmp/COS30049A2/data/processed/esplora/features.csv and features_as_written.csv and /tmp/COS30049A2/reports/tables/split_ds1.csv\n"}
+,{"stream_name":"stdout","time":49.372408541,"data":"2026-10-29 08:31:30 INFO Step split finished in 1 s (exit 0)\n"}
+,{"stream_name":"stdout","time":49.537864395,"data":"split: 0.0 min\n"}
+,{"stream_name":"stdout","time":49.537890985,"data":"2026-10-29 08:31:31 INFO Step inject started: /tmp/COS30049A2/explorer/cli.py inject\n"}
+,{"stream_name":"stdout","time":65.385764508,"data":"2026-10-29 08:31:46 INFO tuning seed 40000: 150 plants (spike 50, burst 50, dormant 50) -\u003e /tmp/COS30049A2/data/processed/esplora/injections/tuning_40000.json\n"}
+,{"stream_name":"stdout","time":78.048875187,"data":"2026-10-29 08:31:59 INFO tuning seed 40001: 150 plants (spike 50, burst 50, dormant 50) -\u003e /tmp/COS30049A2/data/processed/esplora/injections/tuning_40001.json\n"}
+,{"stream_name":"stdout","time":89.837170047,"data":"2026-10-29 08:32:11 INFO tuning seed 40002: 150 plants (spike 50, burst 50, dormant 50) -\u003e /tmp/COS30049A2/data/processed/esplora/injections/tuning_40002.json\n"}
+,{"stream_name":"stdout","time":102.469600127,"data":"2026-10-29 08:32:23 INFO tuning seed 40003: 150 plants (spike 50, burst 50, dormant 50) -\u003e /tmp/COS30049A2/data/processed/esplora/injections/tuning_40003.json\n"}
+,{"stream_name":"stdout","time":116.738673977,"data":"2026-10-29 08:32:38 INFO tuning seed 40004: 150 plants (spike 50, burst 50, dormant 50) -\u003e /tmp/COS30049A2/data/processed/esplora/injections/tuning_40004.json\n"}
+,{"stream_name":"stdout","time":129.247943451,"data":"2026-10-29 08:32:50 INFO reporting seed 30049: 150 plants (spike 50, burst 50, dormant 50) -\u003e /tmp/COS30049A2/data/processed/esplora/injections/reporting_30049.json\n"}
+,{"stream_name":"stdout","time":141.332471301,"data":"2026-10-29 08:33:02 INFO reporting seed 30050: 150 plants (spike 50, burst 50, dormant 50) -\u003e /tmp/COS30049A2/data/processed/esplora/injections/reporting_30050.json\n"}
+,{"stream_name":"stdout","time":152.989369836,"data":"2026-10-29 08:33:14 INFO reporting seed 30051: 150 plants (spike 50, burst 50, dormant 50) -\u003e /tmp/COS30049A2/data/processed/esplora/injections/reporting_30051.json\n"}
+,{"stream_name":"stdout","time":165.79938788,"data":"2026-10-29 08:33:27 INFO reporting seed 30052: 150 plants (spike 50, burst 50, dormant 50) -\u003e /tmp/COS30049A2/data/processed/esplora/injections/reporting_30052.json\n"}
+,{"stream_name":"stdout","time":177.640747919,"data":"2026-10-29 08:33:39 INFO reporting seed 30053: 150 plants (spike 50, burst 50, dormant 50) -\u003e /tmp/COS30049A2/data/processed/esplora/injections/reporting_30053.json\n"}
+,{"stream_name":"stdout","time":177.645969459,"data":"2026-10-29 08:33:39 INFO Step inject finished in 128 s (exit 0)\n"}
+,{"stream_name":"stdout","time":178.227303217,"data":"inject: 2.1 min\n"}
+,{"stream_name":"stdout","time":178.227330277,"data":"2026-10-29 08:33:39 INFO Step scores started: /tmp/COS30049A2/explorer/cli.py scores\n"}
+,{"stream_name":"stdout","time":180.817057543,"data":"2026-10-29 08:33:42 INFO baseline: 681 flagged of 7966 (239 of 2291 in the evaluation period); threshold 5\n"}
+,{"stream_name":"stdout","time":181.17081478,"data":"2026-10-29 08:33:42 INFO isolation_forest: 190 flagged of 7966 (83 of 2291 in the evaluation period); threshold 0.5886\n"}
+,{"stream_name":"stdout","time":181.576742515,"data":"2026-10-29 08:33:43 INFO lof: 208 flagged of 7966 (102 of 2291 in the evaluation period); threshold 1.855\n"}
+,{"stream_name":"stdout","time":181.583490435,"data":"2026-10-29 08:33:43 INFO kmeans: 208 flagged of 7966 (87 of 2291 in the evaluation period); threshold 9.978\n"}
+,{"stream_name":"stdout","time":181.628626133,"data":"2026-10-29 08:33:43 INFO dbscan: 200 flagged of 7966 (89 of 2291 in the evaluation period); threshold 2.821\n"}
+,{"stream_name":"stdout","time":181.98970388,"data":"2026-10-29 08:33:43 INFO regression: 1002 flagged of 7966 (514 of 2291 in the evaluation period); threshold 3.5\n"}
+,{"stream_name":"stdout","time":182.409052915,"data":"2026-10-29 08:33:43 INFO regression_interval: 92 flagged of 7966 (80 of 2291 in the evaluation period); threshold 0.02297\n"}
+,{"stream_name":"stdout","time":182.762744752,"data":"2026-10-29 08:33:44 INFO fusion: 634 flagged of 7966 (239 of 2291 in the evaluation period); threshold 1\n"}
+,{"stream_name":"stdout","time":183.024017712,"data":"2026-10-29 08:33:44 INFO txgpt_method: 141 flagged of 7966 (34 of 2291 in the evaluation period); threshold 12.2\n"}
+,{"stream_name":"stdout","time":183.148965058,"data":"2026-10-29 08:33:44 INFO Wrote /tmp/COS30049A2/data/processed/esplora/scores.csv\n"}
+,{"stream_name":"stdout","time":183.152416158,"data":"2026-10-29 08:33:44 INFO Step scores finished in 5 s (exit 0)\n"}
+,{"stream_name":"stdout","time":183.459319497,"data":"scores: 0.1 min\n"}
+,{"stream_name":"stdout","time":183.459352147,"data":"2026-10-29 08:33:44 INFO Step evaluate started: /tmp/COS30049A2/explorer/cli.py evaluate\n"}
+,{"stream_name":"stdout","time":185.540421821,"data":"2026-10-29 08:33:47 INFO Evaluating ['baseline', 'isolation_forest', 'lof', 'kmeans', 'dbscan', 'regression', 'regression_interval', 'fusion', 'txgpt_method'] on 750 reporting plants\n"}
+,{"stream_name":"stdout","time":474.971772433,"data":"2026-10-29 08:38:36 INFO fusion               mean recall 0.684 (spike 0.72, burst 0.49, dormant 0.84), stability 0.89, flag rate 0.104, max address share 0.45\n"}
+,{"stream_name":"stdout","time":474.972194293,"data":"2026-10-29 08:38:36 INFO regression           mean recall 0.673 (spike 0.88, burst 0.75, dormant 0.39), stability 0.61, flag rate 0.224, max address share 0.58\n"}
+,{"stream_name":"stdout","time":474.972865893,"data":"2026-10-29 08:38:36 INFO baseline             mean recall 0.655 (spike 0.74, burst 0.38, dormant 0.84), stability 1.00, flag rate 0.104, max address share 0.45\n"}
+,{"stream_name":"stdout","time":474.973456203,"data":"2026-10-29 08:38:36 INFO txgpt_method         mean recall 0.547 (spike 0.74, burst 0.17, dormant 0.74), stability 1.00, flag rate 0.015, max address share 0.11\n"}
+,{"stream_name":"stdout","time":474.974060903,"data":"2026-10-29 08:38:36 INFO dbscan               mean recall 0.476 (spike 0.54, burst 0.11, dormant 0.78), stability 0.91, flag rate 0.039, max address share 0.38\n"}
+,{"stream_name":"stdout","time":474.974643473,"data":"2026-10-29 08:38:36 INFO kmeans               mean recall 0.470 (spike 0.62, burst 0.05, dormant 0.74), stability 1.00, flag rate 0.038, max address share 0.43\n"}
+,{"stream_name":"stdout","time":474.975170763,"data":"2026-10-29 08:38:36 INFO isolation_forest     mean recall 0.429 (spike 0.60, burst 0.12, dormant 0.56), stability 0.88, flag rate 0.036, max address share 0.43\n"}
+,{"stream_name":"stdout","time":474.975739003,"data":"2026-10-29 08:38:36 INFO lof                  mean recall 0.331 (spike 0.12, burst 0.07, dormant 0.81), stability 0.85, flag rate 0.045, max address share 0.41\n"}
+,{"stream_name":"stdout","time":474.976290873,"data":"2026-10-29 08:38:36 INFO regression_interval  mean recall 0.287 (spike 0.52, burst 0.30, dormant 0.04), stability 0.46, flag rate 0.035, max address share 0.13\n"}
+,{"stream_name":"stdout","time":474.976875073,"data":"2026-10-29 08:38:36 INFO Recommended method: baseline (runner-up fusion). Record it as explorerMethod in settings.json to adopt it.\n"}
+,{"stream_name":"stdout","time":474.980745983,"data":"2026-10-29 08:38:36 INFO Step evaluate finished in 292 s (exit 0)\n"}
+,{"stream_name":"stdout","time":475.307873021,"data":"evaluate: 4.9 min\n"}
+,{"stream_name":"stdout","time":475.307896501,"data":"2026-10-29 08:38:36 INFO Step significance started: /tmp/COS30049A2/explorer/cli.py significance\n"}
+,{"stream_name":"stdout","time":478.056363253,"data":"2026-10-29 08:38:39 INFO 750 plants on 25 addresses, 2000 address-level bootstrap draws, 95% intervals; reference baseline\n"}
+,{"stream_name":"stdout","time":478.057327993,"data":"2026-10-29 08:38:39 INFO fusion               mean recall 0.684 [0.569, 0.781]; minus baseline +0.029 [-0.001, +0.055], p = 0.063\n"}
+,{"stream_name":"stdout","time":478.058082513,"data":"2026-10-29 08:38:39 INFO regression           mean recall 0.673 [0.580, 0.760]; minus baseline +0.018 [-0.073, +0.114], p = 0.703\n"}
+,{"stream_name":"stdout","time":478.058827193,"data":"2026-10-29 08:38:39 INFO baseline             mean recall 0.655 [0.546, 0.753]; minus baseline +0.000 [+0.000, +0.000], p = -\n"}
+,{"stream_name":"stdout","time":478.059572783,"data":"2026-10-29 08:38:39 INFO txgpt_method         mean recall 0.547 [0.442, 0.638]; minus baseline -0.108 [-0.270, +0.048], p = 0.177\n"}
+,{"stream_name":"stdout","time":478.060397443,"data":"2026-10-29 08:38:39 INFO dbscan               mean recall 0.476 [0.366, 0.571]; minus baseline -0.179 [-0.228, -0.132], p = 0.000\n"}
+,{"stream_name":"stdout","time":478.061207183,"data":"2026-10-29 08:38:39 INFO kmeans               mean recall 0.470 [0.359, 0.567]; minus baseline -0.185 [-0.243, -0.136], p = 0.000\n"}
+,{"stream_name":"stdout","time":478.061968942,"data":"2026-10-29 08:38:39 INFO isolation_forest     mean recall 0.429 [0.321, 0.534]; minus baseline -0.227 [-0.304, -0.156], p = 0.000\n"}
+,{"stream_name":"stdout","time":478.062529512,"data":"2026-10-29 08:38:39 INFO lof                  mean recall 0.331 [0.262, 0.392]; minus baseline -0.324 [-0.390, -0.248], p = 0.000\n"}
+,{"stream_name":"stdout","time":478.063085812,"data":"2026-10-29 08:38:39 INFO regression_interval  mean recall 0.287 [0.212, 0.365]; minus baseline -0.368 [-0.451, -0.276], p = 0.000\n"}
+,{"stream_name":"stdout","time":478.063606092,"data":"2026-10-29 08:38:39 INFO Wrote /tmp/COS30049A2/reports/tables/eval_significance.csv and /tmp/COS30049A2/reports/tables/eval_plant_hits.csv\n"}
+,{"stream_name":"stdout","time":478.069052831,"data":"2026-10-29 08:38:39 INFO Step significance finished in 3 s (exit 0)\n"}
+,{"stream_name":"stdout","time":478.262747088,"data":"significance: 0.1 min\n"}
+,{"stream_name":"stdout","time":478.349760173,"data":"2026-10-29 08:38:39 INFO Step ds2-check started: /tmp/COS30049A2/explorer/cli.py ds2-check\n"}
+,{"stream_name":"stdout","time":568.944751045,"data":"2026-10-29 08:40:10 INFO DS2: 2933 addresses meet DS1's main rule; 827291 transactions; periods {'fit': 549071, 'eval': 237705, 'history': 40515}\n"}
+,{"stream_name":"stdout","time":742.347784366,"data":"2026-10-29 08:43:03 INFO seed 30049: 3000 plants on 1583 addresses\n"}
+,{"stream_name":"stdout","time":903.313773423,"data":"2026-10-29 08:45:44 INFO seed 30050: 3000 plants on 1583 addresses\n"}
+,{"stream_name":"stdout","time":1064.330708954,"data":"2026-10-29 08:48:25 INFO seed 30051: 3000 plants on 1583 addresses\n"}
+,{"stream_name":"stdout","time":1223.10971427,"data":"2026-10-29 08:51:04 INFO seed 30052: 3000 plants on 1613 addresses\n"}
+,{"stream_name":"stdout","time":1381.835879192,"data":"2026-10-29 08:53:43 INFO seed 30053: 3000 plants on 1582 addresses\n"}
+,{"stream_name":"stdout","time":1417.677135046,"data":"2026-10-29 08:54:19 INFO baseline             DS2 mean recall 0.494 [0.479, 0.508] (DS1 0.655); DS2 flag rate 0.075, 10% of addresses over the sanity limit\n"}
+,{"stream_name":"stdout","time":1417.677891686,"data":"2026-10-29 08:54:19 INFO fusion               DS2 mean recall 0.471 [0.456, 0.486] (DS1 0.684); DS2 flag rate 0.076, 10% of addresses over the sanity limit\n"}
+,{"stream_name":"stdout","time":1417.678499526,"data":"2026-10-29 08:54:19 INFO regression           DS2 mean recall 0.425 [0.412, 0.438] (DS1 0.673); DS2 flag rate 0.100, 15% of addresses over the sanity limit\n"}
+,{"stream_name":"stdout","time":1417.679114556,"data":"2026-10-29 08:54:19 INFO kmeans               DS2 mean recall 0.336 [0.323, 0.349] (DS1 0.470); DS2 flag rate 0.021, 2% of addresses over the sanity limit\n"}
+,{"stream_name":"stdout","time":1417.679666125,"data":"2026-10-29 08:54:19 INFO dbscan               DS2 mean recall 0.317 [0.305, 0.330] (DS1 0.476); DS2 flag rate 0.021, 3% of addresses over the sanity limit\n"}
+,{"stream_name":"stdout","time":1417.680258446,"data":"2026-10-29 08:54:19 INFO isolation_forest     DS2 mean recall 0.305 [0.293, 0.317] (DS1 0.429); DS2 flag rate 0.017, 2% of addresses over the sanity limit\n"}
+,{"stream_name":"stdout","time":1417.680851175,"data":"2026-10-29 08:54:19 INFO regression_interval  DS2 mean recall 0.201 [0.193, 0.210] (DS1 0.287); DS2 flag rate 0.061, 7% of addresses over the sanity limit\n"}
+,{"stream_name":"stdout","time":1417.681457705,"data":"2026-10-29 08:54:19 INFO lof                  DS2 mean recall 0.188 [0.178, 0.199] (DS1 0.331); DS2 flag rate 0.023, 2% of addresses over the sanity limit\n"}
+,{"stream_name":"stdout","time":1417.682008185,"data":"2026-10-29 08:54:19 INFO Wrote /tmp/COS30049A2/reports/tables/eval_ds2.csv, eval_ds2_plant_hits.csv and split_ds2.csv\n"}
+,{"stream_name":"stdout","time":1418.055000972,"data":"2026-10-29 08:54:19 INFO Step ds2-check finished in 940 s (exit 0)\n"}
+,{"stream_name":"stdout","time":1419.269903455,"data":"ds2-check: 15.7 min\n"}
+,{"stream_name":"stdout","time":1419.269927475,"data":"2026-10-29 08:54:20 INFO Step stage-test started: /tmp/COS30049A2/explorer/cli.py stage-test --snapshot C\n"}
+,{"stream_name":"stdout","time":1420.268274132,"data":"2026-10-29 08:54:21 INFO Test-tier snapshot C: 6750 plant rows of ['baseline', 'dbscan', 'fusion', 'isolation_forest', 'kmeans', 'lof', 'regression', 'regression_interval', 'txgpt_method']\n"}
+,{"stream_name":"stdout","time":1420.268971962,"data":"2026-10-29 08:54:21 INFO Step stage-test finished in 1 s (exit 0)\n"}
+,{"stream_name":"stdout","time":1420.500029498,"data":"2026-10-29 08:54:21 INFO Step stage-test started: /tmp/COS30049A2/explorer/cli.py stage-test --before M0 --after C --stage C-test --methods lof kmeans dbscan regression_interval\n"}
+,{"stream_name":"stdout","time":1421.490482905,"data":"/tmp/COS30049A2/explorer/stages.py:181: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.\n"}
+,{"stream_name":"stdout","time":1421.491023325,"data":"  out = pd.concat([old, pd.DataFrame([full])], ignore_index=True) if len(old) else pd.DataFrame([full])\n"}
+,{"stream_name":"stdout","time":1421.492292495,"data":"2026-10-29 08:54:22 INFO dbscan               C-test: +0.071 [+0.036, +0.107] -\u003e ACCEPTED \n"}
+,{"stream_name":"stdout","time":1421.517784234,"data":"/tmp/COS30049A2/explorer/stages.py:181: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.\n"}
+,{"stream_name":"stdout","time":1421.517810724,"data":"  out = pd.concat([old, pd.DataFrame([full])], ignore_index=True) if len(old) else pd.DataFrame([full])\n"}
+,{"stream_name":"stdout","time":1421.518109574,"data":"2026-10-29 08:54:22 INFO kmeans               C-test: +0.024 [+0.001, +0.071] -\u003e ACCEPTED \n"}
+,{"stream_name":"stdout","time":1421.541711162,"data":"/tmp/COS30049A2/explorer/stages.py:181: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.\n"}
+,{"stream_name":"stdout","time":1421.542349702,"data":"  out = pd.concat([old, pd.DataFrame([full])], ignore_index=True) if len(old) else pd.DataFrame([full])\n"}
+,{"stream_name":"stdout","time":1421.543001172,"data":"2026-10-29 08:54:23 INFO lof                  C-test: +0.011 [+0.001, +0.025] -\u003e ACCEPTED \n"}
+,{"stream_name":"stdout","time":1421.566190311,"data":"/tmp/COS30049A2/explorer/stages.py:181: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.\n"}
+,{"stream_name":"stdout","time":1421.566875251,"data":"  out = pd.concat([old, pd.DataFrame([full])], ignore_index=True) if len(old) else pd.DataFrame([full])\n"}
+,{"stream_name":"stdout","time":1421.567557071,"data":"2026-10-29 08:54:23 INFO regression_interval  C-test: +0.019 [-0.012, +0.048] -\u003e rejected difference interval reaches -0.0118 (not above 0); case dormant fell 0.0240 (\u003e its M0 seed spread 0.0234)\n"}
+,{"stream_name":"stdout","time":1421.568142291,"data":"2026-10-29 08:54:23 INFO Step stage-test finished in 1 s (exit 0)\n"}
+,{"stream_name":"stdout","time":1421.795995006,"data":"time_utc,commit,family,model,stage,tier,metric,value,ci_low,ci_high,previous_stage,diff_previous,diff_previous_ci_low,diff_previous_ci_high,diff_m0,diff_m0_ci_low,diff_m0_ci_high,mcnemar_p,accepted,reasons,seeds\n"}
+,{"stream_name":"stdout","time":1421.796030296,"data":"2026-10-27T11:54:45Z,f0e7b70,scoring,baseline,A0,dev,mean planted recall,0.6488,,,M0,0.0,0.0,0.0,,,,,False,difference interval reaches +0.0000 (not above 0),tuning 40000-40004\n"}
+,{"stream_name":"stdout","time":1421.796034656,"data":"2026-10-27T11:54:45Z,f0e7b70,scoring,dbscan,A0,dev,mean planted recall,0.5870666666666667,,,M0,0.1653333333333332,0.1272343162541375,0.1984776805683949,,,,,False,largest address share rose 0.377 -\u003e 0.434,tuning 40000-40004\n"}
+,{"stream_name":"stdout","time":1421.796038656,"data":"2026-10-27T11:54:45Z,f0e7b70,scoring,fusion,A0,dev,mean planted recall,0.6831999999999999,,,M0,0.0178666666666665,-0.0250730534399496,0.0751768389023993,,,,,False,difference interval reaches -0.0251 (not above 0),tuning 40000-40004\n"}
+,{"stream_name":"stdout","time":1421.796056756,"data":"2026-10-27T11:54:45Z,f0e7b70,scoring,isolation_forest,A0,dev,mean planted recall,0.4039999999999999,,,M0,-0.0413333333333333,-0.113801381203184,0.0326634329365034,,,,,False,difference interval reaches -0.1138 (not above 0); case spike fell 0.0960 (\u003e its M0 seed spread 0.0656); case dormant fell 0.0720 (\u003e its M0 seed spread 0.0715),tuning 40000-40004\n"}
+,{"stream_name":"stdout","time":1421.796060996,"data":"2026-10-27T11:54:45Z,f0e7b70,scoring,kmeans,A0,dev,mean planted recall,0.4329333333333333,,,M0,-0.0298666666666667,-0.0792533524138144,-0.0006376128052079,,,,,False,difference interval reaches -0.0793 (not above 0); case dormant fell 0.0760 (\u003e its M0 seed spread 0.0659),tuning 40000-40004\n"}
+,{"stream_name":"stdout","time":1421.796064686,"data":"2026-10-27T11:54:45Z,f0e7b70,scoring,lof,A0,dev,mean planted recall,0.3346666666666666,,,M0,-0.0015999999999999,-0.0101960628830291,0.004444813704492,,,,,False,difference interval reaches -0.0102 (not above 0),tuning 40000-40004\n"}
+,{"stream_name":"stdout","time":1421.796069116,"data":"2026-10-27T11:54:45Z,f0e7b70,scoring,regression,A0,dev,mean planted recall,0.606,,,M0,-0.0869333333333334,-0.1308394322347236,-0.0525369581797947,,,,,False,difference interval reaches -0.1308 (not above 0); case spike fell 0.0400 (\u003e its M0 seed spread 0.0345); case burst fell 0.1808 (\u003e its M0 seed spread 0.0318),tuning 40000-40004\n"}
+,{"stream_name":"stdout","time":1421.796074886,"data":"2026-10-27T11:54:45Z,f0e7b70,scoring,regression_interval,A0,dev,mean planted recall,0.2222666666666667,,,M0,-0.03,-0.0683785663838684,0.0038152675040192,,,,,False,difference interval reaches -0.0684 (not above 0); case burst fell 0.1500 (\u003e its M0 seed spread 0.0347),tuning 40000-40004\n"}
+,{"stream_name":"stdout","time":1421.796079156,"data":"2026-10-27T11:54:45Z,f0e7b70,scoring,txgpt_method,A0,dev,mean planted recall,0.5424,,,M0,0.0,0.0,0.0,,,,,False,difference interval reaches +0.0000 (not above 0),tuning 40000-40004\n"}
+,{"stream_name":"stdout","time":1421.796082616,"data":"2026-10-28T00:19:33Z,34fdf6c,scoring,baseline,C1,dev,mean planted recall,0.657,,,M0,-0.0006666666666665,-0.0017185477752488,0.0,,,,,False,difference interval reaches -0.0017 (not above 0),gate 40003 40004\n"}
+,{"stream_name":"stdout","time":1421.796086446,"data":"2026-10-28T00:22:50Z,34fdf6c,scoring,isolation_forest,C2,dev,mean planted recall,0.4396666666666666,,,M0,0.0,0.0,0.0,,,,,False,difference interval reaches +0.0000 (not above 0),gate 40003 40004\n"}
+,{"stream_name":"stdout","time":1421.796090036,"data":"2026-10-28T00:29:16Z,34fdf6c,scoring,lof,C3,dev,mean planted recall,0.3276666666666666,,,M0,0.0096666666666666,0.0003652334720295,0.0199297924297923,,,,,True,,gate 40003 40004\n"}
+,{"stream_name":"stdout","time":1421.796093746,"data":"2026-10-28T00:30:01Z,34fdf6c,scoring,kmeans,C4,dev,mean planted recall,0.4906666666666666,,,M0,0.0356666666666665,0.0003365336533653,0.1023117925817261,,,,,True,,gate 40003 40004\n"}
+,{"stream_name":"stdout","time":1421.796097796,"data":"2026-10-28T00:33:26Z,34fdf6c,scoring,dbscan,C5,dev,mean planted recall,0.4816666666666666,,,M0,0.0669999999999999,0.0253408278841808,0.1033858233507488,,,,,True,,gate 40003 40004\n"}
+,{"stream_name":"stdout","time":1421.796101216,"data":"2026-10-28T00:40:03Z,34fdf6c,scoring,regression,C6,dev,mean planted recall,0.8649999999999999,,,M0,0.1869999999999999,0.1084798695737094,0.2609840742008907,,,,,False,case burst fell 0.0490 (\u003e its M0 seed spread 0.0318); largest address share rose 0.582 -\u003e 0.691,gate 40003 40004\n"}
+,{"stream_name":"stdout","time":1421.796104776,"data":"2026-10-28T00:40:03Z,34fdf6c,scoring,regression_interval,C6,dev,mean planted recall,0.2743333333333334,,,M0,0.038,0.0060574573276186,0.0751233892734317,,,,,True,,gate 40003 40004\n"}
+,{"stream_name":"stdout","time":1421.796113566,"data":"2026-10-28T00:40:01Z,051d3d2,classifier,ensemble,D6,dev,\"F1, Elliptic steps 31-34\",0.955078125,0.9416396787305632,0.9680950605523164,M0 randomForest,-0.014861754759519,-0.0248542696733053,-0.0051072224105284,,,,0.0024939179420471,False,difference interval reaches -0.0249 (not above 0); case step 31 fell 0.0178 (\u003e its M0 seed spread 0.0032); case step 32 fell 0.0127 (\u003e its M0 seed spread 0.0019); case step 33 fell 0.0408 (\u003e its M0 seed spread 0.0066),members 30049; spread 71000-71009\n"}
+,{"stream_name":"stdout","time":1421.796121276,"data":"2026-10-29T08:54:22Z,41fa89e,scoring,dbscan,C-test,test,mean planted recall,0.4762666666666666,,,M0,0.0705333333333333,0.0355316713021178,0.1065087921269157,,,,,True,,reporting 30049-30053\n"}
+,{"stream_name":"stdout","time":1421.796124636,"data":"2026-10-29T08:54:22Z,41fa89e,scoring,kmeans,C-test,test,mean planted recall,0.4701333333333333,,,M0,0.0241333333333333,0.0005625288089919,0.0711918078207429,,,,,True,,reporting 30049-30053\n"}
+,{"stream_name":"stdout","time":1421.796127906,"data":"2026-10-29T08:54:23Z,41fa89e,scoring,lof,C-test,test,mean planted recall,0.3313333333333333,,,M0,0.0113333333333333,0.0006956489679008,0.0254834192052984,,,,,True,,reporting 30049-30053\n"}
+,{"stream_name":"stdout","time":1421.796131196,"data":"2026-10-29T08:54:23Z,41fa89e,scoring,regression_interval,C-test,test,mean planted recall,0.2873333333333334,,,M0,0.019466666666666688,-0.011764440713862154,0.048347723606125936,,,,,False,difference interval reaches -0.0118 (not above 0); case dormant fell 0.0240 (\u003e its M0 seed spread 0.0234),reporting 30049-30053\n"}
+,{"stream_name":"stdout","time":1421.796134916,"data":"\n"}
+,{"stream_name":"stderr","time":1424.364698285,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":1424.364731725,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":1424.551983723,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":1424.552009263,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":1425.260054938,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":1425.331466894,"data":"[NbConvertApp] Writing 30154 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":1427.665372457,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":1428.120035328,"data":"[NbConvertApp] Writing 315182 bytes to __results__.html\n"}
+]

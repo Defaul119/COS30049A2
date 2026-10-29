@@ -255,11 +255,10 @@
   },
 
   "stageModels": {
-    "_about": "explorer/scores.py saved_methods: each DS1 method's last ACCEPTED training stage (reports/tables/stages.csv; docs/TRAINING_PLAN.md); its winner models/stage/<stage>_<method>.joblib replaces the M0 model everywhere (scores, evaluate, significance, DS2/DS10 checks, predict). Methods not listed stay at M0. Recorded 29 Oct from the C1-C6 gate of 28 Oct.",
+    "_about": "explorer/scores.py saved_methods: each DS1 method's last ACCEPTED training stage (reports/tables/stages.csv; docs/TRAINING_PLAN.md); its winner models/stage/<stage>_<method>.joblib replaces the M0 model everywhere (scores, evaluate, significance, DS2/DS10 checks, predict). Methods not listed stay at M0. Recorded 29 Oct from the C1-C6 gate of 28 Oct; the test tier (29 Oct, stage C-test) kept C3-C5 and sent regression_interval (C6) back to M0 (its gain's interval reached below 0 and dormant fell past its spread).",
     "lof": "C3",
     "kmeans": "C4",
-    "dbscan": "C5",
-    "regression_interval": "C6"
+    "dbscan": "C5"
   },
 
   "explorerMethod": "baseline",
