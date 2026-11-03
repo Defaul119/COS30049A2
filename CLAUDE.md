@@ -122,14 +122,14 @@ explorer/        one module per pipeline step; one CLI: python -m explorer.cli <
                  models: baseline, clustering, regression, outliers, fusion, classify, ensemble
                  evaluation: evaluate, significance, sensitivity, walkforward, ds2_check, distribution, reviewer
                  stages: stages (the gate, test tier, writer gate), stage_search (C1-C7, C9), weak_cases (B3)
-                 use: predict, explain, assistant, profiles, plots
+                 use: predict, explore (interactive), explain, assistant, profiles, plots
 lm/              152M text model (model, tokenizer, data, train, chat, generate), TxGPT (tx_tokens, tx_score,
                  tx_select), evaluation (eval_explain, eval_stats, writers), two-GPU training (dist)
 configs/         training configs (text_150m_*, txgpt_s/m/l)
 config/          settings.json: every threshold, window, grid and seed
 kaggle/          Kaggle notebooks, pinned to a commit by tools/kaggle_notebooks.py
 tools/           status, supervise, run_queue, cards, package, test_report, make_glossary, kaggle_notebooks
-tests/           pytest suite (266 passed on 3 Nov)
+tests/           pytest suite (273 passed on 3 Nov)
 data/ models/ reports/{figures,tables,logs}/   committed outputs (large files git-ignored)
 notebooks/       01_eda.ipynb (only calls the package)
 reference/       the A1 prototype's TypeScript (scoring and JSON shapes predict.py follows)

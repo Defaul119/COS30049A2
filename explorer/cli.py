@@ -36,6 +36,7 @@ Usage (from the repository root):
     python -m explorer.cli ds10-check             # every DS1 model (TxGPT too) frozen on DS10
     python -m explorer.cli predict address bc1q...  # or: predict what-if / explain / heist / elliptic
     python -m explorer.cli predict explain --address bc1q... --txid <txid> --assistant   # guarded Assistant text
+    python -m explorer.cli explore                # interactive: pick an address, see its flags, ask why, what-if
     python -m explorer.cli all --offline          # every step above, in order, from the data on disk
     python -m explorer.cli scores                 # scores.csv: every method, every transaction
     python -m explorer.cli process-external       # DS4 labels, transforms, splits
@@ -306,6 +307,12 @@ def cmd_predict(args: argparse.Namespace) -> int:
     check_outputs(result)
     print(json.dumps(result, indent=2))
     return 0
+
+
+def cmd_explore(args: argparse.Namespace) -> int:
+    from .explore import run_explore
+
+    return run_explore()
 
 
 def cmd_scores(args: argparse.Namespace) -> int:
@@ -585,6 +592,8 @@ def build_parser() -> argparse.ArgumentParser:
     elliptic = kinds.add_parser("elliptic", help="Elliptic: class probabilities for feature rows (CSV)")
     elliptic.add_argument("--rows", required=True)
     predict.set_defaults(func=cmd_predict)
+    steps.add_parser("explore", help="interactive: pick a snapshot address, see its flagged transactions, ask why, "
+                     "try a what-if").set_defaults(func=cmd_explore)
     steps.add_parser("scores", help="DS1: every saved method's score and flag per transaction").set_defaults(
         func=cmd_scores)
 

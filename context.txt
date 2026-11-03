@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first. Last update: 2026-10-30 ~05:30 GMT+7, on the PC (Claude).
+SESSION CONTEXT - read this first. Last update: 2026-11-03 ~20:00 GMT+7, on the PC (Claude).
 - PART 1 = live state (read all of it). PART 2 = reference (look things up). PART 3 = history (one line per day).
 - Other files: CHANGELOG.md (every change with its numbers), docs/TODO.md (checklist), docs/TRAINING_PLAN.md
   (stages + gate), docs/KAGGLE_LM_PLAN.md (152M round 2 + adoption rule, section 3), docs/REPORT_PLAN.md,
@@ -12,6 +12,10 @@ PART 1 - LIVE STATE
 
 RUNNING
 - Nothing. Every Kaggle job is finished (152M chain, rebuild, round-2 stages). Results frozen: tag results-v1.1.
+- DONE 3 Nov: Mac fresh-clone rebuild (M4 rehearsal) reproduces results-v1.1 (157 same, 16 within, 1 = no DS4);
+  report drafted in LaTeX on the Mac (report/, 2,871 words, numbers from tables via tools/report_numbers.py);
+  interactive terminal Explorer `python -m explorer.cli explore` (PC; 273 tests). A 16-page reading guide for the
+  user is in _context/notes/A2_project_walkthrough.pdf (git-ignored).
 - DONE 30 Oct: fresh-clone rebuild adopted for DS1 (AUDIT section 5; confirmed on Windows). 152M round 2 ADOPTED
   (dev gate +0.322; adoption rule all criteria; pooled fully correct 0.727 -> 0.948); installed in models/assistant/
   (SHA-256 in settings); round 1 in C:/Users/ADMIN/COS30049A2_archive/assistant_round1/.
@@ -23,8 +27,9 @@ NEXT, IN ORDER
    + Isolation Forest). Fixing it changes DS7/glossary data, so it is an A3 item unless the team wants it now.
 3. Packaging: `python tools/package.py --tag v1.0` after M4 (Wed 4 Nov); --with-models adds the 152M weights
    (610 MB fp32) only if Canvas allows (team); an fp16 export (~305 MB) is the fallback.
-4. Report: NOT STARTED on purpose (user, 29 Oct). Outline in docs/REPORT_PLAN.md; numbers from reports/tables only.
-   Say that the random hard/max-shift sets and B3's training examples share case types (AUDIT section 5).
+4. Report: DRAFTED (3 Nov, report/; `python tools/report_build.py` checks words, citations, wording, builds the
+   PDF). Open: the team's read-through, the reviewer-check row ("Open" in Table 4), the Elliptic citation (Weber
+   et al. 2019 = exactly 7 years), the AI declaration from docs/AI_USE_LOG.md.
 
 WAITING ON THE USER / TEAM
 - References: docs/REFERENCES.md (all 2020+, verified); one decision left: the Elliptic dataset record (2019).

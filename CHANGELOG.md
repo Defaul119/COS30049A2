@@ -5,6 +5,20 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 3 November 2026
 
+**Interactive terminal Explorer: `python -m explorer.cli explore`** (`explorer/explore.py`, at the user's request,
+for testing and the M4 check). It lists the 28 snapshot addresses page by page (transactions, scored, flagged, first
+and last day; short-history addresses last), opens one by number or pasted address, and shows its flagged
+transactions; a transaction's number shows F1-F4 against the address's own history, every saved model's score and
+flag with what kind of model it is (the selected method marked as deciding the flag; TxGPT "n/a" for a what-if),
+and the explanation (template, or the guarded Assistant with `a <number>`). `t` pages through every transaction,
+`w` scores a what-if. It calls the same `Predictor` as `predict`, so no result changes; input is never echoed, and
+every printed line passes the wording check. Rows per page in settings `explore`. On the real data the what-if
+scores match `predict what-if` exactly, and the 152M Assistant's answer for 1Bbcsfxj...#365 passed the guardrail.
+joblib's physical-core lookup fails on Windows 11 (no `wmic`) and printed a traceback mid-screen; `run_explore`
+sets `LOKY_MAX_CPU_COUNT` to half the logical cores when unset (thread count only; scores identical). 7 new tests
+(273). README sections 2, 3 and 8: the step, and the Miniforge Prompt on Windows (plain Command Prompt has no
+`conda`, and the system Python's scikit-learn 1.9.1 cannot load the 1.6.1 models).
+
 **Mac fresh-clone rebuild (M4 rehearsal) reproduces the frozen results.** Deleted and re-cloned `from-scratch` at
 975c911 on the Mac (Apple M5), then followed README sections 2-4 exactly: pytest 260 passed; the section 3 examples
 print the README's values; `all --offline` 58 min (exit 0), `figures` exit 0; `compare_tables`: 174 tables, 157

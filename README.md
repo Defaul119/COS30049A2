@@ -52,10 +52,10 @@ conda activate cos30049-a2
 python -m pytest -q
 ```
 
-Expected: `266 passed` in about three minutes (the first run takes longer while the new libraries load).
-Run every later command from the repository folder with `cos30049-a2` active. On Windows, run
-`set PYTHONUTF8=1` first in each new terminal (Command Prompt) so the logs print correctly; macOS and Linux
-need nothing.
+Expected: `273 passed` in about three minutes (the first run takes longer while the new libraries load).
+Run every later command from the repository folder with `cos30049-a2` active. On Windows, use the Miniforge
+Prompt (or Anaconda Prompt), where `conda` works, and run `set PYTHONUTF8=1` first in each new one so the logs print
+correctly; macOS and Linux need nothing.
 
 ## 3. Quick check: predictions from the shipped models (2 minutes)
 
@@ -100,6 +100,17 @@ python -m explorer.cli predict explain --address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ
 
 Add `--assistant` to let a language model write it instead (section 8); without the language-model files the
 answer stays the template's, and `skippedWriters` says why.
+
+**Or browse interactively**, the easiest way to try it:
+
+```
+python -m explorer.cli explore
+```
+
+It lists the 28 snapshot addresses page by page; pick one by its number (or paste it) to see its flagged
+transactions. Type a transaction's number to see its four features against the address's own history, every saved
+model's verdict (which one decides the flag, and what kind of model each is) and the explanation; `a <number>`
+asks the Assistant instead, `t` lists every transaction, `w` scores a what-if, `b` goes back and `q` quits.
 
 ## 4. Rebuild every result from the shipped data (offline, about 1.5-2 hours on a laptop)
 
@@ -229,6 +240,7 @@ whether a retrained model replaces the one in use.
 From the command line (section 3 shows the outputs):
 
 ```
+python -m explorer.cli explore                     # interactive: pick an address, see its flags, ask why, what-if
 python -m explorer.cli predict address <address>
 python -m explorer.cli predict what-if --address <address> --amount 0.05 --direction out --time 2026-10-20T12:00Z [--assistant]
 python -m explorer.cli predict explain --address <address> --txid <txid> [--assistant]

@@ -272,6 +272,12 @@
   "explorerMethod": "baseline",
   "_explorerMethod": "the DS1 method the Explorer and predict.py use (plan §11.4): the robust-z baseline, as models/selection.json recommends; recorded 23 Oct by Cao Tri Tran with the team's delegation",
 
+  "explore": {
+    "_about": "the interactive terminal Explorer (python -m explorer.cli explore, 3 Nov): rows per page, so a page fits a standard 30-line terminal",
+    "addressesPerPage": 10,
+    "transactionsPerPage": 20
+  },
+
   "txgpt": {
     "variants": ["raw", "relative"],
     "relativeMinScale": 0.5,
