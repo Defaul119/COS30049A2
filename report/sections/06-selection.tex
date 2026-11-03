@@ -1,0 +1,36 @@
+\section{Machine Learning Model Selection}
+\label{sec:selection}
+
+\textbf{Criteria.} A scoring method for the Explorer had to (1) work without labels, (2) judge each transaction
+against its own address's earlier history, (3) give a reason the user can check, (4) be stable, keeping a
+top-50 overlap (Jaccard) of at least \V{sel.stability_target} across refits, (5) flag no more than
+\V{sel.sanity} of any address's transactions, since an address flagged everywhere is simply different, and
+(6) run on a laptop CPU. The brief adds that at least two of classification, clustering and regression are used.
+
+\textbf{Candidates} (Table~\ref{tab:candidates}). No detector wins on every kind of anomaly (Han et al.\ 2022), so
+each family covers a different idea of ``unusual''. The robust z baseline flags a transaction when any feature
+lies far from the address's median. Clustering learns the shape of normal transactions and scores the distance
+to it (Ikotun et al.\ 2023; Bushra and Yi 2021). Regression predicts each amount and gap from earlier history and
+scores the miss; conformal calibration turns its quantile models into ranges with stated coverage (Angelopoulos
+and Bates 2023). Isolation Forest and the Local Outlier Factor (LOF) are general outlier detectors (Boukerche,
+Zheng and Alfandi 2021). TxGPT, a small transformer trained from scratch on DS2, reads a history as a sequence
+and scores each transaction by its surprisal, the negative log-probability of what happened, as sequence models
+do for event logs (Le and Zhang 2022). For labelled data we compared a linear model, a neighbour-based model and
+two tree ensembles, which remain strong on tabular data (Grinsztajn, Oyallon and Varoquaux 2022).
+
+\input{generated/tab_candidates.tex}
+
+\textbf{Tuning.} Every grid is in the settings file and every search in \code{tuning\_*.csv}, run on plant seeds
+that never score reported results. After the first round, each method was retrained in stages, and a stage was
+kept only if it passed a gate fixed in advance: higher recall with a bootstrap interval above zero, and no
+pattern falling by more than its seed spread. LOF, K-Means and DBSCAN passed (\code{stages.csv}).
+
+\textbf{The selection rule}, fixed in Assignment~1, picks the stable method with the highest mean planted recall,
+and within five points the easier one to explain. Fusion scored highest (\V{ds1.fusion.mean}), but the baseline
+(\V{ds1.baseline.mean}) lies within the margin, and the difference is not significant (paired bootstrap,
+$p=\V{sig.fusion_p}$). The Explorer therefore uses the baseline, whose reasons map directly to the features.
+
+\textbf{Explanations.} The \emph{Explorer Assistant}, a language model trained from scratch, may phrase each
+explanation, but only if its answer passes a code guardrail: every number from the facts, the limitation line
+present, no banned word, comparison words pointing the right way, and a verdict matching the flag. Otherwise a
+fixed template is shown, because language models can state numbers absent from their input (Ji et al.\ 2023).

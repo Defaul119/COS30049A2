@@ -1,0 +1,86 @@
+\section{Implementation}
+
+\subsection{Technical implementation}
+\label{sec:technical}
+
+The project is written in Python with pandas, scikit-learn and matplotlib, as the brief asks (The pandas
+development team 2024; scikit-learn developers 2025; The Matplotlib Development Team 2025); PyTorch is used only
+for the two language models (Ansel et al.\ 2024). The \code{explorer} package has one module per pipeline
+step, all run through one command-line tool; \code{config/settings.json} holds every threshold, window, grid and
+seed, so the code contains no unexplained constants. Versions are pinned in a conda environment, and a test suite
+of \V{tech.tests} tests checks properties such as time safety and the guardrail. A full rebuild of every DS1 result
+runs offline on a laptop CPU, and a script compares the rebuilt tables with the committed ones number by number
+(Pineau et al.\ 2021).
+
+TxGPT and the Assistant were trained on GPUs. TxGPT was trained in three sizes with three seeds each; the
+sizes tie, so the smallest (\V{txgpt.s_params} parameters) was kept. The Assistant follows a modern decoder design
+(Touvron et al.\ 2023) and was pretrained on \V{lm.pretrain_tokens} billion DS5 tokens, more than the compute-optimal
+budget of about 20 tokens per parameter (Hoffmann et al.\ 2022), then taught conversation (DS6) and explanations
+(DS7). It runs on a CPU at prediction time.
+
+The \code{Predictor} class is the interface Assignment~3 will call: it scores an address's whole timeline,
+scores a hypothetical next transaction (the brief's ``user input to prediction''), and explains any transaction.
+
+\subsection{Implementation evaluation}
+\label{sec:evaluation}
+
+\textbf{Objectives.} Table~\ref{tab:objectives} compares the results with the targets Assignment~1 set before any
+data existed. The baseline meets the recall target on spikes and dormant addresses but not on bursts, and four
+DS1 addresses break the sanity rule. We report both rather than move the targets.
+
+\input{generated/tab_objectives.tex}
+
+\textbf{Scoring methods on DS1} (Table~\ref{tab:ds1}). Each method finds different patterns
+(Figure~\ref{fig:recall}). Regression finds every planted burst event but few dormant addresses, LOF misses most
+spikes, and only fusion and the baseline catch most plants of all three patterns. TxGPT flags the fewest real transactions
+(\V{ds1.txgpt.flag_rate}) and so has the highest precision lower bound (\V{ds1.txgpt.precision} against
+\V{ds1.baseline.precision}): a flag that is not a plant may still be worth a look, so precision on real data can
+only be bounded, never measured.
+
+\input{generated/tab_ds1.tex}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{eval_injection_recall.pdf}
+\caption{Recall on planted transactions by pattern (mean and standard deviation over five reporting seeds). No
+method is best at every pattern; the dashed line is Assignment~1's 70\% target.}
+\label{fig:recall}
+\end{figure}
+
+\textbf{Unseen addresses: DS2 and DS10.} The frozen methods were tested on \V{ds2.check_addresses} DS2
+histories and once on DS10 (Figure~\ref{fig:ds10}). Two outcomes were unexpected. First, methods tuned on DS1 fall
+the most: fusion drops from \V{ds1.fusion.mean} to \V{ds10.fusion.mean} on DS10, below the baseline's
+\V{ds10.baseline.mean}. Second, TxGPT, which learned from other addresses, ranks first on DS10
+(\V{ds10.txgpt.mean}, interval \V{ds10.txgpt.ci}). Over 100 plant seeds the baseline ranks first among the
+pooled methods on DS10 in \V{stats.ds10_baseline_rank1} of seeds. Bursts are hard to find on DS10, whose addresses
+are busier and less regular.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{eval_ds10_check.pdf}
+\caption{Every method, frozen as tuned on DS1, on DS2 and the held-out DS10 (left: mean planted recall with
+95\% bootstrap intervals on DS10; right: share of addresses breaking the sanity rule).}
+\label{fig:ds10}
+\end{figure}
+
+\textbf{Classifiers on labelled data} (Table~\ref{tab:classifiers}). On Elliptic the random forest has the best
+F1 (\V{cls.ell_rf_f1}, interval \V{cls.ell_rf_f1_ci} over ten training seeds), but every model collapses after
+time step 43 (Figure~\ref{fig:elliptic}, Appendix~\ref{app:figures}), when a dark market closed and illicit behaviour changed (Pareja et al.\
+2020). On BitcoinHeist's temporal split no model's F1 exceeds \V{cls.heist_temporal_max_f1}, and families held out of
+training are found at recalls of \V{cls.lofo_range} by the tree models, consistent with Finding~3.
+
+\input{generated/tab_classifiers.tex}
+
+\textbf{Unusual is not a label.} Scored against the labelled datasets' own classes, the unsupervised methods do
+worse than chance (PR-AUC below the class share), while the supervised random forest reaches
+\V{label.ell_rf_lift}$\times$ chance on Elliptic (Appendix~\ref{app:figures}). Being unusual for an address and
+belonging to a labelled class are different things, which supports the Explorer's wording.
+
+\textbf{Language models.} The Assistant passes the guardrail on \V{lm.guard_ds7} of DS7 test prompts and
+\V{lm.guard_ds10} of DS10 prompts, and is fully correct (right reasons, order and numbers) on \V{lm.full_ds7} and
+\V{lm.full_ds10}; pooled over twelve test sets it is fully correct on \V{lm.pooled} (\V{lm.pooled_ci}). Its
+weakest area is open glossary questions, where it states \V{lm.glossary} of the key facts.
+
+\textbf{Limitations.} Plants are our guess at what unusual looks like; DS1 has only 28 addresses, so intervals are
+wide; the methods tuned on DS1 transfer less well; and a language model can still give a wrong reason that the
+guardrail does not catch, which is why the template remains the default.

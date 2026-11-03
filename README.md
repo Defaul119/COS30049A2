@@ -52,7 +52,7 @@ conda activate cos30049-a2
 python -m pytest -q
 ```
 
-Expected: `260 passed` in about three minutes (the first run takes longer while the new libraries load).
+Expected: `266 passed` in about three minutes (the first run takes longer while the new libraries load).
 Run every later command from the repository folder with `cos30049-a2` active. On Windows, run
 `set PYTHONUTF8=1` first in each new terminal (Command Prompt) so the logs print correctly; macOS and Linux
 need nothing.

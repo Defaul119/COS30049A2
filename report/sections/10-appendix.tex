@@ -1,0 +1,84 @@
+% Appendix (not counted towards the word limit).
+\clearpage
+\section{Example prediction}
+\label{app:example}
+
+The output below is what Assignment~3's back end receives. It was produced by
+\code{python -m explorer.cli predict what-if} on a hypothetical transaction of one DS1 address: sending
+0.05~BTC, about a hundred times the address's usual amount. The size features (F1, F4) pass the flag line;
+the timing features (F2, F3) are within the usual range, so they are not mentioned.
+
+\input{generated/example.tex}
+
+\section{Further results}
+\label{app:figures}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth]{eval_elliptic_f1_by_step.pdf}
+\caption{Elliptic test F1 per time step. Every model fails from step 43, after the shutdown of a dark market
+changed the illicit class's behaviour.}
+\label{fig:elliptic}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{eval_label_check.pdf}
+\caption{Unsupervised scores against the labelled datasets' own classes. Every unsupervised method is at or
+below chance (1$\times$), while the supervised random forest is far above it: being unusual is not the same as
+belonging to a labelled class (\code{label\_check.csv}).}
+\label{fig:labelcheck}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{eval_sensitivity.pdf}
+\caption{Recall against the strength of each planted pattern (\code{eval\_sensitivity.csv}). Weaker plants are
+harder for every method; regression keeps finding small spikes that the baseline misses.}
+\label{fig:sensitivity}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{stats_methods.pdf}
+\caption{Mean planted recall over 100 plant seeds on DS1 and DS10 and 20 on DS2
+(\code{stats\_methods\_summary.csv}).}
+\label{fig:statsmethods}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{eval_stages.pdf}
+\caption{Every training stage's gate decision with its bootstrap interval (\code{stages.csv}).}
+\label{fig:stages}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{eval_txgpt_sizes.pdf}
+\caption{TxGPT's validation loss for three sizes and three seeds each (\code{txgpt\_sizes.csv}). The sizes tie,
+so the smallest was kept.}
+\label{fig:txgpt}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{stats_writers.pdf}
+\caption{The Assistant's fully correct rate on each test set, before (round 1) and after (round 2) its second
+training round, with 95\% bootstrap intervals (\code{stats\_writers\_summary.csv}).}
+\label{fig:writers}
+\end{figure}
+
+\section{Reproducing the results}
+\label{app:repro}
+
+The repository's \code{README.md} gives every command. In short:
+\begin{verbatim}
+conda env create -f environment.yml
+conda activate cos30049-a2
+python -m pytest -q                       # the test suite
+python -m explorer.cli all --offline      # every DS1 result from the shipped data
+python -m explorer.cli figures
+python tools/compare_tables.py            # compare the rebuild with the committed tables
+\end{verbatim}
+\code{DATA\_CARD.md} documents every dataset, file and column, and \code{MODEL\_CARD.md} every final model.

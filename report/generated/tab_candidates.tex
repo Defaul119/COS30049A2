@@ -1,0 +1,22 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Every model trained, by family. All were tuned on data that never produced a reported result.}
+\label{tab:candidates}
+\begin{tabularx}{\textwidth}{@{}L{2.2cm} L{4.0cm} l L{3.4cm} Y@{}}
+\toprule
+Family & Models & Data & Output & Tuned \\
+\midrule
+Statistics & Robust z-score baseline (A1) & DS1 & Largest $|z|$ over F1--F4 & Flag threshold \\
+Clustering & K-Means; DBSCAN & DS1 & Distance to normal clusters & $k$; eps, min.\ samples \\
+Clustering & K-Means address profiles & DS1, DS2 & Activity profile in words & $k$ (silhouette) \\
+Regression & Ridge; random forest; hist.\ gradient boosting & DS1 & Miss on predicted amount and gap & Per-model grids \\
+Regression & Quantile boosting + conformal & DS1 & Distance outside a calibrated range & Quantiles, coverage \\
+Outlier detection & Isolation Forest; LOF (novelty) & DS1 & Isolation depth; local density & Trees, samples; neighbours \\
+Combination & Score fusion & DS1 & Weighted pair of scores & Weights at a flag budget \\
+Classification & Logistic regression; KNN; random forest; hist.\ gradient boosting & DS3, DS4 & Class probability & Validation split \\
+Sequence model & TxGPT (trained from scratch) & DS2 & Surprisal of each transaction & 3 sizes $\times$ 3 seeds \\
+Language model & Explorer Assistant, 152M (trained from scratch) & DS5--DS7 & Explanation (guardrailed) & Adoption rule \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -1,0 +1,22 @@
+{\footnotesize
+\begin{verbatim}
+input:    0.05 BTC out at 2026-10-20T12:00Z, address 1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz
+scored: true   flagged: true   score (largest |z|): 5.98
+feature                     value        usual       z  role
+F1 Size                      0.05  0.000524948    5.88  flag
+F2 Burst                        3            4   -0.45  within-usual
+F3 Gap                    21.8264      10.0535    0.30  within-usual
+F4 Relative size          95.2472     0.909938    5.98  flag
+\end{verbatim}
+}
+Explanation shown to the user (template writer):
+{\footnotesize
+\begin{verbatim}
+Flagged by Robust z baseline (A1).
+What stands out compared with this address's own history:
+- Higher ratio to the usual amount than usual: 95.2x the usual amount for this direction, against a
+  usual 0.9x.
+- Larger amount than usual: 0.05 BTC moved, against a usual 0.00052495 BTC.
+Unusual activity requires investigation; it does not indicate wrongdoing.
+\end{verbatim}
+}

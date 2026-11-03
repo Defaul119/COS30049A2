@@ -1,0 +1,19 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Assignment~1's objectives for the selected method (the robust z baseline) and the results.}
+\label{tab:objectives}
+\begin{tabularx}{\textwidth}{@{}Y L{5.6cm} l@{}}
+\toprule
+Objective (set in Assignment~1) & Result & Status \\
+\midrule
+Snapshot of 20--30 main addresses (50+ tx, 90+ days) and 2--3 short ones & 25 main and 3 short addresses & Met \\
+Planted recall $\geq$ 70\% for 2 of 3 patterns & Spike 0.744, dormant 0.840, burst 0.381 & Met \\
+Stability: top-50 Jaccard $\geq$ 0.7 & 1.000 & Met \\
+Sanity: no address over 20\% flagged & DS1: 4 addresses over; DS10: 0 & Partly met \\
+Method agreement reported & Baseline--fusion Jaccard 0.512 & Met \\
+Blind reviewer check (Cohen's kappa) & Pending: two teammates rate reports/reviewer/sheet.csv & Open \\
+Accuracy, precision, recall, F1 where labels exist & DS3 and DS4 (Table~\ref{tab:classifiers}) & Met \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{The four explained features (A1, refined). Each becomes a robust z-score against the same address's earlier history.}
+\label{tab:features}
+\begin{tabularx}{\textwidth}{@{}l l Y l@{}}
+\toprule
+ID & Name & Definition & Compared on \\
+\midrule
+F1 & Size & Amount the address received or sent (BTC) & log10; same direction only \\
+F2 & Burst & Earlier transactions in the previous 7 days & raw count \\
+F3 & Gap & Hours since the address's previous transaction & log10 \\
+F4 & Relative size & Amount divided by the usual amount in the same direction & log10 \\
+\bottomrule
+\end{tabularx}
+\par\smallskip\parbox{\textwidth}{\footnotesize Each feature is compared with earlier transactions of the same address in the previous 30 days, extended back to reach 20; a transaction is scored once the address has at least 10 earlier transactions over 14 days.}
+\end{table}

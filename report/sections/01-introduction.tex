@@ -1,0 +1,16 @@
+\section{Introduction}
+\label{sec:intro}
+
+Banks, exchanges and payment providers that handle cryptocurrency must decide which of many transactions deserve
+a closer look, the topic the brief calls cybersecurity threat detection in banking. A Bitcoin address's history is
+public, but a block explorer shows it only as a long, unexplained list.
+
+Our project, the Bitcoin Address Activity Explorer, ranks every transaction of an address by how \emph{unusual}
+it is \emph{for that address's own past} and says why in plain words. Its intended user is a student researcher
+or analyst examining one address who needs to know where to look first. It is an investigation aid, never a
+verdict: every flag carries the line \limitation
+
+This report covers Assignment~2: the data we collected and processed, the analysis that shaped the features,
+the models we trained and why we chose them, and their evaluation. Every model was trained by our team, and
+both language models were trained from scratch. The prediction interface that Assignment~3's web application
+will call is ready.

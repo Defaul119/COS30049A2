@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{The datasets and the role of each (tx: transactions).}
+\label{tab:datasets}
+\begin{tabularx}{\textwidth}{@{}l L{3.0cm} L{3.7cm} L{3.0cm} Y@{}}
+\toprule
+ID & Dataset & Source (licence) & Size & Role \\
+\midrule
+DS1 & Our Esplora snapshot & Blockstream Esplora API (public data) & 25\,+\,3 addresses, 7{,}966 tx & Every scoring method; evaluation \\
+DS2 & Our Esplora crawl (hashed IDs) & Esplora API via mempool.space & 4{,}012 addresses, 898{,}490 tx & Trains TxGPT; check on unseen addresses \\
+DS3 & Elliptic data set & Kaggle (CC BY-NC-ND 4.0) & 203{,}769 tx & Classification \\
+DS4 & BitcoinHeist & UCI repository 526 (CC BY 4.0) & 2{,}916{,}697 address-days & Classification \\
+DS5 & FineWeb-Edu & Hugging Face (ODC-By 1.0) & 5.0 billion tokens used & Assistant pretraining \\
+DS6 & smol-smoltalk & Hugging Face (Apache 2.0) & chat conversations & Assistant chat stage \\
+DS7 & Our explanation pairs & Built from DS1 and DS2 facts & question--answer pairs & Teaching and testing the Assistant \\
+DS10 & A teammate's snapshot & Esplora API, refetched and cross-checked & 27 addresses, 5{,}785 tx & Held-out final test of every model \\
+\bottomrule
+\end{tabularx}
+\end{table}

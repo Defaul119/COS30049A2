@@ -2,8 +2,9 @@
 
 Serves plan §11 (the zip "unpacks into the tree above", and "SHA256SUMS.txt verifies every file") and Appendix D
 (`python tools/package.py --tag v1.0`). Files come from `git archive <tag>`, never from the working folder, so
-nothing uncommitted (the DS2 salt, Kaggle tokens, _context/) can reach the zip. Claude's working notes and the
-unit's own course material are left out (EXCLUDE). The language-model weights are not in git: --with-models adds
+nothing uncommitted (the DS2 salt, Kaggle tokens, _context/) can reach the zip. Claude's working notes, the
+unit's own course material and the report's LaTeX sources (the report is submitted as its own PDF) are left out
+(EXCLUDE). The language-model weights are not in git: --with-models adds
 the folders the Assistant uses from models/, hashed like every other file. SHA256SUMS.txt goes into the zip and
 beside it, in `sha256sum -c` format, and the finished zip is re-read and checked against it.
 
@@ -24,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 NAME = "HCMC_COS30049.1_4_Assignment2_Code"
 # Not part of the submission: Claude's instructions and running notes (AI use is declared separately), the hand-off
 # note between machines, and the unit's brief (course material, not ours to redistribute).
-EXCLUDE = ("CLAUDE.md", "context.txt", "docs/archive/HANDOFF.md", "docs/brief/")
+EXCLUDE = ("CLAUDE.md", "context.txt", "docs/archive/HANDOFF.md", "docs/brief/", "report/")
 # The writer's weights, over GitHub's file limit (README section 8): the 152M model and its tokenizer.
 MODEL_DIRS = ("models/assistant",)
 

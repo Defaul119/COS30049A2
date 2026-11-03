@@ -1,0 +1,10 @@
+# LaTeX build files (python tools/report_build.py rebuilds them)
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz

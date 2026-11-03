@@ -1,0 +1,22 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Scoring methods on DS1 (sorted by mean planted recall).}
+\label{tab:ds1}
+\begin{tabularx}{\textwidth}{@{}L{3.6cm} l r r r l r R@{}}
+\toprule
+Method & Family & Spike & Burst & Dormant & Mean [95\% CI] & Stab. & Flags \\
+\midrule
+Score fusion & Combination & 0.780 & 0.498 & 0.768 & 0.682 [0.573, 0.781] & 0.736 & 9.4\% \\
+Robust z baseline (A1) $\star$ & Statistics & 0.744 & 0.381 & 0.840 & 0.655 [0.546, 0.753] & 1.000 & 10.4\% \\
+Regression residual & Regression & 0.864 & 0.695 & 0.320 & 0.626 [0.526, 0.722] & 0.736 & 17.5\% \\
+TxGPT surprisal & Sequence model & 0.736 & 0.170 & 0.736 & 0.547 [0.442, 0.638] & 1.000 & 1.5\% \\
+DBSCAN distance & Clustering & 0.544 & 0.109 & 0.776 & 0.476 [0.366, 0.571] & 0.912 & 3.9\% \\
+K-Means distance & Clustering & 0.624 & 0.050 & 0.736 & 0.470 [0.359, 0.567] & 1.000 & 3.8\% \\
+Isolation Forest & Outlier detection & 0.600 & 0.122 & 0.564 & 0.429 [0.321, 0.534] & 0.876 & 3.6\% \\
+Local Outlier Factor & Outlier detection & 0.116 & 0.066 & 0.812 & 0.331 [0.262, 0.392] & 0.846 & 4.5\% \\
+Regression range (conformal) & Regression & 0.712 & 0.174 & 0.044 & 0.310 [0.246, 0.373] & 0.514 & 4.8\% \\
+\bottomrule
+\end{tabularx}
+\par\smallskip\parbox{\textwidth}{\footnotesize Recall on planted transactions over five reporting seeds; intervals are 95\% address-level bootstrap. Mean recall averages spike, burst (per transaction and per event) and dormant. Stability is the top-50 Jaccard over refits. Flag rate is the share of real evaluation-period transactions flagged. $\star$ the selected method.}
+\end{table}

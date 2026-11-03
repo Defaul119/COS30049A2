@@ -1,0 +1,29 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Classifiers on the labelled datasets.}
+\label{tab:classifiers}
+\begin{tabularx}{\textwidth}{@{}L{3.6cm} Y r r r r r@{}}
+\toprule
+Data and split & Model & Accuracy & Precision & Recall & F1 & PR-AUC \\
+\midrule
+Elliptic, all features & Hist.\ gradient boosting & 0.971 & 0.808 & 0.734 & 0.769 & 0.803 \\
+Elliptic, all features & k-nearest neighbours & 0.957 & 0.684 & 0.620 & 0.650 & 0.659 \\
+Elliptic, all features & Logistic regression & 0.949 & 0.619 & 0.578 & 0.598 & 0.412 \\
+Elliptic, all features & Random forest & 0.979 & 0.928 & 0.727 & 0.815 & 0.792 \\
+Elliptic, local features & Hist.\ gradient boosting & 0.965 & 0.738 & 0.721 & 0.730 & 0.784 \\
+Elliptic, local features & k-nearest neighbours & 0.969 & 0.792 & 0.703 & 0.745 & 0.741 \\
+Elliptic, local features & Logistic regression & 0.969 & 0.839 & 0.640 & 0.726 & 0.619 \\
+Elliptic, local features & Random forest & 0.970 & 0.801 & 0.721 & 0.759 & 0.781 \\
+BitcoinHeist, temporal & Hist.\ gradient boosting & 0.705 & 0.012 & 0.722 & 0.024 & 0.042 \\
+BitcoinHeist, temporal & k-nearest neighbours & 0.789 & 0.011 & 0.452 & 0.021 & 0.025 \\
+BitcoinHeist, temporal & Logistic regression & 0.170 & 0.006 & 0.976 & 0.012 & 0.005 \\
+BitcoinHeist, temporal & Random forest & 0.942 & 0.038 & 0.436 & 0.070 & 0.052 \\
+BitcoinHeist, random & Hist.\ gradient boosting & 0.975 & 0.199 & 0.252 & 0.222 & 0.151 \\
+BitcoinHeist, random & k-nearest neighbours & 0.957 & 0.099 & 0.254 & 0.143 & 0.071 \\
+BitcoinHeist, random & Logistic regression & 0.510 & 0.020 & 0.691 & 0.039 & 0.017 \\
+BitcoinHeist, random & Random forest & 0.979 & 0.250 & 0.239 & 0.244 & 0.177 \\
+\bottomrule
+\end{tabularx}
+\par\smallskip\parbox{\textwidth}{\footnotesize Test splits: Elliptic time steps 35--49; BitcoinHeist years after the training years (temporal) or a random 20\%. Metrics are for the datasets' own positive classes (illicit; ransomware), at the threshold chosen on validation data.}
+\end{table}

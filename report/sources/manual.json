@@ -1,0 +1,11 @@
+{
+  "_about": "The only report numbers not read from a file the pipeline writes. Each names where it was recorded; tools/report_numbers.py reads them as they are.",
+  "lm.pretrain_tokens": {
+    "value": "5.0",
+    "source": "Round 1: 2,000,417,414 training tokens (reports/logs/prepare_text.log). Round 2 on Kaggle: 3,000,941,125 new tokens (DATA_CARD.md, DS5; the Kaggle run's kaggle_run.json). 2.0 + 3.0 = 5.0 billion."
+  },
+  "obj.reviewer": {
+    "value": "Pending: two teammates rate reports/reviewer/sheet.csv",
+    "source": "context.txt Part 1, WAITING ON THE USER / TEAM. Update when explorer.cli reviewer-score has run."
+  }
+}

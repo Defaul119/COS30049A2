@@ -3,6 +3,32 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 3 November 2026
+
+**Mac fresh-clone rebuild (M4 rehearsal) reproduces the frozen results.** Deleted and re-cloned `from-scratch` at
+975c911 on the Mac (Apple M5), then followed README sections 2-4 exactly: pytest 260 passed; the section 3 examples
+print the README's values; `all --offline` 58 min (exit 0), `figures` exit 0; `compare_tables`: 174 tables, 157
+same, 16 within tolerance (largest difference 0.0026, in tuning_regression.csv; every table the report quotes within
+0.00016), 1 different: eda_tests.csv without its six DS4 rows (no DS4 download on the Mac, as README section 4 says).
+The Apple-Silicon regression difference of 26 Oct no longer appears (the 12-digit features.csv fix of 29 Oct holds).
+The committed outputs were kept (results-v1.1).
+
+**Report draft (LaTeX) in `report/`.** The brief's sections in its order (cover with the tutor, introduction to
+conclusion, Harvard numbered references, appendix). The prose never types a result: `\V{key}` macros are filled by
+`tools/report_numbers.py` from `reports/tables/*.csv`, the dataset manifests and `config/settings.json` (81 values),
+plus two values with no pipeline file, each with its source, in `report/sources/manual.json` (the 5.0B pretraining
+tokens; the reviewer check's status). The six tables and the appendix example prediction are generated the same
+way. `python tools/report_build.py` checks the body word count (2,871 of 3,000), that every citation has an entry
+and every entry is cited, and the wording rule, then runs pdflatex three times. `report/` is left out of the code
+zip (the report is submitted as its own PDF). The rubric is saved as `docs/brief/assignment2_rubric.txt`.
+
+- Facts corrected while drafting (the report states the evidence, not the earlier summaries): the Elliptic licence
+  forbids derivatives (not redistribution); BitcoinHeist's temporal split is weak (F1 at most 0.07) rather than "near
+  chance" (the random forest's PR-AUC is about 10x the class share); the Assistant's guardrail rate is the summary
+  table's (445 prompts, glossary excluded), 100.0% on the DS7 test, not the per-prompt file's 99.3%.
+- Open for the team: the reviewer check (Table 4 says "Open"), the Elliptic citation (the report cites Elmougy and
+  Liu 2023 only), and a read-through.
+
 ## 30 October 2026
 
 **152M round 2 ADOPTED.** dansns `cos30049a2-text150m-stages` (commit 7bb3112, two T4s, 3.98 h): chat stage, then the

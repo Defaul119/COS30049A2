@@ -1,0 +1,64 @@
+\section{Data Processing}
+\label{sec:processing}
+
+Figure~\ref{fig:pipeline} shows the pipeline; each step is one module of our \code{explorer} package.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[node distance=0.35cm and 0.45cm, font=\footnotesize,
+  box/.style={draw, rounded corners=2pt, align=center, minimum height=0.95cm, text width=2.15cm, fill=#1},
+  box/.default=blue!6, >={Stealth[length=2mm]}]
+  \node[box] (raw) {Esplora pages\\(DS1, DS2, DS10)};
+  \node[box, right=of raw] (clean) {Clean and\\verify};
+  \node[box, right=of clean] (feat) {Features F1--F4\\(earlier tx only)};
+  \node[box, right=of feat] (split) {Fit 70\% /\\evaluate 30\%};
+  \node[box=orange!10, right=of split] (models) {Scoring\\methods};
+  \node[box=orange!10, below=of models] (eval) {Planted-recall\\evaluation};
+  \node[box=green!8, left=of eval] (pred) {Prediction and\\explanation};
+  \node[box, below=of raw] (lab) {Elliptic,\\BitcoinHeist};
+  \node[box, right=of lab] (labp) {Join, transform,\\temporal split};
+  \node[box=orange!10, right=of labp] (cls) {Classifiers};
+  \draw[->] (raw) -- (clean); \draw[->] (clean) -- (feat); \draw[->] (feat) -- (split);
+  \draw[->] (split) -- (models); \draw[->] (models) -- (eval); \draw[->] (models) -- (pred);
+  \draw[->] (lab) -- (labp); \draw[->] (labp) -- (cls);
+\end{tikzpicture}
+\caption{The processing pipeline. Our Bitcoin data (top) feeds the scoring methods; the labelled datasets
+(bottom) feed the classifiers. The two paths never mix.}
+\label{fig:pipeline}
+\end{figure}
+
+\textbf{Cleaning and missing values.} DS1 passes five checks: parse every saved page, keep confirmed
+transactions, remove duplicate (address, transaction) pairs, drop transactions that neither pay nor spend from
+the address, and sort by time. None removed a row, because the collection checks had already rejected faulty
+histories. The source data has no missing values; features are empty by design when an address has too little
+history, and such transactions are shown as ``not scored'' rather than imputed.
+
+\textbf{Feature engineering.} For each transaction we compute the address's net amount (received minus sent) and
+direction, then the four features of Table~\ref{tab:features}. Each is compared with the same address's history
+using a robust z-score: the distance from the median in units of the median absolute deviation, which one
+extreme past value cannot distort (Blázquez-García et al.\ 2022). Heavy-tailed features are compared on a
+logarithmic scale, and the spread has a floor so that a run of identical values cannot divide by zero. This is
+the normalisation: every score is relative to the address itself.
+
+\input{generated/tab_features.tex}
+
+\textbf{Time safety.} A transaction's features use only \emph{strictly earlier} transactions of the same address,
+and transactions in the same block are never each other's history. Models fit on each address's earlier 70\% and
+are evaluated on the rest, and every scaler sits inside a scikit-learn pipeline fitted on training rows only.
+These rules prevent leakage (Kapoor and Narayanan 2023).
+
+\textbf{Planted transactions.} To measure detection without labels we plant three patterns into copies of each
+history's evaluation period (Lai et al.\ 2021): a \emph{spike} of \V{inj.spike}$\times$ the address's usual amount,
+a \emph{burst} of \V{inj.burst} transactions within \V{inj.burst_hours} hours, and a \emph{dormant} address waking
+after \V{inj.dormant_min}--\V{inj.dormant_max} days. Each seed plants \V{inj.per_pattern} of each pattern. Tuning
+seeds never produce reported results.
+
+\textbf{Labelled datasets.} Elliptic's features and classes are joined on the transaction identifier and split by
+time (steps 1--34 to train and validate, 35--49 to test), with all features (AF) or local ones (LF). In
+BitcoinHeist every ransomware family becomes the positive class, the five heavy-tailed features are log
+transformed, and \code{year}, \code{day} and \code{address} are excluded as features because they would leak the
+split or identify the row.
+
+\textbf{Language-model inputs.} TxGPT writes each transaction as six tokens (gap, direction, amount, inputs,
+outputs, fee rate) from a vocabulary of \V{txgpt.vocab}. DS7 pairs a question about one transaction with its facts
+and the template's answer, split by address so that no address spans two splits.

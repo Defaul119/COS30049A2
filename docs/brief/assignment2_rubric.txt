@@ -1,0 +1,81 @@
+COS30049 Assignment 2 Rubric (Canvas, pasted by the user on 3 Nov 2026). 40 points.
+
+REPORT (12)
+1) Explanation of Data Collection and Processing Operations - 5
+   5: Comprehensive and clear explanation of data collection methods and processing steps, including rationale
+      for chosen methods.
+   3: Adequate explanation with minor gaps in detail or rationale.
+   1: Limited explanation with significant gaps in detail or rationale.
+   0: Explanation is missing or inadequate.
+2) Explanation of Data Analysis - 2
+   2 to >1: Detailed and clear explanation of data analysis methods and interpretation of results.
+   1 to >0: Basic explanation with some detail, but lacks depth or clarity.
+   0: Explanation is missing or insufficient.
+3) Justification of Model Selection - 2
+   2: Thorough justification for model choice, including consideration of alternatives and alignment with
+      project goals.
+   1: Limited justification with significant gaps in reasoning or insufficient consideration of alternatives.
+   0: Justification is missing or poorly articulated.
+4) Quality of Writing and Logical Structure - 1
+   1 to >0: Exceptionally well-written with a clear and logical structure, no grammatical or spelling errors,
+            and a smooth flow between sections.
+   0: Poorly written with frequent grammatical or spelling errors; lacks logical structure and coherence.
+5) Academic Referencing and Citations - 1
+   1: All sources are correctly cited using the Harvard style; a comprehensive and accurate reference list is
+      included.
+   0: Significant errors in citation or missing references.
+6) Completeness - 1
+   1: All required sections are included and fully completed with appropriate detail.
+   0: Several sections are missing or incomplete; significant gaps in content.
+
+SOURCE CODE EXECUTION (20)
+1) Core Functionalities (see Assignment 2 brief, orange font) - 10
+   10: Data is thoroughly collected from reliable sources, cleaned, normalized, and prepared for analysis. The
+       process is well-documented, with clear explanations of the methods used, including justifications for
+       each step. Models are selected based on a comprehensive evaluation of the problem context, and the
+       performance is thoroughly evaluated using appropriate metrics such as accuracy, precision, recall, and
+       F1 score. The reasoning behind the model choice is clearly articulated and well-supported.
+   8: Data is collected and processed appropriately, but there may be minor gaps in documentation or
+      justifications for the methods used. Data is generally clean and ready for analysis. Models are selected
+      appropriately, but the evaluation may lack depth in some areas. The rationale for model selection is
+      provided but may have minor gaps.
+   4: Data is collected and processed with significant gaps in documentation or justifications. Some steps in
+      data preparation may be incomplete or unclear. Model selection is basic, with minimal evaluation and
+      justification. The rationale for the choice is weak or unclear.
+2) Datasets - 4
+   4 to >3: The dataset is complete and highly relevant to the final machine learning model, containing only
+            the necessary data with no extraneous information. The dataset is provided in a clear, accessible
+            format (jsonl, json, or csv), with proper organization and no errors, making it easy to load and use.
+   3 to >1: Some relevant data, but also significant irrelevant data or lacks key components; correct format but
+            noticeable formatting errors or poor organization.
+   1 to >0: Largely incomplete or irrelevant; little to no documentation of preprocessing; incorrect format or
+            significant errors.
+3) README file - 2
+   2 to >1: Comprehensive and clear instructions to configure the project environment using commands, every step
+            explained, clearly connected to the dataset and model. Thorough model training instructions with all
+            commands and parameters. Clear prediction guide with examples or commands. Professional presentation
+            (pdf or markdown), well organised, free from errors, logical flow.
+   1 to >0: Incomplete or confusing instructions; insufficient detail; poor presentation.
+4) Comments - 2
+   2 to >1: Thoroughly commented; all significant sections have clear, informative comments explaining purpose
+            and functionality; comments enhance readability and maintainability.
+   1 to >0: Minimal comments; many sections lack explanations; comments too brief, vague or inconsistent.
+5) Code Structure - 2
+   2 to >1: Clean, well-organised, best practices; logically organised files with a clear hierarchy, easy to
+            navigate; modular, with functions or classes clearly separated; maintainable and scalable.
+   1 to >0: Generally organised but some issues; some redundancies or unclear separation between modules.
+   0: Poorly structured, disorganised, hard to navigate.
+
+HD (8)
+Additional datasets - 4
+   4 to >2: A large number of additional datasets supporting the machine learning algorithms, with correct and
+            appropriate processing and analysis (including visualisation); aligned with the project goals; a
+            significant amount of work.
+   2 to >0: A moderate or small amount of additional data with weak relevance; minimal processing/analysis or
+            errors; relatively low additional workload.
+Additional machine learning implementations - 4
+   4 to >2: Additional implementations on top of the basic two types (types may repeat), appropriate to the
+            project goals and data, with well-tuned parameters; clear, correct code; the model performs
+            excellently and contributes effectively to the project's objectives.
+   2 to >0: Methods not entirely appropriate; flaws in the code; the report lacks detailed explanations; tuning
+            needs improvement; limited effectiveness or weak alignment with the goals.
