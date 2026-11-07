@@ -51,7 +51,7 @@ MODEL_NAMES = {"logistic": "Logistic regression", "knn": "k-nearest neighbours",
                "histGradientBoosting": "Hist.\\ gradient boosting"}
 
 
-# ---------------------------------------------------------------- reading and formatting
+# Reading and formatting
 
 def table(name: str) -> pd.DataFrame:
     """One CSV from reports/tables (name without .csv)."""
@@ -98,7 +98,7 @@ def eda(statistic: str) -> str:
     return str(row(d, statistic=statistic)["value"])
 
 
-# ---------------------------------------------------------------- the numbers
+# The numbers
 
 def numbers() -> dict[str, str]:
     """Every \\V key: its LaTeX text."""
@@ -286,7 +286,7 @@ def collected_tests() -> int:
     return int(found.group(1))
 
 
-# ---------------------------------------------------------------- the tables
+# The tables
 
 def tabular(caption: str, label: str, spec: str, header: list[str], rows: list[list[str]],
             note: str = "", size: str = "\\small", width: str = "\\textwidth", place: str = "htbp") -> str:
@@ -455,7 +455,7 @@ def tab_classifiers(v: dict[str, str]) -> str:
                    note=note, size="\\footnotesize")
 
 
-# ---------------------------------------------------------------- the example prediction (appendix)
+# The example prediction (appendix)
 
 # README section 3's what-if example: a DS1 address and a hypothetical outgoing transaction.
 EXAMPLE = {"address": "1Bbcsfxj2JRUD5crcdZVHBcViT61vrJ3dz", "amount": 0.05, "direction": "out",
@@ -483,7 +483,7 @@ def example_tex() -> str:
             + wrapped + "\n\\end{verbatim}\n}\n")
 
 
-# ---------------------------------------------------------------- main
+# Main
 
 def used_keys() -> set[str]:
     """Every \\V{key} in the report's sections."""

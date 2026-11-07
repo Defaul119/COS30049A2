@@ -142,7 +142,7 @@ class EsploraClient(EsploraEndpoints):
         self.stats = RequestStats()
         self._last_request_at = 0.0
 
-    # -- transport -----------------------------------------------------------
+    # Transport
 
     def _wait_turn(self) -> None:
         if self.pacer is not None:

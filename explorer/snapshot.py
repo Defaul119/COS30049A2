@@ -100,7 +100,7 @@ TERMS_NOTE = (
 )
 
 
-# -- cache helpers -------------------------------------------------------------
+# Cache helpers
 
 
 def utc_now() -> str:
@@ -167,7 +167,7 @@ class CandidateStats:
         return json.loads(self.replies[address])
 
 
-# -- the selection rule ------------------------------------------------------------
+# The selection rule
 
 
 def selection_rule(params: dict[str, Any]) -> dict[str, Any]:
@@ -271,7 +271,7 @@ def sample_blocks(
     )
 
 
-# -- histories -------------------------------------------------------------------
+# Histories
 
 
 STATUS_FIELDS = ("confirmed", "block_height", "block_hash", "block_time")
@@ -431,7 +431,7 @@ def place_history(history: History, raw_dir: Path, kept: bool) -> None:
         history.folder = target
 
 
-# -- checks ----------------------------------------------------------------------
+# Checks
 
 
 def verify_history(history: History) -> list[dict[str, Any]]:
@@ -519,7 +519,7 @@ def provenance(raw_dir: Path) -> list[dict[str, Any]]:
     return files
 
 
-# -- the run -----------------------------------------------------------------------
+# The run
 
 
 def address_summary(history: History, role: str, visit_rank: int, raw_dir: Path) -> dict[str, Any]:

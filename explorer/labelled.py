@@ -191,7 +191,7 @@ def run_process_heist(csv_path: Path = HEIST_CSV, out_dir: Path = HEIST_DIR, tab
     return 0
 
 
-# -- DS3 Elliptic -------------------------------------------------------------------------
+# DS3 Elliptic
 
 ELLIPTIC_RAW = EXTERNAL_DIR / "elliptic"
 ELLIPTIC_DIR = PROCESSED_DIR / "elliptic"

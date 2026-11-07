@@ -106,7 +106,7 @@ class Explorer:
             self.io.say("Goodbye.")
         return 0
 
-    # -- the address list ------------------------------------------------------------
+    # The address list
 
     def address_table(self) -> pd.DataFrame:
         """One row per snapshot address: transactions, how many are scored and flagged, first and last day.
@@ -147,7 +147,7 @@ class Explorer:
                 self.io.say(f"Not on the list: type a number from 1 to {len(table)}, or paste one of the addresses "
                             "shown. Only the snapshot's addresses can be scored.")
 
-    # -- one address -------------------------------------------------------------------
+    # One address
 
     def show_address(self, address: str) -> None:
         try:
@@ -226,7 +226,7 @@ class Explorer:
         self.show_transaction(txs[number - 1], f"Transaction #{number}", use_assistant=bool(match.group(1)))
         return True
 
-    # -- one transaction ---------------------------------------------------------------
+    # One transaction
 
     def show_transaction(self, tx: dict[str, Any], label: str, use_assistant: bool) -> None:
         self.io.say(f"\n{label}: {short_time(tx['time'])} UTC, {tx['direction']}, {format_btc(tx['netSats'])}")
@@ -286,7 +286,7 @@ class Explorer:
         for name, why in result["skippedWriters"].items():
             self.io.say(f"  ({name} is not available on this machine: {why})")
 
-    # -- what-if -----------------------------------------------------------------------
+    # What-if
 
     def what_if(self, address: str) -> None:
         """A hypothetical next transaction, scored against the address's real history before its time."""

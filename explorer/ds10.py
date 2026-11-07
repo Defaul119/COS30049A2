@@ -176,7 +176,7 @@ def run_ds10(client: EsploraEndpoints, raw_dir: Path = RAW_DIR, out_dir: Path = 
     return 1 if failed else 0
 
 
-# -- ds10-check ---------------------------------------------------------------------------------
+# ds10-check
 
 
 def activity_profile(tx: pd.DataFrame, source: str) -> dict[str, Any]:

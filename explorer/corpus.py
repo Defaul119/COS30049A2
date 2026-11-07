@@ -79,7 +79,7 @@ SKIP_REASONS = {
 }
 
 
-# -- privacy -------------------------------------------------------------------------
+# Privacy
 
 
 def load_or_create_salt(path: Path = SALT_PATH) -> str:
@@ -113,7 +113,7 @@ def ds1_exclusions(ds1_raw_dir: Path = DS1_RAW_DIR, manifest_path: Path = DS1_MA
     return set(pool) | {row["address"] for row in manifest.get("kept", [])}
 
 
-# -- concurrency ---------------------------------------------------------------------
+# Concurrency
 
 
 class SharedPace:
@@ -177,7 +177,7 @@ def make_clients(sources: list[str], workers_per_source: int) -> list[EsploraCli
     return clients
 
 
-# -- one candidate ---------------------------------------------------------------------
+# One candidate
 
 
 def compact_rows(history: History, salt: str, hex_chars: int) -> list[list[Any]]:
@@ -228,7 +228,7 @@ def crawl_candidate(
             "rows": compact_rows(history, salt, params["idHexChars"])}
 
 
-# -- the crawl -------------------------------------------------------------------------
+# The crawl
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:

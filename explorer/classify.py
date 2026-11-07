@@ -55,7 +55,7 @@ MODEL_KINDS = ("logistic", "knn", "randomForest", "histGradientBoosting")
 FULL_GRID = {"logistic", "knn"}  # small grids are searched exhaustively; the rest by random draws
 
 
-# -- models ------------------------------------------------------------------------------
+# Models
 
 
 def make_model(kind: str, params: dict[str, Any], cfg: dict[str, Any], n_rows: int) -> Pipeline:
@@ -88,7 +88,7 @@ def configurations(kind: str, cfg: dict[str, Any]) -> list[dict[str, Any]]:
     return list(ParameterSampler(space, n_iter=cfg["nIter"], random_state=cfg["seed"]))
 
 
-# -- metrics -----------------------------------------------------------------------------
+# Metrics
 
 
 def best_f1_threshold(y: np.ndarray, p: np.ndarray) -> tuple[float, float]:
@@ -120,7 +120,7 @@ def stratified_subsample(frame: pd.DataFrame, n: int, seed: int) -> pd.DataFrame
     return frame.groupby("y", group_keys=False).sample(frac=n / len(frame), random_state=seed)
 
 
-# -- one model on one scheme -----------------------------------------------------------------
+# One model on one scheme
 
 
 def search_and_evaluate(
@@ -155,7 +155,7 @@ def search_and_evaluate(
     return result, tuning, model, p_test
 
 
-# -- BitcoinHeist ----------------------------------------------------------------------------
+# BitcoinHeist
 
 
 HEIST_META = ["y", "family", "year", "temporal", "random", "temporal_sampled", "temporal_train_sampled",
@@ -256,7 +256,7 @@ def write_heist_tables(out_dir: Path, features: list[str], tables_dir: Path = TA
     return 0
 
 
-# -- Elliptic ---------------------------------------------------------------------------------
+# Elliptic
 
 
 def run_classify_elliptic(force: bool = False, rows_path: Path = ELLIPTIC_DIR / "rows.parquet") -> int:

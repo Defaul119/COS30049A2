@@ -121,7 +121,7 @@ class Predictor:
                    pd.read_csv(SCORES_PATH), saved_methods(), selected or "baseline",
                    manifest["selection_rule"]["recorded_utc"][:10])
 
-    # -- shared pieces -----------------------------------------------------------------
+    # Shared pieces
 
     def method_info(self, name: str) -> dict[str, Any]:
         return {"id": name, "name": METHOD_NAMES.get(name, name), "flagAbsZ": self.flag_abs_z(),
@@ -197,7 +197,7 @@ class Predictor:
         out["explanation"] = template_explanation(out)
         return out
 
-    # -- the prediction API ------------------------------------------------------------
+    # The prediction API
 
     def score_address(self, address: str) -> dict[str, Any]:
         """The A1 timeline of one snapshot address: every transaction's scores, flags and features, per-day counts

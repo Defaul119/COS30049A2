@@ -82,7 +82,7 @@ def snapshot_note(fig: Figure) -> None:
              fontsize=7, color=MUTED, ha="left", va="top")
 
 
-# -- loaders ---------------------------------------------------------------------------------
+# Loaders
 
 
 def load_ds1() -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -95,7 +95,7 @@ def table(name: str) -> pd.DataFrame:
     return pd.read_csv(TABLES_DIR / f"{name}.csv")
 
 
-# -- DS1 analyses ----------------------------------------------------------------------------
+# DS1 analyses
 
 
 def fig_history_sizes(features: pd.DataFrame) -> tuple[Figure, Stats]:
@@ -341,7 +341,7 @@ def fig_profiles(summary: pd.DataFrame, tuning: pd.DataFrame) -> tuple[Figure, S
     return fig, s
 
 
-# -- DS3 and DS4 analyses ----------------------------------------------------------------------
+# DS3 and DS4 analyses
 
 
 def fig_elliptic_classes(steps: pd.DataFrame) -> tuple[Figure, Stats]:
@@ -408,7 +408,7 @@ def fig_heist_features(rows: pd.DataFrame, sample: int = 50000) -> tuple[Figure,
     return fig, s
 
 
-# -- evaluation figures ------------------------------------------------------------------------
+# Evaluation figures
 
 
 def fig_injection_recall(injection: pd.DataFrame) -> tuple[Figure, Stats]:
@@ -579,7 +579,7 @@ def fig_txgpt_sizes(runs: pd.DataFrame, sizes: pd.DataFrame) -> tuple[Figure, St
     return fig, s
 
 
-# -- DS1 extensions (24 Oct): calibration, fusion, uncertainty, strength, time, DS2 ------------------
+# DS1 extensions (24 Oct): calibration, fusion, uncertainty, strength, time, DS2
 
 
 def method_order(names: Any) -> list[str]:
@@ -835,7 +835,7 @@ def fig_ds10_check(ds10: pd.DataFrame, ds1_sanity: pd.DataFrame, ds1_addresses: 
     return fig, s
 
 
-# -- building every figure ---------------------------------------------------------------------
+# Building every figure
 
 
 def elliptic_curves() -> list[tuple[str, np.ndarray, np.ndarray]] | None:

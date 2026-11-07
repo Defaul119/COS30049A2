@@ -178,7 +178,7 @@ def candidate_stability(c: Candidate, data: Data) -> float:
     return stability(sets)
 
 
-# --- the candidates' Methods ------------------------------------------------------------------------------------
+# The candidates' Methods
 
 
 class Combined:
@@ -316,7 +316,7 @@ class IntervalCandidate:
         return worst
 
 
-# --- the grids ----------------------------------------------------------------------------------------------------
+# The grids
 
 
 def pooled_candidate(kind: str, params: dict[str, Any], input_set: str, data: Data) -> Candidate:
@@ -458,7 +458,7 @@ def candidates(method: str, data: Data, fits: dict | None) -> list[Candidate]:
     return list(pooled_candidates(("dbscan", "hdbscan") if method == "dbscan" else (method,), data))
 
 
-# --- the search ---------------------------------------------------------------------------------------------------
+# The search
 
 
 def search(method: str, pool: list[Candidate], data: Data, ref: dict[str, Any]) -> tuple[pd.DataFrame, int, str]:

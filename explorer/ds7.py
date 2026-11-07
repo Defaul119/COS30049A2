@@ -61,7 +61,7 @@ OUT_DIR = PROJECT_ROOT / "data" / "processed" / "ds7"
 DS2_PATH = PROJECT_ROOT / "data" / "processed" / "corpus" / "ds2.parquet"
 SPLITS = ("train", "val", "test")
 
-# -- the five phrasings ------------------------------------------------------------------
+# The five phrasings
 # Each takes the template's facts (the opener's method name, the reasons from explain.reasons_for)
 # and says them differently. Numbers come only from the reasons' own text, so every phrasing has
 # exactly the template's numbers.
@@ -112,7 +112,7 @@ def phrase(tx: dict[str, Any], k: int) -> str:
     return "\n".join(lines)
 
 
-# -- sources -----------------------------------------------------------------------------
+# Sources
 
 
 def short_hash(value: str, salt: str, chars: int = 12) -> str:
