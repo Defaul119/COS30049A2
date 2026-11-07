@@ -49,6 +49,7 @@ Due Sun 8 Nov 23:59 GMT+7; the team submits Sat 7 Nov. Results freeze Tue 3 Nov;
 
 - [x] Draft in LaTeX in the brief's order; numbers from reports/tables via tools/report_numbers.py; no Qwen. [Claude]
 - [x] Revised against the brief, rubric, slides and A1 feedback; team's usable text merged; Elliptic record cited. [Claude]
+- [ ] Choose which to submit: `report/main.pdf` or `report/main_v2.pdf` (same body, longer appendix). [team, Cao]
 - [ ] Team read-through and approval; the two Open rows in Table 4 (reviewer check, usability walkthrough). [team, Cao]
 - [ ] Ask the tutor whether tables and captions count towards the 3,000 words. [team]
 - [ ] AI declaration from docs/AI_USE_LOG.md (glossary fact-checked by Claude, not a person, unless a teammate

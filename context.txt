@@ -15,6 +15,8 @@ RUNNING
   ignore its output. Results frozen: tag results-v1.1.
 - DONE 7 Nov: report revised against the brief, rubric, slides and A1 feedback (section order, duplicates, old
   references, thin sections, inconsistent minutes and form). Five K-Dense skills in ~/.claude/skills. Due Sun 8 Nov 23:59.
+- DONE 7 Nov: report/main_v2.tex and main_v2.pdf: main.tex's body with a styled cover, headers and a longer appendix.
+  Build: python tools/report_numbers.py, then pdflatex main_v2.tex three times in report/. Team picks which to submit.
 - DONE 7 Nov: code cleanup (code-humanizer skill, also in ~/.claude/skills): outputs unchanged except last-bit noise
   in score_fusion that the old code also has (CHANGELOG 7 Nov). Windows false alarm in compare_tables.py fixed. The zip
   passes 273 tests with no git. For A3: ds10.py and ds2_check.py share evaluation blocks; the other report-only items

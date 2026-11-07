@@ -1,0 +1,136 @@
+% COS30049 Assignment 2 report, presentation variant: the same body as main.tex (sections 01-09), with a styled cover,
+% page headers and a longer appendix (requirements checklist, architecture, feature walkthroughs, key code).
+% Build from report/ after python tools/report_numbers.py: pdflatex main_v2.tex (three passes).
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[a4paper,11pt]{article}
+
+% Page and fonts
+\usepackage[margin=2.3cm, headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[scaled=0.92]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{microtype}
+\usepackage{parskip}
+
+% Tables
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+
+% Figures
+\usepackage{graphicx}
+\graphicspath{{../reports/figures/}}
+\usepackage{float}
+% let a text page carry more floats, so tables do not drift to pages of their own
+\renewcommand{\topfraction}{0.9}\renewcommand{\bottomfraction}{0.8}\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}\setcounter{totalnumber}{5}\setcounter{topnumber}{3}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{font=small, labelfont=bf}
+\captionsetup[table]{position=top}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, fit, backgrounds}
+
+% Text
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\setlist{nosep, leftmargin=1.4em}
+\usepackage{xcolor}
+\definecolor{accent}{HTML}{A6192E}
+\definecolor{muted}{HTML}{55565A}
+\definecolor{headfill}{HTML}{F4E8E4}
+\definecolor{codefill}{HTML}{F5F5F3}
+\usepackage{verbatim}
+\usepackage{listings}
+\lstset{language=Python, basicstyle=\ttfamily\scriptsize, keywordstyle=\color{accent}\bfseries,
+        commentstyle=\color{muted}\itshape, stringstyle=\color{blue!50!black}, backgroundcolor=\color{codefill},
+        breaklines=true, columns=fullflexible, keepspaces=true, frame=single, rulecolor=\color{black!15},
+        showstringspaces=false, numbers=none, aboveskip=4pt, belowskip=8pt}
+
+% Section headings in the accent colour
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}{-3ex \@plus -1ex \@minus -.2ex}{1.4ex \@plus .2ex}%
+  {\normalfont\Large\bfseries\color{accent}}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}{-2.4ex \@plus -1ex \@minus -.2ex}{1ex \@plus .2ex}%
+  {\normalfont\large\bfseries}}
+\makeatother
+
+% Header and footer on every page
+\usepackage{fancyhdr}
+\newcommand{\pagefurniture}{%
+  \fancyhf{}%
+  \fancyhead[L]{\small\color{muted} Group HCMC\_COS30049.1\_4}%
+  \fancyhead[R]{\small\color{muted} Bitcoin Address Activity Explorer}%
+  \fancyfoot[L]{\small\color{muted} COS30049 Computing Technology Innovation Project}%
+  \fancyfoot[R]{\small\thepage}%
+  \renewcommand{\headrulewidth}{0.4pt}}
+\pagestyle{fancy}\pagefurniture
+\fancypagestyle{plain}{\pagefurniture}
+
+% \V{key}: a number written by tools/report_numbers.py; an unknown key stops the build.
+\newcommand{\V}[1]{\ifcsname v@#1\endcsname\csname v@#1\endcsname\else
+  \PackageError{report}{Unknown number key #1}{Run python tools/report_numbers.py}\fi}
+\input{generated/numbers.tex}
+\newcommand{\limitation}{\emph{Unusual activity requires investigation; it does not indicate wrongdoing.}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\ctt}[1]{\texttt{#1}}
+% \FloatBarrier: if figures or tables are still waiting to be placed, place them before going on (a new page);
+% otherwise do nothing. Keeps a section's floats out of the next section.
+\makeatletter
+\newcommand{\FloatBarrier}{\par\begingroup\let\@elt\relax
+  \edef\@tempa{\@botlist\@deferlist\@dbldeferlist}%
+  \ifx\@tempa\@empty\endgroup\else\endgroup\clearpage\fi}
+\makeatother
+
+% numbered reference list [1]-[N], alphabetical, hanging indent (as in Assignment 1)
+\newcounter{refnum}
+\newenvironment{references}{%
+  \sloppy\begin{list}{[\arabic{refnum}]}{\usecounter{refnum}\setlength{\labelwidth}{2.2em}%
+    \setlength{\leftmargin}{2.8em}\setlength{\labelsep}{0.6em}%
+    \setlength{\itemsep}{0.35\baselineskip}\setlength{\parsep}{0pt}}\small}%
+  {\end{list}}
+
+% Links (last)
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true, linkcolor=blue!50!black, citecolor=blue!50!black,
+            urlcolor=blue!60!black]{hyperref}
+\hypersetup{pdftitle={Bitcoin Address Activity Explorer: Detecting Unusual Transactions with Machine Learning},
+            pdfauthor={HCMC\_COS30049.1\_4}}
+
+\begin{document}
+
+\input{sections/00-cover-v2}
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+% Body: the brief's sections in the brief's order (counted towards the 3,000 words).
+\input{sections/01-introduction}
+\input{sections/02-problem}
+\input{sections/03-collection}
+\input{sections/04-processing}
+\input{sections/05-analysis}
+\input{sections/06-selection}
+\input{sections/07-implementation}
+\FloatBarrier
+\input{sections/08-conclusion}
+
+% Not counted: bibliography and appendix.
+\input{sections/09-references}
+\appendix
+\input{sections/11-appendix-v2}
+% 10-appendix starts with \clearpage for main.tex; here it follows on from the sections above.
+{\let\clearpage\relax\input{sections/10-appendix}}
+
+\end{document}

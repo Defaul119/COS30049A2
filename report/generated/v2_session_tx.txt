@@ -1,0 +1,27 @@
+Transaction #11: 2024-07-11 03:32 UTC, in, 0.0011126 BTC
+  https://blockstream.info/tx/c91d9fbbd396070099f3147822cd6e1eb97b1de376ad353f42007149ddb73140
+
+Compared with this address's own history (the flag line is |z| 5):
+  Feature         This transaction        Usual                        z
+  Size            0.0011126 BTC           0.00291708 BTC            -2.9  <- stands out
+  Burst           1 transaction           1.0 transactions           0.0
+  Gap             48 hours                6 days                    -1.8
+  Relative size   0.4x                    1.4x                      -5.6  <- over the flag line
+
+Every saved model's verdict (1 of 9 that could score it flag it; the Explorer shows Robust z baseline (A1)'s):
+  FLAG  Robust z baseline (A1)                          5.61  statistics: |z| against the address's own median and MAD (A1's rule; nothing trained) (decides the flag)
+  -     Isolation Forest                                0.52  outlier detection: random isolation trees
+  -     Local Outlier Factor                            1.47  outlier detection: local density against the nearest neighbours
+  -     K-Means distance                                6.69  clustering: distance to the nearest K-Means centre
+  -     DBSCAN noise                                    1.70  clustering: distance to DBSCAN's nearest dense core
+  -     Regression residual                             2.57  regression: the miss between the predicted and actual size and gap
+  -     Regression expected range                      -0.16  regression: distance outside the conformal expected range
+  -     Score fusion (two methods, one flag budget)     0.99  combination: regression and Isolation Forest scores together
+  -     TxGPT surprisal                                 5.57  language model: TxGPT's surprisal (trained from scratch on DS2)
+
+Explanation, written by the template (fixed sentences filled in from the numbers above; no model):
+  Flagged by Robust z baseline (A1).
+  What stands out compared with this address's own history:
+  - Lower ratio to the usual amount than usual: 0.4x the usual amount for this direction, against a usual 1.4x.
+  - Smaller amount than usual: 0.0011126 BTC moved, against a usual 0.00291708 BTC.
+  Unusual activity requires investigation; it does not indicate wrongdoing.

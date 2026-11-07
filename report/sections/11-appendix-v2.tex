@@ -1,0 +1,162 @@
+% Appendix sections used only by main_v2.tex (not counted towards the word limit). Screens in generated/v2_session_*.txt
+% are real output of `python -m explorer.cli explore`; code listings read the source files directly.
+\clearpage
+\section{Requirements checklist}
+\label{app:checklist}
+
+The brief's requirements for this report and two objectives from Assignment~1, with where each is met.
+
+{\footnotesize
+\begin{longtable}{|L{7.4cm}|L{6.2cm}|c|}
+\hline
+\rowcolor{headfill}\textbf{Requirement} & \textbf{Where it is met} & \textbf{Status} \\ \hline
+\endhead
+Project title, group name and ID, students' names and IDs, tutor & Cover & $\checkmark$ \\ \hline
+Motivation and intended users & Section~\ref{sec:intro} & $\checkmark$ \\ \hline
+Challenge, limits of existing solutions, why machine learning fits & Section~\ref{sec:problem} & $\checkmark$ \\ \hline
+Sources, methods, filtering criteria and challenges of collection & Section~\ref{sec:collection}, Table~\ref{tab:datasets} & $\checkmark$ \\ \hline
+Cleaning, missing values, normalisation, feature engineering, joining & Section~\ref{sec:processing}, Table~\ref{tab:features} & $\checkmark$ \\ \hline
+Analysis with statistics and visualisation & Section~\ref{sec:analysis}, \code{notebooks/01\_eda.ipynb} & $\checkmark$ \\ \hline
+Selection criteria, alternatives and preliminary tests & Section~\ref{sec:selection}, Table~\ref{tab:candidates} & $\checkmark$ \\ \hline
+At least two of classification, clustering and regression & All three, Table~\ref{tab:candidates} & $\checkmark$ \\ \hline
+Technical implementation: architecture, libraries, code, challenges & Section~\ref{sec:technical}, Appendices~\ref{app:architecture} and~\ref{app:code} & $\checkmark$ \\ \hline
+Evaluation against objectives, with unexpected outcomes & Section~\ref{sec:evaluation}, Tables~\ref{tab:objectives}--\ref{tab:classifiers} & $\checkmark$ \\ \hline
+Accuracy, precision, recall and F1 & Table~\ref{tab:classifiers}, where labels exist & $\checkmark$ \\ \hline
+Conclusion: outcomes, impact on users, limitations, future work & Section~\ref{sec:conclusion} & $\checkmark$ \\ \hline
+Harvard bibliography & Bibliography & $\checkmark$ \\ \hline
+Additional datasets & DS2--DS7 and DS10, Table~\ref{tab:datasets} & $\checkmark$ \\ \hline
+Additional machine-learning implementations & Table~\ref{tab:candidates} & $\checkmark$ \\ \hline
+Blind reviewer check (Assignment~1) & Table~\ref{tab:objectives} & Open \\ \hline
+Usability walkthrough (Assignment~1) & Table~\ref{tab:objectives} & Open \\ \hline
+\end{longtable}}
+
+\section{System architecture and workflow}
+\label{app:architecture}
+
+Figure~\ref{fig:architecture} shows how the modules fit together. Every step reads its thresholds from one settings
+file, and this report's results are read from the result tables by a script.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\footnotesize, node distance=0.32cm and 0.45cm, >={Stealth[length=2mm]},
+  layer/.style={draw, rounded corners=2pt, text width=10.5cm, minimum height=1.0cm, align=left, fill=#1},
+  side/.style={draw, rounded corners=2pt, text width=3.4cm, minimum height=1.0cm, align=center, fill=black!4}]
+  \node[layer=blue!6] (src) {\textbf{Sources.} Esplora and mempool.space APIs; Kaggle (Elliptic); UCI (BitcoinHeist);
+    Hugging Face (DS5, DS6)};
+  \node[layer=blue!6, below=of src] (data) {\textbf{Data and features.} \ctt{snapshot}, \ctt{corpus}, \ctt{ds10},
+    \ctt{transactions}, \ctt{labelled}, \ctt{features}, \ctt{split}, \ctt{inject}};
+  \node[layer=orange!10, below=of data] (models) {\textbf{Models.} \ctt{baseline}, \ctt{clustering}, \ctt{regression},
+    \ctt{outliers}, \ctt{fusion}, \ctt{classify}; TxGPT and the 152M model in \ctt{lm/}};
+  \node[layer=orange!10, below=of models] (eval) {\textbf{Evaluation.} \ctt{evaluate}, \ctt{significance},
+    \ctt{sensitivity}, \ctt{walkforward}, \ctt{ds2\_check}, \ctt{ds10}, \ctt{stages}};
+  \node[layer=green!8, below=of eval] (pred) {\textbf{Prediction.} \ctt{Predictor} in \ctt{predict}; \ctt{explain}
+    (template); \ctt{assistant} (guardrail)};
+  \node[layer=green!8, below=of pred] (use) {\textbf{Use.} \ctt{predict} and \ctt{explore} commands now; Assignment~3's
+    web application next};
+  \node[side, right=of data] (cfg) {\ctt{config/settings.json}\\ thresholds, grids, seeds};
+  \node[side, right=of eval] (tables) {\ctt{reports/tables}\\ every result};
+  \node[side, right=of pred] (report) {This report\\ via \ctt{report\_numbers}};
+  \foreach \a/\b in {src/data, data/models, models/eval, eval/pred, pred/use} \draw[->] (\a) -- (\b);
+  \draw[->, dashed] (cfg) -- (data);
+  \draw[->, dashed] (cfg.south west) -- (models.north east);
+  \draw[->] (eval) -- (tables);
+  \draw[->] (tables) -- (report);
+\end{tikzpicture}
+\caption{System architecture. Names in code type are modules of \code{explorer/} unless marked.}
+\label{fig:architecture}
+\end{figure}
+
+Figure~\ref{fig:workflow} shows the path a user takes through the interactive Explorer. It serves these user stories:
+
+\begin{itemize}
+  \item As a student researcher, I want to see which of an address's transactions stand out, so that I know where to
+    start reading.
+  \item As a compliance analyst, I want the reason beside each flag, so that I can check it against the address's
+    history before acting.
+  \item As a developer on Assignment~3, I want one class that scores and explains, so that the web application needs
+    no model code of its own.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\footnotesize, node distance=0.5cm and 0.6cm, >={Stealth[length=2mm]},
+  box/.style={draw, rounded corners=2pt, text width=4.1cm, minimum height=1.15cm, align=center, fill=#1},
+  box/.default=blue!6]
+  \node[box] (list) {\textbf{Address list}\\ pick a number or paste an address};
+  \node[box, right=of list] (addr) {\textbf{One address}\\ its flagged transactions};
+  \node[box, right=of addr] (tx) {\textbf{One transaction}\\ features, every model's verdict, explanation};
+  \node[box=black!4, below=of addr] (other) {\ctt{t}: all transactions\\ \ctt{w}: score a what-if};
+  \node[box=orange!10, below=of tx] (asst) {\ctt{a} and a number: the Assistant writes an answer};
+  \node[box=green!8, below=of asst] (guard) {\textbf{Guardrail}\\ passes: its answer is shown\\ fails: the template is shown};
+  \draw[->] (list) -- (addr);
+  \draw[->] (addr) -- (tx);
+  \draw[->] (addr) -- (other);
+  \draw[->] (addr.south east) -- (asst.north west);
+  \draw[->] (asst) -- (guard);
+\end{tikzpicture}
+\caption{The interactive Explorer's workflow (\code{python -m explorer.cli explore}).}
+\label{fig:workflow}
+\end{figure}
+
+\section{Feature walkthroughs}
+\label{app:walkthroughs}
+
+\subsection*{Browse an address and ask why}
+
+\textbf{Purpose.} Find the transactions worth a look in one address's history, and see the reason for each.
+
+\textbf{Step 1.} Run \code{python -m explorer.cli explore}. The list shows each snapshot address with its counts.
+
+{\fontsize{7}{8.6}\selectfont\verbatiminput{generated/v2_session_list.txt}}
+
+\textbf{Step 2.} Type an address's number, here 7. Its flagged transactions appear, each with its main reason.
+
+{\fontsize{7}{8.6}\selectfont\verbatiminput{generated/v2_session_address.txt}}
+
+\noindent\begin{minipage}{\linewidth}
+\textbf{Step 3.} Type a transaction's number, here 11. The screen compares its features with the address's own history,
+lists every saved model's verdict, and gives the explanation.
+
+{\fontsize{5}{6.4}\selectfont\verbatiminput{generated/v2_session_tx.txt}}
+\end{minipage}
+
+\subsection*{Test a hypothetical transaction}
+
+\textbf{Purpose.} Ask how a transaction that has not happened would compare with an address's real history, the
+user-input prediction Assignment~3 will offer.
+
+\textbf{Step 1.} Run \code{predict what-if} with an address, an amount, a direction and a time, or type \code{w} in the
+Explorer.
+
+\textbf{Step 2.} Read whether it is flagged and which features stand out (Appendix~\ref{app:example}). TxGPT sits this
+one out, because its scores are made in advance.
+
+\subsection*{Ask the Assistant to explain}
+
+\textbf{Purpose.} Have the language model phrase an explanation, without trusting it blindly.
+
+\textbf{Step 1.} Add \code{-{}-assistant} to \code{predict explain}, or type \code{a} and a number in the Explorer.
+
+\textbf{Step 2.} Read the \code{source} field, which says who wrote the text. An answer that fails the guardrail is never
+shown: the template appears instead, and \code{failedChecks} lists what went wrong.
+
+\textbf{Step 3.} Without the model's weights on the machine, \code{skippedWriters} says so and the template answers.
+
+\section{Key code}
+\label{app:code}
+
+\textbf{Time safety.} Transactions in the same block share a time, so a transaction's history ends before the first
+transaction at its own time. This is the rule behind every feature (Section~\ref{sec:processing}).
+
+\lstinputlisting[firstline=190, lastline=193, title={\code{explorer/features.py}, lines 190--193}]{../explorer/features.py}
+
+\textbf{A hypothetical transaction.} The same rule holds for a what-if: only real transactions strictly before its time
+form its history.
+
+\lstinputlisting[firstline=237, lastline=244, title={\code{explorer/predict.py}, lines 237--244}]{../explorer/predict.py}
+
+\noindent\begin{minipage}{\linewidth}
+\textbf{The guardrail.} An answer must pass every check before the user sees it (Section~\ref{sec:selection}).
+
+\lstinputlisting[firstline=264, lastline=272, title={\code{explorer/assistant.py}, lines 264--272}]{../explorer/assistant.py}
+\end{minipage}

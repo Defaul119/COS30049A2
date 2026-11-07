@@ -23,6 +23,12 @@ removed. Writing checks followed K-Dense's MIT-licensed skills, installed locall
 against the fuller specification the same evening: engineering challenges added to the technical section, impact and
 limitations to the conclusion, and the reference list renamed Bibliography as in the brief.
 
+**A second presentation of the report: `report/main_v2.pdf`.** Same body, numbers and word count as `main.pdf`, with a
+styled cover, page headers and four more appendix sections: a requirements checklist, the architecture and workflow
+diagrams, feature walkthroughs using real Explorer output, and key code read directly from the source. Its layout ideas
+came from an earlier cohort's report the user supplied, written to a different brief (web design, no machine learning);
+none of its text, data or figures are used. `main.pdf` is unchanged, and the team chooses which to submit.
+
 **Code cleanup with no change in results** (`explorer/`, `tools/`; the code-humanizer skill's catalogue, MIT, commit
 8ffe07b, one kind of change per commit, full test suite before each). 39 decorative section banners became plain
 comments; the unused `FigureFn` alias went; `significance.py` imports `interval` from `stages.py`, whose copy was
