@@ -26,7 +26,6 @@ Usage:  python -m explorer.cli stages-freeze      # once, at M0: record the froz
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
 import subprocess
@@ -38,6 +37,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import binomtest
 
+from .external import sha256_file
 from .settings import PROJECT_ROOT, SETTINGS
 
 log = logging.getLogger(__name__)
@@ -49,14 +49,6 @@ COLUMNS = ["time_utc", "commit", "family", "model", "stage", "tier", "metric", "
 # Shares read back from a CSV can differ from the same share computed again in the last bit (0.37735849056603776 is
 # written as 0.3773584905660377), so "rose" means rose by more than this.
 SHARE_TOLERANCE = 1e-9
-
-
-def sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        for block in iter(lambda: f.read(1 << 20), b""):
-            h.update(block)
-    return h.hexdigest()
 
 
 def frozen_paths() -> list[Path]:
@@ -75,7 +67,7 @@ def freeze(manifest: Path | None = None) -> dict[str, str]:
     manifest = manifest or PROJECT_ROOT / SETTINGS["stages"]["frozenManifest"]
     if manifest.exists():
         raise FileExistsError(f"{manifest} exists: the frozen files are recorded once, at M0")
-    digests = {p.relative_to(PROJECT_ROOT).as_posix(): sha256(p) for p in frozen_paths()}
+    digests = {p.relative_to(PROJECT_ROOT).as_posix(): sha256_file(p) for p in frozen_paths()}
     manifest.write_text(json.dumps(digests, indent=2) + "\n", encoding="utf-8")
     return digests
 
@@ -85,7 +77,7 @@ def check_frozen(manifest: Path | None = None) -> None:
     manifest = manifest or PROJECT_ROOT / SETTINGS["stages"]["frozenManifest"]
     recorded = json.loads(manifest.read_text(encoding="utf-8"))
     bad = [rel for rel, digest in recorded.items()
-           if not (PROJECT_ROOT / rel).exists() or sha256(PROJECT_ROOT / rel) != digest]
+           if not (PROJECT_ROOT / rel).exists() or sha256_file(PROJECT_ROOT / rel) != digest]
     if bad:
         raise RuntimeError(f"frozen test files changed since M0: {bad}")
 

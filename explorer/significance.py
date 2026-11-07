@@ -28,6 +28,7 @@ from .methods import Method, flags
 from .scores import saved_methods
 from .settings import SETTINGS
 from .split import EVAL
+from .stages import interval
 
 log = logging.getLogger(__name__)
 
@@ -71,11 +72,6 @@ def bootstrap_recalls(hits: pd.DataFrame, weights: np.ndarray, addresses: list[s
             out[name][measure] = np.where(n > 0, (ones @ hit_sum) / np.where(n > 0, n, 1.0), np.nan)
         out[name]["mean_recall"] = np.mean([out[name][m] for m in MEAN_OF], axis=0)
     return out
-
-
-def interval(values: np.ndarray, level: float) -> tuple[float, float]:
-    tail = 100 * (1 - level) / 2
-    return float(np.nanpercentile(values, tail)), float(np.nanpercentile(values, 100 - tail))
 
 
 def two_sided_p(diffs: np.ndarray) -> float:
