@@ -58,7 +58,6 @@ SEQUENTIAL = "Blues"
 DIVERGING = "RdBu_r"  # blue-red poles with a light neutral middle
 
 Stats = list[dict[str, Any]]
-FigureFn = Callable[..., tuple[Figure, Stats]]
 
 
 def style() -> None:
