@@ -63,7 +63,8 @@ def compare(new: pd.DataFrame, old: pd.DataFrame, tolerance: float) -> tuple[str
             worst = max(worst, column_worst)
             if column_worst > tolerance:
                 why.append(f"{c}: up to {column_worst:.4g}")
-        elif not a.astype(str).equals(b.astype(str)):
+        # On Windows, git checks out CRLF but `git show` returns LF, so a multi-line cell compares unequal to itself.
+        elif not a.astype(str).str.replace("\r\n", "\n").equals(b.astype(str).str.replace("\r\n", "\n")):
             why.append(f"{c}: text differs")
     if why:
         return "differs: " + "; ".join(why[:4]) + (" ..." if len(why) > 4 else ""), worst

@@ -27,6 +27,8 @@ class CompareTablesTests(unittest.TestCase):
         self.assertEqual(compare_tables.compare(old.copy(), old, 0.01)[0], "same")
         new = old.assign(recall=[0.505, np.nan])
         self.assertEqual(compare_tables.compare(new, old, 0.01)[0], "within")
+        windows, committed = table(answer=["two\r\nlines"]), table(answer=["two\nlines"])
+        self.assertEqual(compare_tables.compare(windows, committed, 0.01)[0], "same")
 
     def test_beyond_tolerance_text_missing_and_shape_differ(self) -> None:
         old = table(method=["a", "b"], recall=[0.5, 0.2])
