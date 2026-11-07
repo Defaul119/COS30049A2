@@ -44,13 +44,12 @@ import numpy as np
 import pandas as pd
 
 from .external import EXTERNAL_DIR, PROCESSED_DIR
-from .settings import PROJECT_ROOT, SETTINGS
+from .settings import SETTINGS, TABLES_DIR
 
 log = logging.getLogger(__name__)
 
 HEIST_CSV = EXTERNAL_DIR / "bitcoinheist" / "BitcoinHeistData.csv"
 HEIST_DIR = PROCESSED_DIR / "bitcoinheist"
-TABLES_DIR = PROJECT_ROOT / "reports" / "tables"
 NEGATIVE_LABEL = "white"
 
 # Values of the per-scheme split columns.

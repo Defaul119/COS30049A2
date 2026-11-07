@@ -35,7 +35,7 @@ from joblib import Parallel, delayed
 
 from .baseline import TABLES_DIR
 from .corpus import OUT_DIR as CORPUS_DIR
-from .features import FeatureConfig, build_features
+from .features import DAY, FeatureConfig, build_features
 from .fusion import FusionMethod
 from .inject import Plant, copy_features, make_plants
 from .methods import Method, fit_rows, real_metrics
@@ -47,8 +47,6 @@ from .significance import MEAN_OF, bootstrap_recalls, interval, plant_hits
 from .split import assign_periods
 
 log = logging.getLogger(__name__)
-
-DAY = 86_400
 
 
 def ds2_transactions(ds2: pd.DataFrame) -> pd.DataFrame:

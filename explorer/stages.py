@@ -38,11 +38,10 @@ import pandas as pd
 from scipy.stats import binomtest
 
 from .external import sha256_file
-from .settings import PROJECT_ROOT, SETTINGS
+from .settings import PROJECT_ROOT, SETTINGS, TABLES_DIR
 
 log = logging.getLogger(__name__)
 
-TABLES_DIR = PROJECT_ROOT / "reports" / "tables"
 COLUMNS = ["time_utc", "commit", "family", "model", "stage", "tier", "metric", "value", "ci_low", "ci_high",
            "previous_stage", "diff_previous", "diff_previous_ci_low", "diff_previous_ci_high", "diff_m0",
            "diff_m0_ci_low", "diff_m0_ci_high", "mcnemar_p", "accepted", "reasons", "seeds"]

@@ -33,7 +33,7 @@ import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
 
-from .features import DAY, FeatureConfig, build_features
+from .features import DAY, HOUR, FeatureConfig, build_features
 from .settings import PROJECT_ROOT, SETTINGS
 from .snapshot import MANIFEST_PATH
 from .split import EVAL
@@ -41,7 +41,6 @@ from .split import EVAL
 log = logging.getLogger(__name__)
 
 PATTERNS = ("spike", "burst", "dormant")
-HOUR = 3600
 SPECS_DIR = MANIFEST_PATH.parent / "injections"
 INTERIM_DIR = PROJECT_ROOT / "data" / "interim" / "injections"
 TX_COLUMNS = ["address", "role", "txid", "block_height", "block_time_utc", "received_sats", "sent_sats", "net_sats",

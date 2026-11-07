@@ -20,13 +20,12 @@ from pathlib import Path
 
 import pandas as pd
 
-from .settings import PROJECT_ROOT, SETTINGS
+from .settings import SETTINGS, TABLES_DIR
 from .snapshot import MANIFEST_PATH, utc_iso
 
 log = logging.getLogger(__name__)
 
 FEATURES_PATH = MANIFEST_PATH.parent / "features.csv"
-TABLES_DIR = PROJECT_ROOT / "reports" / "tables"
 HISTORY, FIT, EVAL = "history", "fit", "eval"
 
 

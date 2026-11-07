@@ -39,11 +39,12 @@ import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
 
+from .amounts import SATS_PER_BTC
 from .baseline import MODELS_DIR, TABLES_DIR
 from .corpus import OUT_DIR as CORPUS_DIR, SALT_PATH, ds1_exclusions, salted_id
 from .ds2_check import adapt, features_in_parallel
 from .esplora import EsploraEndpoints
-from .features import FeatureConfig
+from .features import DAY, FeatureConfig
 from .inject import copy_features, make_plants
 from .methods import fit_rows, real_metrics
 from .predict import PRECOMPUTED_ONLY
@@ -59,8 +60,6 @@ log = logging.getLogger(__name__)
 OUT_DIR = PROJECT_ROOT / "data" / "processed" / "ds10"
 RAW_DIR = PROJECT_ROOT / "data" / "raw" / "ds10"
 TEAMMATE_DIR = OUT_DIR / "teammate"
-SATS_PER_BTC = 100_000_000
-DAY = 86_400
 
 
 def teammate_tables(folder: Path = TEAMMATE_DIR) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:

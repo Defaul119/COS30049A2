@@ -44,13 +44,11 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from .labelled import ELLIPTIC_DIR, FEATURE_SETS, FIT, HEIST_DIR, TEST, VAL
-from .settings import PROJECT_ROOT, SETTINGS
+from .settings import MODELS_DIR, PROJECT_ROOT, SETTINGS, TABLES_DIR
 
 log = logging.getLogger(__name__)
 
 INTERIM_DIR = PROJECT_ROOT / "data" / "interim" / "classify"
-TABLES_DIR = PROJECT_ROOT / "reports" / "tables"
-MODELS_DIR = PROJECT_ROOT / "models"
 MODEL_KINDS = ("logistic", "knn", "randomForest", "histGradientBoosting")
 FULL_GRID = {"logistic", "knn"}  # small grids are searched exhaustively; the rest by random draws
 

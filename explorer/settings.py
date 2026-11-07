@@ -11,6 +11,8 @@ from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SETTINGS_PATH = PROJECT_ROOT / "config" / "settings.json"
+TABLES_DIR = PROJECT_ROOT / "reports" / "tables"
+MODELS_DIR = PROJECT_ROOT / "models"
 
 
 def load_settings(path: Path = SETTINGS_PATH) -> dict[str, Any]:

@@ -34,13 +34,12 @@ from sklearn.metrics import precision_recall_curve  # noqa: E402
 
 from .explain import METHOD_NAMES, SATS_PER_BTC  # noqa: E402
 from .features import FEATURE_IDS  # noqa: E402
-from .settings import PROJECT_ROOT, SETTINGS  # noqa: E402
+from .settings import PROJECT_ROOT, SETTINGS, TABLES_DIR  # noqa: E402
 from .snapshot import MANIFEST_PATH  # noqa: E402
 
 log = logging.getLogger(__name__)
 
 FIGURES_DIR = PROJECT_ROOT / "reports" / "figures"
-TABLES_DIR = PROJECT_ROOT / "reports" / "tables"
 CLASSIFY_DIR = PROJECT_ROOT / "data" / "interim" / "classify"
 
 # One fixed colour per method (validated categorical palette, light mode, in this order) and per

@@ -44,12 +44,11 @@ from .baseline import MODELS_DIR, TABLES_DIR
 from .clustering import silhouette
 from .corpus import OUT_DIR as CORPUS_DIR
 from .settings import PROJECT_ROOT, SETTINGS
-from .snapshot import MANIFEST_PATH
+from .snapshot import MANIFEST_PATH, SECONDS_PER_DAY
 
 log = logging.getLogger(__name__)
 
 PROFILES_PATH = PROJECT_ROOT / "data" / "processed" / "profiles.csv"
-SECONDS_PER_DAY = 86_400
 FEATURES = ["tx_per_day", "in_share", "median_log_size", "gap_cv", "burstiness", "mean_outputs", "history_tx",
             "median_fee_rate"]
 WORDS = {  # how a profile's standardised centroid reads, by feature and sign

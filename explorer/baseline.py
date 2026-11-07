@@ -26,13 +26,11 @@ import pandas as pd
 
 from .inject import INTERIM_DIR
 from .methods import meets_recall_target, plant_metrics, real_metrics
-from .settings import PROJECT_ROOT, SETTINGS
+from .settings import MODELS_DIR, SETTINGS, TABLES_DIR
 from .snapshot import MANIFEST_PATH
 
 log = logging.getLogger(__name__)
 
-TABLES_DIR = PROJECT_ROOT / "reports" / "tables"
-MODELS_DIR = PROJECT_ROOT / "models"
 FEATURE_FILES = {"refined": "features.csv", "as_written": "features_as_written.csv"}
 
 

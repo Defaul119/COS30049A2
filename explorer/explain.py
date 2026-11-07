@@ -14,9 +14,9 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from .amounts import SATS_PER_BTC
 from .settings import SETTINGS
 
-SATS_PER_BTC = 100_000_000
 HOURS_PER_DAY = 24
 FEATURE_NAMES = {"F1": "Size", "F2": "Burst", "F3": "Gap", "F4": "Relative size"}
 FEATURE_DESCRIPTIONS = {

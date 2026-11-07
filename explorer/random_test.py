@@ -42,6 +42,7 @@ from typing import Any
 import pandas as pd
 
 from . import assistant
+from .amounts import SATS_PER_BTC
 from .baseline import MODELS_DIR
 from .ds7 import frozen_prompts, phrase
 from .explain import METHOD_NAMES, template_explanation
@@ -52,7 +53,6 @@ log = logging.getLogger(__name__)
 
 OUT_DIR = PROJECT_ROOT / "data" / "processed" / "random_test"
 DS7_V2_TEST = PROJECT_ROOT / "data" / "processed" / "ds7_v2" / "test.jsonl"
-SATS_PER_BTC = 100_000_000
 
 
 def flag_abs_z() -> float:

@@ -21,14 +21,13 @@ from typing import Any
 import pandas as pd
 
 from .amounts import address_flow
-from .settings import PROJECT_ROOT
+from .settings import TABLES_DIR
 from .snapshot import HISTORIES_FILE, MANIFEST_PATH, read_gz
 
 log = logging.getLogger(__name__)
 
 HISTORIES_PATH = MANIFEST_PATH.parent / HISTORIES_FILE
 OUT_PATH = MANIFEST_PATH.parent / "transactions.csv"
-TABLES_DIR = PROJECT_ROOT / "reports" / "tables"
 WEIGHT_UNITS_PER_VBYTE = 4
 
 COLUMNS = [
