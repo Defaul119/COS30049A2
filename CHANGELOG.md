@@ -18,8 +18,35 @@ agreement, conformal coverage, and a usability-walkthrough row (Assignment 1 sec
 assignment; none is recorded). Usable parts of the team's drafted sections are merged after checking each against the
 tables: target users, wallet types, DS10's sampling rule, the three layers and commands, future work. Elliptic's
 Kaggle record is cited (REFERENCES.md option 1). Every DOI and arXiv ID was re-resolved against Crossref, DataCite and
-arXiv. Body 2,992 words by `tools/report_wordcount.py`, which excludes tables and captions. Lists of figures and tables
-removed. Writing checks followed K-Dense's MIT-licensed skills, installed locally (commit 529b9f7).
+arXiv. Body 2,991 words by `tools/report_wordcount.py`, which excludes tables and captions. Lists of figures and tables
+removed. Writing checks followed K-Dense's MIT-licensed skills, installed locally (commit 529b9f7). Checked again
+against the fuller specification the same evening: engineering challenges added to the technical section, impact and
+limitations to the conclusion, and the reference list renamed Bibliography as in the brief.
+
+**Code cleanup with no change in results** (`explorer/`, `tools/`; the code-humanizer skill's catalogue, MIT, commit
+8ffe07b, one kind of change per commit, full test suite before each). 39 decorative section banners became plain
+comments; the unused `FigureFn` alias went; `significance.py` imports `interval` from `stages.py`, whose copy was
+identical, and `stages.py` uses `external.sha256_file`; `TABLES_DIR` and `MODELS_DIR` are defined once in
+`settings.py`, and `SATS_PER_BTC`, `DAY`, `HOUR` and `SECONDS_PER_DAY` are imported from their owners. A parsed-code
+comparison with the previous commit shows only those lines changed, and no name a saved model depends on moved. Fast
+pipeline steps (`transactions` to `significance`, without `outliers`, `fusion` or `evaluate`) and every snapshot
+prediction were run before and after in throwaway clones. With threads limited to one and the random forest on one
+worker, 227 of 228 output files are byte-identical. The other is `scores.csv`, in `score_fusion` only (largest
+difference 1.3e-14, no flag changed): the forest stored inside `fusion.joblib` keeps 10 workers, and the unchanged code
+differs from itself in that column by the same amount. `reports/tables`, `data/`, `models/` and `config/` are untouched,
+and `results-v1.1` stays the frozen set. Left alone on purpose and listed for Assignment 3: the shared evaluation
+blocks in `ds10.py` and `ds2_check.py` (the code behind the held-out results), `interval` in `lm/eval_stats.py`, which
+treats missing values differently, helpers only tests call (`stages.last_accepted`, `tx_tokens.field_of`),
+`test_report.log_excerpt` ignoring its `title`, and the `getattr` probes in `snapshot.py`.
+
+**Bug fix in the rebuild checker, no result changes.** On Windows `tools/compare_tables.py` called multi-line text
+cells different, because git checks out CRLF but `git show` returns LF: a clean clone reported 46 false differences.
+After the fix, the cleaned code's fast steps against the committed tables give 167 same and 7 within tolerance
+(largest 0.001), exit 0. Tables from steps not rerun are unchanged by construction.
+
+**The zip tested as a marker receives it.** Unzipped with no git history: 273 tests pass, frozen files verify, and the
+README's section 3 outputs match. Two README gaps fixed: the zip route in section 2, and `compare_tables.py --ref` for
+copies without git, where it otherwise lists every table as new and exits 0.
 
 ## 3 November 2026
 

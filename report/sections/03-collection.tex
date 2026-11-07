@@ -1,8 +1,7 @@
 \section{Data Collection}
 \label{sec:collection}
 
-Table~\ref{tab:datasets} lists the eight datasets: three public-blockchain collections of our own, two labelled
-datasets, and three text corpora.
+Table~\ref{tab:datasets} lists the eight datasets.
 
 \input{generated/tab_datasets.tex}
 
@@ -42,8 +41,7 @@ pipeline's facts.
     off on refusals, falls back to the compatible mempool.space API (mempool.space n.d.), and caches every
     reply; \V{ds2.fetch_errors} addresses that failed every retry were logged and skipped.
   \item \textbf{Selection bias.} \V{ds2.too_many} visited addresses exceeded the transaction cap (typically busy
-    services) and \V{ds2.too_few} had too little history. Sampling recent blocks favours active addresses, and
-    an address is not a person.
+    services) and \V{ds2.too_few} had too little history. Sampling recent blocks favours active addresses.
   \item \textbf{No ground truth.} We evaluate on planted transactions (Section~\ref{sec:processing}) and use
     labelled metrics only on DS3 and DS4.
 \end{itemize}

@@ -1,8 +1,7 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We built and evaluated a pipeline that ranks an address's transactions by how unusual each is for that address.
-Our answers:
+Our pipeline ranks an address's transactions by how unusual each is for that address. Our answers:
 \begin{enumerate}[label=RQ\arabic*]
   \item The baseline is the Explorer's method: within the margin of the best method on DS1, stable, explainable,
     and the most consistent on unseen addresses.
@@ -11,6 +10,11 @@ Our answers:
   \item TxGPT, trained only on other addresses, ranks first on the held-out DS10; the Assistant explains
     flags faithfully under a guardrail, though it is weak on open questions.
 \end{enumerate}
+
+\textbf{Impact and limitations.} For its users, the Explorer reduces an unranked history to the
+\V{ds1.baseline.flag_rate} of transactions worth checking first, each with a reason, though no user study has tested
+this yet. Plants are our guess at what unusual looks like; DS1 has only 28 addresses, so intervals are wide; and a language model can still give a wrong reason the guardrail misses, so the
+template remains the default.
 
 The main insight is that methods tuned on one sample of addresses lose much of their advantage on another, so an
 independent held-out test was essential. Future work for Assignment~3 includes a web dashboard on the

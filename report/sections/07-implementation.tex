@@ -16,17 +16,21 @@ TxGPT was trained on GPUs in three sizes with three seeds each; the sizes tie, s
 pretrained on \V{lm.pretrain_tokens} billion DS5 tokens, more than the compute-optimal budget of about 20 tokens per
 parameter (Hoffmann et al.\ 2022), then taught conversation (DS6) and explanations (DS7). It predicts on a CPU.
 
+\textbf{Engineering challenges.} Filtering DS2's rows once per plant dominated the run time, so the table is split by
+address first (\code{explorer/inject.py}). Floating-point differences between machines changed the regression's fits,
+so \code{features.csv} is rounded to \V{feat.sig_digits} significant digits. Long training survived interruptions
+because every trainer resumes from its own checkpoint.
+
 The \code{Predictor} class is the interface Assignment~3 will call. Three commands expose it: \code{predict address}
-scores an address's whole timeline, \code{predict what-if} scores a hypothetical next transaction (the brief's
-``user input to prediction''), and \code{predict explain} explains any transaction.
+scores an address's whole timeline, \code{predict what-if} scores a hypothetical next transaction, and
+\code{predict explain} explains any transaction.
 
 \subsection{Implementation evaluation}
 \label{sec:evaluation}
 
 \textbf{Objectives.} Table~\ref{tab:objectives} compares the results with Assignment~1's targets. The baseline meets the recall target on spikes and dormant addresses but not on bursts counted per
 transaction (\V{ds1.baseline.burst_tx}), although it finds \V{ds1.baseline.burst_event} of burst events, and four
-DS1 addresses break the sanity rule. We report these rather than move the targets. Two objectives that need people
-outside the build remain open.
+DS1 addresses break the sanity rule. Two objectives that need people outside the build remain open.
 
 \input{generated/tab_objectives.tex}
 
@@ -49,7 +53,7 @@ method is best at every pattern; the dashed line is Assignment~1's 70\% target.}
 
 \textbf{Regression and clustering} (Table~\ref{tab:unsupervised}). The random forest cuts the naive forecast's
 error by \V{reg.gap_skill} on gaps but only \V{reg.size_skill} on amounts. Conformal calibration lifts the amount
-range's coverage from \V{conf.before} to \V{conf.after} against a nominal \V{conf.nominal}, still slightly short.
+range's coverage from \V{conf.before} to \V{conf.after} against a nominal \V{conf.nominal}.
 
 \input{generated/tab_unsupervised.tex}
 
@@ -84,14 +88,9 @@ training are found at recalls of \V{cls.lofo_range} by the tree models, consiste
 
 \textbf{Unusual is not a label.} Scored against the labelled classes, the unsupervised methods do worse than chance
 (PR-AUC below the class share), while the random forest reaches \V{label.ell_rf_lift}$\times$ chance on Elliptic
-(Appendix~\ref{app:figures}). Being unusual and belonging to a labelled class are different things, which supports
-the Explorer's wording.
+(Appendix~\ref{app:figures}). Being unusual is not the same as belonging to a labelled class.
 
 \textbf{Language models.} The Assistant passes the guardrail on \V{lm.guard_ds7} of DS7 test prompts and
-\V{lm.guard_ds10} of DS10 prompts, and is fully correct (right reasons, order and numbers) on \V{lm.full_ds7} and
+\V{lm.guard_ds10} of DS10 prompts, and is fully correct (reasons, order, numbers) on \V{lm.full_ds7} and
 \V{lm.full_ds10}; pooled over twelve test sets, \V{lm.pooled} (\V{lm.pooled_ci}). Its weakest area is open glossary
 questions, where it states \V{lm.glossary} of the key facts.
-
-\textbf{Limitations.} Plants are our guess at what unusual looks like; DS1 has only 28 addresses, so intervals are
-wide; methods tuned on DS1 transfer less well; and a language model can still give a wrong reason the guardrail
-misses, so the template remains the default.

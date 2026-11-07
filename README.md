@@ -44,6 +44,8 @@ fine-tuned).
 
 ## 2. Set up (about 10 minutes, once)
 
+From the submitted zip, unzip it and `cd` into its folder instead of the first two lines below.
+
 ```
 git clone https://github.com/Defaul119/COS30049A2.git
 cd COS30049A2
@@ -127,8 +129,11 @@ python tools/compare_tables.py
 ```
 
 It compares every table in `reports/tables/` with the committed copy, number by number, and prints only the tables
-that differ (exit code 1 if any differs by more than 0.01 x max(1, |our value|); see section 11). Times were measured on our PC (Intel
-i5-12600K, 16 threads); a laptop takes longer.
+that differ (exit code 1 if any differs by more than 0.01 x max(1, |our value|); see section 11). The committed
+copies come from git, so in the zip, which has no git history, copy `reports/tables` to a folder such as
+`tables_before` before the rebuild and run `python tools/compare_tables.py --ref tables_before` after it. Without
+`--ref` it can only list every table as new. Times were measured on our PC (Intel i5-12600K, 16 threads); a laptop
+takes longer.
 
 | Step | Reads | Writes | Time |
 |---|---|---|---|

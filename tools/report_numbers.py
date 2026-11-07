@@ -222,6 +222,7 @@ def numbers() -> dict[str, str]:
 
     # Technical
     v["tech.tests"] = count(collected_tests())
+    v["feat.sig_digits"] = count(s["features"]["csvSignificantDigits"])
     sizes = table("txgpt_sizes")
     v["txgpt.s_params"] = count(row(sizes, chosen=True)["parameters"])
 

@@ -39,11 +39,13 @@ Due Sun 8 Nov 23:59 GMT+7; the team submits Sat 7 Nov. Results freeze Tue 3 Nov;
 - [ ] Canvas upload limit (decides `--with-models`); confirm the zip leaves out CLAUDE.md, context.txt,
       docs/archive/HANDOFF.md, docs/brief/. [team]
 - [x] Interactive terminal Explorer (`explore`), tests, README (3 Nov). [Claude]
+- [x] Trial zip unzipped with no git: 273 tests pass, README section 3 outputs match (7 Nov). [Claude]
+- [ ] Decide what leaves the zip: `data/d1/`, `scripts/d1_check.py`, `docs/a1/`, `docs/plan/`, delivery plan PDF. [Cao]
 - [ ] `python tools/package.py --tag v1.0`; README test count and timings checked. [Claude]
 - [ ] A licence for our own code (LICENSES.md says ask the group). [team decides]
 - [ ] M4: a teammate rebuilds everything from the README on a fresh clone; tag `v1.0`. [teammate]
 
-## Report (revised 7 Nov: `report/`, about 2,990 of 3,000 words, tables and captions not counted)
+## Report (revised 7 Nov: `report/`, 2,991 of 3,000 words, tables and captions not counted)
 
 - [x] Draft in LaTeX in the brief's order; numbers from reports/tables via tools/report_numbers.py; no Qwen. [Claude]
 - [x] Revised against the brief, rubric, slides and A1 feedback; team's usable text merged; Elliptic record cited. [Claude]

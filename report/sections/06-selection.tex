@@ -19,7 +19,7 @@ we compared a linear model, a neighbour-based model and two tree ensembles, whic
 
 \input{generated/tab_candidates.tex}
 
-\textbf{Tuning.} Every search is in \code{tuning\_*.csv}, run on plant seeds that never score reported results. K-Means' $k$ came from the silhouette score and Davies--Bouldin index,
+\textbf{Tuning and preliminary tests.} Every search is in \code{tuning\_*.csv}, run on plant seeds that never score reported results. K-Means' $k$ came from the silhouette score and Davies--Bouldin index,
 DBSCAN's radius from the elbow of its k-distance graph, and each regressor was compared with a naive forecast
 (Table~\ref{tab:unsupervised}). Each method was then retrained in stages, and a stage was kept only if it passed a
 gate fixed in advance: higher recall with a bootstrap interval above zero, and no pattern falling by more than its
@@ -31,7 +31,7 @@ and within five points the easier one to explain. Fusion scored highest (\V{ds1.
 (\V{ds1.baseline.mean}) lies within the margin, and the difference is not significant (paired bootstrap,
 $p=\V{sig.fusion_p}$). The Explorer therefore uses the baseline, whose reasons map directly to the features.
 
-\textbf{Explanations.} The \emph{Explorer Assistant}, a language model trained from scratch, may phrase an
+\textbf{Explanations.} The \emph{Explorer Assistant}, a language model, may phrase an
 explanation only if it passes a code guardrail: numbers from the facts, the limitation line, no banned word, correct
 comparison direction, and a verdict matching the flag. Otherwise a fixed template is shown, because language models
 can state numbers absent from their input (Ji et al.\ 2023).
