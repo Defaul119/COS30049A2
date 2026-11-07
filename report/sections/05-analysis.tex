@@ -1,9 +1,8 @@
 \section{Data Analysis}
 \label{sec:analysis}
 
-The analysis lives in \code{notebooks/01\_eda.ipynb}, and every statistic below is written to
-\code{eda\_tests.csv}. Each finding is stated as an observation, the statistic behind it, and the decision it
-informed.
+The analysis is in \code{notebooks/01\_eda.ipynb}, with every statistic in \code{eda\_tests.csv}. Each finding gives
+an observation, the statistic behind it, and the decision it informed.
 
 \textbf{Finding 1: the features are heavy-tailed.} Amounts, gaps and ratios span several orders of magnitude
 (Figure~\ref{fig:distributions}). The raw amount has a skewness of \V{eda.f1_skew_raw}, but only
@@ -23,10 +22,9 @@ they are compared on log scales with robust statistics.}
 factor of \V{eda.scale_ratio}, and for \V{eda.dir_differ} of the \V{eda.dir_tested} addresses with enough
 transactions in both directions, received and sent amounts differ (Mann--Whitney U, $p<0.05$;
 Figure~\ref{fig:direction}). One global threshold cannot fit every address, so each feature is compared with the
-same address's history and amounts only with earlier transactions in the same direction. The ablation confirms
-the decision: A1's original definition, without these refinements, flags \V{abl.written_flag_rate} of real
-transactions with a mean planted recall of \V{abl.written_recall}, against \V{abl.refined_flag_rate} and
-\V{abl.refined_recall} for the refined features (\code{eval\_ablation.csv}).
+same address's history and amounts only with earlier transactions in the same direction. Ablation confirms this:
+A1's original definition flags \V{abl.written_flag_rate} of real transactions with mean planted recall
+\V{abl.written_recall}, against \V{abl.refined_flag_rate} and \V{abl.refined_recall} for the refined features.
 
 \begin{figure}[ht]
 \centering
@@ -36,10 +34,14 @@ orders of magnitude, and many addresses send amounts unlike those they receive.}
 \label{fig:direction}
 \end{figure}
 
-\textbf{Finding 3: labels are rare and drift over time.} Elliptic's illicit share among labelled transactions is
+\textbf{Finding 3: most transactions form a dense core.} Two principal components explain \V{eda.pca_variance} of
+the variance and \V{eda.core_share} of transactions lie within a robust radius of 2 (Appendix~\ref{app:figures}).
+Rank correlations are moderate (F1--F4 \V{eda.rho_f1f4}, F2--F3 \V{eda.rho_f2f3}), so we keep all four features. A
+dense core with sparse outliers suggested distance- and density-based candidates.
+
+\textbf{Finding 4: labels are rare and drift over time.} Elliptic's illicit share among labelled transactions is
 \V{eda.ell_train_share} in the training steps but \V{eda.ell_test_share} in the test steps, and
 \V{eda.ell_unknown} of all rows are unlabelled. BitcoinHeist's positives are \V{eda.heist_share} of rows, and
 every feature separates them only weakly (largest rank-biserial effect \V{eda.heist_max_effect}). Accuracy
 would reward predicting the majority class (Chicco and Jurman 2020), so we split by time, report precision,
-recall, F1 and the area under the precision--recall curve (PR-AUC), and include class weights in tuning. The weak
-BitcoinHeist effects also anticipated its poor classification results in Section~\ref{sec:evaluation}.
+recall, F1 and the area under the precision--recall curve (PR-AUC), and include class weights in tuning.

@@ -43,11 +43,12 @@ Due Sun 8 Nov 23:59 GMT+7; the team submits Sat 7 Nov. Results freeze Tue 3 Nov;
 - [ ] A licence for our own code (LICENSES.md says ask the group). [team decides]
 - [ ] M4: a teammate rebuilds everything from the README on a fresh clone; tag `v1.0`. [teammate]
 
-## Report (drafted 3 Nov on the Mac: `report/`, 2,871 of 3,000 words)
+## Report (revised 7 Nov: `report/`, about 2,990 of 3,000 words, tables and captions not counted)
 
 - [x] Draft in LaTeX in the brief's order; numbers from reports/tables via tools/report_numbers.py; no Qwen. [Claude]
-- [ ] Team read-through and edits; Elliptic citation (Weber et al. 2019); reviewer-check row. [team, Cao]
-- [ ] Robustness paragraph: power cut, Mac replication, frozen tests, strict scoring, lost hand-off.
+- [x] Revised against the brief, rubric, slides and A1 feedback; team's usable text merged; Elliptic record cited. [Claude]
+- [ ] Team read-through and approval; the two Open rows in Table 4 (reviewer check, usability walkthrough). [team, Cao]
+- [ ] Ask the tutor whether tables and captions count towards the 3,000 words. [team]
 - [ ] AI declaration from docs/AI_USE_LOG.md (glossary fact-checked by Claude, not a person, unless a teammate
       reads it).
 

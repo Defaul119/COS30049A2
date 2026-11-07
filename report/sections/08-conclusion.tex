@@ -1,20 +1,18 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We built and evaluated a pipeline that ranks a Bitcoin address's transactions by how unusual each is for that
-address. Our answers:
+We built and evaluated a pipeline that ranks an address's transactions by how unusual each is for that address.
+Our answers:
 \begin{enumerate}[label=RQ\arabic*]
-  \item The robust z-score baseline is the Explorer's method: it is within the margin of the best method on DS1,
-    stable, explainable, and the most consistent on unseen addresses.
-  \item Supervised classifiers do well on Elliptic until behaviour changes, and stay weak on BitcoinHeist across
-    time and on unseen families.
-  \item Unusual activity and the labelled illicit class barely overlap, so a flag is a reason to look, not a
-    verdict.
+  \item The baseline is the Explorer's method: within the margin of the best method on DS1, stable, explainable,
+    and the most consistent on unseen addresses.
+  \item Classifiers do well on Elliptic until behaviour changes, and stay weak on BitcoinHeist.
+  \item Unusual activity and the labelled illicit class barely overlap: a flag is a reason to look, not a verdict.
   \item TxGPT, trained only on other addresses, ranks first on the held-out DS10; the Assistant explains
-    flags faithfully under a guardrail.
+    flags faithfully under a guardrail, though it is weak on open questions.
 \end{enumerate}
 
-The most significant insight is that methods tuned on one sample of addresses lose much of their advantage on
-another, so an independent held-out test was essential. Future work for Assignment~3 includes showing TxGPT's
-surprisal beside the baseline, more addresses, graph models for labelled data, and a usability study with the
-intended users.
+The main insight is that methods tuned on one sample of addresses lose much of their advantage on another, so an
+independent held-out test was essential. Future work for Assignment~3 includes a web dashboard on the
+prediction interface, live block data, TxGPT's surprisal beside the baseline, explanations refined from user
+feedback, and a usability study with the intended users.

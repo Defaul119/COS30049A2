@@ -15,6 +15,43 @@ the timing features (F2, F3) are within the usual range, so they are not mention
 
 \begin{figure}[H]
 \centering
+\includegraphics[width=0.78\textwidth]{eda_pca.pdf}
+\caption{DS1's transactions on the first two principal components, showing a dense core with sparse outliers
+(Finding~3).}
+\label{fig:pca}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{eda_feature_correlation.pdf}
+\caption{Rank correlations between DS1's features (Finding~3).}
+\label{fig:correlation}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\textwidth]{eval_agreement.pdf}
+\caption{Pairwise Jaccard overlap between the methods' flagged transactions (\code{eval\_agreement.csv}).}
+\label{fig:agreement}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{eval_walkforward.pdf}
+\caption{Every method refitted at each walk-forward cut-off (\code{eval\_walkforward.csv}).}
+\label{fig:walkforward}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{eval_conformal.pdf}
+\caption{Coverage of the regression ranges before and after conformal calibration
+(\code{regression\_results.csv}).}
+\label{fig:conformal}
+\end{figure}
+
+\begin{figure}[H]
+\centering
 \includegraphics[width=0.82\textwidth]{eval_elliptic_f1_by_step.pdf}
 \caption{Elliptic test F1 per time step. Every model fails from step 43, after the shutdown of a dark market
 changed the illicit class's behaviour.}
@@ -24,8 +61,8 @@ changed the illicit class's behaviour.}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{eval_label_check.pdf}
-\caption{Unsupervised scores against the labelled datasets' own classes. Every unsupervised method is at or
-below chance (1$\times$), while the supervised random forest is far above it: being unusual is not the same as
+\caption{Unsupervised scores against the labelled datasets' own classes. Every unsupervised method is below
+chance (1$\times$), while the supervised random forest is far above it: being unusual is not the same as
 belonging to a labelled class (\code{label\_check.csv}).}
 \label{fig:labelcheck}
 \end{figure}
@@ -76,9 +113,9 @@ The repository's \code{README.md} gives every command. In short:
 \begin{verbatim}
 conda env create -f environment.yml
 conda activate cos30049-a2
-python -m pytest -q                       # the test suite
-python -m explorer.cli all --offline      # every DS1 result from the shipped data
+python -m pytest -q                     # the test suite
+python -m explorer.cli all --offline    # every DS1 result
 python -m explorer.cli figures
-python tools/compare_tables.py            # compare the rebuild with the committed tables
+python tools/compare_tables.py          # rebuild against the committed tables
 \end{verbatim}
 \code{DATA\_CARD.md} documents every dataset, file and column, and \code{MODEL\_CARD.md} every final model.

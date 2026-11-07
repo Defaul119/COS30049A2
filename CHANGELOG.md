@@ -3,6 +3,24 @@
 Changes to settings, data, decisions and the plan, newest first. Where the plan and reality
 disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
+## 7 November 2026
+
+**Report revised against the brief, the rubric, the unit's slides and the Assignment 1 feedback; results unchanged.**
+No table, model or setting changed: `results-v1.1` stays the frozen set (273 tests pass, `frozen_tests.json` checks
+pass, the installed model's SHA-256 matches settings). A last Kaggle rebuild was started and dropped by the user as
+too long. Corrections found by checking the draft against the tables: the DS1 table's note said mean recall counts
+bursts per transaction and per event (it is spike, burst per transaction, dormant); TxGPT also catches most plants of
+every pattern, not only fusion and the baseline; the test count was 266 (273); fusion is named as regression + Isolation
+Forest. Added: outlier handling, why time splits replace a random 80:20 split, the dense-core finding, a table of MAE,
+RMSE, R^2 and skill with first-search silhouette and Davies-Bouldin (`tab_unsupervised`; DBSCAN's and K-Means' final
+versions come from stages C4 and C5, so the note labels these as the first search), walk-forward stability, method
+agreement, conformal coverage, and a usability-walkthrough row (Assignment 1 section 10.4 promised results with this
+assignment; none is recorded). Usable parts of the team's drafted sections are merged after checking each against the
+tables: target users, wallet types, DS10's sampling rule, the three layers and commands, future work. Elliptic's
+Kaggle record is cited (REFERENCES.md option 1). Every DOI and arXiv ID was re-resolved against Crossref, DataCite and
+arXiv. Body 2,992 words by `tools/report_wordcount.py`, which excludes tables and captions. Lists of figures and tables
+removed. Writing checks followed K-Dense's MIT-licensed skills, installed locally (commit 529b9f7).
+
 ## 3 November 2026
 
 **Interactive terminal Explorer: `python -m explorer.cli explore`** (`explorer/explore.py`, at the user's request,

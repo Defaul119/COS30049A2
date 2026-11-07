@@ -74,8 +74,8 @@ def row(df: pd.DataFrame, **where: Any) -> pd.Series:
 
 
 def num(x: float, digits: int = 3) -> str:
-    """A decimal with a fixed number of places (proportions and losses)."""
-    return f"{float(x):.{digits}f}"
+    """A decimal with a fixed number of places (proportions and losses); a true minus sign in LaTeX."""
+    return f"{float(x):.{digits}f}".replace("-", "$-$")
 
 
 def count(x: float) -> str:
@@ -131,6 +131,13 @@ def numbers() -> dict[str, str]:
     v["ds10.rows"] = count(m10["rows"])
     if m10["crosscheck_with_teammate_csv"]["differs"] != 0:
         raise ValueError("DS10 no longer agrees with the teammate's file; the report's sentence is wrong")
+    t10 = manifest("data/processed/ds10/teammate/manifest.json")
+    quotas = set(t10["tier_quotas"].values())
+    if len(quotas) != 1:
+        raise ValueError("DS10's activity tiers no longer have equal quotas; the report's sentence is wrong")
+    v["ds10.sample_blocks"] = count(t10["parameters"]["blocks"])
+    v["ds10.tier_quota"] = count(quotas.pop())
+    v["ds10.short"] = count(t10["parameters"]["short"])
 
     # DS3, DS4
     es = table("elliptic_summary").iloc[0]
@@ -157,6 +164,10 @@ def numbers() -> dict[str, str]:
     v["eda.ell_test_share"] = pct(float(eda("illicit share of labelled, test steps")))
     v["eda.ell_unknown"] = pct(float(eda("unknown share of all rows")), 0)
     v["eda.heist_share"] = pct(float(eda("overall ransomware share")))
+    v["eda.pca_variance"] = pct(float(eda("explained variance PC1+PC2")))
+    v["eda.core_share"] = pct(float(eda("share of transactions within |z| radius 2")))
+    v["eda.rho_f1f4"] = num(float(eda("rho F1-F4")), 2)
+    v["eda.rho_f2f3"] = num(float(eda("rho F2-F3")), 2)
     d = table("eda_tests")
     effects = d[d["statistic"].str.contains("rank-biserial", regex=False)]["value"].astype(float)
     if effects.empty:
@@ -181,6 +192,33 @@ def numbers() -> dict[str, str]:
         v[f"ds1.{key}.flag_rate"] = pct(row(sel, method=m)["flag_rate"])
         v[f"ds1.{key}.precision"] = num(row(sel, method=m)["precision_lower_bound_mean"])
     v["sig.fusion_p"] = num(row(sig, method="fusion")["p_value"])
+    v["ds1.baseline.burst_tx"] = num(row(sel, method="baseline")["recall_burst_tx_mean"])
+    v["ds1.baseline.burst_event"] = num(row(sel, method="baseline")["recall_burst_event_mean"])
+
+    # Agreement between methods' flags: the baseline against the other single methods (fusion contains regression
+    # and Isolation Forest, and TxGPT is quoted on its own because it flags so few).
+    ag = table("eval_agreement")
+    solo = ag[(ag["a"] == "baseline") & ag["jaccard"].notna() & ~ag["b"].isin(["fusion", "txgpt_method"])]["jaccard"]
+    v["agree.base_range"] = f"{num(solo.min(), 2)}--{num(solo.max(), 2)}"
+    v["agree.base_txgpt"] = num(row(ag, a="baseline", b="txgpt_method")["jaccard"], 2)
+
+    # Walk-forward: mean recall as in eval_selection (spike, burst per transaction, dormant) at each cut-off.
+    wf = table("eval_walkforward")
+    wf_mean = wf[["recall_spike", "recall_burst_tx", "recall_dormant"]].mean(axis=1)
+    v["wf.cutoffs"] = count(wf["fit_fraction"].nunique())
+    for m in ("baseline", "lof"):
+        means = wf_mean[wf["method"] == m]
+        v[f"wf.{m}_range"] = f"{num(means.min())}--{num(means.max())}"
+
+    # Conformal calibration of the 90% size range (regression_results.csv)
+    rr = table("regression_results")
+    before = row(rr, target="size", model="quantile [0.05, 0.95]")
+    after = row(rr, target="size", model="quantile [0.05, 0.95] conformal")
+    v["conf.nominal"] = pct(before["nominal"], 0)
+    v["conf.before"], v["conf.after"] = pct(before["coverage"]), pct(after["coverage"])
+    # skill_vs_naive = 1 - MAE / MAE of the naive forecast (explorer/regression.py); the prose names the random forest
+    v["reg.size_skill"] = pct(row(rr, target="size", model="randomForest")["skill_vs_naive"], 0)
+    v["reg.gap_skill"] = pct(row(rr, target="gap", model="randomForest")["skill_vs_naive"], 0)
 
     # Technical
     v["tech.tests"] = count(collected_tests())
@@ -197,6 +235,9 @@ def numbers() -> dict[str, str]:
         r = row(d10, method=m)
         v[f"ds10.{key}.mean"] = num(r["ds10_mean_recall"])
         v[f"ds10.{key}.ci"] = ci(r["ds10_mean_recall_ci_low"], r["ds10_mean_recall_ci_high"])
+    act = table("ds10_activity")
+    v["act.ds1_gap"] = num(row(act, source="DS1")["median_gap_hours"], 1)
+    v["act.ds10_gap"] = num(row(act, source="DS10")["median_gap_hours"], 1)
     st = table("stats_methods_summary")
     v["stats.ds10_baseline_rank1"] = pct(row(st, dataset="DS10", method="baseline")["rank1_share"], 0)
 
@@ -346,6 +387,7 @@ def tab_objectives(v: dict[str, str]) -> str:
          "Partly met"],
         ["Method agreement reported", f"Baseline--fusion Jaccard {num(agree)}", "Met"],
         ["Blind reviewer check (Cohen's kappa)", v["obj.reviewer"], "Open"],
+        ["Usability walkthrough with two participants", v["obj.walkthrough"], "Open"],
         ["Accuracy, precision, recall, F1 where labels exist", "DS3 and DS4 (Table~\\ref{tab:classifiers})",
          "Met"],
     ]
@@ -365,13 +407,33 @@ def tab_ds1(v: dict[str, str]) -> str:
                      num(r["recall_dormant"]), f"{num(r['mean_recall'])} {ci(r['mean_recall_ci_low'], r['mean_recall_ci_high'])}",
                      num(q["stability"]), pct(q["flag_rate"])])
     note = ("Recall on planted transactions over five reporting seeds; intervals are 95\\% address-level "
-            "bootstrap. Mean recall averages spike, burst (per transaction and per event) and dormant. "
+            "bootstrap. Burst is per transaction; mean recall averages spike, burst and dormant. "
             "Stability is the top-50 Jaccard over refits. Flag rate is the share of real evaluation-period "
             "transactions flagged. $\\star$ the selected method.")
     return tabular("Scoring methods on DS1 (sorted by mean planted recall).", "tab:ds1",
                    "@{}L{3.6cm} l r r r l r R@{}",
                    ["Method", "Family", "Spike", "Burst", "Dormant", "Mean [95\\% CI]", "Stab.", "Flags"],
                    rows, note=note, size="\\footnotesize")
+
+
+def tab_unsupervised(v: dict[str, str]) -> str:
+    """Regression errors against the naive forecast, with the clustering scores of the first search in the note."""
+    rr = table("regression_results")
+    rows = []
+    for target, label in (("size", "Amount"), ("gap", "Gap")):
+        for model, name in (("naive", "Naive forecast"), ("ridge", "Ridge"), ("randomForest", "Random forest"),
+                            ("histGradientBoosting", "Hist.\\ gradient boosting")):
+            r = row(rr, target=target, model=model)
+            rows.append([label, name, num(r["mae"]), num(r["rmse"]), num(r["r2"]), num(r["skill_vs_naive"])])
+    km = row(table("tuning_kmeans"), chosen=True)
+    db = row(table("tuning_dbscan"), chosen=True)
+    note = ("Regression on the evaluation period, log10 scale; skill is 1 $-$ MAE / the naive forecast's MAE. "
+            f"Clustering, first search before the stages: K-Means $k={int(km['k'])}$, silhouette "
+            f"{num(km['silhouette'])}, Davies--Bouldin {num(km['davies_bouldin'])}; DBSCAN radius "
+            f"{db['eps_factor']}$\\times$ the k-distance elbow, silhouette {num(db['silhouette_non_noise'])} without "
+            f"noise points, {pct(db['noise_share'])} noise.")
+    return tabular("Regression and clustering metrics on DS1.", "tab:unsupervised", "@{}l Y r r r r@{}",
+                   ["Target", "Model", "MAE", "RMSE", "$R^2$", "Skill"], rows, note=note, size="\\footnotesize")
 
 
 def tab_classifiers(v: dict[str, str]) -> str:
@@ -442,10 +504,11 @@ def main() -> int:
     lines += [f"\\expandafter\\def\\csname v@{k}\\endcsname{{{v[k]}}}" for k in sorted(v)]
     (OUT / "numbers.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")
     for name, build in (("datasets", tab_datasets), ("features", tab_features), ("candidates", tab_candidates),
-                        ("objectives", tab_objectives), ("ds1", tab_ds1), ("classifiers", tab_classifiers)):
+                        ("objectives", tab_objectives), ("ds1", tab_ds1), ("unsupervised", tab_unsupervised),
+                        ("classifiers", tab_classifiers)):
         (OUT / f"tab_{name}.tex").write_text(build(v), encoding="utf-8")
     (OUT / "example.tex").write_text(example_tex(), encoding="utf-8")
-    print(f"Wrote {len(v)} numbers, 6 tables and the example prediction to {OUT.relative_to(ROOT)}")
+    print(f"Wrote {len(v)} numbers, 7 tables and the example prediction to {OUT.relative_to(ROOT)}")
     return 0
 
 

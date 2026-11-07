@@ -4,20 +4,22 @@
 \textbf{The challenge.} We must decide which transactions deserve attention when no labels exist, and explain
 each decision, because the user acts on the reason, not on a score.
 
-\textbf{Limits of existing solutions.} Block explorers list transactions without ranking them. A fixed global
-rule, such as ``flag anything above one bitcoin'', ignores scale: the median amounts of our addresses differ by a
-factor of \V{eda.scale_ratio} (Section~\ref{sec:analysis}). Supervised models trained on the public labelled
-datasets learn from sparse labels and from aggregated or anonymised features that cannot be computed for an
-arbitrary address (Akcora et al.\ 2020; Elmougy and Liu 2023), and their accuracy collapses when behaviour
-changes over time (Pareja et al.\ 2020).
+\textbf{Limits of existing solutions.} Block explorers list transactions without ranking them. A fixed rule, such
+as ``flag anything above one bitcoin'', ignores scale: wallets, trading bots and cold storage behave very
+differently, and the median amounts of our addresses differ by a factor of \V{eda.scale_ratio}. One threshold
+over-flags busy addresses, misses changes on quiet ones, and cannot follow changing behaviour. Supervised models
+trained on public labelled datasets learn from sparse labels and from aggregated or anonymised features that cannot
+be computed for an arbitrary address (Akcora et al.\ 2020; Elmougy and Liu 2023), and their accuracy collapses when
+behaviour changes (Pareja et al.\ 2020).
 
 \textbf{Why machine learning.} Learning can model each address's normal behaviour, find structure without
 labels, read a history as a sequence, and use labels where they exist (Hilal, Gadsden and Yawney 2022; Han et
-al.\ 2022). Four research questions guide the work:
+al.\ 2022). Real transactions have no target label, so we combine unsupervised methods with regression and use
+classification only on labelled data. Four research questions guide the work:
 \begin{enumerate}[label=RQ\arabic*]
-  \item Which stable method best finds unusual transactions planted in an address's own history?
-  \item How well do supervised classifiers perform on labelled data over time and on unseen families?
+  \item Which stable method best finds transactions planted in an address's own history?
+  \item How well do classifiers perform on labelled data over time and on unseen families?
   \item Does ``unusual'' coincide with the labelled datasets' own illicit class?
-  \item Does a sequence model trained from scratch on other addresses generalise better than per-address
-    statistics, and can a language model trained from scratch explain flags faithfully?
+  \item Does a sequence model trained on other addresses generalise better than per-address statistics, and can a
+    language model trained from scratch explain flags faithfully?
 \end{enumerate}

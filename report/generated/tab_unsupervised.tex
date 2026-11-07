@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Regression and clustering metrics on DS1.}
+\label{tab:unsupervised}
+\begin{tabularx}{\textwidth}{@{}l Y r r r r@{}}
+\toprule
+Target & Model & MAE & RMSE & $R^2$ & Skill \\
+\midrule
+Amount & Naive forecast & 0.186 & 0.416 & 0.730 & 0.000 \\
+Amount & Ridge & 0.181 & 0.373 & 0.783 & 0.027 \\
+Amount & Random forest & 0.168 & 0.368 & 0.788 & 0.099 \\
+Amount & Hist.\ gradient boosting & 0.189 & 0.389 & 0.764 & $-$0.015 \\
+Gap & Naive forecast & 0.476 & 0.665 & 0.039 & 0.000 \\
+Gap & Ridge & 0.279 & 0.410 & 0.635 & 0.414 \\
+Gap & Random forest & 0.189 & 0.301 & 0.803 & 0.603 \\
+Gap & Hist.\ gradient boosting & 0.192 & 0.298 & 0.807 & 0.597 \\
+\bottomrule
+\end{tabularx}
+\par\smallskip\parbox{\textwidth}{\footnotesize Regression on the evaluation period, log10 scale; skill is 1 $-$ MAE / the naive forecast's MAE. Clustering, first search before the stages: K-Means $k=2$, silhouette 0.657, Davies--Bouldin 0.834; DBSCAN radius 1.3$\times$ the k-distance elbow, silhouette 0.786 without noise points, 2.0\% noise.}
+\end{table}
