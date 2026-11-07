@@ -1,4 +1,4 @@
-SESSION CONTEXT - read this first. Last update: 2026-11-07 ~21:30 GMT+7, on the PC (Claude).
+SESSION CONTEXT - read this first. Last update: 2026-11-07 ~23:10 GMT+7, on the PC (Claude).
 - PART 1 = live state (read all of it). PART 2 = reference (look things up). PART 3 = history (one line per day).
 - Other files: CHANGELOG.md (every change with its numbers), docs/TODO.md (checklist), docs/TRAINING_PLAN.md
   (stages + gate), docs/KAGGLE_LM_PLAN.md (152M round 2 + adoption rule, section 3), docs/REPORT_PLAN.md,
@@ -13,6 +13,13 @@ PART 1 - LIVE STATE
 RUNNING
 - Nothing needed. A last Kaggle rebuild (tritran72/cos30049a2-rebuild v2, 7 Nov) was dropped by the user as too long;
   ignore its output. Results frozen: tag results-v1.1.
+- DONE 7 Nov: team review list for main.pdf, by printed page: code and data files, data name, who checks. Page:
+  artifact UWMZv84318JzuxfAEEFBBQ (private; the user shares it; ticks stay in each browser). Same rows plus what to
+  check in report/REVIEW_CHECKLIST.md. Hoang Anh: sections 3, 4, 7.1; Cao Tri: 6, 7.2; Dan: 1, 2, 5, 8, bibliography,
+  appendices.
+- BLOCKED 7 Nov: the user asked to make from-scratch the default branch and upload the models as a Release. gh is
+  logged in as default19-debug, which has READ on Defaul119/COS30049A2, so neither is done (default is still main, no
+  Release, and clones still get the old version). Needs `gh auth login` as Defaul119, or the GitHub website.
 - DONE 7 Nov: report revised against the brief, rubric, slides and A1 feedback (section order, duplicates, old
   references, thin sections, inconsistent minutes and form). Five K-Dense skills in ~/.claude/skills. Due Sun 8 Nov 23:59.
 - DONE 7 Nov: report/main_v2.tex and main_v2.pdf: main.tex's body with a styled cover, headers and a longer appendix.

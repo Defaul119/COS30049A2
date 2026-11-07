@@ -5,6 +5,13 @@ disagree, the measured reality is recorded here (CLAUDE.md, "How to work here").
 
 ## 7 November 2026
 
+**Team review checklist for `report/main.pdf`; results unchanged.** `report/REVIEW_CHECKLIST.md` lists every file to
+check against the report: 296 rows, with the owner (Hoang Anh, Cao Tri, Dan), the data name, the printed page and what
+to check. Each row's numbers were compared with the built PDF. That comparison moved the DS10 median gap and the 96%
+of plant seeds to page 7 and the TxGPT vocabulary to page 4, and it corrected two file sizes (`model.pt` 610 MB,
+`heist_best.joblib` 276 MB; the old figures were MiB). Cover: the word-count note says "bibliography", matching the
+section's name.
+
 **Report revised against the brief, the rubric, the unit's slides and the Assignment 1 feedback; results unchanged.**
 No table, model or setting changed: `results-v1.1` stays the frozen set (273 tests pass, `frozen_tests.json` checks
 pass, the installed model's SHA-256 matches settings). A last Kaggle rebuild was started and dropped by the user as
